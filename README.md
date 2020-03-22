@@ -1,6 +1,6 @@
 # Words from word
 
-It's game about creating different words from one big word.
+It's HTML-5 game about creating different words from one big word for Ya-Games.
 
 ## Project setup
 ```
