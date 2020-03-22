@@ -1,4 +1,6 @@
-# words-vue
+# Words from word
+
+It's game about creating different words from one big word.
 
 ## Project setup
 ```
