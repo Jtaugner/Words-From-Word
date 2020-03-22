@@ -1,17 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta charset="UTF-8">
+    <title>Слова из слова</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Игра для смекалистых! Получите слово и попробуйте создать из его букв как можно больше других слов!">
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(57682372, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+      });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/57682372" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+
+    <link rel="stylesheet" href="reset.min.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+
+    <style>
+      .pre-download{
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: #271B2E;
+        font-size: 5rem;
+        z-index: 10;
+      }
+      .pre-download__words{
+        height: 100%;
+        flex-flow: column nowrap;
+      }
+      .pre-download__words__word, .pre-download__words{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .pre-download__words__word{
+        margin-bottom: 10px;
+      }
+      .pre-download__words__letter{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 50px;
+        height: 50px;
+
+        margin-right: 7px;
+
+        border-radius: 5px;
+
+        background-color: rgba(166,82,174,0.9);
+        color: white;
+
+        font-size: 3rem;
+      }
+      .another-letter{
+        background-color: rgba(255, 255, 255, 0.9);
+        color: rgb(150, 74, 157);
+      }
+      .big-letter{
+        width: 60px;
+        height: 60px;
+        font-size: 3.5rem;
+      }
+      .load{
+        font-size: 2rem;
+        color: white;
+      }
+    </style>
+    <script>
+
+      var YaGames;
+    </script>
+    <script src="https://yandex.ru/games/sdk/v2"></script>
   </head>
   <body>
+  <img src="../src/assets/game-background.png" style="display: none">
+  <div class="pre-download">
+    <div class="pre-download__words">
+      <div class="pre-download__words__word">
+        <div class="pre-download__words__letter">С</div>
+        <div class="pre-download__words__letter">Л</div>
+        <div class="pre-download__words__letter">О</div>
+        <div class="pre-download__words__letter">В</div>
+        <div class="pre-download__words__letter">А</div>
+      </div>
+      <div class="pre-download__words__word">
+        <div class="pre-download__words__letter big-letter another-letter">И</div>
+        <div class="pre-download__words__letter big-letter">З</div>
+      </div>
+      <div class="pre-download__words__word">
+        <div class="pre-download__words__letter another-letter">С</div>
+        <div class="pre-download__words__letter another-letter">Л</div>
+        <div class="pre-download__words__letter another-letter">О</div>
+        <div class="pre-download__words__letter another-letter">В</div>
+        <div class="pre-download__words__letter another-letter">А</div>
+      </div>
+      <div class="load">Загрузка...</div>
+    </div>
+  </div>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="app">
+
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>
