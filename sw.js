@@ -20,10 +20,10 @@ const cacheList = [
     'img/cart__item-3.ea343ffa.png',
     'img/cart__item-4.17d5d6d1.png',
     'img/close-level.47a626ea.png',
-    'img/game-background.e902bc0d.png',
+    'img/game-background.d8667d89.png',
     'img/levels-background.2ea71d79.png',
     'img/shop.6516816e.png',
-    'js/app.7ed4cb56.js',
+    'js/app.9f256097.js',
     'js/chunk-vendors.ea6806cb.js',
 
 ];
