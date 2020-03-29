@@ -9,7 +9,7 @@ const cacheList = [
     'reset.min.css',
     'star.mp3',
     'wrong-word2.mp3',
-    'css/app.2060e959.css',
+    'css/app.7c8662d7.css',
     'fonts/PTMono-Regular.4c6c13c8.otf',
     'fonts/PTMono-Regular.547563b8.woff',
     'img/angle-right_gray.30e8b091.svg',
@@ -19,9 +19,11 @@ const cacheList = [
     'img/cart__item-2.cbd62021.png',
     'img/cart__item-3.ea343ffa.png',
     'img/cart__item-4.17d5d6d1.png',
-    'img/dfsfsfdsfsdfsdfsdsfsd',
-    'img/dfsfsfdsfsdfsdfsdsfsd',
-    'js/app.4d6197f9.js',
+    'img/close-level.47a626ea.png',
+    'img/game-background.e902bc0d.png',
+    'img/levels-background.2ea71d79.png',
+    'img/shop.6516816e.png',
+    'js/app.50b2a5fa.js',
     'js/chunk-vendors.ea6806cb.js',
 
 ];
@@ -32,7 +34,7 @@ this.addEventListener('install', function (event) {
         })
     );
 });
-const CACHE_PREFIX = 'WiW-2';
+const CACHE_PREFIX = 'WiW-3';
 
 this.addEventListener('activate', function (event) {
     event.waitUntil(
