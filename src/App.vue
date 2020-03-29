@@ -764,7 +764,7 @@
         isBadWord: false,
         rules: isRules,
         levelsAnim: false,
-        shop: true,
+        shop: false,
         newWord: '',
         animWord: '',
         words: '',
