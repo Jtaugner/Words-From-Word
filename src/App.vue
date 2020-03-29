@@ -437,9 +437,6 @@
   };
 
   let PLAYESTATE = {
-    tips: 3,
-    sounds: true,
-    allDoneWords: {}
   };
   let doDeleteBlock;
     let allDoneWords = localStorage.getItem('allDoneWords');
@@ -463,7 +460,6 @@
     localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
     localStorage.setItem('tips', 3);
 
-
     allWords.forEach((key => {
       allDoneWords[key] = [];
     }));
@@ -482,7 +478,7 @@
     }));
     localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
     PLAYESTATE.allDoneWords = allDoneWords;
-    if(playerGame) playerGame.setData({allDoneWords: allDoneWords}).then((ignored) => {});
+    if(playerGame) playerGame.setData(PLAYESTATE).then((ignored) => {});
     let lastLevel = allStars.length-1;
     for(let i = 0; i < allStars.length; i++){
       if(allStars[i] === 0){
@@ -542,7 +538,11 @@
           if (dataObject.sounds) sounds = dataObject.sounds;
           PLAYESTATE = dataObject;
         }else{
-          playerGame.setData(PLAYESTATE).then((ignored) => {});
+          playerGame.setData({
+            tips: 3,
+            sounds: true,
+            allDoneWords: {}
+          }, false).then((ignored) => {});
         }
 
         update();
@@ -791,7 +791,6 @@
         loc = 0;
         setLoc();
         this.stars = allStars;
-        this.rules = false;
         this.location = loc;
         this.tipCount = tips;
         this.isSounds = sounds;

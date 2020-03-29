@@ -9,7 +9,7 @@ const cacheList = [
     'reset.min.css',
     'star.mp3',
     'wrong-word2.mp3',
-    'css/app.7c8662d7.css',
+    'css/app.1453d98b.css',
     'fonts/PTMono-Regular.4c6c13c8.otf',
     'fonts/PTMono-Regular.547563b8.woff',
     'img/angle-right_gray.30e8b091.svg',
@@ -23,7 +23,7 @@ const cacheList = [
     'img/game-background.e902bc0d.png',
     'img/levels-background.2ea71d79.png',
     'img/shop.6516816e.png',
-    'js/app.456e7ec1.js',
+    'js/app.7ed4cb56.js',
     'js/chunk-vendors.ea6806cb.js',
 
 ];
