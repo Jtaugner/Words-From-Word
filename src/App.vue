@@ -75,7 +75,8 @@
           Уровень пройден на 33% - 1 звезда, 66% - 2 звезды, 100% - 3 звезды.
           Удачной игры!
       </div>
-
+      <!-- Yandex.RTB R-A-518275-2 -->
+      <div id="yandex_rtb_R-A-518275-2" class="rtb-block"></div>
 
 
     </div>
@@ -1909,6 +1910,9 @@
     .advert {
       width: 20px;
       height: 20px;
+    }
+    .game{
+      padding-bottom: 150px;
     }
 
 
