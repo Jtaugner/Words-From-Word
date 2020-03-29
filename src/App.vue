@@ -1,7 +1,9 @@
 <template>
   <div id="app">
 <!--    <div class="close-level-help prev-location next-location"></div>-->
-    <div class="levels" v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
+    <div class="levels"
+         @updateAll="updateAll()"
+         v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
       <div class="blur"></div>
       <div class="opacity"></div>
       <div class="levelsTop">
@@ -134,7 +136,7 @@
 
 <script>
   let advTime = true;
-  let showAdv;
+  let showAdv, playerGame;
   let allWords = [
     "милость", "формула", "арматура", "телёнок", "записка", "дизайнер", "пипетка", "животное", "желтозём", "буржуазия", "диаграмма", "хромосома", "щитовидка", "архаизм", "шизофрения", "яйцеклетка", "антоним", "бедняга", "трактат", "сожитель", "корчёвка",
     "жаркое", "рутина", "комедия", "ломбард", "анатомия", "баталист", "косточка", "экономия", "эвкалипт", "барашек", "боярышник", "двигатель", "гидрология", "голограмма", "громоотвод", "свиристель", "устройство", "ультиматум", "этимология", "юрисдикция", "абордаж",
@@ -361,8 +363,8 @@
     "молодчина": ["ад", "аил", "анод", "дан", "дина", "динамо", "длина", "дно", "до", "дол", "долина", "доломан", "дом", "домино", "домна", "идол", "ил", "иман", "иод", "ион", "лад", "ладо", "лиман", "лимон", "лимонад", "лич", "лом", "лоно", "ми", "милан", "мина", "мода", "мол", "моча", "мочало", "мочило", "надлом", "налим", "намол", "нома", "номад", "ода", "ом", "чадо", "чал", "чан", "чин", "чина"]
   };
 
-
-  let allDoneWords = localStorage.getItem('allDoneWords');
+  let doDeleteBlock;
+    let allDoneWords = localStorage.getItem('allDoneWords');
   let tips = localStorage.getItem('tips');
   let sounds = localStorage.getItem('sounds');
   let loc = 0;
@@ -373,6 +375,31 @@
     allDoneWords = JSON.parse(allDoneWords);
     tips = Number(tips);
     sounds = sounds === 'true';
+    setLoc();
+  }else{
+    allDoneWords = {};
+    tips = 3;
+    isRules = true;
+    sounds = true;
+    localStorage.setItem('sounds', true);
+    localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
+    localStorage.setItem('tips', 3);
+
+    if (playerGame){
+      playerGame.setData({tips: 3}).then((ignored) => {});
+      playerGame.setData({sounds: true}).then((ignored) => {});
+      playerGame.setData({allDoneWords: {}}).then((ignored) => {});
+    }
+
+
+    allWords.forEach((key => {
+      allDoneWords[key] = [];
+    }));
+    for(let i = 0; i < allWords.length; i++){
+      allStars.push(0);
+    }
+  }
+  function setLoc() {
     allWords.forEach((key => {
       if(allDoneWords[key]){
         allStars.push(testStar(allDoneWords[key].length, wordsFromWords[key].length))
@@ -396,20 +423,63 @@
       loc--;
     }
     if(loc >= allLocations || loc < 0) loc = 0;
-  }else{
-    allDoneWords = {};
-    tips = 3;
-    isRules = true;
-    sounds = true;
-    localStorage.setItem('sounds', true);
-    localStorage.setItem('tips', 3);
-    allWords.forEach((key => {
-      allDoneWords[key] = [];
-    }));
-    for(let i = 0; i < allWords.length; i++){
-      allStars.push(0);
-    }
   }
+  if(window.YaGames){
+    window.YaGames.init({
+      adv: {
+        onAdvClose: wasShown => {
+          if(!wasShown) advTime = true;
+        }
+      }
+    }).then(ysdk => {
+      initPlayer(ysdk);
+      showAdv = () => {
+        ysdk.adv.showFullscreenAdv({
+          callbacks: {
+            onClose: function() {
+              advTime = false;
+              setTimeout(()=>{
+                advTime = true;
+              }, 220000);
+            }
+          }
+        });
+      };
+    });
+  }else{
+    doDeleteBlock = true;
+  }
+  function update() {
+    if (document.querySelector('.levels')) {
+      document.querySelector('.levels').dispatchEvent(new CustomEvent("updateAll"));
+    }
+
+  }
+  function initPlayer(ysdk) {
+    ysdk.getPlayer().then(_player => {
+      // Игрок авторизован.
+      playerGame = _player;
+      playerGame.getData().then((dataObject) => {
+        if (dataObject.allDoneWords) allDoneWords = dataObject.allDoneWords;
+        if (dataObject.tips) tips = dataObject.tips;
+        if (dataObject.sounds) sounds = dataObject.sounds;
+        update();
+      }).catch((e) => {
+        console.log(e);
+        update();
+      });
+    }).catch((e) => {
+      console.log(e);
+      update();
+    });
+  }
+
+
+
+
+
+
+
   function testStar(doneWordsLength, allWordsLength) {
     if(doneWordsLength === allWordsLength) return 3;
     let percent = Math.floor(doneWordsLength / allWordsLength * 100);
@@ -544,7 +614,7 @@
 
     return WebAudioAPISound;
   })();
-  
+
   let wrongWordSound = new NewAudioContext('wrong-word2');
   let doneWordSound = new NewAudioContext('done-word');
   let starVolume = new NewAudioContext('star');
@@ -600,6 +670,19 @@
       },
     },
     methods:{
+      updateAll() {
+        allStars = [];
+        loc = 0;
+        setLoc();
+        this.stars = allStars;
+        this.rules = false;
+        this.location = loc;
+        this.tipCount = tips;
+        this.isSounds = sounds;
+        if (document.querySelector(".pre-download")) {
+          document.querySelector(".pre-download").remove()
+        }
+      },
       getLevel(lvl){
         if(this.isCloseLevelShow(lvl+1))return;
         if(lvl === 200){
@@ -666,6 +749,7 @@
       switchSounds(){
         this.isSounds = !this.isSounds;
         localStorage.setItem('sounds', this.isSounds);
+        if (playerGame) playerGame.setData({sounds: this.isSounds}).then((ignored) => {});
       },
       isCloseLevelShow(level){
         return level !== 1 && this.stars[level-2] === 0;
@@ -765,6 +849,8 @@
         if(allDoneWords[this.word].length === wordsFromWords[this.word].length) return;
         this.tipCount--;
         localStorage.setItem('tips', this.tipCount);
+        if (playerGame) playerGame.setData({tips: this.tipCount}).then((ignored) => {});
+
         let arr = wordsFromWords[this.word].slice();
         for(let i = 0; i < this.doneWords.length; i++){
           arr.splice(arr.indexOf(this.doneWords[i]), 1);
@@ -807,8 +893,9 @@
               this.addWord(wordFromLetter);
             this.animWord = wordFromLetter;
             this.newWord = wordFromLetter;
+            localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
+            if (playerGame) playerGame.setData({allDoneWords: allDoneWords}).then((ignored) => {});
             setTimeout(()=>{
-              localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
               this.animWordStart = '';
               this.animWord = '';
 
@@ -858,6 +945,7 @@
               this.tipCount++;
             }
             localStorage.setItem('tips', this.tipCount);
+            if (playerGame) playerGame.setData({tips: this.tipCount}).then((ignored) => {});
 
             if(showAdv && advTime){
               setTimeout(()=>{
@@ -881,35 +969,14 @@
     },
     mounted: function() {
       this.$nextTick(function() {
-        if(document.querySelector(".pre-download")){
-          document.querySelector(".pre-download").remove()
+        if (doDeleteBlock) {
+          if (document.querySelector(".pre-download")) {
+            document.querySelector(".pre-download").remove()
+          }
         }
         document.addEventListener('keydown', this.pressKey)
       })
     }
-  }
-
-  if(window.YaGames){
-    window.YaGames.init({
-      adv: {
-        onAdvClose: wasShown => {
-          if(!wasShown) advTime = true;
-        }
-      }
-    }).then(ysdk => {
-      showAdv = () => {
-        ysdk.adv.showFullscreenAdv({
-          callbacks: {
-            onClose: function() {
-              advTime = false;
-              setTimeout(()=>{
-                advTime = true;
-              }, 220000);
-            }
-          }
-        });
-      };
-    });
   }
 </script>
 
