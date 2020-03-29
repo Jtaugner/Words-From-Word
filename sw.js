@@ -23,7 +23,7 @@ const cacheList = [
     'img/game-background.e902bc0d.png',
     'img/levels-background.2ea71d79.png',
     'img/shop.6516816e.png',
-    'js/app.50b2a5fa.js',
+    'js/app.456e7ec1.js',
     'js/chunk-vendors.ea6806cb.js',
 
 ];
@@ -34,7 +34,7 @@ this.addEventListener('install', function (event) {
         })
     );
 });
-const CACHE_PREFIX = 'WiW-3';
+const CACHE_PREFIX = 'WiW-4';
 
 this.addEventListener('activate', function (event) {
     event.waitUntil(
