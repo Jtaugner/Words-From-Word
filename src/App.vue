@@ -3,17 +3,30 @@
 <!--    <div class="close-level-help prev-location next-location"></div>-->
     <div class="levels"
          @updateAll="updateAll()"
+         @buyTips="addBuyTips()"
          v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
       <div class="blur"></div>
       <div class="opacity"></div>
+
+
+
+
       <div class="levelsTop">
-        <div class="switchRules" @click="toggleRules()">?</div>
+        <div class="leftTopMenu">
+          <div class="switchRules" @click="toggleRules()">?</div>
+          <div class="switchShop" @click="toggleShop()"></div>
+
+        </div>
+
         <div class="levelsTop__allStars">
           {{allStars}}/{{numOfLevels*3}}
         </div>
         <div class="menu-star"></div>
         <div class="sounds" @click="switchSounds" :class="isSounds ? 'sounds-on' : ''"></div>
       </div>
+
+
+
       <div class="levels__property">
         <div class="levels-wrapper">
           <div class="level" v-for="level in 21" :key="getLevelByLevelAndLocation(level)"
@@ -39,6 +52,62 @@
         </div>
       </div>
       <div class="rules-blackout" v-show="rules" @click="toggleRules()"></div>
+      <div class="rules-blackout" v-show="shop" @click="toggleShop()"></div>
+
+
+
+      <div class="rules shop" v-show="shop">
+        <div class="rules__cross shop__cross" @click="toggleShop()"></div>
+        <h2 class="rules__menu">
+          Магазин
+        </h2>
+        <div class="shop__cart">
+          <div class="shop__cart__item">
+            <div class="shop__cart__item_1">
+              <div class="cart__item_tip menu__tip_count">5</div>
+            </div>
+            <div class="shop__cart__name">5 подсказок</div>
+            <div class="shop__cart__buy-button" @click="buyTip(1)">29 рублей</div>
+          </div>
+
+
+          <div class="shop__cart__item">
+            <div class="shop__cart__item_2">
+              <div class="cart__item_tip menu__tip_count">20</div>
+            </div>
+            <div class="shop__cart__name">20 подсказок</div>
+            <div class="shop__cart__buy-button" @click="buyTip(2)">99 рублей</div>
+          </div>
+
+
+          <div class="shop__cart__item">
+            <div class="shop__cart__item_3">
+              <div class="cart__item_tip menu__tip_count">50</div>
+            </div>
+            <div class="shop__cart__name">50 подсказок</div>
+            <div class="shop__cart__buy-button" @click="buyTip(3)">199 рублей</div>
+          </div>
+
+
+          <div class="shop__cart__item">
+            <div class="shop__cart__item_4">
+              <div class="cart__item_tip menu__tip_count">100</div>
+            </div>
+            <div class="shop__cart__name">100 подсказок</div>
+            <div class="shop__cart__buy-button" @click="buyTip(4)">299 рублей</div>
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+
+
+
+
+
       <div class="rules" v-show="rules">
         <div class="rules__cross" @click="toggleRules()"></div>
         <h2 class="rules__menu">
@@ -53,6 +122,9 @@
           Уровень пройден на 33% - 1 звезда, 66% - 2 звезды, 100% - 3 звезды.
           Удачной игры!
       </div>
+
+
+
     </div>
 
 
@@ -136,7 +208,7 @@
 
 <script>
   let advTime = true;
-  let showAdv, playerGame;
+  let showAdv, playerGame, payments, YSDK;
   let allWords = [
     "милость", "формула", "арматура", "телёнок", "записка", "дизайнер", "пипетка", "животное", "желтозём", "буржуазия", "диаграмма", "хромосома", "щитовидка", "архаизм", "шизофрения", "яйцеклетка", "антоним", "бедняга", "трактат", "сожитель", "корчёвка",
     "жаркое", "рутина", "комедия", "ломбард", "анатомия", "баталист", "косточка", "экономия", "эвкалипт", "барашек", "боярышник", "двигатель", "гидрология", "голограмма", "громоотвод", "свиристель", "устройство", "ультиматум", "этимология", "юрисдикция", "абордаж",
@@ -435,6 +507,7 @@
         }
       }
     }).then(ysdk => {
+      YSDK = ysdk;
       initPlayer(ysdk);
       showAdv = () => {
         ysdk.adv.showFullscreenAdv({
@@ -471,10 +544,43 @@
         console.log(e);
         update();
       });
+      ysdk.getPayments({ signed: false }).then(_payments => {
+        // Покупки доступны.
+        payments = _payments;
+      }).catch(err => {
+        console.log(err);
+      });
     }).catch((e) => {
       console.log(e);
       update();
     });
+  }
+  let TIPS = 0;
+  function buyTips(item) {
+    console.log('buy');
+    if(payments){
+      let purchaseItem = 'cart_item' + item;
+      payments.purchase(purchaseItem).then(purchase => {
+        if(purchase.productID === purchaseItem){
+          if(item === 1) TIPS = 5;
+          if(item === 2) TIPS = 20;
+          if(item === 3) TIPS = 50;
+          if(item === 4) TIPS = 100;
+          document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
+          payments.consumePurchase(purchase.purchaseToken);
+        }
+      }).catch((e)=>{
+        console.log("PAYMENTS ERROR: " + e);
+      });
+    }else{
+      console.log('open auth');
+      YSDK.auth.openAuthDialog().then(() => {
+        // Игрок успешно авторизован, теперь объект Player будет инициализирован.
+        console.log('успешно авторизован');
+        initPlayer(YSDK);
+      }).catch((ignored) => {// Игрок не авторизован.
+      });
+    }
   }
 
 
@@ -658,6 +764,7 @@
         isBadWord: false,
         rules: isRules,
         levelsAnim: false,
+        shop: true,
         newWord: '',
         animWord: '',
         words: '',
@@ -741,8 +848,19 @@
       getLevelByLevelAndLocation(level){
         return (this.location*21) + level;
       },
+      addBuyTips(){
+        this.tipCount += TIPS;
+        localStorage.setItem('tips', this.tipCount);
+        playerGame.setData({tips: this.tipCount}).then((ignored) => {});
+      },
+      buyTip(item){
+        buyTips(item);
+      },
       toggleRules(){
         this.rules = !this.rules;
+      },
+      toggleShop(){
+        this.shop = !this.shop;
       },
       advTip(){
         if(this.tipCount > 0) return false;
@@ -1005,16 +1123,29 @@
     font-weight: normal;
     font-style: normal;
   }
-
-  .switchRules{
+  .leftTopMenu{
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: 30px;
 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .switchRules{
     font-size: 3.5rem;
     color: #faf5ac;
     cursor: pointer;
+  }
+  .switchShop{
+    width: 30px;
+    height: 30px;
+
+    margin-left: 50px;
+
+    background: url("assets/shop.png") center center no-repeat;
+    background-size: 100%;
   }
 
   .rules-blackout{
@@ -1552,6 +1683,109 @@
     color: #ee4051;
     animation: tremor 0.05s ease-in-out infinite;
   }
+
+
+  /*Магазин*/
+  .shop{
+    min-height: 280px;
+
+    border-radius: 10px;
+  }
+  .shop .rules__menu{
+    margin-bottom: 10px;
+  }
+  .shop__cart{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .shop__cart__item{
+    height: 100%;
+
+    background-color: #7c3494;
+    padding: 5px;
+    border-radius: 10px;
+
+  }
+  .shop__cart__name{
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1.3rem;
+  }
+  .shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4{
+    position: relative;
+    width: 100%;
+    height: 150px;
+  }
+
+  .cart__item_tip{
+    position: absolute;
+    top: 80%;
+    right: 25%;
+    bottom: auto;
+    font-size: 1.2rem;
+    padding: 0 6px;
+  }
+
+
+  .shop__cart__item_1{
+    background: url("assets/cart__item-1.png") center 80% no-repeat;
+    background-size: 50%;
+  }
+  .shop__cart__item_2 {
+    background: url("assets/cart__item-2.png") center 80% no-repeat;
+    background-size: 100%;
+  }
+  .shop__cart__item_2 .cart__item_tip{
+    right: 28%;
+  }
+  .shop__cart__item_3 {
+    background: url("assets/cart__item-3.png") center 70% no-repeat;
+    background-size: 100%;
+  }
+  .shop__cart__item_3 .cart__item_tip{
+    right: 29%;
+  }
+  .shop__cart__item_4 {
+    background: url("assets/cart__item-4.png") center 55% no-repeat;
+    background-size: 100%;
+  }
+  .shop__cart__item_4 .cart__item_tip{
+      right: 31%;
+  }
+
+  .shop__cart__buy-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(166,82,174);
+    border: 1px solid black;
+    padding: 10px 5px;
+    box-shadow: 1px 1px 1px black;
+    border-radius: 5px;
+
+
+    font-size: 1.5rem;
+
+    cursor: pointer;
+  }
+  .shop__cart__buy-button:hover{
+    box-shadow: none;
+  }
+  .shop__cart__buy-button:active{
+    transform: scale(0.98);
+
+  }
+  .cart__item_tip{
+    top: 83%;
+  }
+
+
+
+
+
+
   @keyframes tremor {
     0%, 25% {
       left: -1px;
@@ -1628,6 +1862,12 @@
 
 
 
+    .shop{
+      width: 700px;
+    }
+    .shop__cart__item{
+      width: 140px;
+    }
 
     .blur{
       filter: blur(2px);
@@ -1686,6 +1926,9 @@
     }
     .menu__tip_count{
       font-size: 1rem;
+    }
+    .cart__item_tip{
+      font-size: 1.3rem;
     }
 
 
