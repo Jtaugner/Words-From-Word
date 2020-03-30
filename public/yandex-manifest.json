@@ -8,17 +8,18 @@
     "splash_screen_color": "#261c2f",
     "cache": {
       "resources": [
+        "index.html",
         "click.mp3",
         "done-word.mp3",
         "favicon.png",
         "favicon-dark.png",
-        "index.html",
         "new-level.mp3",
         "reset.min.css",
         "star.mp3",
-        "sw.js",
         "wrong-word2.mp3",
         "css/app.fd099c20.css",
+        "fonts/PTMono-Regular.4c6c13c8.otf",
+        "fonts/PTMono-Regular.547563b8.woff",
         "img/angle-right_gray.30e8b091.svg",
         "img/angle-right_menu.b38c40bd.svg",
         "img/angle-right_white.93a869f9.svg",
@@ -30,9 +31,7 @@
         "img/game-background.d8667d89.png",
         "img/levels-background.2ea71d79.png",
         "img/shop.6516816e.png",
-        "fonts/PTMono-Regular.4c6c13c8.otf",
-        "fonts/PTMono-Regular.547563b8.woff",
-        "js/app.8c6f573a.js",
+        "js/app.9ae55ddb.js",
         "js/chunk-vendors.17363d8c.js"
       ]
     }
