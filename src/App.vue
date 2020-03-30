@@ -520,6 +520,17 @@
     }).then(ysdk => {
       YSDK = ysdk;
       initPlayer(ysdk);
+      var isNativeCache = ysdk.yandexApp && ysdk.yandexApp.enabled;
+      if ('serviceWorker' in navigator && !isNativeCache) {
+        navigator.serviceWorker
+                .register('../sw.js')
+                .then(function(reg) {
+                  console.log('Registration succeeded. Scope is ' + reg.scope);
+                })
+                .catch(function(error) {
+                  console.error('Trouble with sw: ', error);
+                });
+      }
       showAdv = () => {
         ysdk.adv.showFullscreenAdv({
           callbacks: {
@@ -1321,7 +1332,7 @@
   .levels__property{
     z-index: 2;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     flex-flow: column nowrap;
     align-items: center;
   }
