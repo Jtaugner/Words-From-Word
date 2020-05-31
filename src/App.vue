@@ -87,7 +87,7 @@
 
 
 
-    <div class="game" v-show="content" @addTip="addTip()">
+    <div class="game" v-show="content">
       <div class="blur"></div>
       <div class="opacity"></div>
 
@@ -158,6 +158,25 @@
           </div>
         </div>
       </div>
+
+
+
+
+
+
+
+
+
+      <div class="rules-blackout" v-show="showAdvTip" @click="closeShowAdvTip()"></div>
+      <div class="rules adv-show" v-show="showAdvTip">
+        <div class="rules__cross" @click="closeShowAdvTip()"></div>
+        <h2 class="rules__menu">
+          Внимание
+        </h2>
+        Для получения подсказки нужно посмотреть рекламу не менее 3 секунд.
+        <span v-show="isAdvShowed">Но в первый раз вы её получаете.</span>
+      </div>
+
     </div>
 
 
@@ -218,8 +237,7 @@
 
 <script>
   let advTime = true;
-  let rewardedTime = true;
-  let showAdv, playerGame, payments, YSDK, showRewarded;
+  let showAdv, playerGame, payments, YSDK;
   let allWords = [
     "милость", "формула", "арматура", "телёнок", "записка", "дизайнер", "пипетка", "животное", "желтозём", "буржуазия", "диаграмма", "хромосома", "щитовидка", "архаизм", "шизофрения", "яйцеклетка", "антоним", "бедняга", "трактат", "сожитель", "корчёвка",
     "жаркое", "рутина", "комедия", "ломбард", "анатомия", "баталист", "косточка", "экономия", "эвкалипт", "барашек", "боярышник", "двигатель", "гидрология", "голограмма", "громоотвод", "свиристель", "устройство", "ультиматум", "этимология", "юрисдикция", "абордаж",
@@ -663,6 +681,8 @@
   let allDoneWords = localStorage.getItem('allDoneWords');
   let tips = localStorage.getItem('tips');
   let sounds = localStorage.getItem('sounds');
+  let isAdvShowed = localStorage.getItem('isAdvShowed');
+  isAdvShowed = !!isAdvShowed;
   let loc = 0;
   let allStars = [];
   let isRules = false;
@@ -763,22 +783,6 @@
           }
         });
       };
-      showRewarded = () => {
-        params({'showRewarded': 1});
-        rewardedTime = false;
-        setTimeout(()=>{
-          rewardedTime = true;
-        }, 180000);
-        ysdk.adv.showRewardedVideo({
-          callbacks: {
-            onRewarded: () => {
-              if (document.querySelector('.game')) {
-                document.querySelector('.game').dispatchEvent(new CustomEvent("addTip"));
-              }
-            }
-          }
-        });
-      }
     });
   }else{
     doDeleteBlock = true;
@@ -1063,7 +1067,9 @@
         getStar: -1,
         animWordStart: '',
         isSounds: sounds,
-        advShowNow: false
+        advShowNow: false,
+        showAdvTip: false,
+        isAdvShowed: false
       }
     },
     computed:{
@@ -1074,7 +1080,7 @@
     methods:{
       advTip(){
         if(this.tipCount > 0) return false;
-        return !!(showRewarded && rewardedTime);
+        return !!(showAdv && advTime);
       },
       updateAll() {
         allStars = [];
@@ -1162,6 +1168,9 @@
       switchSounds(){
         this.isSounds = !this.isSounds;
         localStorage.setItem('sounds', this.isSounds);
+      },
+      closeShowAdvTip(){
+        this.showAdvTip = false;
       },
       isCloseLevelShow(level){
         let loc = Math.floor(level / 22);
@@ -1262,8 +1271,35 @@
       getTip(){
         if(this.animWordStart !== '') return;
         if(this.tipCount < 1){
-          if(showRewarded && rewardedTime){
-            showRewarded();
+          if(showAdv && advTime){
+            params({'showRewarded': 1});
+            advTime = false;
+            setTimeout(()=>{
+              advTime = true;
+            }, 180000);
+            let isShowed = false;
+            setTimeout(()=>{
+              isShowed = true;
+            }, 3000);
+            let that= this;
+            YSDK.adv.showFullscreenAdv({
+              callbacks: {
+                onClose: function() {
+                  if(isShowed){
+                    that.addTip();
+                  }else{
+                    that.showAdvTip = true;
+                    that.isAdvShowed = false;
+                      if(!isAdvShowed){
+                        localStorage.setItem('isAdvShowed', 'true');
+                        isAdvShowed = true;
+                        that.isAdvShowed = true;
+                        that.addTip();
+                      }
+                  }
+                }
+              }
+            });
           }else{
             this.toggleShop();
           }
@@ -2291,5 +2327,33 @@
     background-color: #ee4051;
     position: absolute;
     transform: rotate(120deg) translateX(-50%);
+  }
+  .adv-show{
+    min-width: auto;
+    width: 350px;
+    text-align: center;
+    font-size: 1.8rem;
+  }
+  .adv-show .rules__menu{
+    font-size: 3.5rem;
+  }
+  .adv-show .rules__cross{
+    width: 35px;
+    height: 35px;
+  }
+
+  @media (min-width: 1000px) {
+    .adv-show{
+      padding: 20px;
+      width: 450px;
+      font-size: 2rem;
+    }
+    .adv-show .rules__menu{
+      font-size: 4rem;
+    }
+    .adv-show .rules__cross{
+      width: 41px;
+      height: 41px;
+    }
   }
 </style>
