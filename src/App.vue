@@ -842,6 +842,7 @@
       ysdk.getPayments({ signed: false }).then(_payments => {
         // Покупки доступны.
         payments = _payments;
+        payments.getPurchases().then(purchases => purchases.forEach(consumePurchase));
       }).catch(err => {
         console.log(err);
       });
@@ -851,6 +852,14 @@
     });
   }
   let TIPS = 0;
+  function consumePurchase(purchase) {
+    if (purchase.productID === 'cart_item2') TIPS = 20;
+    if (purchase.productID === 'cart_item3') TIPS = 50;
+    if (purchase.productID === 'cart_item4') TIPS = 100;
+    params({[purchase.productID]: 1});
+    document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
+    payments.consumePurchase(purchase.purchaseToken);
+  }
   function buyTips(item) {
     if(payments){
       let purchaseItem = 'cart_item' + item;
