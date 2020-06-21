@@ -785,6 +785,7 @@
       };
     });
   }else{
+    localStorage.setItem('offline', '1');
     doDeleteBlock = true;
   }
   function update() {
@@ -794,15 +795,49 @@
 
   }
   function initPlayer(ysdk) {
+    console.log(ysdk);
     ysdk.getPlayer().then(_player => {
+      console.log('get player');
       // Игрок авторизован.
       playerGame = _player;
       let someTrue = false;
+      let change = true;
+      let offline = localStorage.getItem('offline');
+      if(offline === '1'){
+        offline = true;
+        localStorage.setItem('offline', '0');
+      } else{
+        offline = false;
+      }
       playerGame.getData(['allDoneWords'], false).then((dataObject) => {
         console.log(dataObject);
         if (dataObject.allDoneWords) {
-          allDoneWords = dataObject.allDoneWords;
+          if(offline){
+            const lastAllDoneWords = dataObject.allDoneWords;
+            let newWords, lastWords;
+            newWords = Object.keys(allDoneWords).reduce((k, key)=> k + allDoneWords[key].length, 0);
+            lastWords = Object.keys(lastAllDoneWords).reduce((k, key)=> k + lastAllDoneWords[key].length, 0);
+            if(newWords > lastWords){
+              change = false;
+              tips = localStorage.getItem('tips');
+              if(tips){
+                tips = Number(tips);
+              }else{
+                tips = 3;
+              }
+              PLAYERSTATS = {
+                tips: tips
+              }
+              setStats();
+            }
+          }
           PLAYESTATE = dataObject;
+          if(change){
+            allDoneWords = dataObject.allDoneWords;
+          }else{
+            PLAYESTATE.allDoneWords = allDoneWords;
+            setState();
+          }
         }else{
           playerGame.setData({
             allDoneWords: allDoneWords
@@ -821,8 +856,10 @@
       });
       playerGame.getStats(['tips'], false).then((dataObject) => {
         if (dataObject.tips) {
-          tips = dataObject.tips;
-          PLAYERSTATS = dataObject;
+          if(change){
+            tips = dataObject.tips;
+            PLAYERSTATS = dataObject;
+          }
         }else{
           playerGame.setStats({
             tips: tips
@@ -848,6 +885,8 @@
       });
     }).catch((e) => {
       console.log(e);
+      localStorage.setItem('offline', '1');
+      doDeleteBlock = true;
       update();
     });
   }
