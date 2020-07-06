@@ -61,6 +61,17 @@
 
 
 
+      <div class="rules-blackout" v-show="authDialog" @click="toggleAuthDialog"></div>
+      <div class="rules adv-show ya-rules" v-show="authDialog">
+        <div class="rules__cross" @click="toggleAuthDialog"></div>
+        <h2 class="rules__menu">
+          Акция
+        </h2>
+        Зайдите в свой аккаунт Яндекс или зарегистрируйтесь и получите 20 подсказок!
+        <div class="ya-button shop__cart__buy-button"
+        @click="openAuth"
+        >Войти</div>
+      </div>
 
 
 
@@ -238,6 +249,7 @@
 <script>
   let advTime = true;
   let showAdv, playerGame, payments, YSDK;
+  let isAddTips = false;
   let allWords = [
     "милость", "формула", "арматура", "телёнок", "записка", "дизайнер", "пипетка", "животное", "желтозём", "буржуазия", "диаграмма", "хромосома", "щитовидка", "архаизм", "шизофрения", "яйцеклетка", "антоним", "бедняга", "трактат", "сожитель", "корчёвка",
     "жаркое", "рутина", "комедия", "ломбард", "анатомия", "баталист", "косточка", "экономия", "эвкалипт", "барашек", "боярышник", "двигатель", "гидрология", "голограмма", "громоотвод", "свиристель", "устройство", "ультиматум", "этимология", "юрисдикция", "абордаж",
@@ -679,9 +691,28 @@
   let PLAYERSTATS = {};
   let doDeleteBlock;
   let allDoneWords = localStorage.getItem('allDoneWords');
+  let showAuth = localStorage.getItem('authDialog');
   let tips = localStorage.getItem('tips');
   let sounds = localStorage.getItem('sounds');
   let isAdvShowed = localStorage.getItem('isAdvShowed');
+  function getDatePlusDays(){
+    return +(new Date()) + 1000 * 60 * 60 * 24 * 3;
+  }
+  if(showAuth){
+    let day = Number(showAuth);
+    if(
+            !(showAuth === 'done') &&
+            (+(new Date()) > day)
+    ){
+        showAuth = true;
+        localStorage.setItem('authDialog', getDatePlusDays());
+    }else{
+      showAuth = false;
+    }
+  }else{
+    showAuth = true;
+    localStorage.setItem('authDialog', getDatePlusDays());
+  }
   isAdvShowed = !!isAdvShowed;
   let loc = 0;
   let allStars = [];
@@ -697,6 +728,8 @@
     tips = 3;
     isRules = true;
     sounds = true;
+    localStorage.setItem('authDialog', 1);
+    showAuth = false;
     localStorage.setItem('sounds', true);
     localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
     localStorage.setItem('tips', 3);
@@ -798,6 +831,7 @@
     console.log(ysdk);
     ysdk.getPlayer().then(_player => {
       console.log('get player');
+
       // Игрок авторизован.
       playerGame = _player;
       let someTrue = false;
@@ -812,6 +846,7 @@
       playerGame.getData(['allDoneWords'], false).then((dataObject) => {
         console.log(dataObject);
         if (dataObject.allDoneWords) {
+
           if(offline){
             const lastAllDoneWords = dataObject.allDoneWords;
             let newWords, lastWords;
@@ -827,18 +862,20 @@
               }
               PLAYERSTATS = {
                 tips: tips
-              }
+              };
               setStats();
             }
           }
+
           PLAYESTATE = dataObject;
           if(change){
             allDoneWords = dataObject.allDoneWords;
+            localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
           }else{
             PLAYESTATE.allDoneWords = allDoneWords;
             setState();
           }
-        }else{
+        }  else{
           playerGame.setData({
             allDoneWords: allDoneWords
           }, false).then((ignored) => {});
@@ -855,12 +892,18 @@
         someTrue = true;
       });
       playerGame.getStats(['tips'], false).then((dataObject) => {
-        if (dataObject.tips) {
-          if(change){
-            tips = dataObject.tips;
-            PLAYERSTATS = dataObject;
+        if (dataObject.tips && change) {
+          if(isAddTips){
+            dataObject.tips += 20;
           }
+          tips = dataObject.tips;
+          PLAYERSTATS = dataObject;
+          localStorage.setItem('tips', tips);
+          setStats();
         }else{
+          if(isAddTips){
+            tips += 20;
+          }
           playerGame.setStats({
             tips: tips
           }, false).then((ignored) => {});
@@ -1117,7 +1160,8 @@
         isSounds: sounds,
         advShowNow: false,
         showAdvTip: false,
-        isAdvShowed: false
+        isAdvShowed: false,
+        authDialog: showAuth
       }
     },
     computed:{
@@ -1130,6 +1174,9 @@
         if(this.tipCount > 0) return false;
         return !!(showAdv && advTime);
       },
+      toggleAuthDialog(){
+        this.authDialog = !this.authDialog;
+      },
       updateAll() {
         allStars = [];
         loc = 0;
@@ -1137,11 +1184,25 @@
         this.stars = allStars;
         this.location = loc;
         this.tipCount = tips;
+        localStorage.setItem('tips', this.tipCount);
         this.isSounds = sounds;
+        if(playerGame){
+          this.authDialog = false;
+        }
         console.log('update');
         if (document.querySelector(".pre-download")) {
           document.querySelector(".pre-download").remove()
         }
+      },
+      openAuth(){
+        try{
+          YSDK.auth.openAuthDialog().then(() => {
+            isAddTips = true;
+            initPlayer(YSDK);
+            localStorage.setItem('authDialog', 'done');
+            this.authDialog = false;
+          }).catch((ignored) => {});
+        }catch(ignored){}
       },
       getLevel(lvl){
         if(this.isCloseLevelShow(lvl+1))return;
@@ -2403,5 +2464,17 @@
       width: 41px;
       height: 41px;
     }
+  }
+  .ya-rules{
+    padding: 5px 5px 10px 5px;
+  }
+  .ya-rules .rules__menu{
+    font-size: 4rem;
+  }
+  .ya-button{
+    width: 150px;
+    padding: 5px 0;
+    margin: 10px auto 0 auto;
+    font-size: 2.3rem;
   }
 </style>
