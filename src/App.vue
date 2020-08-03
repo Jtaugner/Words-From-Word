@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-<!--    <div class="close-level-help prev-location next-location"></div>-->
+    <!--    <div class="close-level-help prev-location next-location"></div>-->
     <div class="levels"
          @updateAll="updateAll()"
          @buyTips="addBuyTips()"
@@ -30,7 +30,7 @@
       <div class="levels__property">
         <div class="levels-wrapper">
           <div class="level" v-for="level in 21" :key="getLevelByLevelAndLocation(level)"
-          @click="getLevel(getLevelByLevelAndLocation(level)-1)" :class="stars[getLevelByLevelAndLocation(level)-1] > 0 ? 'level-done' : ''">
+               @click="getLevel(getLevelByLevelAndLocation(level)-1)" :class="stars[getLevelByLevelAndLocation(level)-1] > 0 ? 'level-done' : ''">
             <div v-show="isLevelNumberShow(getLevelByLevelAndLocation(level))">
               {{getLevelByLevelAndLocation(level)}}</div>
             <div class="menu__level_stars">
@@ -69,7 +69,7 @@
         </h2>
         Зайдите в свой аккаунт Яндекс или зарегистрируйтесь и получите 20 подсказок!
         <div class="ya-button shop__cart__buy-button"
-        @click="openAuth"
+             @click="openAuth"
         >Войти</div>
       </div>
 
@@ -77,20 +77,20 @@
 
 
 
-      <div class="rules big-rules" v-show="rules">
+      <div class="rules" v-show="rules">
         <div class="rules__cross" @click="toggleRules()"></div>
         <h2 class="rules__menu">
           Управление
         </h2>
         Добро пожаловать в игру "Слова из слова".
-          Цель игры - составлять всевозможные слова из выданных вам слов.
-          Нажимайте на буквы снизу, чтобы добавить или убрать эту букву из слова.
-          Когда слово будет собрано - нажмите на стрелку, чтобы проверить, есть ли такое слово.
-          Если у вас закончились идеи, нажмите на подсказку.
-          Подсказки можно получить за звёзды, а также за просмотр рекламы.
-          Уровень пройден на 33% - 1 звезда, 66% - 2 звезды, 100% - 3 звезды.
-          В игре много локаций с уровням. Чтобы открыть новую локацию, нужно набрать определённое количество звёзд.
-          Удачной игры!
+        Цель игры - составлять всевозможные слова из выданных вам слов.
+        Нажимайте на буквы снизу, чтобы добавить или убрать эту букву из слова.
+        Когда слово будет собрано - нажмите на стрелку, чтобы проверить, есть ли такое слово.
+        Если у вас закончились идеи, нажмите на подсказку.
+        Подсказки можно получить за звёзды, а также за просмотр рекламы.
+        Уровень пройден на 33% - 1 звезда, 66% - 2 звезды, 100% - 3 звезды.
+        В игре много локаций с уровням. Чтобы открыть новую локацию, нужно набрать определённое количество звёзд.
+        Удачной игры!
       </div>
 
 
@@ -145,7 +145,7 @@
                 newWord === word ? 'newWord' : '']">
             <div class="words__letter"
                  v-for="letter in word" :key = "letter + Math.random()"
-                >{{doneWords.includes(word) ? letter : '' }}</div>
+            >{{doneWords.includes(word) ? letter : '' }}</div>
           </div>
 
         </div>
@@ -156,7 +156,7 @@
 
         <div class="action-block">
           <div class="action-block__done-word">
-              <div class="done-word" :class="[isBadWord ? 'badWord' : '']" >{{wordFromLetter}}</div>
+            <div class="done-word" :class="[isBadWord ? 'badWord' : '']" >{{wordFromLetter}}</div>
           </div>
           <div class="action-block__letters">
             <div class="action-block__letter"
@@ -704,8 +704,8 @@
             !(showAuth === 'done') &&
             (+(new Date()) > day)
     ){
-        showAuth = true;
-        localStorage.setItem('authDialog', getDatePlusDays());
+      showAuth = true;
+      localStorage.setItem('authDialog', getDatePlusDays());
     }else{
       showAuth = false;
     }
@@ -1118,14 +1118,6 @@
   let clickSound = new NewAudioContext('click');
 
 
-  function reachGoal(goal) {
-    try{
-      // eslint-disable-next-line no-undef
-      ym(57682372,'reachGoal', goal)
-      // eslint-disable-next-line no-empty
-    }catch(ignored){}
-  }
-
   function params(data) {
     try{
       // eslint-disable-next-line no-undef
@@ -1214,21 +1206,11 @@
       },
       getLevel(lvl){
         if(this.isCloseLevelShow(lvl+1))return;
-
-        if(lvl % 100 === 0){
-          params({[lvl]: 1});
+        if(lvl === 200){
+          params({'200': 1});
+        } else if(lvl === 100){
+          params({'100': 1});
         }
-
-        if(lvl === 1){
-          reachGoal('level2');
-        }else if(lvl === 9){
-          reachGoal('level10');
-        }else if(lvl === 49){
-          reachGoal('level50');
-        } else if(lvl === 99){
-          reachGoal('level100');
-        }
-
         this.advShowNow = false;
         this.levelsAnim = false;
         if(this.isSounds){
@@ -1321,14 +1303,14 @@
         } else{
           letter = letter.toLowerCase();
           for(let i = 0; i < this.letters.length; i++){
-              if(letter === this.letters[i] && !this.selectedLetters.includes(i)){
-                this.selectedLetters.push(i);
-                this.wordFromLetter += letter;
-                if(this.isSounds){
-                  clickSound.play();
-                }
-                break;
+            if(letter === this.letters[i] && !this.selectedLetters.includes(i)){
+              this.selectedLetters.push(i);
+              this.wordFromLetter += letter;
+              if(this.isSounds){
+                clickSound.play();
               }
+              break;
+            }
           }
         }
       },
@@ -1417,12 +1399,12 @@
                   }else{
                     that.showAdvTip = true;
                     that.isAdvShowed = false;
-                      if(!isAdvShowed){
-                        localStorage.setItem('isAdvShowed', 'true');
-                        isAdvShowed = true;
-                        that.isAdvShowed = true;
-                        that.addTip();
-                      }
+                    if(!isAdvShowed){
+                      localStorage.setItem('isAdvShowed', 'true');
+                      isAdvShowed = true;
+                      that.isAdvShowed = true;
+                      that.addTip();
+                    }
                   }
                 }
               }
@@ -1461,11 +1443,11 @@
               let scrollEl = document.querySelector('.animWordStart').getBoundingClientRect();
               let scrollto = 0;
               if(scrollEl.left + scrollEl.width > w){
-                  if(scrollEl.left < w + wordsScroll) {
-                    scrollto = wordsScroll + scrollEl.left + scrollEl.width
-                  }else{
-                    scrollto = scrollEl.left - w + scrollEl.width + wordsScroll;
-                  }
+                if(scrollEl.left < w + wordsScroll) {
+                  scrollto = wordsScroll + scrollEl.left + scrollEl.width
+                }else{
+                  scrollto = scrollEl.left - w + scrollEl.width + wordsScroll;
+                }
               }
               words.scrollTo({
                 left: scrollto,
@@ -1474,10 +1456,10 @@
             }catch(e){
               console.log('Ошибка показа');
             }
-              if(this.isSounds){
-                doneWordSound.play();
-              }
-              this.addWord(wordFromLetter);
+            if(this.isSounds){
+              doneWordSound.play();
+            }
+            this.addWord(wordFromLetter);
             this.animWord = wordFromLetter;
             this.newWord = wordFromLetter;
             localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
@@ -1674,12 +1656,12 @@
 
     width: 100%;
     height: 100%;
-      -webkit-tap-highlight-color: transparent;
-      -ms-user-select: none;
-      -moz-user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-      user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    user-select: none;
   }
   .game{
     position: absolute;
@@ -2033,17 +2015,17 @@
     background-size: 100%;
   }
   @keyframes showFullStar {
-      0%{
-        transform: scale(1);
-      }
-      50%{
-        transform: scale(2);
-      }
-      100%{
-        transform: scale(1);
-        background: url(assets/menu-star.png) center center no-repeat;
-        background-size: 100%;
-      }
+    0%{
+      transform: scale(1);
+    }
+    50%{
+      transform: scale(2);
+    }
+    100%{
+      transform: scale(1);
+      background: url(assets/menu-star.png) center center no-repeat;
+      background-size: 100%;
+    }
 
   }
   .next-location, .prev-location{
@@ -2219,7 +2201,7 @@
     background-size: 90%;
   }
   .shop__cart__item_4 .cart__item_tip{
-      right: 31%;
+    right: 31%;
   }
 
   .shop__cart__buy-button{
@@ -2307,11 +2289,6 @@
     transform: scale(0.98);
     outline: none;
   }
-
-  .big-rules{
-    padding: 12px;
-    border-radius: 5px;
-  }
   @media (max-width: 600px) {
     .level{
       width: 55px;
@@ -2367,7 +2344,7 @@
 
       margin-bottom: 40px;
 
-      font-size: 4.3rem;
+      font-size: 4.8rem;
     }
     .level .menu__level_stars{
       bottom: -27px;
