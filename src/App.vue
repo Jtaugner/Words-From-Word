@@ -827,6 +827,14 @@
     }
 
   }
+  function reachGoal(goal) {
+    try{
+      // eslint-disable-next-line no-undef
+      ym(57682372,'reachGoal', goal)
+      // eslint-disable-next-line no-empty
+    }catch(ignored){}
+  }
+
   function initPlayer(ysdk) {
     console.log(ysdk);
     ysdk.getPlayer().then(_player => {
@@ -1206,11 +1214,26 @@
       },
       getLevel(lvl){
         if(this.isCloseLevelShow(lvl+1))return;
-        if(lvl === 200){
-          params({'200': 1});
-        } else if(lvl === 100){
-          params({'100': 1});
+
+
+
+        if(lvl % 100 === 0){
+          params({[lvl]: 1});
         }
+
+        if(lvl === 1){
+          reachGoal('level2');
+        }else if(lvl === 9){
+          reachGoal('level10');
+        }else if(lvl === 49){
+          reachGoal('level50');
+        } else if(lvl === 99){
+          reachGoal('level100');
+        }
+
+
+
+
         this.advShowNow = false;
         this.levelsAnim = false;
         if(this.isSounds){
@@ -2344,7 +2367,7 @@
 
       margin-bottom: 40px;
 
-      font-size: 4.8rem;
+      font-size: 4.3rem;
     }
     .level .menu__level_stars{
       bottom: -27px;
