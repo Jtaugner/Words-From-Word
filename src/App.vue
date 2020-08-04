@@ -2093,6 +2093,7 @@
 
     overflow-x: auto;
   }
+  .words::-webkit-scrollbar { width: 0; }
   .words__letters-block{
     display: flex;
     flex-flow: row nowrap;
@@ -2501,4 +2502,5 @@
     margin: 10px auto 0 auto;
     font-size: 2.3rem;
   }
+
 </style>
