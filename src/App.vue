@@ -816,6 +816,10 @@
           }
         });
       };
+    }).catch(e=>{
+        console.log(e);
+        doDeleteBlock = true;
+        update();
     });
   }else{
     localStorage.setItem('offline', '1');
