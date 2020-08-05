@@ -1221,15 +1221,7 @@
           params({[lvl]: 1});
         }
 
-        if(lvl === 1){
-          reachGoal('level2');
-        }else if(lvl === 9){
-          reachGoal('level10');
-        }else if(lvl === 49){
-          reachGoal('level50');
-        } else if(lvl === 99){
-          reachGoal('level100');
-        }
+
 
 
 
@@ -1256,6 +1248,19 @@
         this.word = allWords[lvl];
         this.doneWords = allDoneWords[this.word];
         this.selectedLetters = [];
+
+        if(this.doneWords.length === 0){
+            console.log('goal');
+            if(lvl === 1){
+                reachGoal('level2');
+            }else if(lvl === 9){
+                reachGoal('level10');
+            }else if(lvl === 49){
+                reachGoal('level50');
+            } else if(lvl === 99){
+                reachGoal('level100');
+            }
+        }
 
         this.letters = this.word.split('');
         this.nowWords = wordsFromWords[this.word].sort((a, b)=>{
