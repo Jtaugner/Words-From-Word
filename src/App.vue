@@ -44,13 +44,6 @@
 
 
         </div>
-        <div class="close-location" v-show="allStars < location*32">
-          <div class="big-close"></div>
-          <div class="close-stars">
-            {{allStars}}/{{location*32}}
-            <div class="level_star"></div>
-          </div>
-        </div>
 
 
 
@@ -266,8 +259,20 @@
   let allStars = [];
   let isRules = false;
   let allLocations = Math.floor(allWords.length / 21);
+  function fixDoneWords(allDoneWords) {
+    let keys = Object.keys(allDoneWords);
+    console.log(allDoneWords);
+    for(let i = 0; i < keys.length; i++){
+      let words = allDoneWords[keys[i]];
+      let allWords = wordsFromWords[keys[i]];
+      words = words.filter((word)=>allWords.includes(word));
+      allDoneWords[keys[i]] = words;
+    }
+    console.log(allDoneWords);
+    return allDoneWords;
+  }
   if(allDoneWords){
-    allDoneWords = JSON.parse(allDoneWords);
+    allDoneWords = fixDoneWords(JSON.parse(allDoneWords));
     tips = Number(tips);
     sounds = sounds === 'true';
     setLoc();
@@ -427,10 +432,10 @@
 
           PLAYESTATE = dataObject;
           if(change){
-            allDoneWords = dataObject.allDoneWords;
+            allDoneWords = fixDoneWords(dataObject.allDoneWords);
             localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
           }else{
-            PLAYESTATE.allDoneWords = allDoneWords;
+            PLAYESTATE.allDoneWords = fixDoneWords(allDoneWords);
             setState();
           }
         }  else{
@@ -846,13 +851,9 @@
         this.showAdvTip = false;
       },
       isCloseLevelShow(level){
-        let loc = Math.floor(level / 22);
-        if(this.allStars < loc*32) return true;
         return level !== 1 && this.stars[level-2] === 0;
       },
       isLevelNumberShow(level){
-        let loc = Math.floor(level / 22);
-        if(this.allStars < loc*32) return false;
         return level === 1 || this.stars[level-2] > 0
       },
       pressKey(e){
@@ -1462,46 +1463,6 @@
   }
 
 
-  .close-location{
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-
-
-    width: 100vw;
-    height: 100vh;
-
-    background-color: rgba(0, 0, 0, 0.5);
-
-  }
-  .big-close{
-    width: 140px;
-    height: 200px;
-
-    background: url(assets/close-level.png) center center no-repeat;
-    background-size: 90%;
-
-  }
-  .close-stars{
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-
-    font-size: 3rem;
-    line-height: 3rem;
-    letter-spacing: 1px;
-    color: #cbcbc9;
-  }
-  .close-stars .level_star{
-    width: 25px;
-    height: 25px;
-    margin-left: 5px;
-  }
 
   /*Игра*/
   .property{
