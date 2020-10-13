@@ -5,8 +5,6 @@
          @updateAll="updateAll()"
          @buyTips="addBuyTips()"
          v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
-      <div class="blur"></div>
-      <div class="opacity"></div>
 
 
 
@@ -80,8 +78,6 @@
 
 
     <div class="game" v-show="content">
-      <div class="blur"></div>
-      <div class="opacity"></div>
 
 
       <header class="menu">
@@ -230,7 +226,6 @@
 <script>
   let advTime = true;
   let showAdv, playerGame, payments, YSDK;
-  let isAddTips = false;
   let allWords = [
     "милость", "формула", "арматура", "телёнок", "записка", "дизайнер", "пипетка", "животное", "желтозём", "буржуазия", "диаграмма", "хромосома", "щитовидка", "архаизм", "шизофрения", "яйцеклетка", "антоним", "бедняга", "трактат", "сожитель", "корчёвка",
     "жаркое", "рутина", "комедия", "ломбард", "анатомия", "баталист", "косточка", "экономия", "эвкалипт", "барашек", "боярышник", "двигатель", "гидрология", "голограмма", "громоотвод", "свиристель", "устройство", "ультиматум", "этимология", "юрисдикция", "абордаж",
@@ -293,13 +288,20 @@
     }
   }
 
-
+  let recentState = '';
+  let recentStats = '';
   function setState() {
+    const newData = JSON.stringify(PLAYESTATE);
+    if(recentState === newData) return;
+    recentState = newData;
     if(playerGame) playerGame.setData(PLAYESTATE).then((ignored) => {}).catch(()=>{
       playerGame.setData(PLAYESTATE).then((ignored) => {})
     });
   }
   function setStats() {
+    const newData = JSON.stringify(PLAYERSTATS);
+    if(recentStats === newData) return;
+    recentStats = newData;
     if(playerGame) playerGame.setStats(PLAYERSTATS).then((ignored) => {}).catch(()=>{
       playerGame.setStats(PLAYERSTATS).then((ignored) => {})
     });
@@ -456,17 +458,11 @@
       });
       playerGame.getStats(['tips'], false).then((dataObject) => {
         if (dataObject.tips && change) {
-          if(isAddTips){
-            dataObject.tips += 20;
-          }
           tips = dataObject.tips;
           PLAYERSTATS = dataObject;
           localStorage.setItem('tips', tips);
           setStats();
         }else{
-          if(isAddTips){
-            tips += 20;
-          }
           playerGame.setStats({
             tips: tips
           }, false).then((ignored) => {});
@@ -1243,11 +1239,11 @@
     text-align: center;
   }
 
-  .close-level-help{
-    background: url(assets/close-level.png);
+  #app, .game, .levels{
+    background: url(assets/background.png) 50% no-repeat;
+    background-size: cover;
   }
-
-  #app, .game, .blur, .property, .levels, .levels__property{
+  #app, .game, .property, .levels, .levels__property{
     position: relative;
 
     width: 100%;
@@ -1291,27 +1287,6 @@
     flex-flow: column nowrap;
     justify-content: space-between;
   }
-  .blur{
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    background: url('assets/game-background.png') center center no-repeat;
-    background-size: cover;
-
-    z-index: 1;
-  }
-  .opacity{
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    background-color: rgba(0,0,0,0.1);
-  }
   /*Уровни*/
   .levels__property{
     z-index: 2;
@@ -1322,13 +1297,6 @@
   }
   .levels{
 
-  }
-  .levels .blur{
-    background: url(assets/levels-background.png) center center no-repeat;
-    background-size: cover;
-  }
-  .levels .opacity{
-    background-color: rgba(0,0,0,0.2);
   }
   .levelsTop{
     position: absolute;
@@ -1878,12 +1846,6 @@
       width: 140px;
     }
 
-    .blur{
-      filter: blur(2px);
-    }
-    .games .blur{
-      filter: blur(3px);
-    }
 
 
 
