@@ -874,6 +874,7 @@
       },
       changeGameAdvShow(){
         this.isGameAdvShow = false;
+        isGameAdvShow = false;
         localStorage.setItem('isGameAdvShow', 'true');
       },
       updateAll() {
