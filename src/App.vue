@@ -319,6 +319,7 @@
               href="https://yandex.ru/games/play/100008"
               target="_blank"
               rel="noopener noreferrer"
+              @click="()=>{sendParams({'openCrosswordAdv': 1})}"
       >
         <div class="advertCrossword__blur"></div>
         <div class="advertCrossword__text">
