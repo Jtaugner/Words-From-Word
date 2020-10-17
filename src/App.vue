@@ -59,25 +59,6 @@
 
 
 
-      <div class="rules-blackout" v-show="isGameAdvShow" @click="changeGameAdvShow()"></div>
-      <div class="rules advertCrossword" v-show="isGameAdvShow">
-        <div class="rules__cross" @click="changeGameAdvShow()"></div>
-        <h2 class="rules__menu">
-          Новая игра от наших разработчиков!
-        </h2>
-        <a
-                class="advertCrossword__image"
-                href="https://yandex.ru/games/play/100008"
-                target="_blank"
-                rel="noopener noreferrer"
-        >
-          <div class="advertCrossword__blur"></div>
-          <div class="advertCrossword__text">
-            Угадывайте слова в увлекательном мире кроссвордов!
-          </div>
-          <div class="openCrossword">Играть!</div>
-        </a>
-      </div>
 
 
 
@@ -327,6 +308,27 @@
     </div>
 
 
+    <div class="rules-blackout" v-show="isGameAdvShow" @click="changeGameAdvShow()"></div>
+    <div class="rules advertCrossword" v-show="isGameAdvShow">
+      <div class="rules__cross" @click="changeGameAdvShow()"></div>
+      <h2 class="rules__menu">
+        Новая игра от наших разработчиков!
+      </h2>
+      <a
+              class="advertCrossword__image"
+              href="https://yandex.ru/games/play/100008"
+              target="_blank"
+              rel="noopener noreferrer"
+      >
+        <div class="advertCrossword__blur"></div>
+        <div class="advertCrossword__text">
+          Угадывайте слова в увлекательном мире кроссвордов!
+        </div>
+        <div class="openCrossword">Играть!</div>
+      </a>
+    </div>
+
+
   </div>
 
 
@@ -367,33 +369,25 @@
   let lastLevel = 0;
   function fixDoneWords(allDoneWords) {
     let keys = Object.keys(allDoneWords);
-    console.log(allDoneWords);
-    console.log(keys);
     for(let i = 0; i < keys.length; i++){
-      console.log(keys[i], allDoneWords[keys[i]]);
-      //
-      // let k = keys[i];
-      // if(keys[i].indexOf('ё') !== -1){
-      //   console.log(k);
-      //   k = k.replace(/ё/g, 'е');
-      // }
-      // let words = allDoneWords[keys[i]] || allDoneWords[k];
-      // console.log(keys[i], '-key', words);
-      // if(keys[i].indexOf('ё')  !== -1){
-      //   console.log(words);
-      //   words = words.map((word)=>word.replace(/ё/g, 'е'));
-      //   console.log(words);
-      // }
-      //
-      // delete allDoneWords[k];
-      //
-      // if(words.length > 0){
-      //   let allWords = wordsFromWords[k];
-      //   words = words.filter((word)=>allWords.includes(word));
-      //   allDoneWords[k] = words;
-      // }
+
+      let k = keys[i];
+      if(keys[i].indexOf('ё') !== -1){
+        k = k.replace(/ё/g, 'е');
+      }
+      let words = allDoneWords[keys[i]] || allDoneWords[k];
+      if(keys[i].indexOf('ё')  !== -1){
+        words = words.map((word)=>word.replace(/ё/g, 'е'));
+      }
+
+      delete allDoneWords[keys[i]];
+
+      if(words.length > 0){
+        let allWords = wordsFromWords[k];
+        words = words.filter((word)=>allWords.includes(word));
+        allDoneWords[k] = words;
+      }
     }
-    console.log(allDoneWords);
     return allDoneWords;
   }
   if(allDoneWords){
@@ -460,7 +454,6 @@
     }));
     localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
     setLastLevel();
-    console.log(lastLevel, ' - last level');
     loc = Math.floor((lastLevel / 21));
     if(allStars.reduce((acc, st)=>{
       return acc + st;
@@ -861,7 +854,7 @@
         isAdvShowed: false,
         isSettings: false,
         showGameAdv: false,
-        isGameAdvShow: isGameAdvShow,
+        isGameAdvShow: false,
         wordWasIndex: -1
       }
     },
@@ -892,8 +885,9 @@
         if (document.querySelector(".pre-download")) {
           document.querySelector(".pre-download").remove()
         }
+        this.openLastLevel();
       },
-      getLevel(lvl){
+      getLevel(lvl, notSound){
         if(this.isCloseLevelShow(lvl+1))return;
 
 
@@ -909,7 +903,12 @@
 
         this.advShowNow = false;
         this.levelsAnim = false;
-        if(this.isSounds){
+
+        if(!notSound){
+          this.isGameAdvShow = isGameAdvShow;
+        }
+
+        if(this.isSounds && !notSound){
           newLevel.play();
         }
 
@@ -931,7 +930,7 @@
         this.selectedLetters = [];
 
         if(this.doneWords.length === 0){
-            console.log('goal');
+
             if(lvl === 1){
                 reachGoal('level2');
             }else if(lvl === 9){
@@ -1197,7 +1196,6 @@
           }
 
           if(this.doneWords.includes(this.wordFromLetter)){
-            console.log('слово есть');
             this.wordWasIndex = this.nowWords.indexOf(this.wordFromLetter);
             setTimeout(()=>{
               try{
@@ -1261,6 +1259,12 @@
       },
       addWord(word){
         this.doneWords.push(word);
+      },
+      openLastLevel(){
+        try{
+          if(this.stars[lastLevel] > 0 && (lastLevel+1) !== allWords.length ) this.getLevel(lastLevel + 1, true);
+          else this.getLevel(lastLevel, true);
+        }catch(ignored){};
       }
     },
     mounted: function() {
@@ -1270,6 +1274,7 @@
             document.querySelector(".pre-download").remove()
           }
         }
+        this.openLastLevel();
         document.addEventListener('keydown', this.pressKey)
       })
     }
@@ -1412,10 +1417,15 @@
 
     margin: 5px 0 15px 0;
   }
-
   #app, .game, .levels{
-    background: url(assets/background.png) 50% no-repeat;
+    background: url(assets/background2.png) 50% no-repeat;
     background-size: cover;
+  }
+  @media (min-width: 1800px) {
+    #app, .game, .levels{
+      background: url(assets/background.png) 50% no-repeat;
+      background-size: cover;
+    }
   }
   #app, .game, .property, .levels, .levels__property{
     position: relative;
@@ -2191,7 +2201,7 @@
     .action-block__letter{
       width: 60px;
       height: 60px;
-      font-size: 3rem;
+      font-size: 3.3rem;
     }
     .action-block__button-send{
       width: 62px;
@@ -2284,7 +2294,6 @@
 
 
 
-    border-right: 4px solid #9767ad;
 
     z-index: 10;
 
