@@ -339,7 +339,7 @@
   let advTime = false;
   setTimeout(()=>{
     advTime = true;
-  }, 30000);
+  }, 25000);
   let showAdv, playerGame, payments, YSDK;
   let allWords = [
     "милость", "формула", "арматура", "теленок", "записка", "дизайнер", "пипетка", "животное", "желтозем", "буржуазия", "диаграмма", "хромосома", "щитовидка", "архаизм", "шизофрения", "яйцеклетка", "антоним", "бедняга", "трактат", "сожитель", "корчевка",
@@ -497,7 +497,7 @@
               advTime = false;
               setTimeout(()=>{
                 advTime = true;
-              }, 220000);
+              }, 190000);
             }
           }
         });
@@ -1109,7 +1109,7 @@
             advTime = false;
             setTimeout(()=>{
               advTime = true;
-            }, 180000);
+            }, 190000);
             let isShowed = false;
             setTimeout(()=>{
               isShowed = true;
