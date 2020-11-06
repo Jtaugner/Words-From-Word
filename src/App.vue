@@ -6,10 +6,8 @@
          @buyTips="addBuyTips()"
          v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
 
-
-      <div class="web"></div>
-      <div class="web web2"></div>
       <div class="blur"></div>
+
 
       <div class="levelsTop">
         <div class="switchSettings" @click="toggleSettings"></div>
@@ -71,11 +69,7 @@
 
 
     <div class="game" v-show="content">
-
-      <div class="web"></div>
-      <div class="web web2"></div>
-
-      <div class="blur"></div>
+        <div class="blur"></div>
 
       <header class="menu">
         <button class="menu__button-back" @click="backMenu"></button>
@@ -173,7 +167,7 @@
     <div class="rules shop" v-show="shop">
       <div class="rules__cross shop__cross" @click="toggleShop()"></div>
       <h2 class="rules__menu">
-        Магазин - Акция!
+        Магазин
       </h2>
       <div class="shop__cart">
 
@@ -183,8 +177,7 @@
           </div>
           <div class="shop__cart__name">20 подсказок</div>
           <div class="shop__cart__buy-button" >
-            <span class="shop__cart__lastPrice">49 <span class="shop__cart__lineThrough"></span></span>
-            29 рублей
+            49 рублей
           </div>
         </div>
 
@@ -194,8 +187,7 @@
           </div>
           <div class="shop__cart__name">50 подсказок</div>
           <div class="shop__cart__buy-button">
-            <span class="shop__cart__lastPrice">99 <span class="shop__cart__lineThrough"></span></span>
-            59 рублей
+            99 рублей
           </div>
         </div>
 
@@ -205,8 +197,7 @@
           </div>
           <div class="shop__cart__name">100 подсказок</div>
           <div class="shop__cart__buy-button">
-            <span class="shop__cart__lastPrice">149 <span class="shop__cart__lineThrough"></span></span>
-            99 рублей
+            149 рублей
           </div>
         </div>
 
@@ -1244,9 +1235,13 @@
           }
           setTimeout(()=>{
             this.getStar = -1;
-
-            this.tipCount++;
-
+            if(this.location > 7){
+              this.tipCount += 3;
+            }else if(this.location > 4){
+              this.tipCount += 2;
+            }else{
+              this.tipCount++;
+            }
             localStorage.setItem('tips', this.tipCount);
             PLAYERSTATS.tips = this.tipCount;
             setStats();
@@ -1437,31 +1432,6 @@
       background-size: cover;
     }
   }
-
-  .web{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 138px;
-    height: 73px;
-    background: url(assets/web.png) center center no-repeat;
-    background-size: 100%;
-    transform: rotate(180deg);
-  }
-  .web2{
-    left: auto;
-    bottom: auto;
-    right: 0;
-    top: 0;
-    transform: none;
-  }
-  @media (min-width: 1000px) {
-    .web{
-      width: 207px;
-      height: 110px;
-    }
-  }
-
   #app, .game, .property, .levels, .levels__property{
     position: relative;
 
@@ -2036,22 +2006,7 @@
     text-align: center;
     font-size: 1.5rem;
 
-      color: #774588;
-  }
-  .shop__cart__lastPrice{
-    position: relative;
-    color: #aea9ac;
-    margin-right: 3px;
-  }
-  .shop__cart__lineThrough{
-    height: 100%;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    background-color: transparent;
-    background-image: linear-gradient(to bottom left, transparent 45%, #aea9ac, transparent 51%);
-    background-repeat: no-repeat;
+      color: #514056;
   }
   .shop__cart__buy-button:hover{
     box-shadow: none;
