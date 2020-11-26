@@ -167,8 +167,8 @@
 
     <div class="rules shop" v-show="shop">
       <div class="rules__cross shop__cross" @click="toggleShop()"></div>
-      <h2 class="rules__menu">
-        Магазин
+      <h2 class="rules__menu black-friday">
+        Чёрная <span class="red-friday">пятница</span>!
       </h2>
       <div class="shop__cart">
 
@@ -176,7 +176,7 @@
         <div class="shop__cart__item" @click="buyTip(2)">
           <div class="shop__cart__item_2">
           </div>
-          <div class="shop__cart__name">20 подсказок</div>
+          <div class="shop__cart__name red-friday"><span class="last-price">20</span> 40 подсказок</div>
           <div class="shop__cart__buy-button" >
             49 рублей
           </div>
@@ -186,7 +186,7 @@
         <div class="shop__cart__item" @click="buyTip(3)">
           <div class="shop__cart__item_3">
           </div>
-          <div class="shop__cart__name">50 подсказок</div>
+          <div class="shop__cart__name red-friday"><span class="last-price">50</span> 100 подсказок</div>
           <div class="shop__cart__buy-button">
             99 рублей
           </div>
@@ -196,7 +196,7 @@
         <div class="shop__cart__item" @click="buyTip(4)">
           <div class="shop__cart__item_4">
           </div>
-          <div class="shop__cart__name">100 подсказок</div>
+          <div class="shop__cart__name red-friday"><span class="last-price">100</span> 200 подсказок</div>
           <div class="shop__cart__buy-button">
             149 рублей
           </div>
@@ -556,8 +556,11 @@
 
       if(words.length > 0){
         let allWords = wordsFromWords[k];
-        words = words.filter((word)=>allWords.includes(word));
-        allDoneWords[k] = words;
+        if(allWords){
+          words = words.filter((word)=>allWords.includes(word));
+          allDoneWords[k] = words;
+        }
+
       }
     }
     return allDoneWords;
@@ -850,10 +853,9 @@
       let purchaseItem = 'cart_item' + item;
       payments.purchase(purchaseItem).then(purchase => {
         if(purchase.productID === purchaseItem){
-          if(item === 1) TIPS = 5;
-          if(item === 2) TIPS = 20;
-          if(item === 3) TIPS = 50;
-          if(item === 4) TIPS = 100;
+          if(item === 2) TIPS = 40; //20
+          if(item === 3) TIPS = 100; //50
+          if(item === 4) TIPS = 200; //100
           let it = 'buy-' + item;
           params({[it]: 1});
           document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
@@ -1440,9 +1442,7 @@
           }
           setTimeout(()=>{
             this.getStar = -1;
-            if(this.location > 7){
-              this.tipCount += 3;
-            }else if(this.location > 4){
+            if(this.location > 5){
               this.tipCount += 2;
             }else{
               this.tipCount++;
@@ -2420,6 +2420,15 @@
     }
   }
 
+
+  .black-friday{
+    color: black;
+  }
+  .red-friday{
+    color: #bb0000;
+    border-color: #bb0000;
+  }
+
   .shop__cart__prices{
     display: flex;
     flex-flow: column nowrap;
@@ -2427,7 +2436,7 @@
     align-items: center;
   }
   .last-price{
-    display: none;
+    color: black;
     position: relative;
     margin-right: 5px;
   }
@@ -2436,11 +2445,11 @@
   }
   .last-price:before{
     content: "";
-    width: 2px;
+    width: 0.8px;
     height: 90%;
     left: 40%;
     top: 1px;
-    background-color: #ee4051;
+    background-color: black;
     position: absolute;
     transform: rotate(120deg) translateX(-50%);
   }
@@ -2778,5 +2787,4 @@
   a{
     text-decoration: none;
   }
-
 </style>
