@@ -603,7 +603,11 @@
     };
     if(playerGame) playerGame.setData(newState).then((ignored) => {
     }).catch(()=>{
-      playerGame.setData(newState).then((ignored) => {})
+      playerGame.setData(newState).then((ignored) => {
+      }).catch(()=>{
+        playerGame.setData(PLAYESTATE).then((ignored) => {
+        }).then((ignored)=>{});
+      })
     });
   }
   function setStats() {
