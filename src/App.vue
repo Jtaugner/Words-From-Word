@@ -844,10 +844,11 @@
     });
   }
   let TIPS = 0;
+  let allTips = [20,50,100];
   function consumePurchase(purchase) {
-    if (purchase.productID === 'cart_item2') TIPS = 20;
-    if (purchase.productID === 'cart_item3') TIPS = 50;
-    if (purchase.productID === 'cart_item4') TIPS = 100;
+    if (purchase.productID === 'cart_item2') TIPS = allTips[0];
+    if (purchase.productID === 'cart_item3') TIPS = allTips[1];
+    if (purchase.productID === 'cart_item4') TIPS = allTips[2];
     params({[purchase.productID]: 1});
     document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
     payments.consumePurchase(purchase.purchaseToken);
@@ -857,9 +858,9 @@
       let purchaseItem = 'cart_item' + item;
       payments.purchase(purchaseItem).then(purchase => {
         if(purchase.productID === purchaseItem){
-          if(item === 2) TIPS = 40; //20
-          if(item === 3) TIPS = 100; //50
-          if(item === 4) TIPS = 200; //100
+          if(item === 2) TIPS = allTips[0]; //20
+          if(item === 3) TIPS = allTips[1]; //50
+          if(item === 4) TIPS = allTips[2]; //100
           let it = 'buy-' + item;
           params({[it]: 1});
           document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
