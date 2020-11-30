@@ -168,7 +168,7 @@
     <div class="rules shop" v-show="shop">
       <div class="rules__cross shop__cross" @click="toggleShop()"></div>
       <h2 class="rules__menu black-friday">
-        Чёрная <span class="red-friday">пятница</span>!
+        Магазин
       </h2>
       <div class="shop__cart">
 
@@ -176,7 +176,7 @@
         <div class="shop__cart__item" @click="buyTip(2)">
           <div class="shop__cart__item_2">
           </div>
-          <div class="shop__cart__name red-friday"><span class="last-price">20</span> 40 подсказок</div>
+          <div class="shop__cart__name">20 подсказок</div>
           <div class="shop__cart__buy-button" >
             49 рублей
           </div>
@@ -186,7 +186,7 @@
         <div class="shop__cart__item" @click="buyTip(3)">
           <div class="shop__cart__item_3">
           </div>
-          <div class="shop__cart__name red-friday"><span class="last-price">50</span> 100 подсказок</div>
+          <div class="shop__cart__name">50 подсказок</div>
           <div class="shop__cart__buy-button">
             99 рублей
           </div>
@@ -196,7 +196,7 @@
         <div class="shop__cart__item" @click="buyTip(4)">
           <div class="shop__cart__item_4">
           </div>
-          <div class="shop__cart__name red-friday"><span class="last-price">100</span> 200 подсказок</div>
+          <div class="shop__cart__name">100 подсказок</div>
           <div class="shop__cart__buy-button">
             149 рублей
           </div>
@@ -606,7 +606,7 @@
       playerGame.setData(newState).then((ignored) => {
       }).catch(()=>{
         playerGame.setData(PLAYESTATE).then((ignored) => {
-        }).then((ignored)=>{});
+        }).catch(()=>{localStorage.setItem('offline', '1');});
       })
     });
   }
