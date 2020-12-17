@@ -758,7 +758,6 @@
         offline = false;
       }
       playerGame.getData(['allDoneWords'], false).then((dataObject) => {
-        console.log(dataObject);
         if (dataObject.allDoneWords) {
 
           let newData = dataObject.allDoneWords;
@@ -792,11 +791,13 @@
           }
 
           PLAYESTATE = {allDoneWords: newData};
+          recentState = JSON.stringify(PLAYESTATE);
           if(change){
             allDoneWords = newData;
             localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
           }else{
             PLAYESTATE.allDoneWords = fixDoneWords(allDoneWords);
+            recentState = JSON.stringify(PLAYESTATE);
             setState();
           }
         }  else{
@@ -820,6 +821,7 @@
           if(change){
             tips = dataObject.tips;
             PLAYERSTATS = dataObject;
+            recentStats = JSON.stringify(PLAYERSTATS);
             localStorage.setItem('tips', tips);
           }
         }else{
