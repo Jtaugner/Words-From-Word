@@ -1161,6 +1161,9 @@
         this.wordFromLetter = '';
         this.word = allWords[lvl];
         this.doneWords = allDoneWords[this.word];
+        if(allDoneWords[this.word] === 1){
+          this.doneWords = wordsFromWords[this.word];
+        }
         this.selectedLetters = [];
 
         if(this.doneWords.length === 0){
