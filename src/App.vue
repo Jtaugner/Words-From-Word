@@ -1180,7 +1180,7 @@
         }
 
         this.letters = this.word.split('');
-        this.nowWords = wordsFromWords[this.word].sort((a, b)=>{
+        this.nowWords = wordsFromWords[this.word].sort().sort((a, b)=>{
           if(a.length > b.length) return 1;
           if(a.length < b.length) return -1;
           return 0;
