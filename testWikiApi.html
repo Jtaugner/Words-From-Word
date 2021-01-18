@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const url = "https://ru.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=охра";
+    fetch(proxyurl + url) // https://cors-anywhere.herokuapp.com/https://example.com
+        .then(response => response.text())
+        .then(content => {
+            content = JSON.parse(content);
+            console.log(content);
+        })
+        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"))
+
+    //
+    // var ajax = new XMLHttpRequest();
+    //
+    //
+    //
+    // // выполнить код, когда придёт ответ с GET-запроса
+    // ajax.onreadystatechange = function() {
+    //     if (ajax.readyState === 4) {
+    //
+    //         if (ajax.status === 200 || ajax.status === 304) {
+    //             // код при успешном запросе
+    //             console.log(ajax.response); // ответ сервера
+    //         } else {
+    //             // код при ошибк
+    //             console.log('ошибка');
+    //
+    //         }
+    //
+    //     }
+    // };
+    //
+    // // Оправка GET-запроса
+    // ajax.open('GET', 'https://www.mediawiki.org/w/api.php?action=query&prop=description&titles=охра&format=json');
+    // ajax.send();
+
+
+
+
+</script>
+</body>
+</html>
