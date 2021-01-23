@@ -527,15 +527,17 @@
   }();
 
 
-
   function compressData(data){
     //Если заполнены все слова, уровень - 1
     if(data === null || data === undefined) return;
+
     let keys = Object.keys(data);
     keys.forEach((key)=>{
-      if(data[key].length === wordsFromWords[key].length){
-        data[key] = 1;
-      }
+      try{
+        if(data[key].length === wordsFromWords[key].length){
+          data[key] = 1;
+        }
+      }catch(ignored){}
     });
     return LZString.compressToUTF16(JSON.stringify(data));
   }
@@ -574,12 +576,15 @@
         k = k.replace(/ё/g, 'е');
       }else if(k === "ассиметрия"){
         console.log('асс');
-        k = "асимметрия"
+        k = "асимметрия";
       }
       let words = allDoneWords[keys[i]] || allDoneWords[k];
 
       if(words === 1){
         allDoneWords[k] = wordsFromWords[k];
+        if(k === "асимметрия"){
+          delete allDoneWords["ассиметрия"];
+        }
       }else{
         if(keys[i].indexOf('ё')  !== -1){
           words = words.map((word)=>word.replace(/ё/g, 'е'));
@@ -638,13 +643,15 @@
     const newState = {
       allDoneWords: compressData(PLAYESTATE.allDoneWords)
     };
-    if(playerGame) playerGame.setData(newState).then((ignored) => {
-    }).catch(()=>{
+    if (playerGame) playerGame.setData(newState).then((ignored) => {
+    }).catch(() => {
       playerGame.setData(newState).then((ignored) => {
-      }).catch(()=>{
-        playerGame.setData(PLAYESTATE).then((ignored) => {
-        }).catch(()=>{localStorage.setItem('offline', '1');});
-      })
+      }).catch(() => {
+            playerGame.setData(PLAYESTATE).then((ignored) => {
+            }).catch(() => {
+                  localStorage.setItem('offline', '1');
+                });
+          })
     });
   }
   function setStats() {
@@ -823,15 +830,14 @@
           }
 
           PLAYESTATE = {allDoneWords: newData};
-          recentState = JSON.stringify(PLAYESTATE);
           if(change){
             allDoneWords = newData;
             localStorage.setItem('allDoneWords', JSON.stringify(allDoneWords));
           }else{
             PLAYESTATE.allDoneWords = fixDoneWords(allDoneWords);
-            recentState = JSON.stringify(PLAYESTATE);
             setState();
           }
+          recentState = JSON.stringify(PLAYESTATE);
         }  else{
           playerGame.setData({
             allDoneWords: compressData(allDoneWords)
