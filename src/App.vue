@@ -311,15 +311,15 @@
     </div>
 
 
-    <div class="rules-blackout main-blackout" v-show="gameUpdate" @click="toggleGameUpdate()"></div>
-    <div class="rules" v-show="gameUpdate">
-      <div class="rules__cross" @click="toggleGameUpdate()"></div>
-      <h2 class="rules__menu">
-        Обновление
-      </h2>
-      С сегодняшнего дня словарь получил большое обновление слов, а также появилась возможность узнать значение слова - для этого нажмите на него.
-      Удачной игры!
-    </div>
+<!--    <div class="rules-blackout main-blackout" v-show="gameUpdate" @click="toggleGameUpdate()"></div>-->
+<!--    <div class="rules" v-show="gameUpdate">-->
+<!--      <div class="rules__cross" @click="toggleGameUpdate()"></div>-->
+<!--      <h2 class="rules__menu">-->
+<!--        Обновление-->
+<!--      </h2>-->
+<!--      С сегодняшнего дня словарь получил большое обновление слов, а также появилась возможность узнать значение слова - для этого нажмите на него.-->
+<!--      Удачной игры!-->
+<!--    </div>-->
 
     <div class="rules-blackout main-blackout" v-show="rules" @click="toggleRules()"></div>
     <div class="rules" v-show="rules">
