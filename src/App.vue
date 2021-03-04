@@ -1555,6 +1555,7 @@ console.log('New version 3');
         if (document.querySelector(".pre-download")) {
           document.querySelector(".pre-download").remove()
         }
+        this.rules = false;
         this.openLastLevel();
       },
       getLevel(lvl, notSound){
