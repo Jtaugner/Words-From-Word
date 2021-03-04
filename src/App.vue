@@ -853,6 +853,7 @@ console.log('New version 3');
           if(dataObject.cantSaveData){
             cantSaveData = true;
           }
+          console.log(newData, dataObject.cantSaveData);
           if(typeof newData === "string"){
             newData = decompressData(newData);
 
