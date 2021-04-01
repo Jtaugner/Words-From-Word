@@ -130,30 +130,30 @@
                 arr[i] = temp;
             }
         }
-        //
-        // shuffle(words);
-        // let newWords = [];
-        // for (let i = 0; i < words.length; i ++) {
-        //     let bigWord = words[i];
-        //     if (!newWords.includes(bigWord) &&
-        //         !allWords.includes(bigWord) &&
-        //         bigWord.length > 4 &&
-        //         bigWord.length < 11) {
-        //         let newArr = [];
-        //         for (let q = 0; q < words.length; q++) {
-        //             if (!newArr.includes(words[q]) && testWordsInWord(words[q], bigWord)) {
-        //                 newArr.push(words[q]);
-        //             }
-        //         }
-        //         if (newArr.length > 80 && newArr.length < 250) {
-        //             newWords.push(bigWord);
-        //         }
-        //     }
-        //     if (newWords.length === 210) break;
-        // }
-        // console.log(newWords);
-        //
-        // allWords = [...allWords, ...newWords];
+
+        shuffle(words);
+        let newWords = [];
+        for (let i = 0; i < words.length; i ++) {
+            let bigWord = words[i];
+            if (!newWords.includes(bigWord) &&
+                !allWords.includes(bigWord) &&
+                bigWord.length > 4 &&
+                bigWord.length < 11) {
+                let newArr = [];
+                for (let q = 0; q < words.length; q++) {
+                    if (!newArr.includes(words[q]) && testWordsInWord(words[q], bigWord)) {
+                        newArr.push(words[q]);
+                    }
+                }
+                if (newArr.length > 80 && newArr.length < 250) {
+                    newWords.push(bigWord);
+                }
+            }
+            if (newWords.length === 210) break;
+        }
+        console.log(newWords);
+
+        allWords = [...allWords, ...newWords];
 
         for (let i = 0; i < allWords.length; i++) {
             let newArr = [];
