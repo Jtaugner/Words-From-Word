@@ -1034,7 +1034,7 @@ console.log('New version 3');
     payments.consumePurchase(purchase.purchaseToken);
   }
   function buyTips(item) {
-    if(payments){
+    if(payments && playerGame){
       let purchaseItem = 'cart_item' + item;
       payments.purchase(purchaseItem).then(purchase => {
         if(purchase.productID === purchaseItem){
