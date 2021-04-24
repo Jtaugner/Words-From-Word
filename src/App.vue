@@ -891,7 +891,7 @@ console.log('New version 3');
       playerGame = _player;
       let someTrue = false;
       let change = true;
-      let offline = localStorage.getItem('offline');
+      let offline = getFromStorage('offline');
       if(offline === '1'){
         offline = true;
         setToStorage('offline', '0');
@@ -944,7 +944,7 @@ console.log('New version 3');
             lastWords = Object.keys(lastAllDoneWords).reduce((k, key)=> k + lastAllDoneWords[key].length, 0);
             if(newWords > lastWords){
               change = false;
-              tips = localStorage.getItem('tips');
+              tips = getFromStorage('tips');
               if(tips){
                 tips = Number(tips);
               }else{
