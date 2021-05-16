@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="words.js"></script>
+    <script src="newAllWords.js"></script>
 </head>
 <body>
 <script>
@@ -117,7 +118,7 @@
         console.log(allWords.length);
 
         let wordsFromWords = {};
-        let allWordsInWords = [];
+        let wordsFromWords2 = {};
 
         function shuffle(arr) {
             let j, temp;
@@ -129,7 +130,7 @@
             }
         }
 
-        shuffle(words);
+        // shuffle(words);
         let newWords = [];
         let doNewWords = false;
         if(doNewWords){
@@ -155,18 +156,39 @@
 
             allWords = [...allWords, ...newWords];
         }
-        for (let i = 0; i < allWords.length; i++) {
-            let newArr = [];
-            for (let q = 0; q < words.length; q++) {
-                if (!newArr.includes(words[q]) && testWordsInWord(words[q], allWords[i])) {
-                    newArr.push(words[q]);
-                    allWordsInWords.push(words[q]);
+        function createWords(words, wordsFromWords){
+            for (let i = 0; i < allWords.length; i++) {
+                let newArr = [];
+                for (let q = 0; q < words.length; q++) {
+                    if (!newArr.includes(words[q]) && testWordsInWord(words[q], allWords[i])) {
+                        newArr.push(words[q]);
+                    }
                 }
+                wordsFromWords[allWords[i]] = newArr;
             }
-            wordsFromWords[allWords[i]] = newArr;
         }
-        console.log(wordsFromWords);
+
+        createWords(words, wordsFromWords);
+        // createWords(words2, wordsFromWords2);
+        // let allNewWords = 0;
+        // let allDeletedWords = 0;
+        // allWords.forEach((word)=>{
+        //     let arr1 = wordsFromWords[word];
+        //     let arr2 = wordsFromWords2[word];
+        //     arr1.forEach(w => {
+        //         if(!arr2.includes(w)) allDeletedWords++;
+        //     })
+        //     arr2.forEach(w => {
+        //         if(!arr1.includes(w)) allNewWords++;
+        //     })
+        // })
+        //
+        // console.log(wordsFromWords);
+        // console.log(wordsFromWords2);
+        // console.log('Добавлено: ', allNewWords);
+        // console.log('Удалено: ', allDeletedWords);
         localStorage.setItem('wordFromWords', JSON.stringify(wordsFromWords));
+        localStorage.setItem('wordsFromWords2', JSON.stringify(wordsFromWords2));
         localStorage.setItem('allWords', JSON.stringify(allWords));
     }
 
