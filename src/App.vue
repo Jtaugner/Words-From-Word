@@ -471,7 +471,7 @@
 
 
 <script>
-console.log('New version - rait');
+console.log('TES TsTADsDA');
   let advTime = false;
   setTimeout(()=>{
     advTime = true;
@@ -638,7 +638,7 @@ console.log('New version - rait');
         if(data[key].length === wordsFromWords[key].length){
           newData[key] = 1;
         }else{
-          newData[key] = data[key];
+          newData[key] = data[key].slice();
         }
       }catch(ignored){}
     });
@@ -693,6 +693,13 @@ function decompressDataObj(compressedWords){
   Object.keys(midData).forEach(el => {
     data[allWords[el]] = midData[el];
   })
+
+  for(let i = 0; i < allWords.length; i++){
+    if(data[allWords[i]] === undefined){
+      data[allWords[i]] = [];
+    }
+  }
+
   return data;
 }
 
@@ -700,9 +707,9 @@ function decompressDataObj(compressedWords){
     //Если заполнены все слова, уровень - 1
     if(data === null || data === undefined) return;
 
-    data = replaceLevelsToOne(data);
-    data = compressDataObj(data);
-    return LZString.compressToUTF16(JSON.stringify(data));
+    let newData =  replaceLevelsToOne(data);
+    newData = compressDataObj(newData);
+    return LZString.compressToUTF16(JSON.stringify(newData));
   }
   function decompressData(data){
     let newData = JSON.parse(LZString.decompressFromUTF16(data));
@@ -896,16 +903,16 @@ const lastVersion = "ver-9";
     recentState = newData;
     if (playerGame) {
       //Если нет возможности сохранить в компрессованном виде, сохраняем в обычном
-      if(cantSaveData){
-
-        playerGame.setData(
-            {
-              allDoneWords: replaceLevelsToOne(PLAYESTATE.allDoneWords),
-              cantSaveData: true
-            }, isNow)
-            .then((ignored) => {})
-        return;
-      }
+      // if(cantSaveData){
+      //
+      //   playerGame.setData(
+      //       {
+      //         allDoneWords: replaceLevelsToOne(PLAYESTATE.allDoneWords),
+      //         cantSaveData: true
+      //       }, isNow)
+      //       .then((ignored) => {})
+      //   return;
+      // }
 
       const newState = {
         allDoneWords: compressData(PLAYESTATE.allDoneWords)
@@ -915,7 +922,7 @@ const lastVersion = "ver-9";
       }).catch((error) => {
         try{
           if(error.toString().includes('large')){
-            params({'cantSave-bigData-first': 1});
+            params({'cantSave-bigData-first': lastLevel});
           }
         }catch(ignored){}
         playerGame.setData(newState, isNow).then(() => {
@@ -1105,9 +1112,12 @@ const lastVersion = "ver-9";
             // }
 
 
+          }else if(newData.doneLevels !== undefined){
+            newData = decompressDataObj(newData);
           }
           newData = fixDoneWords(newData);
           console.log(newData);
+
 
 
 
@@ -1130,8 +1140,9 @@ const lastVersion = "ver-9";
               setStats();
             }
           }
-
+          allDoneWords = newData;
           PLAYESTATE = {allDoneWords: newData};
+
           recentState = JSON.stringify(PLAYESTATE);
           if(change){
             allDoneWords = newData;
@@ -1147,10 +1158,36 @@ const lastVersion = "ver-9";
             allDoneWords: compressData(allDoneWords)
           }, false).then((ignored) => {});
         }
+        //Вовзврат прогресса
+        try{
+          if(!localStorage.getItem('llsmz')){
+            const ss = new URLSearchParams(window.location.search);
+            let lvl = Number(ss.get('llsmz'));
+            if(lvl){
+              let newObj = {};
+              for(let i = 0; i < lvl; i++){
+                newObj[allWords[i]] = wordsFromWords[allWords[i]];
+              }
+              console.log(newObj);
+              PLAYESTATE.allDoneWords = newObj;
+              allDoneWords = newObj;
+              setState();
+              localStorage.setItem('llsmz', 'true');
+            }
+          }
+
+
+        }catch(e){
+          console.log('прогресс - errr')
+          console.log(e);
+        }
+
         if(someTrue){
           update();
         }
         someTrue = true;
+
+
       }).catch((e) => {
         console.log(e);
         if(someTrue){
