@@ -134,7 +134,7 @@
 
 
 
-        let doNewWords = false;
+        let doNewWords = true;
 
         shuffle(words);
 
@@ -151,7 +151,8 @@
                             newArr.push(words[q]);
                         }
                     }
-                    if (newArr.length > 70 && newArr.length < 250) {
+                    if (newArr.length > 85) {
+                        console.log(bigWord, newArr.length);
                         newWords.push(bigWord);
                     }
                 }
