@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="enWords.js"></script>
+</head>
+<body>
+<script>
+    console.log(words.length);
+    words = words.filter(w => w.length > 2);
+
+    let deleteIt = ["dick", "pee", "fuck","fucker","fuckhead","fucking","fuckup", "shit","bitch", "nigger", "shit", "damn", "freak", "gay", "faggot", "homo", "bastard", "asshole", "ass",
+    "jerk", "prick", "dick", "cunt", "pussy", "sucker", "dumb", "wench", "wencher", "oldwench", "puss", "nigga", "fag", "shlong", "bumhole", "nutsack", "junk", "chink", "cunt", "whore",
+    "assfool", "floozy", "slut", "damn"];
+
+    words = words.filter(w => !deleteIt.includes(w));
+
+
+    // let all = [];
+    //
+    // let noDelete = ["abc","ace","act","ado","adz","age","aid","aim","air","ait","alb","ale","alp","alt","amp","ana","ani","ant","ape","app","arb","arc","are","ark","arm","art","ash","asp","ass","atm","auk","ave","avo","awe","awl","awn","axe","aye","baa","bag","ban","bap","bar","bat","bay","bed","bee","ben","bet","bey","bib","bid","bin","bio","bit","biz","bmx","boa","bob","bod","bog","boo","bop","bot","bow","box","boy","bra","bub","bud","bug","bum","bun","bur","bus","buy","bye","cab","cad","cam","can","cap","car","cat","caw","cay","chi","cob","cod","cog","col","con","coo","cop","cos","cot","cow","cox","cru","cry","cub","cud","cue","cum","cup","cur","cut","cwm","cwt","dab","dad","dag","dah","dak","dal","dam","dan","das","daw","day","deb","dee","den","dew","die","dig","din","dip","dit","dkl","dkm","doe","dog","doh","dom","don","dor","dot","dry","dub","dud","due","dug","dun","duo","dux","dye","ear","ebb","ecu","eel","eft","egg","ego","eld","elf","elk","ell","elm","emf","emu","end","eon","era","erg","erk","eta","eve","ewe","eye","fad","fag","fah","fan","fat","fav","fax","fay","fee","fen","feu","few","fez","fib","fig","fin","fir","fit","fix","flu","fly","fob","foe","fog","fop","fox","fry","fug","fun","fur","gab","gad","gag","gal","gam","gap","gar","gas","gat","gay","gee","gel","gem","gen","get","gib","gig","gin","git","gnu","gob","god","goo","goy","gum","gun","gut","guv","guy","gym","gyp","hag","haj","ham","hap","hat","haw","hay","hem","hen","hex","hin","hip","hit","hob","hod","hoe","hog","hop","hoy","hub","hue","hug","hui","hum","hun","hut","ibo","ice","ilk","ill","imp","ink","inn","ion","iou","ire","ish","ism","ist","iva","ivy","jab","jag","jam","jap","jar","jaw","jay","jcb","jet","jew","jib","jig","job","jog","jot","joy","jug","jus","jut","kea","keg","ken","ket","key","kid","kin","kip","kir","kit","kob","kos","lab","lac","lad","lag","lah","lap","lat","lav","law","lay","lcm","lea","lee","leg","lei","lek","let","leu","lev","ley","lib","lid","lie","lip","lit","lob","log","loo","lop","lot","low","lox","lug","luv","lux","lye","mac","mag","mam","man","map","mat","maw","max","may","med","meg","men","mew","mho","mil","min","mix","moa","mob","mod","mog","mol","mom","moo","mop","mot","mow","mrs","mud","mug","mum","nag","nan","nap","nay","neb","nib","nil","nim","nip","nit","nix","nob","nod","nog","noh","nub","nun","nut","oaf","oak","oar","oat","obi","oca","ode","off","ohm","oil","oka","olm","oom","ora","orb","orc","ore","ort","out","owl","pad","pal","pan","pap","par","pas","pat","paw","pax","pay","pea","pee","peg","pen","pep","pes","pet","pew","phi","pia","pic","pie","pig","pin","pip","pit","pix","pjs","ply","pod","poi","pol","pom","pop","pot","pow","pox","pro","psi","pub","pud","pug","pul","pun","pup","pus","put","pya","pyx","qat","rad","rag","raj","ram","rap","rat","ray","rec","red","ref","reg","rep","rev","rex","rho","rib","rig","rim","rip","roc","rod","roe","rom","roo","rot","row","rub","rue","rug","rum","run","rut","rye","sac","sag","sap","saw","sax","say","sea","sec","see","sen","set","sex","shy","sib","sin","sip","sir","sis","sit","ska","ski","sky","sob","sod","soh","sol","som","son","sop","sos","sot","sou","sow","sox","soy","spa","spy","sri","sty","sub","sum","sun","sup","tab","tad","tag","tam","tan","tap","tar","tat","tau","taw","tax","tea","tec","ted","tee","teg","tic","tie","tig","tin","tip","tit","tod","toe","tog","tom","ton","top","tor","tot","tow","tox","toy","try","tub","tug","tum","tun","tup","tut","tux","ufo","uke","ump","uni","uri","urn","use","vac","van","var","vas","vat","veg","vet","vim","vow","vox","wad","wag","wan","war","wat","wax","way","web","wee","wen","wet","why","wig","win","wit","wiz","woe","wog","wok","won","wop","wow","wye","yak","yam","yap","yaw","yea","yen","yes","yew","yid","yin","yip","yob","yuk","zag","zap","zed","zee","zen","zig","zip","zit","zoo"];
+    //
+    // words.forEach((w) => {
+    //     if(w.length === 3){
+    //         all.push(w);
+    //     }
+    // });
+    //
+    // let deleteIt = [];
+    //
+    // for (let i = 0; i < all.length; i++){
+    //     if(!noDelete.includes(all[i])) deleteIt.push(all[i]);
+    // }
+    // localStorage.setItem('deleteIt', JSON.stringify(deleteIt));
+
+
+    // getWords();
+    function getWords(){
+        let allWords = ["example","building","company","manager","history","industry","family","zikkurat","meshugaas","credence","manfulness","horning","katharsis","carouser","neotony","forward","arcanum","rummage","craps","intestate","whitewood","quiverful","sphecoid","laziness","esophagus","ossiculum","anglophil","spathe","centenary","fourpence","edibility","lunatic","loginess","otoscope","seaboard","pitchman","streaker","stander","protractor","castling","corundom","padrone","thawing","brushfire","pinkroot","crosshatch","spectrum","hymeneals","smother","wishbone","gaucherie","microgram","kitemark","nitpicker","hypozeugma","huaraches","doodlebug","boathouse","rebound","providing","weightlift","geologist","flickering","diaphone","sarsenet","paratroops","ablepharia","oxycephaly","nominate","blackwood","bookstall","inhumanity","acrimony","sparerib","meltwater","clintonia","bowsprit","shortness","pathology","sialolith","starlight","dilator","blockade","alligator","tourniquet","millworker","goldbrick","footwear","halothane","ageratum","directress","breadboard","brainwave","remitment","plutonium","yearning","brookweed","motherwort","potable","fourteen","prelate","narcissist","premature","shipyard","adjustment","migrator","pilewort","spandrel","amaretto","diagnosing","derivative","waterfowl","menorrhea","eutherian","pursuance","phalarope","mefloquine","beautiful","crawling","camisole","diakinesis","deflator","buckwheat","antipodal","temperate","balminess","goldenrod","bartonia","vaulting","cymbalist","aspirant","consulship","ecosphere","tidemark","inventor","racetrack","wristwatch","private","wonderment","spikelet","jackstone","teardrop","hastiness","maverick","hypotonia","typescript","acylation","chaetodon","faecalith","thickhead","epiglottis","cathedra","cogitation","fartlek","ichneumon","rhyolite","trenail","transistor","nearside","raiment","unperson","kissogram","opaqueness","teetotaler","politesse","strategy","bangtail","longbowman","slapshot","shipmate","lankiness","graduate","chalkboard","schematic","teratoma","coverall","foundation","freemail","obscenity","easterly","absolute","marchland","socialism","placental","northland","wastebin","coulter","rigatoni","biography","kingfisher","lamenter","liquidator","propenal","amphibrach","surfboard","foundress","exuberance","truckage","costalgia","shouting","tailpiece","blackfish","departed","hexameter","soubrette","blackbody","wilderness","waterbed","quirkiness","vanquisher"];
+
+        function testWordsInWord(word, inWord) {
+            if (word.length > inWord || word === inWord) return false;
+            let letrs = inWord.split('');
+            for (let j = 0; j < word.length; j++) {
+                if (!letrs.includes(word[j])) return false;
+                else {
+                    letrs.splice(letrs.indexOf(word[j]), 1);
+                }
+            }
+            return true;
+        }
+
+
+
+        let wordsFromWords = {};
+
+
+        function shuffle(arr) {
+            let j, temp;
+            for (let i = arr.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+            }
+        }
+
+        // shuffle(words);
+        let newWords = [];
+
+
+
+
+
+        let doNewWords = false;
+
+        shuffle(words);
+
+        if(doNewWords){
+            for (let i = 0; i < words.length; i ++) {
+                let bigWord = words[i];
+                if (!newWords.includes(bigWord) &&
+                    !allWords.includes(bigWord) &&
+                    bigWord.length > 4 &&
+                    bigWord.length < 11) {
+                    let newArr = [];
+                    for (let q = 0; q < words.length; q++) {
+                        if (!newArr.includes(words[q]) && testWordsInWord(words[q], bigWord)) {
+                            newArr.push(words[q]);
+                        }
+                    }
+                    if (
+                        (newWords.length < 22 && newArr.length > 15 && newArr.length < 40) ||
+                        (newWords.length < 43 && newArr.length > 40 && newArr.length < 70) ||
+                        (newWords.length < 64 && newArr.length > 60 && newArr.length < 100) ||
+                        (newWords.length < 100 && newArr.length > 70 && newArr.length < 120) ||
+                        (newWords.length >= 100 && newArr.length > 70 && newArr.length < 150)
+                    ) {
+                        // console.log(bigWord, newArr.length);
+                        newWords.push(bigWord);
+                    }
+                }
+                if (newWords.length === 210) break;
+            }
+            console.log(newWords);
+
+            allWords = [...allWords, ...newWords];
+        }
+
+        function createWords(words, wordsFromWords){
+            for (let i = 0; i < allWords.length; i++) {
+                let newArr = [];
+                for (let q = 0; q < words.length; q++) {
+                    if (!newArr.includes(words[q]) && testWordsInWord(words[q], allWords[i])) {
+                        newArr.push(words[q]);
+                    }
+                }
+                console.log(allWords[i], newArr.length);
+                wordsFromWords[allWords[i]] = newArr;
+            }
+        }
+
+        createWords(words, wordsFromWords);
+
+        localStorage.setItem('wordFromWords', JSON.stringify(wordsFromWords));
+
+        localStorage.setItem('allWords', JSON.stringify(allWords));
+        console.log(allWords.length, new Set(allWords).size);
+        console.log(Object.keys(wordsFromWords).length);
+        console.log(wordsFromWords);
+    }
+
+
+
+</script>
+</body>
+</html>

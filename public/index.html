@@ -29,7 +29,7 @@
 
 
     <style>
-      .pre-download{
+      .pre-download, .pre-download2{
         position: absolute;
         top: 0;
         left: 0;
@@ -103,6 +103,10 @@
           background-color: rgb(38, 28, 47);
         }
       }
+
+      .notShow{
+          display: none;
+      }
     </style>
     <script>
       var YaGames;
@@ -110,6 +114,7 @@
     <script src="https://yandex.ru/games/sdk/v2"></script>
   </head>
   <body>
+
   <div class="pre-download">
     <div class="pre-download__words">
       <div class="pre-download__words__word">
@@ -133,12 +138,60 @@
       <div class="load">Загрузка...</div>
     </div>
   </div>
+
+  <div class="pre-download2 notShow">
+      <div class="pre-download__words">
+          <div class="pre-download__words__word">
+              <div class="pre-download__words__letter">W</div>
+              <div class="pre-download__words__letter">O</div>
+              <div class="pre-download__words__letter">R</div>
+              <div class="pre-download__words__letter">D</div>
+              <div class="pre-download__words__letter">S</div>
+          </div>
+          <div class="pre-download__words__word">
+              <div class="pre-download__words__letter big-letter another-letter">F</div>
+              <div class="pre-download__words__letter big-letter">R</div>
+              <div class="pre-download__words__letter big-letter another-letter">O</div>
+              <div class="pre-download__words__letter big-letter">M</div>
+          </div>
+          <div class="pre-download__words__word">
+              <div class="pre-download__words__letter another-letter">W</div>
+              <div class="pre-download__words__letter another-letter">O</div>
+              <div class="pre-download__words__letter another-letter">R</div>
+              <div class="pre-download__words__letter another-letter">D</div>
+              <div class="pre-download__words__letter another-letter">S</div>
+          </div>
+          <div class="load">Loading...</div>
+      </div>
+  </div>
+
+  <script>
+      try{
+          function switchOnEnPreDownload(){
+              document.querySelector('.pre-download').remove();
+              document.querySelector('.pre-download2').classList.remove('notShow')
+          }
+          if(document.location.href.includes('.com')){
+              switchOnEnPreDownload();
+          }else{
+              const ss = new URLSearchParams(window.location.search);
+              let lvl = ss.get('lang');
+              if(lvl === 'en'){
+                  switchOnEnPreDownload();
+              }
+          }
+      }catch(e){}
+  </script>
+
+
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app">
 
     </div>
+
+
 
 
 
