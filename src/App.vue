@@ -17,7 +17,7 @@
         </div>
 
         <div class="levelsTop__allStars" :class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']">
-          {{allStars}}/{{numOfLevels*3}}
+          {{allStars}}/{{ (location+1)*63}}
           <div class="menu-star"></div>
         </div>
 
@@ -52,9 +52,9 @@
             <div class="close-level" v-if="isCloseLevelShow(getLevelByLevelAndLocation(level))"></div>
           </div>
           <div class="prev-location" @click="prevLocation()" v-if="location > 0"></div>
-          <div class="next-location" @click="nextLocation()" v-if="location < allLocations-1"></div>
+          <div class="next-location" @click="nextLocation()" v-if="location < allLocations-1 && showNextLoc"></div>
 
-          <div class="levels__loc">{{location+1}}</div>
+          <div class="levels__loc" :class="[location > 98 ? 'levels__loc_big' : '']">{{location+1}}</div>
         </div>
 
 
@@ -90,7 +90,7 @@
                 <div class="leaderBoardInfo__image"
                      :style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat'}"
                      :class="[player.player.getAvatarSrc('medium') ? '' : 'leaderBoardInfo__image_no']"></div>
-                <div class="leaderBoardInfo__name">{{ player.player.publicName ? player.player.publicName : 'No name' }}</div>
+                <div class="leaderBoardInfo__name">{{ player.player.publicName ? player.player.publicName : 'Нет имени' }}</div>
               </div>
 
               <div class="leaderBoardInfo__score">{{ player.score }}</div>
@@ -98,25 +98,27 @@
 
 
 
-            <template v-if="playerRait && playerRait.rank > 10">
-              <div class="leaderBoardInfo__player leaderBoardInfo_my">
-                <div class="leaderBoardInfo__playerInfo">
-                  <div class="leaderBoardInfo__rank">{{playerRait.rank}}</div>
-                  <div class="leaderBoardInfo__image"
-                       :style="{background: 'url(' + playerRait.player.getAvatarSrc('medium') + ') center center no-repeat'}" :class="[playerRait.player.getAvatarSrc('medium') ? '' : 'leaderBoardInfo__image_no']"></div>
-                  <div class="leaderBoardInfo__name">{{playerRait.player.publicName}}</div>
-                </div>
+<!--            <template v-if="playerRait && playerRait.rank > 10">-->
+<!--              -->
+<!--              <div class="leaderBoardInfo__player leaderBoardInfo_my">-->
+<!--                <div class="leaderBoardInfo__playerInfo">-->
+<!--                  <div class="leaderBoardInfo__rank">{{playerRait.rank}}</div>-->
+<!--                  <div class="leaderBoardInfo__image"-->
+<!--                       :style="{background: 'url(' + playerRait.player.getAvatarSrc('medium') + ') center center no-repeat'}" :class="[playerRait.player.getAvatarSrc('medium') ? '' : 'leaderBoardInfo__image_no']"></div>-->
+<!--                  <div class="leaderBoardInfo__name">{{playerRait.player.publicName}}</div>-->
+<!--                </div>-->
 
 
-                <div class="leaderBoardInfo__score">{{playerRait.score}}</div>
-              </div>
+<!--                <div class="leaderBoardInfo__score">{{playerRait.score}}</div>-->
+<!--              </div>-->
 
-            </template>
+<!--            </template>-->
+
           </template>
 
 
           <template v-else>
-            <div class="settings__text" @click="getAuth">
+            <div class="settings__text authText" @click="getAuth">
               {{notRussian ? 'Log in to your Yandex account to see the rating' : 'Чтобы увидеть рейтинг, пожалуйста, войдите в аккаунт Яндекс'}}
 
             </div>
@@ -958,10 +960,6 @@ let notRussianGame = false;
     setLoc();
     console.log(allDoneWords);
     isGameAdvShow = !isGameAdvShow;
-  }else if (getFromStorage('allDoneWordsEN')) {
-
-    switchToEnglishVersion();
-
   }else{
 
     allDoneWords = {};
@@ -982,6 +980,14 @@ let notRussianGame = false;
     }
 
   }
+
+  /*
+  else if (getFromStorage('allDoneWordsEN')) {
+
+    switchToEnglishVersion();
+
+  }
+   */
 
 
   function switchToEnglishVersion(){
@@ -1151,6 +1157,8 @@ function getSec(){
     if(loc >= allLocations || loc < 0) loc = 0;
   }
 
+  let ruLangs = ['ru', 'be', 'kk', 'uk', 'uz'];
+
   if(window.YaGames){
     window.YaGames.init({
       adv: {
@@ -1167,7 +1175,7 @@ function getSec(){
 
 
       try{
-        notRussianGame = ysdk.environment.i18n.lang !== 'ru';
+        notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
         if(notRussianGame){
           console.log('EN');
           lastLevel = 0;
@@ -1907,12 +1915,16 @@ function getSec(){
         leaderBoard: false,
         playerRait: false,
         purchaseCompleted: false,
-        notRussian: notRussianGame
+        notRussian: notRussianGame,
+        gameLastLevel: lastLevel
       }
     },
     computed:{
       allStars(){
         return this.stars.reduce((acc, el)=> acc+ el, 0);
+      },
+      showNextLoc(){
+        return (this.gameLastLevel+1) >= (this.location + 1) * 21;
       }
     },
     methods:{
@@ -1974,6 +1986,14 @@ function getSec(){
               // Получение 10 топов
               lb.getLeaderboardEntries('lvl', { quantityTop: 20, includeUser: true, quantityAround: 3}).then(res => {
                 that.leaderBoard = res.entries;
+
+                setTimeout(()=>{
+                  try{
+                    let scrollEl = document.querySelector('.leaderBoardInfo_my');
+                    scrollEl.scrollIntoView({behavior: 'smooth', block: "center", inline: "center"});
+                  }catch(ignored){}
+
+                }, 200);
                 console.log(that.leaderBoard);
               });
             })
@@ -2035,6 +2055,7 @@ function getSec(){
         deletePreDownload();
         this.openLastLevel();
         this.getPlayerLB();
+        this.gameLastLevel = lastLevel;
       },
       getLevel(lvl, notSound){
         if(this.isCloseLevelShow(lvl+1))return;
@@ -2377,6 +2398,7 @@ function getSec(){
         let stars = testStar(this.doneWords.length, this.nowWords.length);
         if(stars > this.stars[this.lvl]){
           setLastLevel();
+          this.gameLastLevel = lastLevel;
           this.getStar = stars;
           this.stars.splice(this.lvl, 1, stars);
           if(this.isSounds){
@@ -2549,7 +2571,7 @@ function getSec(){
       height: 500px !important;
     }
     .leaderBoardInfo{
-      height: 500px !important;
+      height: 400px !important;
     }
     .rules__text{
       height: 420px !important;
@@ -2568,7 +2590,7 @@ function getSec(){
   .leaderBoardInfo{
     width: 90%;
     margin: 0 auto;
-    height: 230px;
+    height: 220px;
     padding: 05px;
     overflow-y: auto;
 
@@ -2643,7 +2665,7 @@ function getSec(){
 
 
 
-    padding: 10px 15px 15px 15px;
+    padding: 8px;
     width: 520px;
 
     font-size: 1.4rem;
@@ -3177,6 +3199,9 @@ function getSec(){
     background-color: rgba(255, 255, 255, 0.9);
 
   }
+  .words__letter{
+    background-color: rgba(255, 255, 255, 0.75);
+  }
   .animWord .words__letter{
     animation: 1s showNewWord forwards;
     /*animation-delay: 0.2s;*/
@@ -3186,7 +3211,7 @@ function getSec(){
   }
   @keyframes  showNewWord{
     0%{
-      background-color: rgba(255, 255, 255, 0.9);
+      background-color: rgba(255, 255, 255, 0.75);
     }
     100%{
       background-color: rgba(217, 109, 227, 0.9);
@@ -3926,6 +3951,9 @@ function getSec(){
     font-size: 1.5rem;
     color: #7f3e90;;
   }
+  .levels__loc_big{
+    font-size: 1.25rem;
+  }
 
 
   @media (min-width: 1000px) {
@@ -3945,6 +3973,9 @@ function getSec(){
       left: 10px;
       bottom: 10px;
       font-size: 3rem;
+    }
+    .levels__loc_big{
+      font-size: 2.6rem;
     }
   }
   .word-definition{
@@ -4027,5 +4058,8 @@ function getSec(){
       left: 50%;
       transform: translateX(-50%);
     }
+  }
+  .authText{
+    text-decoration: underline;
   }
 </style>
