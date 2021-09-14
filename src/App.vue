@@ -154,6 +154,7 @@
         <div class="menu__button-next-level"
                 :class="[testShowNextLevel() ? 'menu__button-next-level_active' : '']"
                 @click="nextLevel()">
+          <div class="menu__hint" v-if="lvl < 21">{{notRussian ? 'Earn 1 star and get access to the next level' : 'Заработайте 1 звезду и получите доступ к следующему уровню'}}</div>
         </div>
       </header>
 
@@ -463,26 +464,6 @@
     </div>
 
 
-<!--    <div class="rules-blackout" v-show="isGameAdvShow" @click="changeGameAdvShow()"></div>-->
-<!--    <div class="rules advertCrossword" v-show="isGameAdvShow">-->
-<!--      <div class="rules__cross" @click="changeGameAdvShow()"></div>-->
-<!--      <h2 class="rules__menu">-->
-<!--        Новая игра от наших разработчиков!-->
-<!--      </h2>-->
-<!--      <a-->
-<!--              class="advertCrossword__image"-->
-<!--              href="https://yandex.ru/games/play/100008"-->
-<!--              target="_blank"-->
-<!--              rel="noopener noreferrer"-->
-<!--              @click="()=>{sendParams({'openCrosswordAdv': 1})}"-->
-<!--      >-->
-<!--        <div class="advertCrossword__blur"></div>-->
-<!--        <div class="advertCrossword__text">-->
-<!--          Угадывайте слова в увлекательном мире кроссвордов!-->
-<!--        </div>-->
-<!--        <div class="openCrossword">Играть!</div>-->
-<!--      </a>-->
-<!--    </div>-->
 
 
   </div>
@@ -705,6 +686,8 @@ function decompressDataObj(compressedWords){
       data[ allWords[dl[i]] ] = 1;
     }
   }
+  console.log(dl);
+  console.log(data);
   const midData = {};
   Object.keys(compressedWords).forEach(el => {
     if(el === 'doneLevels') return;
@@ -727,6 +710,8 @@ function decompressDataObj(compressedWords){
   //   }
   // }
 
+  console.log(data);
+
   return data;
 }
 
@@ -737,11 +722,18 @@ function decompressDataObj(compressedWords){
     let newData =  replaceLevelsToOne(data);
     newData = compressDataObj(newData);
     newData = newCompress(newData);
-    console.log(newData);
-    return LZString.compressToUTF16(JSON.stringify(newData));
+    return newData;
+    // console.log(newData);
+    // return LZString.compressToUTF16(JSON.stringify(newData));
   }
   function decompressData(data){
-    let newData = JSON.parse(LZString.decompressFromUTF16(data));
+    let newData = data;
+    if(typeof newData === "string"){
+      newData = JSON.parse(LZString.decompressFromUTF16(data));
+    }
+    console.log('decompress');
+
+
     if(newData.doneLevels !== undefined){
       console.log('doneLevels');
 
@@ -772,12 +764,13 @@ function newCompress(compressedWords){
   });
   data.doneLevels = compressedWords.doneLevels;
   data.newCompress = true;
+  data.notStringed = true;
   return data;
 }
 
 function newDecompress(compressedWords){
   Object.keys(compressedWords).forEach(el => {
-    if(el === 'doneLevels') return;
+    if(el === 'doneLevels' || el === 'notStringed' || el === 'newCompress') return;
     let lastLevel = compressedWords[el];
     let newArr = [];
     for(let i = 0; i <= lastLevel; i++){
@@ -790,6 +783,8 @@ function newDecompress(compressedWords){
     compressedWords[el] = newArr;
   });
   delete compressedWords.newCompress;
+  delete compressedWords.notStringed;
+
   return compressedWords;
 }
 
@@ -980,14 +975,13 @@ let notRussianGame = false;
     }
 
   }
+  try{
+    if (getFromStorage('allDoneWordsEN')) {
+      isRules = false;
+    }
+  }catch(e){}
 
-  /*
-  else if (getFromStorage('allDoneWordsEN')) {
 
-    switchToEnglishVersion();
-
-  }
-   */
 
 
   function switchToEnglishVersion(){
@@ -1001,6 +995,7 @@ let notRussianGame = false;
       allDoneWords = fixDoneWords(JSON.parse(allDoneWordsEN));
       tipsEN = Number(tipsEN);
       if(tipsEN) tips = tipsEN;
+      isRules = false;
 
       setLoc();
     }
@@ -1157,7 +1152,9 @@ function getSec(){
     if(loc >= allLocations || loc < 0) loc = 0;
   }
 
-  let ruLangs = ['ru', 'be', 'kk', 'uk', 'uz'];
+  let ruLangs = ['ru', 'be', 'kk', 'uk', 'uz', 'kz'];
+
+  let payloadLevel = false;
 
   if(window.YaGames){
     window.YaGames.init({
@@ -1175,6 +1172,7 @@ function getSec(){
 
 
       try{
+        console.log("LANG: ", ysdk.environment.i18n.lang);
         notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
         if(notRussianGame){
           console.log('EN');
@@ -1183,6 +1181,16 @@ function getSec(){
           switchToEnglishVersion();
         }else{
           console.log('RU')
+        }
+
+        //Payload
+        let lvl = ysdk.environment.payload;
+        console.log('PAYLOAD');
+        console.log(lvl);
+        if(lvl){
+          payloadLevel = Number(lvl) - 1;
+          if(payloadLevel < 0) payloadLevel = 0;
+          else if(payloadLevel > 21) payloadLevel = 20;
         }
       }catch(ignored){}
 
@@ -1272,7 +1280,7 @@ function getSec(){
           if(dataObject.allDoneWordsEN){
             let newData = dataObject.allDoneWordsEN;
 
-            if(typeof newData === "string"){
+            if(typeof newData === "string" || (typeof newData === "object" && newData.notStringed)){
               newData = decompressData(newData);
             }
 
@@ -1302,8 +1310,9 @@ function getSec(){
           // if(dataObject.cantSaveData){
           //   cantSaveData = true;
           // }
+          console.log('new data');
           console.log(newData);
-          if(typeof newData === "string"){
+          if(typeof newData === "string"  || (typeof newData === "object" && newData.notStringed)){
             newData = decompressData(newData);
 
             //Не получается сохранить сжатые данные на сервере
@@ -2058,7 +2067,13 @@ function getSec(){
         this.gameLastLevel = lastLevel;
       },
       getLevel(lvl, notSound){
-        if(this.isCloseLevelShow(lvl+1))return;
+        if(payloadLevel){
+          lvl = payloadLevel;
+          payloadLevel = false;
+          if(lastLevel < lvl) lastLevel = lvl;
+          params({'payload': 1});
+
+        } else if(this.isCloseLevelShow(lvl+1))return;
 
 
         if(lvl !== 0 && lvl % 100 === 0 && notRussianGame){
@@ -3018,18 +3033,18 @@ function getSec(){
   .menu__tip_count, .advert{
     position: absolute;
     bottom: 0;
-    right: -3px;
+    right: -8px;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    padding: 0 4px;
+    padding: 0 5px;
 
-    font-size: 0.7rem;
+    font-size: 1rem;
 
     background-color: #ad63b6;
-    border-radius: 5px;
+    border-radius: 7px;
   }
   .advert{
     width: 15px;
@@ -3069,8 +3084,16 @@ function getSec(){
     color: #f8f7f8;
     background-color: rgba(164, 104, 183, 0.9);
   }
+  .menu__button-next-level .menu__hint{
+    bottom: -125px;
+  }
+
   .menu__words-amount:hover .menu__hint, .menu__button-next-level:hover .menu__hint{
     display: block;
+  }
+
+  .menu__button-next-level_active .menu__hint{
+    display: none !important;
   }
 
   .menu__button-next-level{
@@ -3537,7 +3560,8 @@ function getSec(){
       height: 50px;
     }
     .menu__tip_count{
-      font-size: 1rem;
+      font-size: 1.3rem;
+      right: -5px;
     }
     .cart__item_tip{
       font-size: 1.3rem;
@@ -3858,78 +3882,6 @@ function getSec(){
   }
 
   /*Реклама кроссвордов*/
-  .advertCrossword{
-    padding: 10px 0 0 0;
-
-    overflow: hidden;
-  }
-  .advertCrossword .rules__menu{
-    font-size: 2.2rem;
-    line-height: 2.2rem;
-  }
-  .advertCrossword .rules__cross{
-    width: 22px;
-    height: 22px;
-  }
-
-  .advertCrossword__image{
-    display: block;
-
-    position: relative;
-
-    width: 100%;
-    height: 250px;
-
-    border-top: 3px solid #9e6db5;
-
-    background: url(assets/advertCross.png) center center no-repeat;
-    background-size: cover;
-
-    padding: 0 15px;
-
-    cursor: pointer;
-  }
-
-
-  .advertCrossword__blur{
-      position: absolute;
-      top:0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    background-color: rgba(0,0,0,0.1);
-  }
-  .advertCrossword__text{
-    position: relative;
-    margin-top: 20px;
-    text-align: center;
-    color: white;
-    font-size: 2.9rem;
-    line-height: 2.9rem;
-
-    text-shadow: 0 0 5px #9767ad;
-
-  }
-
-  .openCrossword {
-    position: absolute;
-    left: 50%;
-    bottom: 15px;
-    transform: translateX(-50%);
-
-    padding: 4px 22px;
-
-    border-radius: 8px;
-    background: rgb(186,146,194);
-    background: linear-gradient(180deg, rgba(186,146,194,1) 0%, rgb(185, 123, 191) 40%, rgb(154, 91, 160) 100%);
-
-    font-size: 2.4rem;
-
-    color: white;
-
-  }
   .levels__loc{
     position: absolute;
     left: 5px;
@@ -3957,16 +3909,6 @@ function getSec(){
 
 
   @media (min-width: 1000px) {
-    .advertCrossword .rules__menu {
-      font-size: 2.5rem;
-      line-height: 2.5rem;
-    }
-    .advertCrossword .rules__cross {
-      top: 15px;
-      right: 15px;
-      width: 25px;
-      height: 25px;
-    }
     .levels__loc{
       width: 50px;
       height: 50px;
