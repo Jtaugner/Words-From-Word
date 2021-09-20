@@ -477,6 +477,7 @@ import {allWordsRU, dictionaryRU} from './russianWords'
 import {wordsFromWordsRU} from "./russianWordsFromWords";
 import {allWordsEN} from './englishWords'
 import {wordsFromWordsEN} from './englishWordsFromWords'
+import {getBusinessEvent} from "@/gameAnalytics";
 var wordsFromWords = wordsFromWordsRU,
     allWords = allWordsRU,
     dictionary = dictionaryRU;
@@ -1491,6 +1492,8 @@ function getSec(){
     document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
     payments.consumePurchase(purchase.purchaseToken);
   }
+  const itemsPrices = [49, 99, 149];
+
   function buyTips(item) {
     if(payments && playerGame){
       let purchaseItem = 'cart_item' + item;
@@ -1503,6 +1506,8 @@ function getSec(){
           params({[it]: 1});
           document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
           payments.consumePurchase(purchase.purchaseToken);
+
+          getBusinessEvent(itemsPrices[item-2], 'tip' + item);
         }
       }).catch((e)=>{
         console.log("PAYMENTS ERROR: " + e);
@@ -1871,7 +1876,7 @@ function getSec(){
       event.preventDefault();
     }, false);
   }
-  const itemsPrices = [49, 99, 149];
+
 
   function deletePreDownload(){
     if (document.querySelector(".pre-download")) {
@@ -2120,6 +2125,11 @@ function getSec(){
           allDoneWords[this.word] = [];
           this.doneWords = allDoneWords[this.word];
         }
+        if(lvl < 5 && this.doneWords.length === 0){
+          let levelName = 'startLevel' + (lvl+1);
+          params({[levelName]: 1})
+        }
+
         this.selectedLetters = [];
 
         if(this.doneWords.length === 0){
@@ -2412,6 +2422,12 @@ function getSec(){
       testStars(){
         let stars = testStar(this.doneWords.length, this.nowWords.length);
         if(stars > this.stars[this.lvl]){
+
+          if(this.lvl < 5 && stars === 1){
+            let levelName = 'endLevel' + (this.lvl+1);
+            params({[levelName]: 1})
+          }
+
           setLastLevel();
           this.gameLastLevel = lastLevel;
           this.getStar = stars;

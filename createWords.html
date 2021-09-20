@@ -144,6 +144,8 @@
 
         shuffle(words);
 
+        allWords = ['сладость'];
+
         if (doNewWords) {
             for (let i = 0; i < words.length; i++) {
                 let bigWord = words[i];
@@ -205,6 +207,7 @@
         localStorage.setItem('allWords', JSON.stringify(allWords));
         console.log(allWords.length, new Set(allWords).size);
         console.log(Object.keys(wordsFromWords).length);
+        console.log(wordsFromWords);
     }
 
 
