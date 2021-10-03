@@ -7,21 +7,23 @@
 			 @buyTips="addBuyTips()"
 			 v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
 
-			<div class="blur"></div>
+<!--			<div class="blur"></div>-->
 
 
 			<div class="levelsTop">
-				<div>
-					<div class="switchSettings" @click="toggleSettings"></div>
-					<div class="leaderBoard" @click="toggleLeaderBoard()" v-if="!notRussian"></div>
-				</div>
+				<div class="switchSettings menuItem" @click="toggleSettings"></div>
 
 				<div class="levelsTop__allStars" :class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']">
 					{{allStars}}/{{ (location+1)*63}}
-					<div class="menu-star"></div>
+<!--					<div class="menu-star"></div>-->
 				</div>
 
-				<div class="switchShop" @click="toggleShop()"></div>
+				<div>
+					<div class="leaderBoard menuItem" @click="toggleLeaderBoard()" v-if="!notRussian"></div>
+					<div class="switchShop menuItem" @click="toggleShop()"></div>
+				</div>
+
+
 
 
 
@@ -43,14 +45,14 @@
 
 
 
-						<div v-show="!isCloseLevelShow(getLevelByLevelAndLocation(level))" :class="getLevelByLevelAndLocation(level) > 99 ? 'level__big' : ''">
+						<div :class="getLevelByLevelAndLocation(level) > 99 ? 'level__big' : ''">
 							{{getLevelByLevelAndLocation(level)}}</div>
 						<div class="menu__level_stars">
 							<div class="level_star" v-for="star in 3" :key="star"
 								 :class="star <= stars[getLevelByLevelAndLocation(level)-1] ? 'menu-star' : ''"></div>
 						</div>
-						<div class="close-level" v-if="isCloseLevelShow(getLevelByLevelAndLocation(level))"></div>
 					</div>
+
 					<div class="prev-location" @click="prevLocation()" v-if="location > 0"></div>
 					<div class="next-location" @click="nextLocation()" v-if="location < allLocations-1 && showNextLoc"></div>
 
@@ -129,32 +131,31 @@
 		</div>
 
 
-
 		<div class="game" v-show="content">
-			<div class="blur"></div>
+<!--			<div class="blur"></div>-->
 
-			<header class="menu">
-				<button class="menu__button-back" @click="backMenu"></button>
+			<header class="menu" :class="[isTutorial ? 'tutorialMenu' : '']">
+				<button class="menu__button-back menuItem" @click="backMenu"></button>
 				<div class="menu__words-amount">
 					{{doneWords.length}}/{{nowWords.length}}
 					<div class="menu__hint">{{notRussian ? 'Guessed' : 'Отгадано'}}</div>
 				</div>
 				<div class="menu__level">
-					{{notRussian ? 'LEVEL' : 'УРОВЕНЬ'}} {{lvl+1}}
+					{{notRussian ? 'Level' : 'Уровень'}} {{lvl+1}}
 					<div class="menu__level_stars">
 						<div class="level_star" v-for="star in 3" :key="star"
 							 :class="[star <= stars[lvl] ? 'level_full-star' : '',
                       getStar === star ? 'getStar' : '']"></div>
 					</div>
 				</div>
-				<div class="menu__tip" @click="getTip()">
+				<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
 					<div class="advert" v-if="canShowAdv && tipCount === 0"></div>
 					<div class="menu__tip_count" v-else>{{tipCount}}</div>
 				</div>
-				<div class="menu__button-next-level"
+				<div class="menu__button-next-level menuItem"
 					 :class="[testShowNextLevel() ? 'menu__button-next-level_active' : '']"
 					 @click="nextLevel()">
-					<div class="menu__hint" v-if="lvl < 21">{{notRussian ? 'Earn 1 star and get access to the next level' : 'Заработайте 1 звезду и получите доступ к следующему уровню'}}</div>
+					<div class="menu__hint" v-if="lvl < 4">{{notRussian ? 'Earn 1 star and get access to the next level' : 'Заработайте 1 звезду и получите доступ к следующему уровню'}}</div>
 				</div>
 			</header>
 
@@ -176,7 +177,8 @@
                animWord === word ? 'animWord' : '',
                 animWordStart === word ? 'animWordStart' : '',
                 newWord === word ? 'newWord' : '',
-                wordWasIndex === index ? 'wordWas': ''
+                wordWasIndex === index ? 'wordWas': '',
+                selectMainWord === word ? 'tutorialSelected' : ''
                 ]"
 						 @click="openWordDescription(word)"
 					>
@@ -198,14 +200,18 @@
 					<div class="action-block__letters">
 						<div class="action-block__letter"
 							 @click="selectLetter(index)"
-							 :class="[selectedLetters.includes(index) ?
-                  'action-block__letter_selected' : '']"
+							 :class="[selectedLetters.includes(index) ?'action-block__letter_selected' : '', tutorialSelected === index ? 'tutorialSelected' : '']"
 							 v-for="(letter,index) in letters" :key="letter + Math.random()">{{letter}}
 						</div>
-						<button class="action-block__button-send" @click="sendWord"></button>
+						<button class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord"></button>
 					</div>
 				</div>
 
+
+				<div class="cloudHint" v-show="cloudHint && !showWordDesc" :class="[selectMainWord ? 'cloudHint_wordSelected' : '']">
+					<p v-html="cloudsPhrase"></p>
+				</div>
+				<div class="skipTutorial" v-show="cloudHint && !showWordDesc && canShowSkip" @click="endTutorial">Пропустить</div>
 
 
 			</div>
@@ -227,6 +233,9 @@
 			<!--        Для получения подсказки нужно посмотреть рекламу не менее 3 секунд.-->
 			<!--        <span v-show="isAdvShowed">Но в первый раз вы её получаете.</span>-->
 			<!--      </div>-->
+
+			<div class="rules-blackout cloudHintBackground" v-show="cloudHint" @click="closeHint()"></div>
+
 
 
 			<div class="rules-blackout" v-show="showWordDesc" @click="toggleShowWordDesc"></div>
@@ -250,7 +259,7 @@
 					{{wasUpdate ? 'Уважаемые игроки!' : 'Дорогой игрок!'}}
 				</h2>
 				<template v-if="wasUpdate">
-					Некоторые из вас могли столкнуться с проблемой несохранения прогресса. Чтобы исправить это, нам пришлось немного поменять систему сохранения данных. В связи с этим у всех игроков произойдёт перерасчёт звёзд (в лучшую сторону). Не волнуйтесь, в остальном всё останется как прежде. Спасибо за то, что играете в Слова из слова!
+					Мы немного обновляем дизайн игры. Надеемся, он вам понравится! Также в скором времени появится возможность сменить фон и оформление игры!
 				</template>
 				<template v-else>
 					Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы обновляем словарь несколько раз в месяц, и добавляем новые уровни каждый месяц.
@@ -273,7 +282,7 @@
 
 		<div class="rules-blackout" v-show="shop" @click="toggleShop()"></div>
 
-		<div class="rules shop" v-show="shop">
+		<div class="rules shop mainShop" v-show="shop">
 			<div class="rules__cross shop__cross" @click="toggleShop()"></div>
 			<h2 class="rules__menu black-friday">
 				{{notRussian ? 'Shop' : 'Магазин'}}
@@ -372,7 +381,7 @@
 						   class="settings__text"
 						   @click="()=>{sendParams({'vk': 1})}"
 						>
-							Наша группа ВКонтакте
+							Группа ВКонтакте
 						</a>
 					</li>
 
@@ -485,7 +494,7 @@ var wordsFromWords = wordsFromWordsRU,
 let advTime = false;
 setTimeout(()=>{
 	advTime = true;
-}, 25000);
+}, 30000);
 let showAdv, playerGame, payments, YSDK;
 
 
@@ -794,7 +803,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-10";
+const lastVersion = "ver-11";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -964,9 +973,6 @@ if(allDoneWords){
 	tips = 10;
 	isRules = true;
 	sounds = true;
-	// setToStorage('sounds', true);
-	// setToStorage('allDoneWords', JSON.stringify(allDoneWords));
-	// setToStorage('tips', tips);
 
 	allWords.forEach((key => {
 		allDoneWords[key] = [];
@@ -1061,7 +1067,6 @@ function setState(isNow) {
 					if(englishProgress) state.allDoneWordsEN = englishProgress;
 					playerGame.setData(state, isNow).then(() => {
 					}).catch(() => {
-						setToStorage('offline', '1');
 					});
 				})
 			});
@@ -1142,7 +1147,6 @@ function setLoc() {
 			allStars.push(0);
 		}
 	}));
-	setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
 	setLastLevel();
 	loc = Math.floor((lastLevel / 21));
 	if(allStars.reduce((acc, st)=>{
@@ -1177,6 +1181,7 @@ if(window.YaGames){
 			notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
 			if(notRussianGame){
 				console.log('EN');
+				isRules = false;
 				lastLevel = 0;
 				params({'eng': 1});
 				switchToEnglishVersion();
@@ -1233,7 +1238,6 @@ if(window.YaGames){
 		update();
 	});
 }else{
-	setToStorage('offline', '1');
 	doDeleteBlock = true;
 }
 function update() {
@@ -1260,17 +1264,14 @@ function initPlayer(ysdk) {
 	ysdk.getPlayer().then(_player => {
 		console.log('get player');
 
+
+
 		// Игрок авторизован.
 		playerGame = _player;
 		let someTrue = false;
 		let change = true;
-		let offline = getFromStorage('offline');
-		if(offline === '1'){
-			offline = true;
-			setToStorage('offline', '0');
-		} else{
-			offline = false;
-		}
+		isRules = false;
+
 		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN'], false).then((dataObject) => {
 			console.log(dataObject);
 			if(notRussianGame){
@@ -1315,53 +1316,12 @@ function initPlayer(ysdk) {
 				console.log(newData);
 				if(typeof newData === "string"  || (typeof newData === "object" && newData.notStringed)){
 					newData = decompressData(newData);
-
-					//Не получается сохранить сжатые данные на сервере
-					// if(!newData && dataObject.allDoneWords){
-					//   console.log('cantSave');
-					//
-					//   // setToStorage('cantSaveData', 'true');
-					//   // cantSaveData = true;
-					//
-					//   playerGame.setData({
-					//     allDoneWords: allDoneWords,
-					//     cantSaveData: true
-					//   }, false).then((ignored) => {});
-					//
-					//   if(someTrue){
-					//     update();
-					//   }
-					//   someTrue = true;
-					//   return;
-					// }
-
-
 				}else if(newData.doneLevels !== undefined){
 					newData = decompressDataObj(newData);
 				}
 				newData = fixDoneWords(newData);
 				console.log(newData);
 
-
-				if(offline){
-					const lastAllDoneWords = newData;
-					let newWords, lastWords;
-					newWords = Object.keys(allDoneWords).reduce((k, key)=> k + allDoneWords[key].length, 0);
-					lastWords = Object.keys(lastAllDoneWords).reduce((k, key)=> k + lastAllDoneWords[key].length, 0);
-					if(newWords > lastWords){
-						change = false;
-						tips = getFromStorage('tips');
-						if(tips){
-							tips = Number(tips);
-						}else{
-							tips = 10;
-						}
-						PLAYERSTATS = {
-							tips: tips
-						};
-						setStats();
-					}
-				}
 
 
 
@@ -1386,9 +1346,7 @@ function initPlayer(ysdk) {
 
 
 			}  else{
-				playerGame.setData({
-					allDoneWords: compressData(allDoneWords)
-				}, false).then((ignored) => {});
+				isRules = true;
 			}
 			//Вовзврат прогресса
 			try{
@@ -1451,11 +1409,8 @@ function initPlayer(ysdk) {
 
 					setToStorage('tips', tips);
 				}
-			}else{
-				playerGame.setStats({
-					tips: tips
-				}, false).then((ignored) => {});
 			}
+
 			if(someTrue){
 				update();
 			}
@@ -1469,7 +1424,6 @@ function initPlayer(ysdk) {
 		});
 	}).catch((e) => {
 		console.log(e);
-		setToStorage('offline', '1');
 		doDeleteBlock = true;
 		update();
 	});
@@ -1671,7 +1625,7 @@ let newLevel = new NewAudioContext('new-level');
 let clickSound = new NewAudioContext('click');
 
 const lettersMap = {
-	'q' : 'й', 'w' : 'ц', 'e' : 'у', 'r' : 'к', 't' : 'е', 'y' : 'н', 'u' : 'г', 'i' : 'ш', 'o' : 'щ', 'p' : 'з', '[' : 'х', ']' : 'ъ', 'a' : 'ф', 's' : 'ы', 'd' : 'в', 'f' : 'а', 'g' : 'п', 'h' : 'р', 'j' : 'о', 'k' : 'л', 'l' : 'д', ';' : 'ж', '\'' : 'э', 'z' : 'я', 'x' : 'ч', 'c' : 'с', 'v' : 'м', 'b' : 'и', 'n' : 'т', 'm' : 'ь', ',' : 'б', '.' : 'ю','Q' : 'Й', 'W' : 'Ц', 'E' : 'У', 'R' : 'К', 'T' : 'Е', 'Y' : 'Н', 'U' : 'Г', 'I' : 'Ш', 'O' : 'Щ', 'P' : 'З', '[' : 'Х', ']' : 'Ъ', 'A' : 'Ф', 'S' : 'Ы', 'D' : 'В', 'F' : 'А', 'G' : 'П', 'H' : 'Р', 'J' : 'О', 'K' : 'Л', 'L' : 'Д', ';' : 'Ж', '\'' : 'Э', 'Z' : '?', 'X' : 'ч', 'C' : 'С', 'V' : 'М', 'B' : 'И', 'N' : 'Т', 'M' : 'Ь', ',' : 'Б', '.' : 'Ю'
+	'q' : 'й', 'w' : 'ц', 'e' : 'у', 'r' : 'к', 't' : 'е', 'y' : 'н', 'u' : 'г', 'i' : 'ш', 'o' : 'щ', 'p' : 'з', '[' : 'х', ']' : 'ъ', 'a' : 'ф', 's' : 'ы', 'd' : 'в', 'f' : 'а', 'g' : 'п', 'h' : 'р', 'j' : 'о', 'k' : 'л', 'l' : 'д', ';' : 'ж', '\'' : 'э', 'z' : 'я', 'x' : 'ч', 'c' : 'с', 'v' : 'м', 'b' : 'и', 'n' : 'т', 'm' : 'ь', ',' : 'б', '.' : 'ю','Q' : 'Й', 'W' : 'Ц', 'E' : 'У', 'R' : 'К', 'T' : 'Е', 'Y' : 'Н', 'U' : 'Г', 'I' : 'Ш', 'O' : 'Щ', 'P' : 'З', 'A' : 'Ф', 'S' : 'Ы', 'D' : 'В', 'F' : 'А', 'G' : 'П', 'H' : 'Р', 'J' : 'О', 'K' : 'Л', 'L' : 'Д', 'Z' : '?', 'X' : 'ч', 'C' : 'С', 'V' : 'М', 'B' : 'И', 'N' : 'Т', 'M' : 'Ь'
 };
 
 function doFirstLetterBig(str) {
@@ -1886,6 +1840,23 @@ function deletePreDownload(){
 		document.querySelector(".pre-download2").remove()
 	}
 }
+
+const cloudPhrases = [
+	'Добро пожаловать в игру <span class="cloudHint__mainText">"Слова из слова"</span>! Составляйте слова, чтобы проходить уровни.',
+	'Нажимайте на <span class="cloudHint__mainText">буквы снизу</span>, чтобы составить слово!',
+	'Нажмите на <span class="cloudHint__mainText">стрелку</span>, чтобы отправить слово!',
+	'Поздравляем! Ваше <span class="cloudHint__mainText">первое слово</span> уже на уровне. Давайте попробуем ещё!',
+	'Введём вместе последнее слово!',
+	'Нажмите на слово, чтобы узнать его <span class="cloudHint__mainText">значение</span>.',
+	'Если закончились идеи, используйте <span class="cloudHint__mainText">подсказку</span>. На первом уровне подсказки бесконечны.',
+	'Для перехода на следующий уровень заработайте хотя бы 1 <span class="cloudHint__mainText">звезду</span>.',
+	'33% угаданных слов - это 1 звезда, 66% - 2 звезды, 100% - 3 звезды.',
+	'За получение звёзд Вам выдаются <span class="cloudHint__mainText">бесплатные подсказки</span>.',
+	'Ура! Вы <span class="cloudHint__mainText">успешно</span> закончили обучение. Желаем Вам удачи в прохождении игры!',
+];
+
+let tutorialStep = 0;
+let isShowTutorial = true;
 export default {
 	name: 'App',
 	data(){
@@ -1904,7 +1875,7 @@ export default {
 			doneWords: [],
 			tipCount: tips,
 			isBadWord: false,
-			rules: isRules,
+			rules: false,
 			levelsAnim: false,
 			shop: false,
 			newWord: '',
@@ -1930,7 +1901,15 @@ export default {
 			playerRait: false,
 			purchaseCompleted: false,
 			notRussian: notRussianGame,
-			gameLastLevel: lastLevel
+			gameLastLevel: lastLevel,
+			isTutorial: false,
+			cloudHint: false,
+			cloudsPhrase: cloudPhrases[0],
+			tutorialSelected: -1,
+			selectSend: false,
+			selectMainWord: false,
+			selectTip: false,
+			canShowSkip: false
 		}
 	},
 	computed:{
@@ -1942,6 +1921,72 @@ export default {
 		}
 	},
 	methods:{
+		endTutorial(){
+			console.log('end');
+		 	this.isTutorial = false;
+		 	this.cloudHint = false;
+			this.selectTip = false;
+			this.selectMainWord = false;
+			this.selectSend = false;
+			this.tutorialSelected = -1;
+		},
+		startTutorial(){
+			tutorialStep = 0;
+			this.canShowSkip = true;
+			this.isTutorial = true;
+			this.cloudHint = true;
+		},
+		closeHint(){
+			if(this.selectSend) return;
+			if(tutorialStep === 0){
+				this.cloudsPhrase = cloudPhrases[1];
+				this.tutorialSelected = 0;
+			} else if(tutorialStep === 5){
+				this.tutorialSelected = 2;
+				this.cloudsPhrase = cloudPhrases[1];
+			} else if(tutorialStep === 10){
+				this.tutorialSelected = 1;
+				this.cloudsPhrase = cloudPhrases[1];
+			}else if(tutorialStep === 17){
+				this.cloudsPhrase = cloudPhrases[8];
+			}else if(tutorialStep === 18){
+				this.cloudsPhrase = cloudPhrases[9];
+			}else if(tutorialStep === 19){
+				this.cloudsPhrase = cloudPhrases[10];
+			} else if(tutorialStep === 20){
+				this.endTutorial();
+			} else{
+				return;
+			}
+			this.wordFromLetter = '';
+			this.selectedLetters = [];
+			tutorialStep++;
+
+			// this.cloudHint = false;
+		},
+		nextStep(){
+
+			if(tutorialStep >=1 && tutorialStep <= 3){
+				this.tutorialSelected = 2 + tutorialStep;
+			}else if(tutorialStep === 6){
+				this.tutorialSelected = 1;
+			}else if(tutorialStep === 7){
+				this.tutorialSelected = 4;
+			}else if(tutorialStep === 8 || tutorialStep === 13){
+				this.tutorialSelected = 5;
+			} else if(tutorialStep === 11){
+				this.tutorialSelected = 2;
+			}else if(tutorialStep === 12){
+				this.tutorialSelected = 3;
+			}else if(tutorialStep === 4 || tutorialStep === 9 || tutorialStep === 14){
+				this.tutorialSelected = -1;
+				this.selectSend = true;
+				this.cloudsPhrase = cloudPhrases[2];
+			}else{
+				return;
+			}
+			tutorialStep++;
+		},
 		togglePurchaseCompleted(){
 			this.purchaseCompleted = false;
 		},
@@ -2028,6 +2073,13 @@ export default {
 			if(!this.showWordDesc){
 				getDefaultDesc();
 			}
+			this.selectMainWord = '';
+			if(!this.showWordDesc && this.isTutorial && tutorialStep === 15){
+				this.cloudsPhrase = cloudPhrases[6];
+				tutorialStep++;
+				this.selectMainWord = false;
+				this.selectTip = true;
+			}
 		},
 		getItemPrice(item){
 			try{
@@ -2069,6 +2121,12 @@ export default {
 			deletePreDownload();
 			this.openLastLevel();
 			this.getPlayerLB();
+			if(isRules && !notRussianGame && isShowTutorial){
+				this.startTutorial();
+			}else{
+				this.endTutorial();
+			}
+
 			this.gameLastLevel = lastLevel;
 		},
 		getLevel(lvl, notSound){
@@ -2077,6 +2135,8 @@ export default {
 				payloadLevel = false;
 				if(lastLevel < lvl) lastLevel = lvl;
 				params({'payload': 1});
+				this.endTutorial();
+				isShowTutorial = false;
 
 			} else if(this.isCloseLevelShow(lvl+1))return;
 
@@ -2112,8 +2172,6 @@ export default {
 			this.newWord ='';
 			this.animWord ='';
 			this.animWordStart = '';
-			console.log(allWords);
-			console.log(wordsFromWords)
 			this.lvl = lvl;
 			this.wordFromLetter = '';
 			this.word = allWords[lvl];
@@ -2132,13 +2190,6 @@ export default {
 
 			this.selectedLetters = [];
 
-			if(this.doneWords.length === 0){
-				if(lvl === 1){
-					reachGoal('level2');
-				}else if(lvl === 9){
-					reachGoal('level10');
-				}
-			}
 
 			this.letters = this.word.split('');
 			this.nowWords = wordsFromWords[this.word].slice().sort().sort((a, b)=>{
@@ -2152,7 +2203,8 @@ export default {
 					behavior: "smooth"
 				});
 			}, 200);
-			if(showAdv && advTime){
+
+			if(!this.isTutorial && showAdv && advTime){
 				setTimeout(()=>{
 					showAdv();
 					this.advShowNow = true;
@@ -2161,6 +2213,8 @@ export default {
 					}, 10000)
 				}, 300)
 			}
+
+
 		},
 		getLevelByLevelAndLocation(level){
 			return (this.location*21) + level;
@@ -2219,13 +2273,18 @@ export default {
 			if(!this.content) return;
 			let letter = e.key;
 			if(letter === 'Backspace'){
+				if(this.isTutorial) return;
 				this.selectedLetters.pop();
 				this.wordFromLetter = this.wordFromLetter.slice(0, -1);
 			}else if(letter === 'Enter'){
+				if(this.isTutorial && !this.selectSend) return;
 				this.sendWord();
 			} else{
 				letter = letter.toLowerCase();
 				if(!notRussianGame && lettersMap[letter]) letter = lettersMap[letter].toLowerCase();
+				if(this.isTutorial && letter !== this.word[this.tutorialSelected]){
+					return;
+				}
 				for(let i = 0; i < this.letters.length; i++){
 					if(letter === this.letters[i] && !this.selectedLetters.includes(i)){
 						this.selectedLetters.push(i);
@@ -2235,6 +2294,9 @@ export default {
 						}
 						break;
 					}
+				}
+				if(this.isTutorial){
+					this.nextStep();
 				}
 			}
 		},
@@ -2272,6 +2334,9 @@ export default {
 			if(this.isSounds){
 				clickSound.play();
 			}
+			if(this.isTutorial){
+				this.nextStep();
+			}
 			let ind = this.selectedLetters.indexOf(index);
 
 			if(ind >= 0){
@@ -2283,6 +2348,7 @@ export default {
 			}
 		},
 		backMenu(){
+			if(this.isTutorial) return;
 			if(this.isSounds){
 				clickSound.play();
 			}
@@ -2315,18 +2381,6 @@ export default {
 						callbacks: {
 							onClose: function() {
 								that.addTip();
-								// if(new Date() - dataStarted > 2000){
-								//
-								// }else{
-								//   that.showAdvTip = true;
-								//   that.isAdvShowed = false;
-								//   if(!isAdvShowed){
-								//     setToStorage('isAdvShowed', 'true');
-								//     isAdvShowed = true;
-								//     that.isAdvShowed = true;
-								//     that.addTip();
-								//   }
-								// }
 							}
 						}
 					});
@@ -2336,7 +2390,9 @@ export default {
 				return;
 			}
 			if(this.doneWords.length === this.nowWords.length) return;
-			this.tipCount--;
+			if(this.lvl > 0){
+				this.tipCount--;
+			}
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
 
@@ -2347,6 +2403,17 @@ export default {
 			let rand = Math.floor(Math.random()*arr.length);
 			this.wordFromLetter = arr[rand];
 			this.sendWord();
+
+
+			if(this.isTutorial && tutorialStep === 16){
+				this.cloudHint = false;
+				this.selectTip = false;
+				tutorialStep++;
+				setTimeout(()=>{
+					this.cloudHint = true;
+					this.cloudsPhrase = cloudPhrases[7];
+				}, 2000);
+			}
 		},
 		sendWord(){
 			if(this.wordFromLetter.length === 0 || this.isBadWord) return;
@@ -2355,10 +2422,42 @@ export default {
 				let wordFromLetter = this.wordFromLetter;
 				this.wordFromLetter = '';
 				this.selectedLetters = [];
+				//Туториал
+				if(this.isTutorial){
+					if(tutorialStep === 5 || tutorialStep === 10 || tutorialStep === 15){
+						this.cloudHint = false;
+						this.selectSend = false;
+						setTimeout(()=>{
+							this.cloudHint = true;
+							if(tutorialStep === 5){
+								this.canShowSkip = false;
+								this.cloudsPhrase = cloudPhrases[3];
+							}else if(tutorialStep === 10){
+								this.cloudsPhrase = cloudPhrases[4];
+							}else if(tutorialStep === 15){
+								this.cloudsPhrase = cloudPhrases[5];
+								this.selectMainWord = 'илот';
+
+								setTimeout(()=>{
+									try{
+										let scrollEl = document.querySelector('.tutorialSelected');
+										scrollEl.scrollIntoView({behavior: 'smooth', block: "center", inline: "center"});
+									}catch(ignored){}
+
+								}, 200);
+
+							}
+
+						}, 1700);
+					}
+
+
+				}
+				//Туториал - END
 				setTimeout(()=>{
 					try{
 						let scrollEl = document.querySelector('.animWordStart');
-						scrollEl.scrollIntoView({behavior: 'smooth', block: "center", inline: "center"});
+						scrollEl.scrollIntoView({behavior: 'auto', block: "center", inline: "center"});
 					}catch(e){
 						console.log('Ошибка показа');
 					}
@@ -2400,7 +2499,7 @@ export default {
 					setTimeout(()=>{
 						try{
 							let scrollEl = document.querySelector('.wordWas');
-							scrollEl.scrollIntoView({behavior: 'smooth', block: "center", inline: "center"});
+							scrollEl.scrollIntoView({behavior: 'auto', block: "center", inline: "center"});
 						}catch(e){
 							console.log('Ошибка показа');
 						}
@@ -2478,6 +2577,9 @@ export default {
 		this.$nextTick(function() {
 			if (doDeleteBlock) {
 				deletePreDownload();
+				if(isRules && !payloadLevel){
+					this.startTutorial();
+				}
 			}
 			this.openLastLevel();
 			document.addEventListener('keydown', this.pressKey)
@@ -2485,9 +2587,8 @@ export default {
 	}
 }
 </script>
-
-
 <style>
+
 ::-webkit-scrollbar-button {
 	background-repeat:no-repeat;
 	width:6px;
@@ -2517,6 +2618,18 @@ export default {
 	height: 13px;
 }
 @font-face {
+	font-family: 'Roboto';
+	src: url('assets/Roboto.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Roboto';
+	src: url('assets/Robotobold.ttf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
 	font-family: 'Ubuntu-Light';
 	src: url('assets/Ubuntu-Light.ttf');
 	font-weight: normal;
@@ -2526,7 +2639,7 @@ html,body
 {
 	width:100%;
 	height:100%;
-	font: 10px/1.5 Ubuntu-Light, sans-serif;
+	font: 10px/1.5 Roboto, sans-serif;
 	-webkit-tap-highlight-color: transparent;
 	-ms-user-select: none;
 	-moz-user-select: none;
@@ -2534,15 +2647,18 @@ html,body
 	touch-action: manipulation;
 	user-select: none;
 }
+.words, .action-block, .rules{
+	font-family: Ubuntu-Light, sans-serif;
+}
 .switchSettings{
-	width: 60px;
+	position: relative;
+	width: 40px;
 	height: 40px;
-	margin-left: 10px;
 
-	background: url(assets/menu.png) center center no-repeat;
-	background-size: 60%;
+	background: url(assets/settings.svg) center center no-repeat, #DADADA;
+	background-size: 50%;
+	border-radius: 50%;
 
-	margin-top: 15px;
 
 	cursor: pointer;
 }
@@ -2556,14 +2672,10 @@ html,body
 	cursor: pointer;
 }
 .leaderBoard{
-	background: url("assets/leader7.png") center center no-repeat;
-	background-size: 75%;
+	background: url("assets/leader.svg") center center no-repeat, rgba(255, 255, 255, 0.85);
+	background-size: 50%;
 
-	margin-left: 15px;
-
-
-	width: 57px;
-	height: 45px;
+	margin-right: 25px;
 
 }
 .switchShop{
@@ -2571,12 +2683,9 @@ html,body
 	width: 55px;
 	height: 39px;
 
-	margin-right: 10px;
 
-	background: url("assets/shop.png") center center no-repeat;
-	background-size: 75%;
-
-	margin-top: 15px;
+	background: url("assets/shop.svg") center center no-repeat, rgba(255, 255, 255, 0.85);
+	background-size: 50%;
 }
 
 .rules-blackout{
@@ -2743,12 +2852,13 @@ html,body
 	margin: 5px 0 15px 0;
 }
 #app, .game, .levels{
-	background: url(assets/background2.png) 50% no-repeat;
+	background: url(assets/bg-new.png) 50% no-repeat;
+	background: url(assets/bg-new-big.png) 50% no-repeat;
 	background-size: cover;
 }
 @media (min-width: 1800px) {
 	#app, .game, .levels{
-		background: url(assets/background.png) 50% no-repeat;
+		background: url(assets/bg-new-big.png) 50% no-repeat;
 		background-size: cover;
 	}
 }
@@ -2823,15 +2933,18 @@ html,body
 }
 .levelsTop{
 	position: absolute;
-	left: 0;
+	left: 50%;
 	top: 0;
 
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 
-	width: 100%;
-	height: 60px;
+	width: 540px;
+	height: 70px;
+
 	z-index: 3;
+	transform: translateX(-50%);
 }
 .levelsTop__allStars{
 
@@ -2839,38 +2952,35 @@ html,body
 	justify-content: center;
 	align-items: center;
 
-	padding: 0 8px;
+	height: 40px;
+
+	padding: 0 12px;
 
 
-	font-size: 2.5rem;
-	line-height: 2.5rem;
-	color: #a15eb9;
+	font-size: 2.2rem;
+	line-height: 2.2rem;
+	color: #66196C;
 
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.95);
+	opacity: 0.85;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+	border-radius: 25px;
 
-	border: 3px solid #a15eb9;
-	border-top: none;
-
-	border-radius: 0 0 18px 18px;
 
 	letter-spacing: 2px;
 
-	margin-right: 77px;
+	margin-left: 75px;
 }
 
 .levelsTop__allStars_withoutLB{
-	margin-left: 60px;
+	margin-left: 0;
 }
 
 
 .levels .menu-star{
-	width: 20px;
-	height: 20px;
 
-	margin-left: 5px;
-
-	background: url(assets/menu-star.png) center center no-repeat;
-	background-size: 100%;
+	background-color: #E5C726;
+	opacity: 1;
 }
 .levelsTop__allStars .menu-star{
 	width: 22px;
@@ -2923,18 +3033,17 @@ html,body
 	height: 60px;
 
 
-	background-color: white;
-	border: 3px solid #9f66ad;
+	background-color: rgba(255, 255, 255, 0.85);
 	border-radius: 50%;
 
-	margin: 0 20px 30px 0;
+	margin: 0 20px 26px 0;
 
 	font-size: 2.9rem;
-	color: #9f66ad;
+	color: #2C2C2C;
 
 	cursor: pointer;
 
-	box-shadow: 0 0 5px hsla(0,0%,100%,.2);
+	box-shadow: 0 0 4px rgba(159, 102, 173, 0.4);
 
 }
 .levels-wrapper::before, .levels-wrapper::after {
@@ -2952,26 +3061,12 @@ html,body
 	order: 2;
 }
 .level-done{
-	color: #bb9bc5;
-	border-color: #bb9bc5;
-	box-shadow: none;
+	/*color: #bb9bc5;*/
+	/*border-color: #bb9bc5;*/
+	/*box-shadow: none;*/
 }
 .level_close{
-	border-color: #cabdcf;
-}
-.close-level{
-	position: absolute;
-	top: 0;
-	left: 0;
-
-	width: 100%;
-	height: 100%;
-
-	border-radius: 50%;
-	background: url(assets/close-level.png) center center no-repeat;
-	background-size: 50%;
-
-	cursor: auto;
+	color: #9A9A9A;
 }
 .menu__level_stars{
 	display: flex;
@@ -2981,20 +3076,15 @@ html,body
 .level .menu__level_stars{
 	position: absolute;
 	left: 0;
-	bottom: -21px;
+	bottom: -15px;
 
 	width: 100%;
 
 	cursor: auto;
 
-	justify-content: space-around;
+	justify-content: center;
 }
-.menu__level_stars .menu-star{
-	width: 15px;
-	height: 15px;
-	margin: 0;
 
-}
 
 .rules .settings__text{
 	font-size: inherit;
@@ -3004,7 +3094,7 @@ html,body
 
 /*Игра*/
 .property{
-	z-index: 2;
+	/*z-index: 2;*/
 }
 /*Меню*/
 .menu{
@@ -3022,29 +3112,40 @@ html,body
 
 	color: white;
 
-	background: rgba(0,0,0,0.1);
+	/*background: rgba(0,0,0,0.1);*/
 
 	z-index: 3;
 }
-.menu__button-back, .menu__tip, .menu__button-next-level{
-	width: 30px;
-	height: 30px;
+.tutorialMenu{
+	z-index: auto;
+}
+.menuItem{
+	width: 40px;
+	height: 40px;
 
-	background: url(assets/bars.png) center center no-repeat;
-	background-size: 100%;
+	border-radius: 50%;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+.levelsTop .menuItem{
+	width: 50px;
+	height: 50px;
+}
+.menu__button-back, .menu__tip, .menu__button-next-level{
+	background: url(assets/menu.svg) center center no-repeat, rgba(255, 255, 255, 0.85);
+	background-size: 60%;
+
 	border: none;
 	cursor: pointer;
+
+	position: relative;
 
 	outline: none;
 }
 .menu__tip{
 	position: relative;
 
-	width: 24px;
-	height: 38px;
-
-	background: url(assets/tip.png) center center no-repeat;
-	background-size: 100%;
+	background: url(assets/tip.svg) center center no-repeat, rgba(255, 255, 255, 0.85);
+	background-size: 40%;
 }
 .menu__tip_count, .advert{
 	position: absolute;
@@ -3057,10 +3158,19 @@ html,body
 
 	padding: 0 5px;
 
-	font-size: 1rem;
+	font-size: 1.2rem;
 
 	background-color: #ad63b6;
 	border-radius: 7px;
+}
+.menu__tip_count{
+	color: white;
+	background-color: #66196C;
+	font-weight: bold;
+	width: 35px;
+	padding: 0 5px;
+	right: -22px;
+	height: 15px;
 }
 .advert{
 	width: 15px;
@@ -3070,7 +3180,7 @@ html,body
 	background-size: 80%;
 }
 .menu__level, .menu__words-amount{
-	font-size: 1.6rem;
+	font-size: 2.2rem;
 	letter-spacing: 1px;
 }
 .menu__words-amount{
@@ -3078,13 +3188,16 @@ html,body
 	min-width: 60px;
 	text-align: center;
 }
-.menu__words-amount:after, .menu__button-next-level:after{
+.menu__words-amount:after, .menu__button-next-level:after, .menu__button-back:after, .menu__tip:after, .prev-location:after, .next-location:after, .switchSettings:after{
 	position: absolute;
 	content: '';
 	top: -10px;
 	left: -10px;
 	right: -10px;
 	bottom: -10px;
+}
+.menu__level{
+	position: relative;
 }
 
 .menu__hint{
@@ -3114,16 +3227,16 @@ html,body
 
 .menu__button-next-level{
 	position: relative;
-	background: url(assets/angle-right_gray.png) center center no-repeat;
-	background-size: 70%;
+	background: url(assets/arrow_next_notActive.svg) 56% center no-repeat, rgba(255, 255, 255, 0.85);
+	background-size: 33%;
 	cursor: default;
 }
 .menu__button-next-level, .menu__button-next-level:active{
 	outline: none;
 }
 .menu__button-next-level_active{
-	background: url(assets/angle-right_white.png) center center no-repeat;
-	background-size: 70%;
+	background: url(assets/arrow_next_active.svg) 55% center no-repeat, rgba(255, 255, 255, 0.85);
+	background-size: 35%;
 	cursor: pointer;
 }
 .menu__button-next-level_active:active{
@@ -3135,17 +3248,36 @@ html,body
 
 }
 .level_star{
-	width: 15px;
-	height: 15px;
+	width: 8px;
+	height: 8px;
 
+	border-radius: 50%;
+
+	background-color: #DFDFDF;
+
+}
+.menu__level_stars .level_star{
+	margin-right: 4px;
+}
+.menu__level_stars .level_star:last-child{
+	margin-right: 0;
+}
+.menu__level .level_star{
 	background: url(assets/empty-star.png) center center no-repeat;
 	background-size: 100%;
 
+	width: 15px;
+	height: 15px;
 }
-.level_full-star.getStar{
+.menu__level .menu__level_stars{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+.menu__level .level_full-star.getStar{
 	animation: showFullStar 1s forwards;
 }
-.level_full-star{
+.menu__level .level_full-star{
 	background: url(assets/menu-star.png) center center no-repeat;
 	background-size: 100%;
 }
@@ -3165,31 +3297,28 @@ html,body
 }
 .next-location, .prev-location{
 	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
+	top: 99px;
 
-	width: 30px;
-	height: 40px;
+	width: 14px;
+	height: 53px;
 
 
-	background: url(assets/angle-right_white.png) center center no-repeat;
+	background: url(assets/angle-left.svg) center center no-repeat;
 	background-size: 100%;
 
 	cursor: pointer;
 	z-index: 2;
 }
-.next-location:active{
-	transform: translateY(-50%) scale(0.98);
-}
 .next-location{
-	right: 5px;
+	background: url(assets/angle-right.svg) center center no-repeat;
+	background-size: 100%;
+	right: 10px;
+}
+.next-location:active, .prev-location:active{
+	transform: scale(0.98);
 }
 .prev-location{
-	left: 5px;
-	transform: translateY(-50%) rotate(180deg);
-}
-.prev-location:active{
-	transform: translateY(-50%) rotate(180deg) scale(0.98);
+	left: 10px;
 }
 /*Блок со всеми словами*/
 .words{
@@ -3197,9 +3326,9 @@ html,body
 	flex-flow: column wrap;
 
 	width: 100%;
-	max-height: 59%;
+	max-height: 54%;
 
-	margin: 50px 0 10px 0;
+	margin-top: 50px;
 
 	padding: 10px;
 
@@ -3216,27 +3345,40 @@ html,body
 
 	cursor: pointer;
 }
-.words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
-	background-color: rgba(166,82,174,0.9);
+.words__letters-block_done .words__letter{
+	/*background-color: rgba(166,82,174);*/
 	color: white;
+	background-color: #BA6FC6;
+}
+.action-block__letters .action-block__letter_selected{
+	color: white;
+	background-color: #BF63C7;
 }
 .words__letter, .action-block__letter{
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	width: 25px;
-	height: 25px;
+	width: 32px;
+	height: 32px;
 
 	margin: 1px;
 
-	border-radius: 3px;
+	border-radius: 26%;
 
-	font-size: 1.8rem;
+	font-size: 2.1rem;
 	text-transform: uppercase;
 
 	background-color: rgba(255, 255, 255, 0.9);
 
+}
+.action-block__letter{
+	border-radius: 15%;
+	background-color: white;
+	color: #2C1345;
+}
+.tutorialSelected{
+	z-index: 10;
 }
 .words__letter{
 	background-color: rgba(255, 255, 255, 0.75);
@@ -3246,17 +3388,21 @@ html,body
 	/*animation-delay: 0.2s;*/
 }
 .newWord .words__letter{
-	background-color: rgba(217, 109, 227, 0.9);
+	background-color: #CC6F9C;
 }
 @keyframes  showNewWord{
 	0%{
 		background-color: rgba(255, 255, 255, 0.75);
 	}
 	100%{
-		background-color: rgba(217, 109, 227, 0.9);
+		background-color: #CC6F9C;
 	}
 }
 /*Взаимодействие*/
+.done-word{
+	z-index: 10;
+	position: relative;
+}
 .action-block__done-word{
 	min-height: 30px;
 
@@ -3283,10 +3429,43 @@ html,body
 		background-color: rgba(87, 41, 100, 0.9);
 	}
 }
+@keyframes swing {
+	20% {
+		-webkit-transform: rotate3d(0, 0, 1, 15deg);
+		-ms-transform: rotate3d(0, 0, 1, 15deg);
+		transform: rotate3d(0, 0, 1, 15deg);
+	}
 
+	40% {
+		-webkit-transform: rotate3d(0, 0, 1, -10deg);
+		-ms-transform: rotate3d(0, 0, 1, -10deg);
+		transform: rotate3d(0, 0, 1, -10deg);
+	}
+
+	60% {
+		-webkit-transform: rotate3d(0, 0, 1, 5deg);
+		-ms-transform: rotate3d(0, 0, 1, 5deg);
+		transform: rotate3d(0, 0, 1, 5deg);
+	}
+
+	80% {
+		-webkit-transform: rotate3d(0, 0, 1, -5deg);
+		-ms-transform: rotate3d(0, 0, 1, -5deg);
+		transform: rotate3d(0, 0, 1, -5deg);
+	}
+
+	100% {
+		-webkit-transform: rotate3d(0, 0, 1, 0deg);
+		-ms-transform: rotate3d(0, 0, 1, 0deg);
+		transform: rotate3d(0, 0, 1, 0deg);
+	}
+}
 .wordWas .words__letter{
-	/*animation: tremor2 1s ease-in-out;*/
-	background-color: rgba(87, 41, 100, 0.9);
+	animation-duration: 1s;
+	animation-fill-mode: both;
+	transform-origin: center center;
+	animation-name: swing;
+	background-color: #66196C;
 }
 
 
@@ -3302,6 +3481,9 @@ html,body
 
 	min-width: 500px;
 	width: 540px;
+}
+.mainShop{
+	font-family: 'Roboto', sans-serif;
 }
 .shop .rules__menu{
 	margin: 5px 0 15px 0;
@@ -3334,9 +3516,9 @@ html,body
 .shop__cart__name{
 	margin: 15px 0 5px 0;
 	text-align: center;
-	color: #9b6aab;
+	color: #6C1969;
 	font-size: 1.3rem;
-	border-bottom: 1px solid #9b6aab;
+	border-bottom: 1px solid #6C1969;
 }
 .shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4{
 	position: relative;
@@ -3356,22 +3538,22 @@ html,body
 
 
 .shop__cart__item_2 {
-	background: url("assets/cart__item-2.png") center bottom no-repeat;
-	background-size: 40%;
+	background: url("assets/cart__item-2.svg") center bottom no-repeat;
+	background-size: 50%;
 }
 .shop__cart__item_2 .cart__item_tip{
 	right: 28%;
 }
 .shop__cart__item_3 {
-	background: url("assets/cart__item-3.png") center bottom no-repeat;
-	background-size: 50%;
+	background: url("assets/cart__item-3.svg") 65% bottom no-repeat;
+	background-size: 75%;
 }
 .shop__cart__item_3 .cart__item_tip{
 	right: 29%;
 }
 .shop__cart__item_4 {
-	background: url("assets/cart__item-4.png") center bottom no-repeat;
-	background-size: 70%;
+	background: url("assets/cart__item-4.svg") center bottom no-repeat;
+	background-size: 90%;
 }
 .shop__cart__item_4 .cart__item_tip{
 	right: 31%;
@@ -3420,7 +3602,7 @@ html,body
 	height: 40px;
 
 	font-size: 2.4rem;
-	margin-right: 5px;
+	margin-right: 7px;
 
 	cursor: pointer;
 	-ms-user-select: none;
@@ -3434,15 +3616,15 @@ html,body
 .action-block__button-send{
 	display: block;
 
-	margin: 0 5px 2px 25px;
+	margin-left: 25px;
 
-	width: 41px;
-	height: 41px;
+	width: 40px;
+	height: 40px;
 
-	background: url(assets/angle-right.png) center center no-repeat, rgba(255, 255, 255, 0.9);
+	background: url(assets/sendWord.svg) 55% 55% no-repeat, white;
 	background-size: 17px 29px;
 
-	border-radius: 3px;
+	border-radius: 15%;
 
 
 
@@ -3454,6 +3636,9 @@ html,body
 	transform: scale(0.98);
 	outline: none;
 }
+.words__letter, .action-block__letter, .action-block__button-send{
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+}
 @media (max-width: 600px) {
 	.level{
 		width: 55px;
@@ -3463,6 +3648,13 @@ html,body
 	}
 }
 @media (min-width: 1000px) {
+	.levelsTop{
+		width: 750px;
+	}
+	.levelsTop .menuItem{
+		width: 70px;
+		height: 70px;
+	}
 	.rules__menu{
 		font-size: 3.5rem;
 		line-height: 3.5rem;
@@ -3520,34 +3712,49 @@ html,body
 	.levels-wrapper{
 		margin: 0 auto;
 	}
-	.property, .levels-wrapper{
+	.property{
 		max-width: 1200px;
+		margin: 0 auto;
+	}
+	.levels-wrapper{
+		max-width: 1000px;
 		margin: 0 auto;
 	}
 	.level{
 		width: 90px;
 		height: 90px;
 
-		margin-bottom: 40px;
+		margin-bottom: 30px;
 
 		font-size: 4.3rem;
 	}
 	.level .menu__level_stars{
-		bottom: -27px;
+		bottom: -18px;
 	}
 	.level_star{
-		width: 22px;
-		height: 22px;
+		width: 13px;
+		height: 13px;
+	}
+	.menu__level_stars .level_star {
+		margin-right: 5px;
 	}
 
 
 	/*Игра*/
-	.menu__button-back, .menu__button-next-level, .prev-location, .next-location{
-		width: 40px;
-		height: 40px;
+	.menu__button-back, .menu__button-next-level{
+		width: 60px;
+		height: 60px;
 	}
-	.menu__words-amount{
-		font-size: 2rem;
+	.next-location, .prev-location{
+		width: 28px;
+		height: 106px;
+		top: 123px;
+	}
+	.next-location:active, .prev-location:active{
+		transform: scale(0.98);
+	}
+	.menu__words-amount, .menu__level{
+		font-size: 2.6rem;
 	}
 	.menu__hint{
 		font-size: 1.4rem;
@@ -3561,23 +3768,21 @@ html,body
 		width: 200px;
 	}
 
-	.menu__level{
-		font-size: 2rem;
-	}
-	.close-level{
-		background-size: 50%;
-	}
-	.level_star, .level_star.menu-star{
-		width: 20px;
-		height: 20px;
+
+	.menu__level .level_star{
+		width: 22px;
+		height: 22px;
 	}
 	.menu__tip{
-		width: 32px;
-		height: 50px;
+		width: 60px;
+		height: 60px;
 	}
 	.menu__tip_count{
-		font-size: 1.3rem;
-		right: -5px;
+		font-size: 1.7rem;
+		line-height: 1.7rem;
+		width: 50px;
+		right: -30px;
+		height: 20px;
 	}
 	.cart__item_tip{
 		font-size: 1.3rem;
@@ -3587,7 +3792,6 @@ html,body
 
 	.words{
 		margin-top: 60px;
-		padding: 20px;
 	}
 	.words__letter{
 		width: 40px;
@@ -3793,8 +3997,8 @@ html,body
 	height: 20px;
 	border-radius: 15px;
 	background: #CDD1DA;
-	box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
 	transition: 0.2s;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18);
 }
 .checkbox + label:after {
 	content: "";
@@ -3802,24 +4006,26 @@ html,body
 	top: 50%;
 	transform: translateY(-53%);
 	right: 28px;
-	width: 21px;
-	height: 21px;
+	width: 25px;
+	height: 25px;
 	border-radius: 50%;
 	background: white;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.35);
 	transition: 0.2s;
 }
 .checkbox:checked + label:after {
 	right: 0;
+	background-color: #AE69C6;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 .checkbox:checked + label:before {
-	background: #a95dbc;
+	background: #E4B5F4;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
 }
 
 .settings__text{
 	font-size: 1.7rem;
-	color: #955ea5;
-
+	color: #AE69C6;
 	cursor: pointer;
 }
 
@@ -3869,46 +4075,33 @@ html,body
 		width: 300px;
 	}
 	.levelsTop{
-		height: 69px;
+		height: 80px
 	}
 	.levelsTop__allStars{
-		font-size: 2.75rem;
-		line-height: 2.75rem;
-		margin-right: 96.5px;
-	}
-	.levelsTop__allStars_withoutLB{
-		margin-left: 85px;
+		height: 70px;
+		font-size: 3rem;
 	}
 	.levelsTop__allStars .menu-star {
 		width: 30px;
 		height: 30px;
 	}
-	.switchSettings{
-		width: 81px;
-		height: 54px;
-	}
-	.leaderBoard{
-		width: 77px;
-		height: 61px;
-	}
-	.switchShop{
-		width: 74px;
-		height: 53px;
+	.switchSettings, .leaderBoard, .switchShop{
+		width: 60px;
+		height: 60px;
 	}
 }
 
 /*Реклама кроссвордов*/
 .levels__loc{
 	position: absolute;
-	left: 5px;
-	bottom: 5px;
+	right: 7px;
+	bottom: 7px;
 
 
-	width: 25px;
-	height: 25px;
+	width: 28px;
+	height: 28px;
 
 	background-color: white;
-	border: 1px solid #7f3e90;
 
 	border-radius: 50%;
 
@@ -3916,8 +4109,9 @@ html,body
 	justify-content: center;
 	align-items: center;
 
-	font-size: 1.5rem;
-	color: #7f3e90;;
+	font-size: 1.7rem;
+	color: black;
+	box-shadow: 0 0 6px rgba(0,0,0,0.2);
 }
 .levels__loc_big{
 	font-size: 1.25rem;
@@ -3928,7 +4122,7 @@ html,body
 	.levels__loc{
 		width: 50px;
 		height: 50px;
-		left: 10px;
+		right: 10px;
 		bottom: 10px;
 		font-size: 3rem;
 	}
@@ -3949,15 +4143,7 @@ html,body
 
 @media (max-height: 350px) {
 	.levelsTop__allStars{
-
-		padding: 0 9px;
-
-		font-size: 2.3rem;
-		line-height: 2.3rem;
-
-		border-width: 2px;
-
-		height: 90%;
+		height: 40px;
 
 	}
 
@@ -3971,9 +4157,11 @@ b{
 @media (max-height: 350px) {
 	.levelsTop{
 		height: 50px;
+		width: 487px;
 	}
-	.switchSettings, .switchShop{
-		margin-top: 5px;
+	.levelsTop .menuItem {
+		width: 40px;
+		height: 40px;
 	}
 	.level{
 		font-size: 2.5rem;
@@ -4010,14 +4198,89 @@ b{
 		font-size: 3.4rem;
 	}
 }
-@media (min-width: 1200px){
-	.levelsTop{
-		width: 1200px;
-		left: 50%;
-		transform: translateX(-50%);
-	}
-}
 .authText{
 	text-decoration: underline;
 }
+
+
+.cloudHint{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 10px;
+
+	width: 212px;
+	height: 148px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+
+	font-size: 1.6rem;
+	color: #9C4B94;
+	line-height: 2rem;
+
+	padding: 24px 17px;
+
+	background: url(assets/cloud.svg) center center no-repeat;
+	background-size: 100%;
+
+	z-index: 10;
+}
+.cloudHint_wordSelected{
+	left: auto;
+	right: 10px;
+}
+.cloudHint__mainText{
+	color: #92378E;
+	font-weight: bold;
+}
+.skipTutorial{
+	position: absolute;
+	right: 15px;
+	top: 15px;
+
+	font-size: 1.4rem;
+	font-family: 'Roboto', sans-serif;
+	color: white;
+
+	background-color: #BF63C7;
+	border-radius: 10px;
+	padding: 2px 10px;
+
+	z-index: 10;
+
+	cursor: pointer;
+}
+
+@media (min-width: 1000px) {
+	.menu{
+		padding: 10px 0;
+	}
+	.cloudHint{
+		width: 318px;
+		height: 222px;
+		font-size: 2.2rem;
+		line-height: 2.5rem;
+	}
+	.skipTutorial{
+		font-size: 2rem;
+		padding: 4px 15px;
+		border-radius: 15px;
+	}
+}
+@media (min-width: 1250px) {
+	.menu{
+		width: 1200px;
+		left: 50%;
+		margin-left: -600px;
+		justify-content: space-between;
+	}
+	.words{
+		padding: 0;
+	}
+}
+
+
 </style>
