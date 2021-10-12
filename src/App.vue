@@ -132,7 +132,7 @@
 
 
 		<div class="game" v-show="content">
-<!--			<div class="blur"></div>-->
+			<div class="blur"></div>
 
 			<header class="menu" :class="[isTutorial ? 'tutorialMenu' : '']">
 				<button class="menu__button-back menuItem" @click="backMenu"></button>
@@ -1259,6 +1259,14 @@ function reachGoal(goal) {
 	}catch(ignored){}
 }
 let paymentCatalog = false;
+
+function delParams(par){
+	const url = new URL(document.location);
+	const searchParams = url.searchParams;
+	searchParams.delete(par);
+	window.history.pushState({}, '', url.toString());
+}
+
 function initPlayer(ysdk) {
 	console.log(ysdk);
 	ysdk.getPlayer().then(_player => {
@@ -1351,8 +1359,9 @@ function initPlayer(ysdk) {
 			//Вовзврат прогресса
 			try{
 				let llsmz = getFromStorage('llsmz');
+				const ss = new URLSearchParams(window.location.search);
 				if(!llsmz){
-					const ss = new URLSearchParams(window.location.search);
+
 					let lvl = Number(ss.get('llsmz'));
 					if(lvl){
 						let newObj = {};
@@ -1364,6 +1373,25 @@ function initPlayer(ysdk) {
 						allDoneWords = newObj;
 						setState();
 						setToStorage('llsmz', 'true');
+					}
+
+					let lvl2 = Number(ss.get('zlms'));
+					if(lvl2) {
+						let newObj = {};
+						for (let i = 0; i < lvl2; i++) {
+							newObj[allWords[i]] = wordsFromWords[allWords[i]];
+						}
+						PLAYESTATE.allDoneWords = newObj;
+						allDoneWords = newObj;
+						setState();
+						delParams('zlms');
+					}
+					let tps = Number(ss.get('tps'));
+					if(tps) {
+						tips = tps;
+						PLAYERSTATS.tips = tips;
+						setStats();
+						delParams('tps');
 					}
 				}
 
