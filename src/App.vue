@@ -150,7 +150,7 @@
 				</div>
 				<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
 					<div class="advert" v-if="canShowAdv && tipCount === 0"></div>
-					<div class="menu__tip_count" v-else>{{tipCount}}</div>
+					<div class="menu__tip_count" v-else>{{lvl === 0 ? '∞' : tipCount}}</div>
 				</div>
 				<div class="menu__button-next-level menuItem"
 					 :class="[testShowNextLevel() ? 'menu__button-next-level_active' : '']"
@@ -208,7 +208,7 @@
 				</div>
 
 
-				<div class="cloudHint" v-show="cloudHint && !showWordDesc" :class="[selectMainWord ? 'cloudHint_wordSelected' : '']">
+				<div class="cloudHint" v-show="cloudHint && !showWordDesc" :class="[selectMainWord ? 'cloudHint_wordSelected' : '']" @click="closeHint()">
 					<p v-html="cloudsPhrase"></p>
 				</div>
 				<div class="skipTutorial" v-show="cloudHint && !showWordDesc && canShowSkip" @click="endTutorial">Пропустить</div>
@@ -4237,7 +4237,7 @@ b{
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
-	left: 10px;
+	right: 10px;
 
 	width: 212px;
 	height: 148px;
@@ -4268,10 +4268,10 @@ b{
 }
 .skipTutorial{
 	position: absolute;
-	right: 15px;
+	left: 15px;
 	top: 15px;
 
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	font-family: 'Roboto', sans-serif;
 	color: white;
 
