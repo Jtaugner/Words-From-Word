@@ -494,7 +494,7 @@ var wordsFromWords = wordsFromWordsRU,
 let advTime = false;
 setTimeout(()=>{
 	advTime = true;
-}, 30000);
+}, 60000);
 let showAdv, playerGame, payments, YSDK;
 
 
@@ -1374,25 +1374,25 @@ function initPlayer(ysdk) {
 						setState();
 						setToStorage('llsmz', 'true');
 					}
+				}
 
-					let lvl2 = Number(ss.get('zlms'));
-					if(lvl2) {
-						let newObj = {};
-						for (let i = 0; i < lvl2; i++) {
-							newObj[allWords[i]] = wordsFromWords[allWords[i]];
-						}
-						PLAYESTATE.allDoneWords = newObj;
-						allDoneWords = newObj;
-						setState();
-						delParams('zlms');
+				let lvl2 = Number(ss.get('zlms'));
+				if(lvl2) {
+					let newObj = {};
+					for (let i = 0; i < lvl2; i++) {
+						newObj[allWords[i]] = wordsFromWords[allWords[i]];
 					}
-					let tps = Number(ss.get('tps'));
-					if(tps) {
-						tips = tps;
-						PLAYERSTATS.tips = tips;
-						setStats();
-						delParams('tps');
-					}
+					PLAYESTATE.allDoneWords = newObj;
+					allDoneWords = newObj;
+					setState();
+					delParams('zlms');
+				}
+				let tps = Number(ss.get('tps'));
+				if(tps) {
+					tips = tps;
+					PLAYERSTATS.tips = tips;
+					setStats();
+					delParams('tps');
 				}
 
 
@@ -2504,11 +2504,13 @@ export default {
 						if(!this.testStars()){
 							if(showAdv && advTime){
 								setTimeout(()=>{
-									showAdv();
-									this.advShowNow = true;
-									setTimeout(()=>{
-										this.advShowNow = false;
-									}, 10000)
+									if(this.lvl !== 0){
+										showAdv();
+										this.advShowNow = true;
+										setTimeout(()=>{
+											this.advShowNow = false;
+										}, 10000)
+									}
 								}, 300)
 							}
 						}
