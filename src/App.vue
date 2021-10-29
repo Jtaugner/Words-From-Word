@@ -2639,15 +2639,15 @@ export default {
 
 						if(!this.testStars()){
 							if(showAdv && advTime){
-								setTimeout(()=>{
-									if(this.lvl !== 0){
-										showAdv();
-										this.advShowNow = true;
-										setTimeout(()=>{
-											this.advShowNow = false;
-										}, 10000)
-									}
-								}, 300)
+								// setTimeout(()=>{
+								// 	if(this.lvl !== 0){
+								// 		showAdv();
+								// 		this.advShowNow = true;
+								// 		setTimeout(()=>{
+								// 			this.advShowNow = false;
+								// 		}, 10000)
+								// 	}
+								// }, 300)
 							}
 						}
 
@@ -2679,6 +2679,18 @@ export default {
 
 				}else if(this.isSounds){
 					wrongWordSound.play();
+				}
+
+				if(showAdv && advTime){
+					setTimeout(()=>{
+						if(this.lvl !== 0){
+							showAdv();
+							this.advShowNow = true;
+							setTimeout(()=>{
+								this.advShowNow = false;
+							}, 10000)
+						}
+					}, 300)
 				}
 
 				setTimeout(()=>{
@@ -2720,14 +2732,14 @@ export default {
 					PLAYERSTATS.tips = this.tipCount;
 					saveAllData(false);
 					if(showAdv && advTime){
-						setTimeout(()=>{
-							showAdv();
-							this.showAdv++;
-							this.advShowNow = true;
-							setTimeout(()=>{
-								this.advShowNow = false;
-							}, 10000)
-						}, 300)
+						// setTimeout(()=>{
+						// 	showAdv();
+						// 	this.showAdv++;
+						// 	this.advShowNow = true;
+						// 	setTimeout(()=>{
+						// 		this.advShowNow = false;
+						// 	}, 10000)
+						// }, 300)
 					}
 				}, 1000);
 				return true;
