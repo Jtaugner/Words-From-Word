@@ -90,5 +90,8 @@
 .chosenAppBg3 .wordWas .words__letter {
   background-color: #5d397f;
 }
+.chosenAppBg3 .menu__hint {
+  background-color: rgba(71, 25, 108, 0.9);
+}
 
 /*# sourceMappingURL=stylesBg3.css.map */

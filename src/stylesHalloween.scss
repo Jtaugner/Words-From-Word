@@ -1,0 +1,106 @@
+
+/*Фон 3*/
+
+#app.chosenAppBg-1, .chosenAppBg-1 .game, .chosenAppBg-1 .levels{
+  background-image: url(assets/bgHalloween/bgH.png);
+}
+
+@media (min-width: 1800px) {
+  #app.chosenAppBg-1, .chosenAppBg-1 .game, .chosenAppBg-1 .levels{
+    background-image: url(assets/bgHalloween/bgH-big.png);
+  }
+}
+
+.chosenAppBg-1{
+  .levelsTop__allStars{
+    color: #103A4D;
+  }
+  .leaderBoard{
+    background-image: url(assets/bgHalloween/leader.svg);
+  }
+  .switchShop{
+    background-image: url(assets/bgHalloween/shop.svg);
+  }
+  .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
+    background-color: #3C9BA8;
+  }
+  .menu__button-back{
+    background-image: url(assets/bgHalloween/home.svg);
+  }
+  .menu__tip{
+    background-image: url(assets/bgHalloween/tip.svg);
+  }
+  .menu__tip_count, .rules__goBg{
+    background-color: #103A4D;
+  }
+  .shop, .rules{
+    border-color: #103A4D;
+  }
+  .shop .rules__menu, .settings__text{
+    color: #103A4D;
+  }
+  .rules__cross{
+    background-image: url(assets/bgHalloween/cross.svg);
+  }
+  .menu__button-next-level_active{
+    background-image: url(assets/bgHalloween/arrow.svg);
+  }
+  .switchSettings{
+    background-image: url(assets/bgHalloween/settings.svg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #3C9BA8;
+  }
+  .settings{
+    border-color: #103A4D;
+  }
+  .checkbox:checked + label:after {
+    background-color: #3C9BA8;
+  }
+  .checkbox:checked + label:before {
+    background: #B5E9F4;
+  }
+
+  .newWord .words__letter{
+    background-color: #22dcdc;
+  }
+  .animWord .words__letter{
+    animation: 1s showNewWord3 forwards;
+  }
+  @keyframes  showNewWord3{
+    0%{background-color: rgba(255, 255, 255, 0.85);}
+    100%{background-color: #22dcdc;}
+  }
+
+  //Магазин
+  .shop__cart__item_2{
+    background-image: url(assets/bgHalloween/cart1.svg);
+  }
+  .shop__cart__item_3{
+    background-image: url(assets/bgHalloween/cart2.svg);
+  }
+  .shop__cart__item_4{
+    background-image: url(assets/bgHalloween/cart3.svg);
+  }
+  .shop__cart__name{
+    color: #103A4D;
+    border-color: #103A4D;
+  }
+  .shop__cart__item{
+    border-color: #103A4D;
+  }
+
+  .wordWas .words__letter{
+    background-color: #092736;
+  }
+  .menu__hint{
+    background-color: rgba(16, 58, 77, 0.9);
+  }
+
+  .skipTutorial{
+    background-color: #3C9BA8;
+  }
+  .cloudHint, .cloudHint__mainText{
+    color: #3C9BA8;
+  }
+}

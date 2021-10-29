@@ -259,8 +259,8 @@
 					{{wasUpdate ? 'Уважаемые игроки!' : 'Дорогой игрок!'}}
 				</h2>
 				<template v-if="wasUpdate">
-					Вводим большое обновление, в котором добавляем новые фоны и цветовые оформления. Заходите в настройки и тестируйте!
-					<div class="rules__goBg" @click="goToChangeBg()">Перейти</div>
+					Представляем вам Хеллоуинское обновление: Эксклюзивное оформление и скидки на подсказки!
+					<div class="rules__goBg" @click="goToChangeBg(true)">Перейти</div>
 				</template>
 				<template v-else>
 					Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы обновляем словарь несколько раз в месяц, и добавляем новые уровни каждый месяц.
@@ -310,6 +310,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
 					<div class="shop__cart__buy-button" >
+						<div class="shop__lastPrice">49</div>
 						{{getItemPrice(0)}}
 					</div>
 				</div>
@@ -320,6 +321,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
 					<div class="shop__cart__buy-button">
+						<div class="shop__lastPrice">99</div>
 						{{getItemPrice(1)}}
 					</div>
 				</div>
@@ -330,6 +332,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
 					<div class="shop__cart__buy-button">
+						<div class="shop__lastPrice">149</div>
 						{{getItemPrice(2)}}
 					</div>
 				</div>
@@ -512,6 +515,7 @@ import './styles.scss';
 import './stylesBg1.scss';
 import './stylesBg2.scss';
 import './stylesBg3.scss';
+import './stylesHalloween.scss';
 import {allWordsRU, dictionaryRU} from './russianWords';
 import {wordsFromWordsRU} from "./russianWordsFromWords";
 import {allWordsEN} from './englishWords';
@@ -862,7 +866,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-12";
+const lastVersion = "ver-13";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -958,7 +962,7 @@ if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = 0;
+	chosenBackground = -1;
 	// deleteBlockBg = true;
 }
 
@@ -1281,10 +1285,11 @@ if(window.YaGames){
 			};
 		}
 		showAdv = () => {
+			console.log('showAdv');
 			ysdk.adv.showFullscreenAdv({
 				callbacks: {
 					onClose: function() {
-
+						console.log('close adv');
 						advTime = false;
 						canShowAdv();
 
@@ -1293,6 +1298,10 @@ if(window.YaGames){
 							console.log('set to true');
 							canShowAdv();
 						}, 190000);
+					},
+					onError: function (e){
+						console.log('error adv')
+						console.log(e);
 					}
 				}
 			});
@@ -1539,7 +1548,7 @@ function consumePurchase(purchase) {
 	document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 	payments.consumePurchase(purchase.purchaseToken);
 }
-const itemsPrices = [49, 99, 149];
+const itemsPrices = [29, 49, 99];
 
 function buyTips(item) {
 	if(payments && playerGame){
@@ -1712,10 +1721,12 @@ const NewAudioContext = (function() {
 })();
 
 let wrongWordSound = new NewAudioContext('wrong-word2');
+let wordWasSound = new NewAudioContext('word-was');
 let doneWordSound = new NewAudioContext('done-word');
 let starVolume = new NewAudioContext('star');
 let newLevel = new NewAudioContext('new-level');
 let clickSound = new NewAudioContext('click');
+let exitLevelSound = new NewAudioContext('exitLevel');
 
 const lettersMap = {
 	'q' : 'й', 'w' : 'ц', 'e' : 'у', 'r' : 'к', 't' : 'е', 'y' : 'н', 'u' : 'г', 'i' : 'ш', 'o' : 'щ', 'p' : 'з', '[' : 'х', ']' : 'ъ', 'a' : 'ф', 's' : 'ы', 'd' : 'в', 'f' : 'а', 'g' : 'п', 'h' : 'р', 'j' : 'о', 'k' : 'л', 'l' : 'д', ';' : 'ж', '\'' : 'э', 'z' : 'я', 'x' : 'ч', 'c' : 'с', 'v' : 'м', 'b' : 'и', 'n' : 'т', 'm' : 'ь', ',' : 'б', '.' : 'ю','Q' : 'Й', 'W' : 'Ц', 'E' : 'У', 'R' : 'К', 'T' : 'Е', 'Y' : 'Н', 'U' : 'Г', 'I' : 'Ш', 'O' : 'Щ', 'P' : 'З', 'A' : 'Ф', 'S' : 'Ы', 'D' : 'В', 'F' : 'А', 'G' : 'П', 'H' : 'Р', 'J' : 'О', 'K' : 'Л', 'L' : 'Д', 'Z' : '?', 'X' : 'ч', 'C' : 'С', 'V' : 'М', 'B' : 'И', 'N' : 'Т', 'M' : 'Ь'
@@ -2004,7 +2015,7 @@ export default {
 			selectMainWord: false,
 			selectTip: false,
 			canShowSkip: false,
-			chosenBg: 0,
+			chosenBg: -1,
 			bgLvlsOpen: bgLvlsOpen,
 			chosenBgRight: chosenBackground,
 			openNewBg: false,
@@ -2033,12 +2044,12 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 4) this.chosenBg = 0;
+			if(this.chosenBg === 4) this.chosenBg = -1;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -1) this.chosenBg = 3;
+			if(this.chosenBg === -2) this.chosenBg = 3;
 			this.testBg();
 		},
 		testBg(){
@@ -2046,16 +2057,22 @@ export default {
 				this.chosenBgRight = this.chosenBg;
 				// importBg(this.chosenBgRight);
 			}else{
-				this.chosenBgRight = 0;
+				this.chosenBgRight = this.chosenBg;
 			}
 			params({'choseBg': this.chosenBgRight});
 			setToStorage('chosenBackground', this.chosenBgRight);
 		},
-		goToChangeBg(){
+		goToChangeBg(changeHalloween){
 			this.backMenu();
 			this.isSettings = true;
 			this.openNewBg = false;
 			this.showLastLevelInfo = false;
+			if(changeHalloween){
+				this.chosenBg = -1;
+				this.chosenBgRight = -1;
+				params({'forcedBg': 1});
+				setToStorage('chosenBackground', this.chosenBgRight);
+			}
 		},
 		endTutorial(){
 			console.log('end');
@@ -2492,7 +2509,7 @@ export default {
 		backMenu(){
 			if(this.isTutorial) return;
 			if(this.isSounds){
-				clickSound.play();
+				exitLevelSound.play();
 			}
 
 			this.levels =  true;
@@ -2512,16 +2529,21 @@ export default {
 			if(this.tipCount < 1){
 				if(showAdv && advTime){
 					params({'showRewarded': 1});
-					advTime = false;
-					canShowAdv();
-					setTimeout(()=>{
-						advTime = true;
-						canShowAdv();
-					}, 190000);
 					let that= this;
+
 					YSDK.adv.showFullscreenAdv({
 						callbacks: {
 							onClose: function() {
+								console.log('close adv tip');
+								advTime = false;
+								canShowAdv();
+
+								setTimeout(()=>{
+									advTime = true;
+									console.log('set to true');
+									canShowAdv();
+								}, 190000);
+
 								that.addTip();
 							}
 						}
@@ -2634,11 +2656,13 @@ export default {
 
 			}else{
 				this.isBadWord = true;
-				if(this.isSounds){
-					wrongWordSound.play();
-				}
+
 
 				if(this.doneWords.includes(this.wordFromLetter)){
+					if(this.isSounds){
+						console.log('was word sound');
+						wordWasSound.play();
+					}
 					this.wordWasIndex = this.nowWords.indexOf(this.wordFromLetter);
 					setTimeout(()=>{
 						try{
@@ -2653,6 +2677,8 @@ export default {
 						this.wordWasIndex = -1;
 					}, 1200)
 
+				}else if(this.isSounds){
+					wrongWordSound.play();
 				}
 
 				setTimeout(()=>{

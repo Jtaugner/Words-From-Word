@@ -434,7 +434,7 @@ html,body
   height: 60px;
 
 
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.75);
   border-radius: 50%;
 
   margin: 0 20px 26px 0;
@@ -965,6 +965,10 @@ html,body
   font-size: 1.5rem;
 
   color: black;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .shop__cart__buy-button:hover{
   box-shadow: none;
@@ -1215,35 +1219,22 @@ html,body
 }
 
 
-.black-friday{
-  color: black;
-}
-.red-friday{
-  color: #bb0000;
-  border-color: #bb0000;
-}
 
-.shop__cart__prices{
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  align-items: center;
-}
-.last-price{
-  color: black;
+.shop__lastPrice{
+  color: red;
   position: relative;
   margin-right: 5px;
 }
 .now-price{
   margin-right: 4px;
 }
-.last-price:before{
+.shop__lastPrice:before{
   content: "";
   width: 0.8px;
   height: 90%;
   left: 40%;
   top: 1px;
-  background-color: black;
+  background-color: red;
   position: absolute;
   transform: rotate(120deg) translateX(-50%);
 }
@@ -1711,7 +1702,9 @@ b{
 
   border-radius: 10px;
 }
-
+.chosenBg-1{
+  background-image: url(assets/settings/bg-1.png);
+}
 .chosenBg1{
   background-image: url(assets/settings/bg1.png);
 }
@@ -1767,7 +1760,7 @@ b{
   font-size: 2.5rem;
   padding: 5px 10px;
   width: 135px;
-  margin: 8px auto;
+  margin: 10px auto;
   cursor: pointer;
 }
 .bgRules{
