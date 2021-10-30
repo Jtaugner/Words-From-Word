@@ -1324,7 +1324,7 @@ function tryShowAdv(){
 		canShowAdv();
 		setTimeout(()=>{
 			showAdv();
-		}, 300)
+		}, 600)
 	}
 }
 function update() {
