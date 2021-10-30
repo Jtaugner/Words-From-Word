@@ -991,6 +991,7 @@ function fixDoneWords(allDoneWords) {
 		let k = keys[i];
 		if(keys[i].indexOf('ё') !== -1){
 			k = k.replace(/ё/g, 'е');
+			console.log(k);
 		}else if(k === "ассиметрия"){
 			console.log('асс');
 			k = "асимметрия";
@@ -1211,12 +1212,14 @@ function getAllStars(allDoneWords){
 
 function setLoc() {
 	allWords.forEach((key => {
-		if(allDoneWords[key]){
-			allStars.push(testStar(allDoneWords[key].length, wordsFromWords[key].length))
-		}else{
-			allDoneWords[key] = [];
-			allStars.push(0);
-		}
+		try{
+			if(allDoneWords[key]){
+				allStars.push(testStar(allDoneWords[key].length, wordsFromWords[key].length))
+			}else{
+				allDoneWords[key] = [];
+				allStars.push(0);
+			}
+		}catch(e){}
 	}));
 	setLastLevel();
 	loc = Math.floor((lastLevel / 21));
@@ -1407,7 +1410,7 @@ function initPlayer(ysdk) {
 
 
 
-				let localStars = getAllStars(allDoneWords);
+				let localStars = getAllStars(fixDoneWords(allDoneWords));
 				let serverStars = getAllStars(newData);
 				if(dataObject.time && lastProgressUpdate && lastProgressUpdate > dataObject.time && localStars > serverStars){
 					PLAYESTATE = {allDoneWords: allDoneWords};
