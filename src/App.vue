@@ -1295,14 +1295,14 @@ if(window.YaGames){
 						console.log('close adv');
 						advTime = false;
 						canShowAdv();
-
 						setTimeout(()=>{
 							advTime = true;
-							console.log('set to true');
 							canShowAdv();
-						}, 190000);
+						}, 160000);
 					},
 					onError: function (e){
+						advTime = true;
+						canShowAdv();
 						console.log('error adv')
 						console.log(e);
 					}
@@ -1316,6 +1316,16 @@ if(window.YaGames){
 	});
 }else{
 	doDeleteBlock = true;
+}
+
+function tryShowAdv(){
+	if(showAdv && advTime){
+		advTime = false;
+		canShowAdv();
+		setTimeout(()=>{
+			showAdv();
+		}, 300)
+	}
 }
 function update() {
 	if (document.querySelector('.levels')) {
@@ -2365,14 +2375,8 @@ export default {
 				});
 			}, 200);
 
-			if(!this.isTutorial && showAdv && advTime){
-				setTimeout(()=>{
-					showAdv();
-					this.advShowNow = true;
-					setTimeout(()=>{
-						this.advShowNow = false;
-					}, 10000)
-				}, 300)
+			if(!this.isTutorial){
+				tryShowAdv();
 			}
 
 
@@ -2533,19 +2537,17 @@ export default {
 				if(showAdv && advTime){
 					params({'showRewarded': 1});
 					let that= this;
-
+					advTime = false;
 					YSDK.adv.showFullscreenAdv({
 						callbacks: {
 							onClose: function() {
 								console.log('close adv tip');
-								advTime = false;
 								canShowAdv();
-
 								setTimeout(()=>{
 									advTime = true;
 									console.log('set to true');
 									canShowAdv();
-								}, 190000);
+								}, 160000);
 
 								that.addTip();
 							}
@@ -2640,19 +2642,7 @@ export default {
 						this.animWordStart = '';
 						this.animWord = '';
 
-						if(!this.testStars()){
-							if(showAdv && advTime){
-								// setTimeout(()=>{
-								// 	if(this.lvl !== 0){
-								// 		showAdv();
-								// 		this.advShowNow = true;
-								// 		setTimeout(()=>{
-								// 			this.advShowNow = false;
-								// 		}, 10000)
-								// 	}
-								// }, 300)
-							}
-						}
+						this.testStars();
 
 					}, 1000)
 				}, 100);
@@ -2684,24 +2674,17 @@ export default {
 					wrongWordSound.play();
 				}
 
-				if(showAdv && advTime){
-					setTimeout(()=>{
-						if(this.lvl !== 0){
-							showAdv();
-							this.advShowNow = true;
-							setTimeout(()=>{
-								this.advShowNow = false;
-							}, 10000)
-						}
-					}, 300)
-				}
-
 				setTimeout(()=>{
 					this.isBadWord = false;
 					this.wordFromLetter = '';
 					this.selectedLetters = [];
 				}, 400)
 			}
+
+			if(this.lvl > 0){
+				tryShowAdv();
+			}
+
 		},
 		testStars(){
 			let stars = testStar(this.doneWords.length, this.nowWords.length);
@@ -2734,16 +2717,6 @@ export default {
 					setToStorage('tips', this.tipCount);
 					PLAYERSTATS.tips = this.tipCount;
 					saveAllData(false);
-					if(showAdv && advTime){
-						// setTimeout(()=>{
-						// 	showAdv();
-						// 	this.showAdv++;
-						// 	this.advShowNow = true;
-						// 	setTimeout(()=>{
-						// 		this.advShowNow = false;
-						// 	}, 10000)
-						// }, 300)
-					}
 				}, 1000);
 				return true;
 			}
