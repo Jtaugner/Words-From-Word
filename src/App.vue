@@ -389,6 +389,19 @@
 						{{notRussian ? 'Sounds' : 'Звуки'}}
 					</label>
 				</li>
+				<li>
+					<input type="checkbox"
+						   @change="toggleLastSounds"
+						   v-model="lastSounds"
+						   id="lastSoundCheckbox"
+						   class="checkbox"
+
+					/>
+					<label
+						for="lastSoundCheckbox">
+						{{notRussian ? 'Old sounds' : 'Старые звуки'}}
+					</label>
+				</li>
 
 
 				<li>
@@ -954,6 +967,7 @@ let doDeleteBlock;
 let allDoneWords = getFromStorage('allDoneWords');
 let tips = getFromStorage('tips');
 let sounds = getFromStorage('sounds');
+let isLastSounds = getFromStorage('lastSounds');
 let isAdvShowed = getFromStorage('isAdvShowed');
 let isGameAdvShow = getFromStorage('isGameAdvShow');
 let isGameUpdate = getFromStorage('gameUpdate-1');
@@ -1034,6 +1048,7 @@ if(allDoneWords){
 	console.log('dsd', allDoneWords);
 	tips = Number(tips);
 	sounds = sounds === 'true';
+	isLastSounds = isLastSounds === 'true';
 	setLoc();
 	console.log(allDoneWords);
 	isGameAdvShow = !isGameAdvShow;
@@ -1733,12 +1748,15 @@ const NewAudioContext = (function() {
 	return WebAudioAPISound;
 })();
 
-let wrongWordSound = new NewAudioContext('wrong-word2');
+let wrongWordSound = new NewAudioContext('wrong-word');
+let wrongWordSound2 = new NewAudioContext('wrong-word2');
 let wordWasSound = new NewAudioContext('word-was');
 let doneWordSound = new NewAudioContext('done-word');
+let doneWordSound2 = new NewAudioContext('done-word2');
 let starVolume = new NewAudioContext('star');
 let newLevel = new NewAudioContext('new-level');
 let clickSound = new NewAudioContext('click');
+let clickSound2 = new NewAudioContext('click2');
 let exitLevelSound = new NewAudioContext('exitLevel');
 
 const lettersMap = {
@@ -2032,7 +2050,8 @@ export default {
 			bgLvlsOpen: bgLvlsOpen,
 			chosenBgRight: chosenBackground,
 			openNewBg: false,
-			bgShowen: false
+			bgShowen: false,
+			lastSounds: isLastSounds
 		}
 	},
 	computed:{
@@ -2047,6 +2066,10 @@ export default {
 		}
 	},
 	methods:{
+		toggleLastSounds(e){
+			this.lastSounds = e.target.checked;
+			setToStorage('lastSounds', this.lastSounds);
+		},
 		toggleOpenNewBg(){
 			if(this.openNewBg){
 				this.openNewBg = false;
@@ -2435,6 +2458,15 @@ export default {
 				getWordDesc(word);
 			}
 		},
+		clickSound(){
+			if(this.isSounds){
+				if(this.lastSounds){
+					clickSound2.play();
+				}else{
+					clickSound.play();
+				}
+			}
+		},
 		pressKey(e){
 			if(!this.content) return;
 			let letter = e.key;
@@ -2455,9 +2487,7 @@ export default {
 					if(letter === this.letters[i] && !this.selectedLetters.includes(i)){
 						this.selectedLetters.push(i);
 						this.wordFromLetter += letter;
-						if(this.isSounds){
-							clickSound.play();
-						}
+						this.clickSound();
 						break;
 					}
 				}
@@ -2482,24 +2512,18 @@ export default {
 		prevLocation(){
 			if(this.location > 0){
 				this.location--;
-				if(this.isSounds){
-					clickSound.play();
-				}
+				this.clickSound();
 			}
 		},
 		nextLocation(){
 			if(this.location < this.allLocations-1){
 				this.location++;
-				if(this.isSounds){
-					clickSound.play();
-				}
+				this.clickSound();
 			}
 		},
 		selectLetter(index){
 			// if(this.animWordStart !== '') return;
-			if(this.isSounds){
-				clickSound.play();
-			}
+			this.clickSound();
 			if(this.isTutorial){
 				this.nextStep();
 			}
@@ -2631,7 +2655,12 @@ export default {
 						console.log('Ошибка показа');
 					}
 					if(this.isSounds){
-						doneWordSound.play();
+						if(this.lastSounds){
+							doneWordSound2.play();
+						}else{
+							doneWordSound.play();
+						}
+
 					}
 					this.addWord(wordFromLetter);
 					this.animWord = wordFromLetter;
@@ -2647,13 +2676,16 @@ export default {
 					}, 1000)
 				}, 100);
 
+				if(this.lvl > 0){
+					tryShowAdv();
+				}
+
 			}else{
 				this.isBadWord = true;
 
 
 				if(this.doneWords.includes(this.wordFromLetter)){
 					if(this.isSounds){
-						console.log('was word sound');
 						wordWasSound.play();
 					}
 					this.wordWasIndex = this.nowWords.indexOf(this.wordFromLetter);
@@ -2671,7 +2703,11 @@ export default {
 					}, 1200)
 
 				}else if(this.isSounds){
-					wrongWordSound.play();
+					if(this.lastSounds){
+						wrongWordSound2.play();
+					}else{
+						wrongWordSound.play();
+					}
 				}
 
 				setTimeout(()=>{
@@ -2679,10 +2715,6 @@ export default {
 					this.wordFromLetter = '';
 					this.selectedLetters = [];
 				}, 400)
-			}
-
-			if(this.lvl > 0){
-				tryShowAdv();
 			}
 
 		},
