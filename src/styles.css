@@ -1516,7 +1516,6 @@ html, body {
 }
 .word-definition {
   overflow: auto;
-  height: 80%;
   user-select: text;
 }
 
@@ -1746,6 +1745,15 @@ b {
 
 .bgRules {
   font-size: 2rem;
+}
+
+#definitionIframe {
+  width: 100%;
+  height: 100%;
+}
+
+.closedIframe {
+  display: none;
 }
 
 /*# sourceMappingURL=styles.css.map */

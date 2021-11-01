@@ -248,6 +248,7 @@
 				<div class="word-definition">
 					{{notRussian ? 'Definition - loading...' : 'Определение слова - загрузка...'}}
 				</div>
+				<iframe src="https://ru.m.wiktionary.org/wiki/" id="definitionIframe"></iframe>
 
 			</div>
 
@@ -1789,7 +1790,7 @@ function getDefaultDesc() {
 		}else{
 			document.querySelector('.word-definition').innerHTML = 'Определение слова - загрузка...';
 		}
-
+		document.getElementById('definitionIframe').src = '';
 	}catch(ignored){}
 }
 function addHTMLToDesc(html){
@@ -1849,106 +1850,22 @@ function getEngDesc(word){
 function getWordDesc(word) {
 	console.log('getWordDesc --- ', word);
 	if(notRussianGame) return getEngDesc(word);
-	if(dictionary[word]){
-		addHTMLToDesc(dictionary[word]);
-		return;
-	}
 	try{
-		const url = "https://ru.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=" + word + "&origin=*";
-		const url2 = "https://ru.wikipedia.org/api/rest_v1/page/summary/" + word + "_(значения)?origin=*";
-		const url21 = "https://ru.wikipedia.org/api/rest_v1/page/summary/" + word + "?origin=*";
-		const url3 = "https://api.dictionaryapi.dev/api/v2/entries/ru/" + word;
-		const xhr = new XMLHttpRequest();
-		const xhr2 = new XMLHttpRequest();
-		const xhr21 = new XMLHttpRequest();
-		const xhr3 = new XMLHttpRequest();
-
-		//Ищем на вики именно значения (нулевой источник)
-		function findInWiki(that, func){
-			if (that.readyState === that.DONE) {
-				let content = that.responseText;
-				try{
-					content = JSON.parse(content);
-					if(content.title === "Not found." || content.extract_html.indexOf('<ul>') === -1){
-						func();
-					}else{
-						addHTMLToDesc(content.extract_html);
-					}
-				}catch(e){
-					func();
-				}
-			}
+		let defIframe = document.getElementById('definitionIframe');
+		if(dictionary[word]){
+			addHTMLToDesc(dictionaryRU[word]);
+			defIframe.classList.add('closedIframe');
+			return;
 		}
-
-		xhr2.addEventListener("readystatechange", function () {
-			findInWiki(this, tryFindInFirstSource)
-		});
-		xhr2.open("GET", url2);
-		xhr2.send();
-		//Ищем в первом источнике
-		function tryFindInFirstSource(){
-			xhr21.open("GET", url21);
-			xhr21.send();
+		defIframe.classList.remove('closedIframe');
+		let wordDefinition = document.querySelector('.word-definition')
+		wordDefinition.innerHTML = 'Определение слова - загрузка...';
+		defIframe.onload = function (){
+			wordDefinition.innerHTML = '';
 		}
-		xhr21.addEventListener("readystatechange", function () {
-			findInWiki(this, tryFindInSecondSource)
-		});
-		//Если не нахоидм определение в первом источнике, ищем во втором
-		function tryFindInSecondSource(){
-			xhr3.open("GET", url3);
-			xhr3.send();
-		}
-		xhr3.addEventListener("readystatechange", function () {
-			if (this.readyState === this.DONE) {
-				let content = this.responseText;
-				try{
-					content = JSON.parse(content);
-					if(!(content.title === "No Definitions Found")){
-						addHTMLToDesc(doFirstLetterBig(word) + ' — ' + doFirstLetterSmall(content[0].meanings[0].definitions[0].definition));
-					}else{
-						tryFindInThirdSource();
-					}
-				}catch(e){
-					tryFindInThirdSource();
-				}
-			}
-		});
-		//Последняя попытка найти определение
-		function tryFindInThirdSource(){
-			xhr.open("GET", url);
-			xhr.send();
-		}
-		xhr.addEventListener("readystatechange", function () {
-			if (this.readyState === this.DONE) {
-				let content = this.responseText;
-				try{
-					content = JSON.parse(content);
-					const pages = content.query.pages;
-					const keys = Object.keys(pages);
-					if(String(keys[0]) === '-1'){
-						cantFindDesc();
-					}else{
-						let text = pages[keys[0]].extract.replace(/(\n){2,}/g, '\n');
-						text = '<p>' + text.replace(/\n/, '</p><ul><li>');
-						text = text.replace(/\n/g, '</li><li>') + '</ul>';
-						text = text.replace('<li></li></ul>', '');
-						text = text.replace('<li></ul>', '');
-						text = text.replace('<ul><li></ul>', '');
-						addHTMLToDesc(text);
-					}
-
-					// if(content.title === "Not found."){
-					//   tryFindInThirdSource();
-					// }else{
-					//   document.querySelector('.word-definition').innerHTML = content.extract_html;
-					// }
-				}catch(e){
-					cantFindDesc();
-				}
-			}
-		});
+		defIframe.src = 'https://ru.m.wiktionary.org/wiki/' + word + '#Значение';
 	}catch(e){
-		cantFindDesc();
+		console.log(e);
 	}
 }
 
@@ -2092,7 +2009,7 @@ export default {
 			if(this.chosenBg > 0 && !this.isCloseLevelShow(bgLvlsOpen[this.chosenBg-1]+1)){
 				this.chosenBgRight = this.chosenBg;
 				// importBg(this.chosenBgRight);
-			}else{
+			}else if(this.chosenBg <= 0){
 				this.chosenBgRight = this.chosenBg;
 			}
 			params({'choseBg': this.chosenBgRight});
