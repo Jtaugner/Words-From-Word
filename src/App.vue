@@ -260,8 +260,9 @@
 					{{wasUpdate ? 'Уважаемые игроки!' : 'Дорогой игрок!'}}
 				</h2>
 				<template v-if="wasUpdate">
-					Представляем вам Хеллоуинское обновление: Эксклюзивное оформление и скидки на подсказки!
-					<div class="rules__goBg" @click="goToChangeBg(true)">Перейти</div>
+					Мы немного обновляем дизайн игры. Надеемся, он вам понравится! Также в скором времени появится возможность сменить фон и оформление игры!
+					Вводим большое обновление, в котором добавляем новые фоны и цветовые оформления. Заходите в настройки и тестируйте!
+					<div class="rules__goBg" @click="goToChangeBg()">Перейти</div>
 				</template>
 				<template v-else>
 					Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы обновляем словарь несколько раз в месяц, и добавляем новые уровни каждый месяц.
@@ -977,7 +978,7 @@ if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = -1;
+	chosenBackground = 0;
 	// deleteBlockBg = true;
 }
 
@@ -1963,7 +1964,7 @@ export default {
 			selectMainWord: false,
 			selectTip: false,
 			canShowSkip: false,
-			chosenBg: -1,
+			chosenBg: 0,
 			bgLvlsOpen: bgLvlsOpen,
 			chosenBgRight: chosenBackground,
 			openNewBg: false,
@@ -2015,17 +2016,11 @@ export default {
 			params({'choseBg': this.chosenBgRight});
 			setToStorage('chosenBackground', this.chosenBgRight);
 		},
-		goToChangeBg(changeHalloween){
+		goToChangeBg(){
 			this.backMenu();
 			this.isSettings = true;
 			this.openNewBg = false;
 			this.showLastLevelInfo = false;
-			if(changeHalloween){
-				this.chosenBg = -1;
-				this.chosenBgRight = -1;
-				params({'forcedBg': 1});
-				setToStorage('chosenBackground', this.chosenBgRight);
-			}
 		},
 		endTutorial(){
 			console.log('end');
