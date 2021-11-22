@@ -312,7 +312,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
 					<div class="shop__cart__buy-button" >
-						<div class="shop__lastPrice">49</div>
+<!--						<div class="shop__lastPrice">49</div>-->
 						{{getItemPrice(0)}}
 					</div>
 				</div>
@@ -323,7 +323,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
 					<div class="shop__cart__buy-button">
-						<div class="shop__lastPrice">99</div>
+<!--						<div class="shop__lastPrice">99</div>-->
 						{{getItemPrice(1)}}
 					</div>
 				</div>
@@ -334,7 +334,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
 					<div class="shop__cart__buy-button">
-						<div class="shop__lastPrice">149</div>
+<!--						<div class="shop__lastPrice">149</div>-->
 						{{getItemPrice(2)}}
 					</div>
 				</div>
@@ -1578,7 +1578,7 @@ function consumePurchase(purchase) {
 	document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 	payments.consumePurchase(purchase.purchaseToken);
 }
-const itemsPrices = [29, 49, 99];
+const itemsPrices = [49, 99, 149];
 
 function buyTips(item) {
 	if(payments && playerGame){
