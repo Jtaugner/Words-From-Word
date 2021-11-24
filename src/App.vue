@@ -147,6 +147,7 @@
 							 :class="[star <= stars[lvl] ? 'level_full-star' : '',
                       getStar === star ? 'getStar' : '']"></div>
 					</div>
+					<div class="menu__hint">{{moreGuessedWords}}</div>
 				</div>
 				<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
 					<div class="advert" v-if="canShowAdv && tipCount === 0"></div>
@@ -854,6 +855,21 @@ function newCompress(compressedWords){
 	data.newCompress = true;
 	data.notStringed = true;
 	return data;
+}
+
+//Вибрация
+
+function vibratePhone(){
+	try{
+		console.log(window.navigator);
+		console.log(window.navigator.vibrate);
+		if (window.navigator && window.navigator.vibrate) {
+			window.navigator.vibrate(500);
+		}
+	}catch(e){
+		console.log('Вибрация не поддерживается');
+		console.log(e);
+	}
 }
 
 function newDecompress(compressedWords){
@@ -1622,6 +1638,27 @@ function testStar(doneWordsLength, allWordsLength) {
 	if(percent >= 33) return 1;
 	return 0;
 }
+let wordsNumbers = ['2', '3', '4'];
+
+
+function getRightWord(len){
+	len = Number(String(len).slice(-2));
+	let str = String(len);
+	let last = str[str.length-1];
+	if(len >= 10 && len <= 20) return 'слов';
+	else if(last === '1') return 'слово'
+	else if( wordsNumbers.includes(last) ) return 'слова'
+	return 'слов';
+}
+function howManyWordsToStar(doneWordsLength, allWordsLength) {
+	let allPercents = [Math.ceil(allWordsLength/3), Math.ceil(allWordsLength/3*2), allWordsLength];
+	for(let i = 0; i < allPercents.length; i++){
+		if(doneWordsLength < allPercents[i]){
+			let amount = allPercents[i] - doneWordsLength;
+			return amount + ' ' + getRightWord(amount);
+		}
+	}
+}
 const NewAudioContext = (function() {
 
 	try {
@@ -1899,14 +1936,14 @@ const cloudPhrases = [
 	'Нажимайте на <span class="cloudHint__mainText">буквы снизу</span>, чтобы составить слово!',
 	'Нажмите на <span class="cloudHint__mainText">стрелку</span>, чтобы отправить слово!',
 	'Поздравляем! Ваше <span class="cloudHint__mainText">первое слово</span> уже на уровне. Давайте попробуем ещё!',
-	'Введём вместе последнее слово!',
+	'Игра принимает только <span class="cloudHint__mainText">нарицательные существительные</span> в единственном числе. Введём ещё слово!',
 	'Нажмите на слово, чтобы узнать его <span class="cloudHint__mainText">значение</span>.',
 	'Если закончились идеи, используйте <span class="cloudHint__mainText">подсказку</span>. На первом уровне подсказки бесконечны.',
 	'Для перехода на следующий уровень заработайте хотя бы 1 <span class="cloudHint__mainText">звезду</span>.',
-	'33% угаданных слов - это 1 звезда, 66% - 2 звезды, 100% - 3 звезды.',
-	'За получение звёзд Вам выдаются <span class="cloudHint__mainText">бесплатные подсказки</span>.',
 	'Ура! Вы <span class="cloudHint__mainText">успешно</span> закончили обучение. Желаем Вам удачи в прохождении игры!',
 ];
+
+const lvl3CloudPhrase = 'По техническим причинам буква <br><span class="cloudHint__mainText">Е приравнивается к Ё</span>. Учитывайте это при создании слов. Удачи!';
 
 let tutorialStep = 0;
 let isShowTutorial = true;
@@ -1981,6 +2018,11 @@ export default {
 		},
 		cantShowBg(){
 			return this.chosenBg > 0 && this.isCloseLevelShow(bgLvlsOpen[this.chosenBg-1]+1);
+		},
+		moreGuessedWords(){
+			if(this.doneWords.length >= this.nowWords.length) return 'Уровень пройден!';
+			let wordsAmount = howManyWordsToStar(this.doneWords.length, this.nowWords.length);
+			return 'До следующей звезды осталось ' + wordsAmount;
 		}
 	},
 	methods:{
@@ -2039,6 +2081,10 @@ export default {
 		},
 		closeHint(){
 			if(this.selectSend) return;
+			if(this.lvl !== 0){
+				this.cloudHint = false;
+				return;
+			}
 			if(tutorialStep === 0){
 				this.cloudsPhrase = cloudPhrases[1];
 				this.tutorialSelected = 0;
@@ -2051,12 +2097,8 @@ export default {
 			}else if(tutorialStep === 17){
 				this.cloudsPhrase = cloudPhrases[8];
 			}else if(tutorialStep === 18){
-				this.cloudsPhrase = cloudPhrases[9];
-			}else if(tutorialStep === 19){
-				this.cloudsPhrase = cloudPhrases[10];
-			} else if(tutorialStep === 20){
 				this.endTutorial();
-			} else{
+			}else{
 				return;
 			}
 			this.wordFromLetter = '';
@@ -2064,6 +2106,10 @@ export default {
 			tutorialStep++;
 
 			// this.cloudHint = false;
+		},
+		openLevel3Hint(){
+			this.cloudHint = true;
+			this.cloudsPhrase = lvl3CloudPhrase;
 		},
 		nextStep(){
 
@@ -2312,6 +2358,9 @@ export default {
 
 			if(!this.isTutorial){
 				tryShowAdv();
+			}
+			if(this.lvl === 3 && this.doneWords.length === 0){
+				this.openLevel3Hint();
 			}
 
 
@@ -2615,6 +2664,7 @@ export default {
 					}, 1200)
 
 				}else if(this.isSounds){
+					vibratePhone();
 					if(this.lastSounds){
 						wrongWordSound2.play();
 					}else{

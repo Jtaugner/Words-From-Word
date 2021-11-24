@@ -593,6 +593,16 @@ html, body {
   background-color: rgba(164, 104, 183, 0.9);
 }
 
+.menu__level .menu__hint {
+  bottom: -52px;
+  width: 250%;
+  text-align: center;
+}
+
+.menu__level:hover .menu__hint {
+  display: block;
+}
+
 .menu__button-next-level .menu__hint {
   bottom: -125px;
 }
@@ -1136,6 +1146,12 @@ html, body {
 
   .menu__words-amount, .menu__level {
     font-size: 2.6rem;
+  }
+
+  .menu__level .menu__hint {
+    bottom: -62px;
+    width: 250%;
+    font-size: 1.55rem;
   }
 
   .menu__hint {
