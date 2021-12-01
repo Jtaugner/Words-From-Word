@@ -858,19 +858,17 @@ function newCompress(compressedWords){
 }
 
 //Вибрация
-
-function vibratePhone(){
-	try{
-		console.log(window.navigator);
-		console.log(window.navigator.vibrate);
-		if (window.navigator && window.navigator.vibrate) {
-			window.navigator.vibrate(500);
-		}
-	}catch(e){
-		console.log('Вибрация не поддерживается');
-		console.log(e);
-	}
-}
+//
+// function vibratePhone(){
+// 	try{
+// 		if (window.navigator && window.navigator.vibrate) {
+// 			window.navigator.vibrate(500);
+// 		}
+// 	}catch(e){
+// 		console.log('Вибрация не поддерживается');
+// 		console.log(e);
+// 	}
+// }
 
 function newDecompress(compressedWords){
 	Object.keys(compressedWords).forEach(el => {
@@ -997,6 +995,8 @@ if(chosenBackground){
 	chosenBackground = 0;
 	// deleteBlockBg = true;
 }
+
+params({'chosenBackground': chosenBackground});
 
 let russianProgressSave = {};
 let englishProgress = false;
@@ -1324,9 +1324,11 @@ if(window.YaGames){
 			console.log('showAdv');
 			ysdk.adv.showFullscreenAdv({
 				callbacks: {
-					onClose: function() {
+					onClose: function(wasShow) {
 						console.log('close adv');
-						advTime = false;
+						if(!wasShow){
+							advTime = true;
+						}
 						canShowAdv();
 						setTimeout(()=>{
 							advTime = true;
@@ -2331,9 +2333,9 @@ export default {
 				allDoneWords[this.word] = [];
 				this.doneWords = allDoneWords[this.word];
 			}
-			if(lvl < 5 && this.doneWords.length === 0){
-				let levelName = 'startLevel' + (lvl+1);
-				params({[levelName]: 1})
+			if(this.lvl < 10 && this.doneWords.length === 0){
+				let lvlParams = 'startLevel-' + this.lvl;
+				params({[lvlParams]: 1});
 			}
 
 			if(this.doneWords.length === 0 && bgLvlsOpen.includes(lvl)){
@@ -2664,7 +2666,6 @@ export default {
 					}, 1200)
 
 				}else if(this.isSounds){
-					vibratePhone();
 					if(this.lastSounds){
 						wrongWordSound2.play();
 					}else{
@@ -2685,9 +2686,9 @@ export default {
 			if(stars > this.stars[this.lvl]){
 				this.bgShowen = false;
 
-				if(this.lvl < 5 && stars === 1){
-					let levelName = 'endLevel' + (this.lvl+1);
-					params({[levelName]: 1})
+				if(this.lvl < 10){
+					let lvlParams = 'endLevel-' + this.lvl;
+					params({[lvlParams]: stars});
 				}
 
 				setLastLevel();
