@@ -201,8 +201,13 @@
 					<div class="action-block__letters">
 						<div class="action-block__letter"
 							 @click="selectLetter(index)"
-							 :class="[selectedLetters.includes(index) ?'action-block__letter_selected' : '', tutorialSelected === index ? 'tutorialSelected' : '']"
-							 v-for="(letter,index) in letters" :key="letter + Math.random()">{{letter}}
+							 :class="
+							 [selectedLetters.includes(index) ? 'action-block__letter_selected' : '',
+							  tutorialSelected === index ? 'tutorialSelected' : '']"
+							 v-for="(letter,index) in letters" :key="letter + Math.random()"
+						>
+							<div class="action-block__letter action-block__letter_notSelected" v-show="notShowLetters.includes(letter)"></div>
+							{{letter}}
 						</div>
 						<button class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord"></button>
 					</div>
@@ -290,6 +295,17 @@
 
 				<div class="rules__goBg" @click="goToChangeBg()">Перейти</div>
 
+			</div>
+
+			<div class="rules-blackout" v-show="showBigWordWas" @click="toggleShowBigWordWas"></div>
+
+			<div class="rules shop showBigWordWas" v-show="showBigWordWas">
+				<div class="rules__cross shop__cross" @click="toggleShowBigWordWas"></div>
+				<h2 class="rules__menu">
+					{{notRussian ? 'Nice try!' : 'Хорошая попытка!'}}
+				</h2>
+				<p v-if="notRussian">The original word cannot be entered :) Let's try again!</p>
+				<p v-else>Исходное слово вводить нельзя :) Давайте попробуем ещё!</p>
 			</div>
 
 
@@ -573,7 +589,7 @@ var wordsFromWords = wordsFromWordsRU,
 let advTime = false;
 setTimeout(()=>{
 	advTime = true;
-}, 30000);
+}, 40000);
 let showAdv, playerGame, payments, YSDK;
 
 
@@ -1333,7 +1349,7 @@ if(window.YaGames){
 						setTimeout(()=>{
 							advTime = true;
 							canShowAdv();
-						}, 180000);
+						}, 150000);
 					},
 					onError: function (e){
 						advTime = true;
@@ -2008,7 +2024,9 @@ export default {
 			chosenBgRight: chosenBackground,
 			openNewBg: false,
 			bgShowen: false,
-			lastSounds: isLastSounds
+			lastSounds: isLastSounds,
+			showBigWordWas: false,
+			notShowLetters: []
 		}
 	},
 	computed:{
@@ -2028,6 +2046,9 @@ export default {
 		}
 	},
 	methods:{
+		toggleShowBigWordWas(){
+			this.showBigWordWas = !this.showBigWordWas;
+		},
 		toggleLastSounds(e){
 			this.lastSounds = e.target.checked;
 			setToStorage('lastSounds', this.lastSounds);
@@ -2065,6 +2086,28 @@ export default {
 			this.isSettings = true;
 			this.openNewBg = false;
 			this.showLastLevelInfo = false;
+		},
+		findNotShowLetters(){
+			try{
+				let remainingWords = this.nowWords.slice().filter((w) => !this.doneWords.includes(w));
+				let notShow = [];
+				for(let i = 0; i < this.letters.length; i++){
+					let l = this.letters[i];
+					let notShowLetter = true;
+					for(let q = 0; q < remainingWords.length; q++){
+						if(remainingWords[q].includes(l)){
+							notShowLetter = false;
+							break;
+						}
+					}
+					if(notShowLetter){
+						notShow.push(l);
+					}
+				}
+				this.notShowLetters = notShow;
+			}catch(e){
+				this.notShowLetters = [];
+			}
 		},
 		endTutorial(){
 			console.log('end');
@@ -2159,19 +2202,14 @@ export default {
 							.then(player => {
 								console.log(player);
 								that.playerRait = player;
-								if(!player || that.allStars > player.score){
-									lb.setLeaderboardScore('lvl', that.allStars);
-								}
 							})
 							.catch(e => {
 								console.log(e);
-								that.addPlayerToLB();
 							})
 					})
 				;
 			}catch(e){
 				this.playerRait = false;
-				this.addPlayerToLB();
 				console.log(e);
 			}
 		},
@@ -2192,13 +2230,13 @@ export default {
 				.then(lb => {
 					console.log(lb);
 					// Получение 10 топов
-					lb.getLeaderboardEntries('lvl', { quantityTop: 20, includeUser: true, quantityAround: 3}).then(res => {
+					lb.getLeaderboardEntries('lvl', { quantityTop: 20, includeUser: true, quantityAround: 10}).then(res => {
 						that.leaderBoard = res.entries;
 
 						setTimeout(()=>{
 							try{
 								let scrollEl = document.querySelector('.leaderBoardInfo_my');
-								scrollEl.scrollIntoView({behavior: 'smooth', block: "center", inline: "center"});
+								scrollEl.scrollIntoView({behavior: 'auto', block: "center", inline: "center"});
 							}catch(ignored){}
 
 						}, 200);
@@ -2358,6 +2396,8 @@ export default {
 				});
 			}, 200);
 
+			this.findNotShowLetters();
+
 			if(!this.isTutorial){
 				tryShowAdv();
 			}
@@ -2486,6 +2526,7 @@ export default {
 		},
 		selectLetter(index){
 			// if(this.animWordStart !== '') return;
+			if(this.notShowLetters.includes(this.letters[index])) return;
 			this.clickSound();
 			if(this.isTutorial){
 				this.nextStep();
@@ -2586,7 +2627,6 @@ export default {
 						setTimeout(()=>{
 							this.cloudHint = true;
 							if(tutorialStep === 5){
-								this.canShowSkip = false;
 								this.cloudsPhrase = cloudPhrases[3];
 							}else if(tutorialStep === 10){
 								this.cloudsPhrase = cloudPhrases[4];
@@ -2633,6 +2673,7 @@ export default {
 					setTimeout(()=>{
 						this.animWordStart = '';
 						this.animWord = '';
+						this.findNotShowLetters();
 
 						this.testStars();
 
@@ -2671,6 +2712,11 @@ export default {
 					}else{
 						wrongWordSound.play();
 					}
+				}
+
+				console.log(this.wordFromLetter, this.word);
+				if(this.wordFromLetter === this.word){
+					this.showBigWordWas = true;
 				}
 
 				setTimeout(()=>{

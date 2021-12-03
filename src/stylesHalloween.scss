@@ -65,9 +65,9 @@
     background-color: #22dcdc;
   }
   .animWord .words__letter{
-    animation: 1s showNewWord3 forwards;
+    animation: 1s showNewWord4 forwards;
   }
-  @keyframes  showNewWord3{
+  @keyframes  showNewWord4{
     0%{background-color: rgba(255, 255, 255, 0.85);}
     100%{background-color: #22dcdc;}
   }

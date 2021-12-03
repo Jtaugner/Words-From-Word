@@ -154,7 +154,7 @@ html,body
   background-color: #e8e6f9;
 }
 .lastRang{
-  margin-bottom: 50px !important;
+  margin-bottom: 80px !important;
 }
 .leaderBoardInfo__playerInfo{
   display: flex;
@@ -763,6 +763,12 @@ html,body
   color: white;
   background-color: #BF63C7;
 }
+.action-block__letters .action-block__letter_notSelected{
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  background-color: rgba(0,0,0,0.5);
+}
 .words__letter, .action-block__letter{
   display: flex;
   justify-content: center;
@@ -785,6 +791,7 @@ html,body
   border-radius: 15%;
   background-color: white;
   color: #2C1345;
+  position: relative;
 }
 .tutorialSelected{
   z-index: 10;
@@ -1786,4 +1793,11 @@ b{
 }
 .closedIframe{
   display: none;
+}
+.showBigWordWas{
+  font-size: 20px;
+  height: 150px;
+  min-height: 150px;
+  width: 500px;
+  padding: 8px !important;
 }
