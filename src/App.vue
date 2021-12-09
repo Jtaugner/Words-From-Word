@@ -7,6 +7,8 @@
 			 @buyTips="addBuyTips()"
 			 v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
 
+			<div class="snowAnimation"></div>
+
 <!--			<div class="blur"></div>-->
 
 
@@ -60,8 +62,12 @@
 				</div>
 
 
+				<div class="banner-wrapper">
+					<div id="yandex_rtb_R-A-518275-25"></div>
+				</div>
 
 			</div>
+
 
 
 
@@ -217,7 +223,7 @@
 				<div class="cloudHint" v-show="cloudHint && !showWordDesc" :class="[selectMainWord ? 'cloudHint_wordSelected' : '']" @click="closeHint()">
 					<p v-html="cloudsPhrase"></p>
 				</div>
-				<div class="skipTutorial" v-show="cloudHint && !showWordDesc && canShowSkip" @click="endTutorial">Пропустить</div>
+				<div class="skipTutorial" v-show="cloudHint && !showWordDesc && canShowSkip" @click="skipTutorial">Пропустить</div>
 
 
 			</div>
@@ -1966,6 +1972,20 @@ const lvl3CloudPhrase = 'По техническим причинам буква
 let tutorialStep = 0;
 let isShowTutorial = true;
 let bgLvlsOpen = [4, 14, 24];
+
+function getBanner(){
+	try{
+		window.yaContextCb.push(()=>{
+			Ya.Context.AdvManager.render({
+				renderTo: 'yandex_rtb_R-A-518275-25',
+				blockId: 'R-A-518275-25'
+			})
+		});
+		params({'getBanner': 1});
+	}catch(e){
+		console.log(e);
+	}
+}
 export default {
 	name: 'App',
 	data(){
@@ -2108,6 +2128,10 @@ export default {
 			}catch(e){
 				this.notShowLetters = [];
 			}
+		},
+		skipTutorial(){
+			params({'skipTutorial': 1});
+			this.endTutorial();
 		},
 		endTutorial(){
 			console.log('end');
@@ -2483,7 +2507,8 @@ export default {
 			} else{
 				letter = letter.toLowerCase();
 				if(!notRussianGame && lettersMap[letter]) letter = lettersMap[letter].toLowerCase();
-				if(this.isTutorial && letter !== this.word[this.tutorialSelected]){
+				if((this.isTutorial && letter !== this.word[this.tutorialSelected])
+				|| this.notShowLetters.includes(letter)){
 					return;
 				}
 				for(let i = 0; i < this.letters.length; i++){
@@ -2551,8 +2576,9 @@ export default {
 			this.levelsAnim =  true;
 			setTimeout(()=>{
 				this.content = false;
+				console.log('Вызов баннера');
+				getBanner();
 			}, 500);
-
 		},
 		addTip(){
 			this.tipCount++;
@@ -2706,13 +2732,17 @@ export default {
 						this.wordWasIndex = -1;
 					}, 1200)
 
-				}else if(this.isSounds){
-					if(this.lastSounds){
-						wrongWordSound2.play();
-					}else{
-						wrongWordSound.play();
+				}else{
+					params({'badWord': this.wordFromLetter});
+					if(this.isSounds){
+						if(this.lastSounds){
+							wrongWordSound2.play();
+						}else{
+							wrongWordSound.play();
+						}
 					}
 				}
+
 
 				console.log(this.wordFromLetter, this.word);
 				if(this.wordFromLetter === this.word){

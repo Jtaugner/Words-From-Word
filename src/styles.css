@@ -536,6 +536,7 @@ html, body {
   font-size: 1.2rem;
   background-color: #ad63b6;
   border-radius: 7px;
+  user-select: none;
 }
 
 .menu__tip_count {
@@ -558,6 +559,7 @@ html, body {
 .menu__level, .menu__words-amount {
   font-size: 2.2rem;
   letter-spacing: 1px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 
 .menu__words-amount {
@@ -1787,6 +1789,27 @@ b {
   min-height: 150px;
   width: 500px;
   padding: 8px !important;
+}
+
+.snowAnimation {
+  display: none;
+}
+
+.banner-wrapper {
+  width: 1000px;
+  max-width: 90%;
+  height: 150px;
+  display: none;
+}
+
+@media (min-height: 650px) {
+  .banner-wrapper {
+    display: block;
+  }
+
+  .levels__property {
+    padding-top: 150px;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */

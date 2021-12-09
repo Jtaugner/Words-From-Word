@@ -563,6 +563,8 @@ html,body
 
   background-color: #ad63b6;
   border-radius: 7px;
+
+  user-select: none;
 }
 .menu__tip_count{
   color: white;
@@ -583,6 +585,7 @@ html,body
 .menu__level, .menu__words-amount{
   font-size: 2.2rem;
   letter-spacing: 1px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 .menu__words-amount{
   position: relative;
@@ -702,7 +705,6 @@ html,body
     background: url(assets/menu-star.png) center center no-repeat;
     background-size: 100%;
   }
-
 }
 .next-location, .prev-location{
   position: absolute;
@@ -1722,6 +1724,9 @@ b{
 
   border-radius: 10px;
 }
+//.chosenBg-2{
+//  background-image: url(assets/settings/bg-2.png);
+//}
 .chosenBg-1{
   background-image: url(assets/settings/bg-1.png);
 }
@@ -1800,4 +1805,21 @@ b{
   min-height: 150px;
   width: 500px;
   padding: 8px !important;
+}
+.snowAnimation{
+  display: none;
+}
+.banner-wrapper{
+  width: 1000px;
+  max-width: 90%;
+  height: 150px;
+  display: none;
+}
+@media (min-height: 650px) {
+  .banner-wrapper{
+    display: block;
+  }
+  .levels__property{
+    padding-top: 150px;
+  }
 }

@@ -13,19 +13,19 @@
   color: #103A4D;
 }
 .chosenAppBg-1 .leaderBoard {
-  background-image: url(assets/bgHalloween/leader.svg);
+  background-image: url(assets/bgNewYear/leader.svg);
 }
 .chosenAppBg-1 .switchShop {
-  background-image: url(assets/bgHalloween/shop.svg);
+  background-image: url(assets/bgNewYear/shop.svg);
 }
 .chosenAppBg-1 .words__letters-block_done .words__letter, .chosenAppBg-1 .action-block__letters .action-block__letter_selected {
   background-color: #3C9BA8;
 }
 .chosenAppBg-1 .menu__button-back {
-  background-image: url(assets/bgHalloween/home.svg);
+  background-image: url(assets/bgNewYear/home.svg);
 }
 .chosenAppBg-1 .menu__tip {
-  background-image: url(assets/bgHalloween/tip.svg);
+  background-image: url(assets/bgNewYear/tip.svg);
 }
 .chosenAppBg-1 .menu__tip_count, .chosenAppBg-1 .rules__goBg {
   background-color: #103A4D;
@@ -37,13 +37,13 @@
   color: #103A4D;
 }
 .chosenAppBg-1 .rules__cross {
-  background-image: url(assets/bgHalloween/cross.svg);
+  background-image: url(assets/bgNewYear/cross.svg);
 }
 .chosenAppBg-1 .menu__button-next-level_active {
   background-image: url(assets/bgHalloween/arrow.svg);
 }
 .chosenAppBg-1 .switchSettings {
-  background-image: url(assets/bgHalloween/settings.svg);
+  background-image: url(assets/bgNewYear/settings.svg);
 }
 .chosenAppBg-1 ::-webkit-scrollbar-thumb {
   background-color: #3C9BA8;
@@ -72,13 +72,13 @@
   }
 }
 .chosenAppBg-1 .shop__cart__item_2 {
-  background-image: url(assets/bgHalloween/cart1.svg);
+  background-image: url(assets/bgNewYear/cart1.svg);
 }
 .chosenAppBg-1 .shop__cart__item_3 {
-  background-image: url(assets/bgHalloween/cart2.svg);
+  background-image: url(assets/bgNewYear/cart2.svg);
 }
 .chosenAppBg-1 .shop__cart__item_4 {
-  background-image: url(assets/bgHalloween/cart3.svg);
+  background-image: url(assets/bgNewYear/cart3.svg);
 }
 .chosenAppBg-1 .shop__cart__name {
   color: #103A4D;
