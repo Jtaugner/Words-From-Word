@@ -807,6 +807,7 @@ html, body {
 .done-word {
   z-index: 10;
   position: relative;
+  text-shadow: 0 0 4px black;
 }
 
 .action-block__done-word {
@@ -1170,9 +1171,9 @@ html, body {
   }
 
   .menu__button-next-level .menu__hint {
-    bottom: -70px;
-    left: -80px;
-    font-size: 1.3rem;
+    bottom: -85px;
+    left: -40px;
+    font-size: 1.55rem;
     width: 200px;
   }
 
@@ -1220,7 +1221,7 @@ html, body {
   }
 
   .action-block__done-word {
-    font-size: 2.7rem;
+    font-size: 3rem;
   }
 }
 .shop__lastPrice {
@@ -1712,6 +1713,10 @@ b {
   border-radius: 10px;
 }
 
+.chosenBg-2 {
+  background-image: url(assets/settings/bg-2.png);
+}
+
 .chosenBg-1 {
   background-image: url(assets/settings/bg-1.png);
 }
@@ -1765,7 +1770,7 @@ b {
   border-radius: 14px;
   font-size: 2.5rem;
   padding: 5px 10px;
-  width: 135px;
+  width: 185px;
   margin: 10px auto;
   cursor: pointer;
 }
@@ -1809,6 +1814,15 @@ b {
 
   .levels__property {
     padding-top: 150px;
+  }
+}
+.levelClosedText {
+  font-size: 2rem;
+}
+
+@media (min-width: 1000px) {
+  .levelClosedText {
+    font-size: 2.2rem;
   }
 }
 

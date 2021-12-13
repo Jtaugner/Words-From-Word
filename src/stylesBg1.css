@@ -93,5 +93,8 @@
 .chosenAppBg1 .menu__hint {
   background-color: rgba(109, 50, 8, 0.9);
 }
+.chosenAppBg1 .leaderBoardInfo__player {
+  border-color: #bd550c;
+}
 
 /*# sourceMappingURL=stylesBg1.css.map */

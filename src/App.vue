@@ -39,7 +39,7 @@
 						class="level"
 						v-for="level in 21"
 						:key="getLevelByLevelAndLocation(level)"
-						@click="getLevel(getLevelByLevelAndLocation(level)-1)"
+						@click="getLevel(getLevelByLevelAndLocation(level)-1, false, true)"
 						:class="{'level-done': isLevelDone(getLevelByLevelAndLocation(level)),
                             'level_close': isCloseLevelShow(getLevelByLevelAndLocation(level))
                             }">
@@ -76,6 +76,23 @@
 
 
 
+
+		</div>
+
+
+		<div class="rules-blackout" v-if="levelClosedShow" @click="toggleLevelClosedShow"></div>
+
+		<div class="rules" v-if="levelClosedShow">
+			<div class="rules__cross shop__cross" @click="toggleLevelClosedShow"></div>
+			<h2 class="rules__menu">
+				{{notRussian ? 'Level closed' : 'Уровень закрыт'}}
+			</h2>
+			<div class="levelClosedText">
+				{{notRussian ?
+				'Complete the level' + closedLevel + ' by at least one star to unlock the level ' + (closedLevel+1) + '. Good luck!' :
+				'Пройдите уровень ' + closedLevel + ' хотя бы на одну звезду, чтобы открыть уровень ' + (closedLevel+1) + '. Удачной игры!'
+				}}
+			</div>
 
 		</div>
 
@@ -269,12 +286,11 @@
 			<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 				<div class="rules__cross" @click="toggleShowLastLevelInfo()"></div>
 				<h2 class="rules__menu">
-					{{wasUpdate ? 'Уважаемые игроки!' : 'Дорогой игрок!'}}
+					{{wasUpdate ? 'Новогоднее обновление!' : 'Дорогой игрок!'}}
 				</h2>
 				<template v-if="wasUpdate">
-					Мы немного обновляем дизайн игры. Надеемся, он вам понравится! Также в скором времени появится возможность сменить фон и оформление игры!
-					Вводим большое обновление, в котором добавляем новые фоны и цветовые оформления. Заходите в настройки и тестируйте!
-					<div class="rules__goBg" @click="goToChangeBg()">Перейти</div>
+					Пора вживаться в атмосферу Нового года, включайте новое цветовое оформление в настройках! А ближе к Новому году Вас ждёт новая локация и новые уровни!
+					<div class="rules__goBg" @click="goToChangeBg()">В настройки</div>
 				</template>
 				<template v-else>
 					Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы обновляем словарь несколько раз в месяц, и добавляем новые уровни каждый месяц.
@@ -554,6 +570,7 @@ import './stylesBg1.scss';
 import './stylesBg2.scss';
 import './stylesBg3.scss';
 import './stylesHalloween.scss';
+import './stylesNewYear.scss';
 import {allWordsRU, dictionaryRU} from './russianWords';
 import {wordsFromWordsRU} from "./russianWordsFromWords";
 import {allWordsEN} from './englishWords';
@@ -763,7 +780,51 @@ function replaceLevelsToOne(data){
 	});
 	return newData;
 }
-
+// function compressLevelsToString(doneLevels){
+// 	try{
+// 		let firstElem = doneLevels[0];
+// 		let lastElem = firstElem;
+// 		let newArr = [];
+// 		for(let i = 1; i < doneLevels.length+1; i++){
+// 			let level = doneLevels[i];
+// 			if(lastElem+1 === level){
+// 				lastElem = level;
+// 			}else{
+// 				if(firstElem === lastElem){
+// 					newArr.push(firstElem);
+// 				}else{
+// 					newArr.push(firstElem+'-'+lastElem);
+// 				}
+// 				firstElem = level;
+// 				lastElem = level;
+// 			}
+// 		}
+// 		return newArr;
+// 	}catch(e){
+// 		console.log(e);
+// 		return doneLevels;
+// 	}
+// }
+// function decompressStringToLevels(doneLevels){
+// 	try{
+// 		let newArr = []
+// 		for(let i = 0; i < doneLevels.length; i++){
+// 			let num = doneLevels[i];
+// 			if(Number.isInteger(num)){
+// 				newArr.push(num);
+// 			}else{
+// 				let firstAndLastItem = num.split('-');
+// 				for(let i = Number(firstAndLastItem[0]); i < Number(firstAndLastItem[1])+1; i++){
+// 					newArr.push(i);
+// 				}
+// 			}
+// 		}
+// 		return newArr;
+// 	}catch(e){
+// 		console.log(e);
+// 		return doneLevels;
+// 	}
+// }
 function compressDataObj(wordsFromWords){
 	try{
 		const newData = {};
@@ -917,7 +978,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-13";
+const lastVersion = "ver-14";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1014,7 +1075,13 @@ if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = 0;
+	if(allDoneWords){
+		chosenBackground = 0;
+		setToStorage('chosenBackground', '0');
+	}else{
+		chosenBackground = -2;
+		setToStorage('chosenBackground', '-2');
+	}
 	// deleteBlockBg = true;
 }
 
@@ -1241,7 +1308,7 @@ window.onpagehide = () => saveAllData(true);
 
 setInterval(()=>{
 	saveAllData(false);
-}, 15000);
+}, 10000);
 
 
 
@@ -2046,7 +2113,9 @@ export default {
 			bgShowen: false,
 			lastSounds: isLastSounds,
 			showBigWordWas: false,
-			notShowLetters: []
+			notShowLetters: [],
+			levelClosedShow: false,
+			closedLevel: 1
 		}
 	},
 	computed:{
@@ -2083,12 +2152,12 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 4) this.chosenBg = -1;
+			if(this.chosenBg === 4) this.chosenBg = -2;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -2) this.chosenBg = 3;
+			if(this.chosenBg === -3) this.chosenBg = 3;
 			this.testBg();
 		},
 		testBg(){
@@ -2102,8 +2171,12 @@ export default {
 			setToStorage('chosenBackground', this.chosenBgRight);
 		},
 		goToChangeBg(){
+			params({'goChangeBg': 1});
 			this.backMenu();
 			this.isSettings = true;
+			this.chosenBg = -2;
+			this.chosenBgRight = this.chosenBg;
+			setToStorage('chosenBackground', this.chosenBgRight);
 			this.openNewBg = false;
 			this.showLastLevelInfo = false;
 		},
@@ -2341,7 +2414,10 @@ export default {
 
 			this.gameLastLevel = lastLevel;
 		},
-		getLevel(lvl, notSound){
+		toggleLevelClosedShow(){
+			this.levelClosedShow = !this.levelClosedShow;
+		},
+		getLevel(lvl, notSound, fromMenu){
 			if(payloadLevel){
 				lvl = payloadLevel;
 				payloadLevel = false;
@@ -2350,7 +2426,14 @@ export default {
 				this.endTutorial();
 				isShowTutorial = false;
 
-			} else if(this.isCloseLevelShow(lvl+1))return;
+			} else if(this.isCloseLevelShow(lvl+1)){
+				console.log('dasd ', fromMenu);
+				if(fromMenu){
+					this.toggleLevelClosedShow();
+					this.closedLevel = lvl;
+				}
+				return;
+			}
 
 
 			if(lvl !== 0 && lvl % 100 === 0 && notRussianGame){
@@ -2733,7 +2816,6 @@ export default {
 					}, 1200)
 
 				}else{
-					params({'badWord': this.wordFromLetter});
 					if(this.isSounds){
 						if(this.lastSounds){
 							wrongWordSound2.play();

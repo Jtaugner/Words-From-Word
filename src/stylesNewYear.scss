@@ -12,11 +12,8 @@
 }
 
 .chosenAppBg-2{
-  .blur{
-    background-color: rgba(0, 0, 0, 0.1);
-  }
   .levelsTop__allStars{
-    color: #47196C;
+    color: #C21332;
   }
   .leaderBoard{
     background-image: url(assets/bgNewYear/leader.svg);
@@ -34,13 +31,13 @@
     background-image: url(assets/bgNewYear/tip.svg);
   }
   .menu__tip_count, .rules__goBg{
-    background-color: #47196C;
+    background-color: #C21332;
   }
   .shop, .rules{
-    border-color: #47196C;
+    border-color: #C21332;
   }
   .shop .rules__menu, .settings__text{
-    color: #47196C;
+    color: #C21332;
   }
   .rules__cross{
     background-image: url(assets/bgNewYear/cross.svg);
@@ -58,21 +55,21 @@
     border-color: #CE1E1E;
   }
   .checkbox:checked + label:after {
-    background-color: #8769C6;
+    background-color: #D64646;
   }
   .checkbox:checked + label:before {
-    background: #E75858;
+    background: #F4B5B5;
   }
 
   .newWord .words__letter{
-    background-color: #CE1E1E;;
+    background-color: #C21332;
   }
   .animWord .words__letter{
     animation: 1s showNewWord5 forwards;
   }
   @keyframes  showNewWord5{
     0%{background-color: rgba(255, 255, 255, 0.85);}
-    100%{background-color: #CE1E1E;}
+    100%{background-color: #C21332;}
   }
 
   //Магазин
@@ -98,11 +95,11 @@
   }
 
   .menu__hint{
-    background-color: rgba(71, 25, 108, 0.9);
+    background-color: rgba(194, 19, 50, 0.9);
   }
 
   .levels .menu-star {
-    background-color: #E75858;
+    background-color: #C21332;
   }
   .menu__level .level_full-star {
     background: url(assets/bgNewYear/star.svg) center center no-repeat;
@@ -111,7 +108,7 @@
   .menu__level .level_full-star.getStar{
     animation: showFullStar2 1s forwards;
   }
-  @keyframes showFullSta2 {
+  @keyframes showFullStar2 {
     0%{
       transform: scale(1);
     }
@@ -146,5 +143,17 @@
     100% {
       background-position: 500px 1000px, 400px 400px, 300px 300px;
     }
+  }
+  .skipTutorial{
+    background-color: #76101f;
+  }
+  .cloudHint{
+    color: #E75858;
+  }
+  .cloudHint__mainText{
+    color: #e03f3f;
+  }
+  .leaderBoardInfo__player{
+    border-color: #E75858;
   }
 }

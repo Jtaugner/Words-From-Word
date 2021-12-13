@@ -99,5 +99,8 @@
 .chosenAppBg-1 .cloudHint, .chosenAppBg-1 .cloudHint__mainText {
   color: #3C9BA8;
 }
+.chosenAppBg-1 .leaderBoardInfo__player {
+  border-color: #3C9BA8;
+}
 
 /*# sourceMappingURL=stylesHalloween.css.map */

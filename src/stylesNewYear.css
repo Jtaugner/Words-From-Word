@@ -9,11 +9,8 @@
     background-image: url(assets/bgNewYear/bgNewYear-big.png);
   }
 }
-.chosenAppBg-2 .blur {
-  background-color: rgba(0, 0, 0, 0.1);
-}
 .chosenAppBg-2 .levelsTop__allStars {
-  color: #47196C;
+  color: #C21332;
 }
 .chosenAppBg-2 .leaderBoard {
   background-image: url(assets/bgNewYear/leader.svg);
@@ -31,13 +28,13 @@
   background-image: url(assets/bgNewYear/tip.svg);
 }
 .chosenAppBg-2 .menu__tip_count, .chosenAppBg-2 .rules__goBg {
-  background-color: #47196C;
+  background-color: #C21332;
 }
 .chosenAppBg-2 .shop, .chosenAppBg-2 .rules {
-  border-color: #47196C;
+  border-color: #C21332;
 }
 .chosenAppBg-2 .shop .rules__menu, .chosenAppBg-2 .settings__text {
-  color: #47196C;
+  color: #C21332;
 }
 .chosenAppBg-2 .rules__cross {
   background-image: url(assets/bgNewYear/cross.svg);
@@ -55,13 +52,13 @@
   border-color: #CE1E1E;
 }
 .chosenAppBg-2 .checkbox:checked + label:after {
-  background-color: #8769C6;
+  background-color: #D64646;
 }
 .chosenAppBg-2 .checkbox:checked + label:before {
-  background: #E75858;
+  background: #F4B5B5;
 }
 .chosenAppBg-2 .newWord .words__letter {
-  background-color: #CE1E1E;
+  background-color: #C21332;
 }
 .chosenAppBg-2 .animWord .words__letter {
   animation: 1s showNewWord5 forwards;
@@ -71,7 +68,7 @@
     background-color: rgba(255, 255, 255, 0.85);
   }
   100% {
-    background-color: #CE1E1E;
+    background-color: #C21332;
   }
 }
 .chosenAppBg-2 .shop__cart__item_2 {
@@ -94,10 +91,10 @@
   background-color: #701414;
 }
 .chosenAppBg-2 .menu__hint {
-  background-color: rgba(71, 25, 108, 0.9);
+  background-color: rgba(194, 19, 50, 0.9);
 }
 .chosenAppBg-2 .levels .menu-star {
-  background-color: #E75858;
+  background-color: #C21332;
 }
 .chosenAppBg-2 .menu__level .level_full-star {
   background: url(assets/bgNewYear/star.svg) center center no-repeat;
@@ -106,7 +103,7 @@
 .chosenAppBg-2 .menu__level .level_full-star.getStar {
   animation: showFullStar2 1s forwards;
 }
-@keyframes showFullSta2 {
+@keyframes showFullStar2 {
   0% {
     transform: scale(1);
   }
@@ -136,6 +133,18 @@
   100% {
     background-position: 500px 1000px, 400px 400px, 300px 300px;
   }
+}
+.chosenAppBg-2 .skipTutorial {
+  background-color: #76101f;
+}
+.chosenAppBg-2 .cloudHint {
+  color: #E75858;
+}
+.chosenAppBg-2 .cloudHint__mainText {
+  color: #e03f3f;
+}
+.chosenAppBg-2 .leaderBoardInfo__player {
+  border-color: #E75858;
 }
 
 /*# sourceMappingURL=stylesNewYear.css.map */
