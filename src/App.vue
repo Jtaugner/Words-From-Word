@@ -1114,11 +1114,11 @@ function fixDoneWords(allDoneWords) {
 			k = k.replace(/ё/g, 'е');
 			console.log(k);
 		}else if(k === "ассиметрия"){
-			console.log('асс');
 			k = "асимметрия";
 		}else if(k === "гитлеровец"){
-			console.log('горицвет');
 			k = "горицвет";
+		}else if(k === "барашкин"){
+			k = "банкирша";
 		}
 		let words = allDoneWords[keys[i]] || allDoneWords[k];
 
@@ -1128,6 +1128,8 @@ function fixDoneWords(allDoneWords) {
 				delete allDoneWords["ассиметрия"];
 			}else if(k === "горицвет"){
 				delete allDoneWords["гитлеровец"];
+			}else if(k === "барашкин"){
+				delete allDoneWords["барашкин"];
 			}
 		}else{
 			if(keys[i].indexOf('ё')  !== -1){
