@@ -1,5 +1,5 @@
 <template>
-	<div id="app" :class="'chosenAppBg' + chosenBgRight">
+	<div id="app" :class="['chosenAppBg' + chosenBgRight, showGameLocation ? 'locationOpened' : '']">
 		<!--    <div class="close-level-help prev-location next-location"></div>-->
 		<div class="levels"
 			 @updateAll="updateAll()"
@@ -13,7 +13,13 @@
 
 
 			<div class="levelsTop">
-				<div class="switchSettings menuItem" @click="toggleSettings"></div>
+				<div>
+					<div class="switchSettings menuItem" @click="toggleSettings"></div>
+					<div class="switchShowLocation menuItem" @click="toggleShowLocations" v-if="!notRussian">
+						<div class="newElement">!</div>
+					</div>
+				</div>
+
 
 				<div class="levelsTop__allStars" :class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']">
 					{{allStars}}/{{ (location+1)*63}}
@@ -53,6 +59,7 @@
 							<div class="level_star" v-for="star in 3" :key="star"
 								 :class="star <= stars[getLevelByLevelAndLocation(level)-1] ? 'menu-star' : ''"></div>
 						</div>
+						<div class="newElement"><div class="newElement__circle"></div></div>
 					</div>
 
 					<div class="prev-location" @click="prevLocation()" v-if="location > 0"></div>
@@ -75,6 +82,43 @@
 
 
 
+
+		</div>
+
+
+		<div class="blurBackground" v-if="showLocations" @click="toggleShowLocations"></div>
+
+		<div class="popUp" v-if="showLocations">
+			<div class="popUp__header">
+				<div class="popUp__title">Локации</div>
+				<div class="popUp__close" @click="toggleShowLocations"></div>
+			</div>
+			<div class="popUp__locations">
+
+
+
+				<div class="popUp__location newYearLocation" @click="openGameLocation('newYear')">
+					<div class="popUp__locationPicture">
+						<div class="popUp__locationStars">{{getLocationAllStarsByLocation('newYear')}}/60</div>
+					</div>
+					<div class="popUp__locationName">Новогоднее приключение</div>
+				</div>
+				<div class="popUp__location closedLocation">
+					<div class="popUp__locationPicture">
+						<div class="popUp__locationStars">???</div>
+					</div>
+					<div class="popUp__locationName">В будущих обновлениях...</div>
+				</div>
+				<div class="popUp__location closedLocation">
+					<div class="popUp__locationPicture">
+						<div class="popUp__locationStars">???</div>
+					</div>
+					<div class="popUp__locationName">В будущих обновлениях...</div>
+				</div>
+
+
+
+			</div>
 
 
 		</div>
@@ -154,6 +198,65 @@
 		</div>
 
 
+
+		<!--Блок с локацией-->
+		<div
+			class="location"
+			:class="['gameLocation-' + gameLocation, levelsAnim ? 'levelsAnim' : '']"
+			v-show="showGameLocation"
+		>
+			<div class="levelsTop">
+				<div>
+					<div class="menu__button-back menuItem" @click="backMenu"></div>
+					<div class="switchShowLocation menuItem" @click="toggleShowLocations" v-if="!notRussian"></div>
+				</div>
+
+
+				<div class="levelsTop__allStars" :class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']">
+					{{locationAllStars}}/60
+				</div>
+
+				<div>
+					<div class="leaderBoard menuItem" @click="toggleLeaderBoard()" v-if="!notRussian"></div>
+					<div class="switchShop menuItem" @click="toggleShop()"></div>
+				</div>
+			</div>
+
+
+			<div
+				class="level location__level"
+				v-for="level in 20"
+				:key="'location-level-' + level"
+				:class="[
+					(level % 2) === 0 ? 'location__upLevel' : '',
+					level > 1 && locationStars[level-2] === 0 ? 'level_close' : ''
+					]"
+				:style="{left: getLevelLocationLeft(level)}"
+				@click="getLocationLevel(level-1)"
+				>
+
+
+
+
+				<div>{{level}}</div>
+				<div class="newElement" v-if="lastLocationLevel === level"><div class="newElement__circle"></div></div>
+				<div class="menu__level_stars">
+
+					<div class="level_star" v-for="star in 3" :key="star"
+						 :class="star <= locationStars[level-1] ? 'menu-star' : ''"></div>
+				</div>
+			</div>
+
+
+		</div>
+
+
+
+
+
+
+
+
 		<div class="game" v-show="content">
 			<div class="blur"></div>
 
@@ -166,15 +269,24 @@
 				<div class="menu__level">
 					{{notRussian ? 'Level' : 'Уровень'}} {{lvl+1}}
 					<div class="menu__level_stars">
-						<div class="level_star" v-for="star in 3" :key="star"
-							 :class="[star <= stars[lvl] ? 'level_full-star' : '',
-                      getStar === star ? 'getStar' : '']"></div>
+						<div
+							class="level_star"
+							v-for="star in 3"
+							:key="star"
+							:class="[
+								 (locationGame && star <= locationStars[lvl]) ||
+								  (!locationGame && star <= stars[lvl]) ? 'level_full-star' : '',
+                      			 getStar === star ? 'getStar' : ''
+                      			 ]"
+						>
+
+						</div>
 					</div>
 					<div class="menu__hint">{{moreGuessedWords}}</div>
 				</div>
 				<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
 					<div class="advert" v-if="canShowAdv && tipCount === 0"></div>
-					<div class="menu__tip_count" v-else>{{lvl === 0 ? '∞' : tipCount}}</div>
+					<div class="menu__tip_count" v-else>{{lvl === 0 && !locationGame ? '∞' : tipCount}}</div>
 				</div>
 				<div class="menu__button-next-level menuItem"
 					 :class="[testShowNextLevel() ? 'menu__button-next-level_active' : '']"
@@ -207,8 +319,11 @@
 						 @click="openWordDescription(word)"
 					>
 						<div class="words__letter"
-							 v-for="(letter, ind) in word" :key = "word + ind + letter"
-						>{{doneWords.includes(word) ? letter : '' }}</div>
+							 v-for="(letter, ind) in word"
+							 :key = "word + ind + letter"
+						>
+							{{doneWords.includes(word) ? letter : '' }}
+						</div>
 					</div>
 
 				</div>
@@ -282,30 +397,7 @@
 			</div>
 
 
-			<div class="rules-blackout main-blackout" v-if="showLastLevelInfo && !notRussian" @click="toggleShowLastLevelInfo()"></div>
-			<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
-				<div class="rules__cross" @click="toggleShowLastLevelInfo()"></div>
-				<h2 class="rules__menu">
-					{{wasUpdate ? 'Новогоднее обновление!' : 'Дорогой игрок!'}}
-				</h2>
-				<template v-if="wasUpdate">
-					Пора вживаться в атмосферу Нового года, включайте новое цветовое оформление в настройках! А ближе к Новому году Вас ждёт новая локация и новые уровни!
-					<div class="rules__goBg" @click="goToChangeBg()">В настройки</div>
-				</template>
-				<template v-else>
-					Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы обновляем словарь несколько раз в месяц, и добавляем новые уровни каждый месяц.
-					Вы можете пройти все старые уровни на 3 звезды или же подождать, когда выйдут новые уровни. Про обновления вы можете узнать в
-					<a href="https://vk.com/jaugr"
-					   target="_blank"
-					   rel="noopener noreferrer"
-					   class="settings__text"
-					   @click="()=>{sendParams({'vk-lastLevel': 1})}"
-					>
-						группе ВКонтакте
-					</a>.
-				</template>
 
-			</div>
 
 			<div class="rules-blackout main-blackout" v-if="openNewBg" @click="toggleOpenNewBg()"></div>
 			<div class="rules rules__notification bgRules" v-if="openNewBg">
@@ -351,7 +443,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
 					<div class="shop__cart__buy-button" >
-<!--						<div class="shop__lastPrice">49</div>-->
+						<div class="shop__lastPrice">49</div>
 						{{getItemPrice(0)}}
 					</div>
 				</div>
@@ -362,7 +454,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
 					<div class="shop__cart__buy-button">
-<!--						<div class="shop__lastPrice">99</div>-->
+						<div class="shop__lastPrice">99</div>
 						{{getItemPrice(1)}}
 					</div>
 				</div>
@@ -373,7 +465,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
 					<div class="shop__cart__buy-button">
-<!--						<div class="shop__lastPrice">149</div>-->
+						<div class="shop__lastPrice">149</div>
 						{{getItemPrice(2)}}
 					</div>
 				</div>
@@ -507,6 +599,39 @@
 			</ul>
 		</div>
 
+		<div class="rules-blackout main-blackout" v-if="showLastLevelInfo && !notRussian" @click="toggleShowLastLevelInfo()"></div>
+		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
+			<div class="rules__cross" @click="toggleShowLastLevelInfo()"></div>
+			<h2 class="rules__menu">
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Что-то новенькое?' : 'Дорогой игрок!'}}
+			</h2>
+			<template v-if="locationGame">
+				<template v-if="gameLocation === 'newYear'">
+					Поздравляем! Вы прошли первую локацию - Новогоднее приключение!
+					За это мы дарим вам 30 подсказок и, конечно же, поздравляем с Новым годом!
+				</template>
+			</template>
+			<template v-else-if="wasUpdate">
+				Встречайте тематические локации! В каждой локации будет 20 уровней-слов, связанных одной темой.
+				Здесь мы отошли от привычной серьёзности, а почему - узнаете в игре.
+				Первая локация - Новый год, а найти её можно в меню, нажав на значок книжки.
+				<div class="rules__goBg" @click="goToGetLocations()">Вперёд!</div>
+			</template>
+			<template v-else>
+				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы обновляем словарь несколько раз в месяц, и добавляем новые уровни каждый месяц.
+				Вы можете пройти все старые уровни на 3 звезды или же подождать, когда выйдут новые уровни. Про обновления вы можете узнать в
+				<a href="https://vk.com/jaugr"
+				   target="_blank"
+				   rel="noopener noreferrer"
+				   class="settings__text"
+				   @click="()=>{sendParams({'vk-lastLevel': 1})}"
+				>
+					группе ВКонтакте
+				</a>.
+			</template>
+
+		</div>
+
 
 		<!--    <div class="rules-blackout main-blackout" v-show="gameUpdate" @click="toggleGameUpdate()"></div>-->
 		<!--    <div class="rules" v-show="gameUpdate">-->
@@ -571,11 +696,13 @@ import './stylesBg2.scss';
 import './stylesBg3.scss';
 import './stylesHalloween.scss';
 import './stylesNewYear.scss';
+import './stylesLocations.scss';
 import {allWordsRU, dictionaryRU} from './russianWords';
 import {wordsFromWordsRU} from "./russianWordsFromWords";
 import {allWordsEN} from './englishWords';
 import {wordsFromWordsEN} from './englishWordsFromWords'
-import {getBusinessEvent} from "@/gameAnalytics";
+import {getBusinessEvent} from "./gameAnalytics";
+import {locationWords} from "./locationWords";
 
 let deleteBlockBg = true;
 // function stylesBgThen(){
@@ -766,12 +893,15 @@ var LZString = function () {
 	return i
 }();
 
-function replaceLevelsToOne(data){
+function replaceLevelsToOne(data, isLocationLevels){
 	let keys = Object.keys(data);
 	const newData = {};
 	keys.forEach((key)=>{
 		try{
-			if(data[key].length === wordsFromWords[key].length){
+			let len;
+			if(isLocationLevels) len = locationWords.wordsFromWords[key].length;
+			else len = wordsFromWords[key].length;
+			if(data[key].length === len){
 				newData[key] = 1;
 			}else{
 				newData[key] = data[key].slice();
@@ -887,13 +1017,15 @@ function decompressDataObj(compressedWords){
 	return data;
 }
 
-function compressData(data){
+function compressData(data, isLocationData){
 	//Если заполнены все слова, уровень - 1
 	if(data === null || data === undefined) return;
 
-	let newData =  replaceLevelsToOne(data);
-	newData = compressDataObj(newData);
-	newData = newCompress(newData);
+	let newData =  replaceLevelsToOne(data, isLocationData);
+	if(!isLocationData){
+		newData = compressDataObj(newData);
+		newData = newCompress(newData);
+	}
 	return newData;
 	// console.log(newData);
 	// return LZString.compressToUTF16(JSON.stringify(newData));
@@ -978,7 +1110,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-14";
+const lastVersion = "ver-15";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1064,6 +1196,7 @@ let PLAYESTATE = {};
 let PLAYERSTATS = {};
 let doDeleteBlock;
 let allDoneWords = getFromStorage('allDoneWords');
+let locationDoneWords = getFromStorage('locationDoneWords');
 let tips = getFromStorage('tips');
 let sounds = getFromStorage('sounds');
 let isLastSounds = getFromStorage('lastSounds');
@@ -1105,7 +1238,7 @@ let allStars = [];
 let isRules = false;
 let allLocations = Math.floor(allWords.length / 21);
 let lastLevel = 0;
-function fixDoneWords(allDoneWords) {
+function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
 	for(let i = 0; i < keys.length; i++){
 
@@ -1123,7 +1256,12 @@ function fixDoneWords(allDoneWords) {
 		let words = allDoneWords[keys[i]] || allDoneWords[k];
 
 		if(words === 1){
-			allDoneWords[k] = wordsFromWords[k];
+			if(isLocationWords){
+				allDoneWords[k] = locationWords.wordsFromWords[k];
+			}else{
+				allDoneWords[k] = wordsFromWords[k];
+			}
+
 			if(k === "асимметрия"){
 				delete allDoneWords["ассиметрия"];
 			}else if(k === "горицвет"){
@@ -1140,6 +1278,10 @@ function fixDoneWords(allDoneWords) {
 
 			if(words.length > 0){
 				let allWords = wordsFromWords[k];
+				if(isLocationWords){
+					allWords = locationWords.wordsFromWords[k];
+				}
+
 				if(allWords){
 					words = words.filter((word)=>allWords.includes(word));
 					allDoneWords[k] = words;
@@ -1177,6 +1319,13 @@ if(allDoneWords){
 		allStars.push(0);
 	}
 
+}
+if(locationDoneWords){
+	console.log(JSON.parse(locationDoneWords));
+	locationDoneWords = fixDoneWords(JSON.parse(locationDoneWords), true);
+	console.log(locationDoneWords);
+}else{
+	locationDoneWords = {};
 }
 try{
 	if (getFromStorage('allDoneWordsEN')) {
@@ -1236,9 +1385,9 @@ function setState(isNow) {
 				allDoneWordsEN: compressData(PLAYESTATE.allDoneWords),
 				time: getSec()
 			};
+			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
 			console.log(newState);
-			playerGame.setData(newState, isNow).then(() => {
-			}).catch((ignored) => {})
+			playerGame.setData(newState, isNow).then(() => {}).catch((ignored) => {})
 
 
 		}else{
@@ -1248,6 +1397,7 @@ function setState(isNow) {
 			};
 
 			if(englishProgress) newState.allDoneWordsEN = englishProgress;
+			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
 			console.log(newState);
 			playerGame.setData(newState, isNow).then(() => {
 			}).catch((error) => {
@@ -1261,6 +1411,7 @@ function setState(isNow) {
 				}).catch((ignored) => {
 					let state = {allDoneWords: replaceLevelsToOne(PLAYESTATE.allDoneWords), time: getSec()};
 					if(englishProgress) state.allDoneWordsEN = englishProgress;
+					if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
 					playerGame.setData(state, isNow).then(() => {
 					}).catch(() => {
 					});
@@ -1330,6 +1481,21 @@ function getAllStars(allDoneWords){
 		if(allDoneWords[key]){
 			allStars += testStar(allDoneWords[key].length, wordsFromWords[key].length);
 		}
+	}));
+	return allStars;
+}
+function getLocationStars(currentLocation){
+	let allStars = [];
+	let allWords = locationWords[currentLocation];
+	allWords.forEach((key => {
+		try{
+			if(locationDoneWords[key]){
+				allStars.push(testStar(locationDoneWords[key].length, locationWords.wordsFromWords[key].length));
+			}else{
+				locationDoneWords[key] = [];
+				allStars.push(0);
+			}
+		}catch(e){}
 	}));
 	return allStars;
 }
@@ -1480,6 +1646,14 @@ function delParams(par){
 	window.history.pushState({}, '', url.toString());
 }
 
+function decompressLocationWords(locationDoneWords){
+	let keys = Object.keys(locationDoneWords);
+	keys.forEach((key)=>{
+		if(locationDoneWords[key] === 1) locationDoneWords[key] = locationWords.wordsFromWords[key];
+	});
+	return locationDoneWords;
+}
+
 function initPlayer(ysdk) {
 	console.log(ysdk);
 	ysdk.getPlayer().then(_player => {
@@ -1493,7 +1667,7 @@ function initPlayer(ysdk) {
 		let change = true;
 		isRules = false;
 
-		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN'], false).then((dataObject) => {
+		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords'], false).then((dataObject) => {
 			console.log(dataObject);
 			if(notRussianGame){
 				allDoneWords = {};
@@ -1521,6 +1695,9 @@ function initPlayer(ysdk) {
 
 				if(dataObject.allDoneWords){
 					russianProgressSave = dataObject.allDoneWords;
+				}
+				if(dataObject.locationDoneWords){
+					PLAYESTATE.locationDoneWords = dataObject.locationDoneWords;
 				}
 
 			}else if (dataObject.allDoneWords) {
@@ -1565,8 +1742,14 @@ function initPlayer(ysdk) {
 					}
 				}
 
-
-			}  else{
+				if(dataObject.locationDoneWords){
+					PLAYESTATE.locationDoneWords = fixDoneWords(decompressLocationWords(dataObject.locationDoneWords), true);
+					locationDoneWords = PLAYESTATE.locationDoneWords;
+				}
+			}else if(dataObject.locationDoneWords){
+				PLAYESTATE.locationDoneWords = fixDoneWords(decompressLocationWords(dataObject.locationDoneWords), true);
+				locationDoneWords = PLAYESTATE.locationDoneWords;
+			} else{
 				isRules = true;
 			}
 			//Вовзврат прогресса
@@ -1687,7 +1870,7 @@ function consumePurchase(purchase) {
 	document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 	payments.consumePurchase(purchase.purchaseToken);
 }
-const itemsPrices = [49, 99, 149];
+const itemsPrices = [29, 59, 99];
 
 function buyTips(item) {
 	if(payments && playerGame){
@@ -2035,8 +2218,10 @@ const cloudPhrases = [
 	'Для перехода на следующий уровень заработайте хотя бы 1 <span class="cloudHint__mainText">звезду</span>.',
 	'Ура! Вы <span class="cloudHint__mainText">успешно</span> закончили обучение. Желаем Вам удачи в прохождении игры!',
 ];
-
+const lvl2CloudPhrase = 'В игре есть <br><span class="cloudHint__mainText">тематические локации</span><br> Найдите их в меню, нажав на значок книжки.';
 const lvl3CloudPhrase = 'По техническим причинам буква <br><span class="cloudHint__mainText">Е приравнивается к Ё</span>. Учитывайте это при создании слов. Удачи!';
+
+
 
 let tutorialStep = 0;
 let isShowTutorial = true;
@@ -2044,17 +2229,28 @@ let bgLvlsOpen = [4, 14, 24];
 
 function getBanner(){
 	try{
-		window.yaContextCb.push(()=>{
-			Ya.Context.AdvManager.render({
-				renderTo: 'yandex_rtb_R-A-518275-25',
-				blockId: 'R-A-518275-25'
-			})
-		});
-		params({'getBanner': 1});
+		if(window.innerHeight >= 650){
+			window.yaContextCb.push(()=>{
+				Ya.Context.AdvManager.render({
+					renderTo: 'yandex_rtb_R-A-518275-25',
+					blockId: 'R-A-518275-25'
+				})
+			});
+			params({'getBanner': 1});
+		}
 	}catch(e){
 		console.log(e);
 	}
 }
+// let lastColor = 0;
+// let randColors = ['#4598F9', '#F8C617', '#ED4A4A', '#3ee7f1', '#BE6EFD', '#ff6720', '#ff61ec', '#94eb08', '#3fb32a', '#C21332'];
+// let arr_ru = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ь', 'ы', 'ъ', 'э', 'ю', 'я'];
+// let randArrColors = {};
+// for(let i = 0; i < arr_ru.length; i++){
+// 	randArrColors[arr_ru[i]] = randColors[lastColor];
+// 	lastColor++;
+// 	if(lastColor === randColors.length) lastColor = 0;
+// }
 export default {
 	name: 'App',
 	data(){
@@ -2117,13 +2313,22 @@ export default {
 			showBigWordWas: false,
 			notShowLetters: [],
 			levelClosedShow: false,
-			closedLevel: 1
+			closedLevel: 1,
+			showLocations: false,
+			showGameLocation: false,
+			gameLocation: 'newYear',
+			locationGame: false,
+			locationStars: []
 		}
 	},
 	computed:{
 		allStars(){
 			return this.stars.reduce((acc, el)=> acc+ el, 0);
 		},
+		locationAllStars(){
+			return this.locationStars.reduce((acc, el)=> acc+ el, 0);
+		},
+
 		showNextLoc(){
 			return (this.gameLastLevel+1) >= (this.location + 1) * 21;
 		},
@@ -2134,9 +2339,71 @@ export default {
 			if(this.doneWords.length >= this.nowWords.length) return 'Уровень пройден!';
 			let wordsAmount = howManyWordsToStar(this.doneWords.length, this.nowWords.length);
 			return 'До следующей звезды осталось ' + wordsAmount;
+		},
+		lastLocationLevel(){
+			for(let i = 0; i < this.locationStars.length; i++){
+				if(this.locationStars[i] === 0 && this.locationStars[i+1] === 0){
+					return i+1;
+				}
+			}
+			return 20;
 		}
 	},
 	methods:{
+		// getLetterStyles(word, letter){
+		// 	try{
+		// 		if(this.multicoloredWords && this.doneWords.includes(word)){
+		// 			return {backgroundColor: randArrColors[letter]};
+		// 		}
+		// 		return {};
+		// 	}catch(e){}
+		//
+		// },
+		getLocationAllStarsByLocation(loc){
+			return getLocationStars(loc).reduce((acc, el)=> acc+ el, 0);
+		},
+		getLevelLocationLeft(level){
+			if(level === 1) return '0.5%';
+			if(level < 7){
+				return (level-1) * 5 + '%';
+			}
+			return 1.5+ (level-1) * 5 + '%';
+		},
+		goToGetLocations(){
+			params({'goToLocations': 1});
+			this.backMenu();
+			this.showLocations = true;
+			this.showLastLevelInfo = false;
+		},
+		openGameLocation(location){
+				this.endTutorial();
+				this.levels = false;
+				this.showLocations = false;
+				this.showGameLocation = true;
+				this.gameLocation = location;
+				this.locationStars = getLocationStars(location);
+				this.getShowingLastLevelInLocation();
+
+		},
+		getShowingLastLevelInLocation(){
+			setTimeout(()=>{
+				try{
+					let lastLevel = 0;
+					for(let i = this.locationStars.length-1; i >= 0; i--){
+						if(this.locationStars[i] !== 0) {
+							lastLevel = i;
+							break;
+						}
+					}
+
+					let scrollEl = document.querySelectorAll('.location__level')[lastLevel];
+					scrollEl.scrollIntoView({behavior: 'smooth', block: "center", inline: "center"});
+				}catch(e){}
+			}, 300)
+		},
+		toggleShowLocations(){
+			this.showLocations = !this.showLocations;
+		},
 		toggleShowBigWordWas(){
 			this.showBigWordWas = !this.showBigWordWas;
 		},
@@ -2250,6 +2517,10 @@ export default {
 			tutorialStep++;
 
 			// this.cloudHint = false;
+		},
+		openLevel2Hint(){
+			this.cloudHint = true;
+			this.cloudsPhrase = lvl2CloudPhrase;
 		},
 		openLevel3Hint(){
 			this.cloudHint = true;
@@ -2406,9 +2677,9 @@ export default {
 			setToStorage('tips', this.tipCount);
 			this.isSounds = sounds;
 			deletePreDownload();
-			this.openLastLevel();
 			this.getPlayerLB();
 			if(isRules && !notRussianGame && isShowTutorial){
+				this.openLastLevel();
 				this.startTutorial();
 			}else{
 				this.endTutorial();
@@ -2447,30 +2718,9 @@ export default {
 
 
 
+			this.closeAllBeforeStartLevel(notSound);
 
-			this.advShowNow = false;
-			this.levelsAnim = false;
-
-			if(!notSound){
-				this.isGameAdvShow = isGameAdvShow;
-			}
-
-			if(this.isSounds && !notSound){
-				newLevel.play();
-			}
-
-			this.getStar = -1;
-			setTimeout(()=>{
-				this.levels = false;
-			}, 500);
-
-			this.content = true;
-
-			this.newWord ='';
-			this.animWord ='';
-			this.animWordStart = '';
 			this.lvl = lvl;
-			this.wordFromLetter = '';
 			this.word = allWords[lvl];
 			this.doneWords = allDoneWords[this.word];
 			if(allDoneWords[this.word] === 1){
@@ -2489,7 +2739,6 @@ export default {
 				this.toggleOpenNewBg();
 			}
 
-			this.selectedLetters = [];
 
 
 			this.letters = this.word.split('');
@@ -2498,22 +2747,83 @@ export default {
 				if(a.length < b.length) return -1;
 				return 0;
 			});
-			setTimeout(()=>{
-				document.querySelector('.words').scrollTo({
-					left: 0,
-					behavior: "smooth"
-				});
-			}, 200);
 
 			this.findNotShowLetters();
 
 			if(!this.isTutorial){
 				tryShowAdv();
 			}
-			if(this.lvl === 3 && this.doneWords.length === 0){
-				this.openLevel3Hint();
+			if(this.doneWords.length === 0){
+				if(this.lvl === 3){
+					this.openLevel3Hint();
+				}else if(this.lvl === 2){
+					this.openLevel2Hint();
+				}
 			}
 
+
+		},
+		closeAllBeforeStartLevel(notSound){
+			this.advShowNow = false;
+			this.levelsAnim = false;
+
+			if(!notSound){
+				this.isGameAdvShow = isGameAdvShow;
+			}
+
+			if(this.isSounds && !notSound){
+				newLevel.play();
+			}
+
+			this.getStar = -1;
+			setTimeout(()=>{
+				this.levels = false;
+				this.showGameLocation = false;
+			}, 500);
+
+			this.content = true;
+
+			this.newWord ='';
+			this.animWord ='';
+			this.animWordStart = '';
+			this.wordFromLetter = '';
+			this.selectedLetters = [];
+			this.locationGame = false;
+
+			setTimeout(()=>{
+				document.querySelector('.words').scrollTo({
+					left: 0,
+					behavior: "smooth"
+				});
+			}, 200);
+		},
+		getLocationLevel(level){
+			if(level > 0 && this.locationStars[level-1] === 0) return;
+			this.closeAllBeforeStartLevel();
+			this.locationGame = true;
+			this.lvl = level;
+			this.word = locationWords[this.gameLocation][level];
+			this.letters = this.word.split('');
+			this.doneWords = locationDoneWords[this.word];
+			if(locationDoneWords[this.word] === 1){
+				this.doneWords = wordsFromWords[this.word];
+			}else if(locationDoneWords[this.word] === undefined){
+				locationDoneWords[this.word] = [];
+				this.doneWords = locationDoneWords[this.word];
+			}
+			if(this.doneWords.length === 0){
+				if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
+					params({['startLocationLevel-' + this.lvl]: 1});
+				}
+			}
+
+			this.nowWords = locationWords.wordsFromWords[this.word].slice().sort().sort((a, b)=>{
+				if(a.length > b.length) return 1;
+				if(a.length < b.length) return -1;
+				return 0;
+			});
+
+			this.findNotShowLetters();
 
 		},
 		getLevelByLevelAndLocation(level){
@@ -2610,11 +2920,20 @@ export default {
 			}
 		},
 		testShowNextLevel(){
+			if(this.locationGame){
+				return this.lvl !== 19 && this.locationStars[this.lvl] > 0;
+			}
 			if(this.lvl < lastLevel) return true;
 			return this.lvl === lastLevel && this.stars[this.lvl] > 0;
 		},
 		nextLevel(){
-			if(this.testShowNextLevel()){
+			if(this.locationGame){
+				if(this.lvl === 19) return;
+				if(this.locationStars[this.lvl] > 0){
+					console.log('dasd');
+					this.getLocationLevel(this.lvl+1);
+				}
+			}else if(this.testShowNextLevel()){
 				if(this.lvl+1 === allWords.length){
 					this.showLastLevelInfo = true;
 					return;
@@ -2656,14 +2975,27 @@ export default {
 			if(this.isSounds){
 				exitLevelSound.play();
 			}
+			if(this.locationGame){
+				this.showGameLocation = true;
+				this.levelsAnim =  true;
+				setTimeout(()=>{
+					this.content = false;
+					this.locationGame = false;
+					this.getShowingLastLevelInLocation();
+				}, 500);
+			}else{
+				this.levels =  true;
+				this.levelsAnim =  true;
+				this.showGameLocation = false;
+				setTimeout(()=>{
+					this.content = false;
+					console.log('Вызов баннера');
+					getBanner();
+					this.locationGame = false;
+				}, 500);
+			}
 
-			this.levels =  true;
-			this.levelsAnim =  true;
-			setTimeout(()=>{
-				this.content = false;
-				console.log('Вызов баннера');
-				getBanner();
-			}, 500);
+
 		},
 		addTip(){
 			this.tipCount++;
@@ -2698,13 +3030,18 @@ export default {
 				return;
 			}
 			if(this.doneWords.length === this.nowWords.length) return;
-			if(this.lvl > 0){
+			if(this.lvl > 0 || this.locationGame){
 				this.tipCount--;
 			}
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
+			let arr = [];
+			if(this.locationGame){
+				arr = locationWords.wordsFromWords[this.word].slice();
+			}else{
+				arr = wordsFromWords[this.word].slice();
+			}
 
-			let arr = wordsFromWords[this.word].slice();
 			for(let i = 0; i < this.doneWords.length; i++){
 				arr.splice(arr.indexOf(this.doneWords[i]), 1);
 			}
@@ -2779,8 +3116,18 @@ export default {
 					this.addWord(wordFromLetter);
 					this.animWord = wordFromLetter;
 					this.newWord = wordFromLetter;
-					setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
-					PLAYESTATE.allDoneWords = allDoneWords;
+					console.log('save: ', this.locationGame);
+					console.log(locationDoneWords);
+					if(this.locationGame){
+						setToStorage('locationDoneWords', JSON.stringify(replaceLevelsToOne(locationDoneWords, true)));
+						console.log(replaceLevelsToOne(locationDoneWords, true));
+						PLAYESTATE.locationDoneWords = locationDoneWords;
+					}else{
+						setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
+						PLAYESTATE.allDoneWords = allDoneWords;
+					}
+
+
 					setTimeout(()=>{
 						this.animWordStart = '';
 						this.animWord = '';
@@ -2843,22 +3190,40 @@ export default {
 		},
 		testStars(){
 			let stars = testStar(this.doneWords.length, this.nowWords.length);
-			if(stars > this.stars[this.lvl]){
-				this.bgShowen = false;
+			if(
+				(this.locationGame && stars > this.locationStars[this.lvl]) ||
+				(!this.locationGame && stars > this.stars[this.lvl])){
 
-				if(this.lvl < 10){
-					let lvlParams = 'endLevel-' + this.lvl;
-					params({[lvlParams]: stars});
+				this.bgShowen = false;
+				this.getStar = stars;
+
+				if(this.locationGame){
+					this.locationStars.splice(this.lvl, 1, stars);
+					if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
+						params({['endLocationLevel-' + this.lvl]: stars});
+					}
+					if(this.lvl === 19 && stars === 1){
+						this.showLastLevelInfo = true;
+						this.tipCount += 30;
+						setToStorage('tips', this.tipCount);
+						PLAYERSTATS.tips = this.tipCount;
+						saveAllData(false);
+					}
+
+				}else{
+					setLastLevel();
+					this.gameLastLevel = lastLevel;
+					this.stars.splice(this.lvl, 1, stars);
+					this.addPlayerToLB();
+					if(this.lvl < 10){
+						let lvlParams = 'endLevel-' + this.lvl;
+						params({[lvlParams]: stars});
+					}
 				}
 
-				setLastLevel();
-				this.gameLastLevel = lastLevel;
-				this.getStar = stars;
-				this.stars.splice(this.lvl, 1, stars);
 				if(this.isSounds){
 					starVolume.play();
 				}
-				this.addPlayerToLB();
 				setTimeout(()=>{
 					this.getStar = -1;
 					if(stars === 3){
@@ -2892,11 +3257,37 @@ export default {
 			if (doDeleteBlock) {
 				deletePreDownload();
 				if(isRules && !payloadLevel){
+					this.openLastLevel();
 					this.startTutorial();
 				}
 			}
-			this.openLastLevel();
 			document.addEventListener('keydown', this.pressKey)
+			try{
+				let mouseLeft = 0;
+				function movePage(e) {
+					try{
+						let scrolled = document.getElementById('app').scrollLeft;
+						let newRes = e.clientX;
+						if(newRes > mouseLeft){
+							scrolled -= (newRes-mouseLeft)*1.5;
+						}else{
+							scrolled += (mouseLeft-newRes)*1.5;
+						}
+						mouseLeft = newRes;
+						document.getElementById('app').scrollTo({
+							left: scrolled
+						});
+					}catch(e){}
+				}
+				document.querySelector('.location').onmousedown = (e) => {
+					console.log('down');
+					mouseLeft = e.clientX;
+					document.body.addEventListener('mousemove', movePage);
+				}
+				document.querySelector('.location').onmouseup = () => {
+					document.body.removeEventListener('mousemove', movePage);
+				}
+			}catch(e){console.log(e)}
 		})
 	}
 }

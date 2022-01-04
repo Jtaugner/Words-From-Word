@@ -72,13 +72,61 @@ html, body {
   cursor: pointer;
 }
 
+.switchShowLocation {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: url(assets/locations.svg) center center no-repeat, rgba(255, 255, 255, 0.85);
+  background-size: 55%;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 25px;
+}
+
+.newElement {
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  background-color: #b17bc1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+.level .newElement {
+  top: -2px;
+  right: -2px;
+}
+
+.newElement__circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.level-done .newElement, .level_close .newElement {
+  display: none;
+}
+
 .switchRules {
   font-size: 3.5rem;
   color: #faf5ac;
   cursor: pointer;
 }
 
-.switchShop, .leaderBoard, .switchSettings {
+.switchShop, .leaderBoard, .switchSettings, .switchShowLocation {
   display: inline-block;
   cursor: pointer;
 }
@@ -245,7 +293,7 @@ html, body {
 }
 
 .rules__notification {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
 }
 
 .rules__cross {
@@ -363,7 +411,6 @@ html, body {
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
   border-radius: 25px;
   letter-spacing: 2px;
-  margin-left: 75px;
 }
 
 .levelsTop__allStars_withoutLB {
@@ -568,7 +615,7 @@ html, body {
   text-align: center;
 }
 
-.menu__words-amount:after, .menu__button-next-level:after, .menu__button-back:after, .menu__tip:after, .prev-location:after, .next-location:after, .switchSettings:after {
+.menu__words-amount:after, .menu__button-next-level:after, .menu__button-back:after, .menu__tip:after, .prev-location:after, .next-location:after, .switchSettings:after, .popUp__close:after, .switchShowLocation:after {
   position: absolute;
   content: "";
   top: -10px;
@@ -1066,6 +1113,7 @@ html, body {
 
   .rules__notification {
     font-size: 2.3rem;
+    padding-bottom: 15px;
   }
 
   .rules__cross {
@@ -1489,7 +1537,7 @@ html, body {
   }
 
   .levelsTop {
-    height: 80px;
+    height: 95px;
   }
 
   .levelsTop__allStars {
@@ -1502,7 +1550,7 @@ html, body {
     height: 30px;
   }
 
-  .switchSettings, .leaderBoard, .switchShop {
+  .switchSettings, .leaderBoard, .switchShop, .switchShowLocation {
     width: 60px;
     height: 60px;
   }
@@ -1566,6 +1614,23 @@ b {
 }
 
 @media (max-height: 350px) {
+  .newElement {
+    width: 16px;
+    height: 16px;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+  }
+
+  .level .newElement {
+    width: 18px;
+    height: 18px;
+  }
+
+  .newElement__circle {
+    width: 6px;
+    height: 6px;
+  }
+
   .levelsTop {
     height: 50px;
     width: 487px;
@@ -1668,6 +1733,26 @@ b {
 }
 
 @media (min-width: 1000px) {
+  .newElement {
+    width: 27px;
+    height: 27px;
+    font-size: 2rem;
+    line-height: 2rem;
+    right: -5px;
+  }
+
+  .level .newElement {
+    width: 30px;
+    height: 30px;
+    right: -4px;
+    top: -4px;
+  }
+
+  .newElement__circle {
+    width: 11px;
+    height: 11px;
+  }
+
   .menu {
     padding: 10px 0;
   }

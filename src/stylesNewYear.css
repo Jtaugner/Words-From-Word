@@ -18,6 +18,12 @@
 .chosenAppBg-2 .switchShop {
   background-image: url(assets/bgNewYear/shop.svg);
 }
+.chosenAppBg-2 .switchShowLocation {
+  background-image: url(assets/bgNewYear/locations.svg);
+}
+.chosenAppBg-2 .newElement {
+  background-color: #C21332;
+}
 .chosenAppBg-2 .words__letters-block_done .words__letter, .chosenAppBg-2 .action-block__letters .action-block__letter_selected {
   background-color: #E75858;
 }
