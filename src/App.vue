@@ -697,7 +697,8 @@ import './stylesBg3.scss';
 import './stylesHalloween.scss';
 import './stylesNewYear.scss';
 import './stylesLocations.scss';
-import {allWordsRU, dictionaryRU} from './russianWords';
+import {allWordsRU} from './russianWords';
+import {dictionaryRU} from './russianDictionary';
 import {wordsFromWordsRU} from "./russianWordsFromWords";
 import {allWordsEN} from './englishWords';
 import {wordsFromWordsEN} from './englishWordsFromWords'
