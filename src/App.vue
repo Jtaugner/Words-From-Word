@@ -443,7 +443,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
 					<div class="shop__cart__buy-button" >
-						<div class="shop__lastPrice">49</div>
+<!--						<div class="shop__lastPrice">49</div>-->
 						{{getItemPrice(0)}}
 					</div>
 				</div>
@@ -454,7 +454,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
 					<div class="shop__cart__buy-button">
-						<div class="shop__lastPrice">99</div>
+<!--						<div class="shop__lastPrice">99</div>-->
 						{{getItemPrice(1)}}
 					</div>
 				</div>
@@ -465,7 +465,7 @@
 					</div>
 					<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
 					<div class="shop__cart__buy-button">
-						<div class="shop__lastPrice">149</div>
+<!--						<div class="shop__lastPrice">149</div>-->
 						{{getItemPrice(2)}}
 					</div>
 				</div>
@@ -1871,8 +1871,7 @@ function consumePurchase(purchase) {
 	document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 	payments.consumePurchase(purchase.purchaseToken);
 }
-const itemsPrices = [29, 59, 99];
-
+const itemsPrices = [49, 99, 149];
 function buyTips(item) {
 	if(payments && playerGame){
 		let purchaseItem = 'cart_item' + item;
@@ -2486,6 +2485,7 @@ export default {
 			this.tutorialSelected = -1;
 		},
 		startTutorial(){
+			console.log('Start tutorial');
 			tutorialStep = 0;
 			this.canShowSkip = true;
 			this.isTutorial = true;
@@ -2520,10 +2520,12 @@ export default {
 			// this.cloudHint = false;
 		},
 		openLevel2Hint(){
+			console.log('lvl2Hint');
 			this.cloudHint = true;
 			this.cloudsPhrase = lvl2CloudPhrase;
 		},
 		openLevel3Hint(){
+			console.log('lvl3Hint');
 			this.cloudHint = true;
 			this.cloudsPhrase = lvl3CloudPhrase;
 		},
@@ -2679,14 +2681,22 @@ export default {
 			this.isSounds = sounds;
 			deletePreDownload();
 			this.getPlayerLB();
-			if(isRules && !notRussianGame && isShowTutorial){
+			if(isRules && !notRussianGame && isShowTutorial && !payloadLevel){
 				this.openLastLevel();
 				this.startTutorial();
 			}else{
 				this.endTutorial();
 			}
 
+			this.tryOpenPayloadLevel();
+
 			this.gameLastLevel = lastLevel;
+		},
+		tryOpenPayloadLevel(){
+			if(payloadLevel){
+				this.getLevel();
+				this.rules = true;
+			}
 		},
 		toggleLevelClosedShow(){
 			this.levelClosedShow = !this.levelClosedShow;
@@ -3261,8 +3271,11 @@ export default {
 					this.openLastLevel();
 					this.startTutorial();
 				}
+				this.tryOpenPayloadLevel();
 			}
 			document.addEventListener('keydown', this.pressKey)
+			console.log('Вызов баннера при заходе');
+			getBanner();
 			try{
 				let mouseLeft = 0;
 				function movePage(e) {

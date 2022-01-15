@@ -138,6 +138,13 @@ var words12 = ["аббревиатура","абитуриентка","аболи
 words = [...words, ...words12];
 shuffle(words);
 
+for(let i = 0; i < words.length; i++){
+    if(words[i].includes('ё')) {
+        console.log('Ё');
+        return;
+    }
+}
+
 if (doNewWords) {
     for (let i = 0; i < words.length; i++) {
         let bigWord = words[i];
