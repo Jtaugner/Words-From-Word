@@ -1559,7 +1559,7 @@ if(window.YaGames){
 			if(lvl){
 				payloadLevel = Number(lvl) - 1;
 				if(payloadLevel < 0) payloadLevel = 0;
-				else if(payloadLevel > 1500) payloadLevel = 1499;
+				else if(payloadLevel > 2000) payloadLevel = 1999;
 			}
 		}catch(ignored){}
 
