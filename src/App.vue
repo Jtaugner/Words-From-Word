@@ -314,7 +314,8 @@
                 animWordStart === word ? 'animWordStart' : '',
                 newWord === word ? 'newWord' : '',
                 wordWasIndex === index ? 'wordWas': '',
-                selectMainWord === word ? 'tutorialSelected' : ''
+                selectMainWord === word ? 'tutorialSelected' : '',
+                wordSwing === word ? 'words__letter-block_swing' : ''
                 ]"
 						 @click="openWordDescription(word)"
 					>
@@ -2318,7 +2319,8 @@ export default {
 			showGameLocation: false,
 			gameLocation: 'newYear',
 			locationGame: false,
-			locationStars: []
+			locationStars: [],
+			wordSwing: ''
 		}
 	},
 	computed:{
@@ -2777,6 +2779,7 @@ export default {
 		closeAllBeforeStartLevel(notSound){
 			this.advShowNow = false;
 			this.levelsAnim = false;
+			this.wordSwing = '';
 
 			if(!notSound){
 				this.isGameAdvShow = isGameAdvShow;
@@ -3058,6 +3061,10 @@ export default {
 			}
 			let rand = Math.floor(Math.random()*arr.length);
 			this.wordFromLetter = arr[rand];
+			if(Math.random() > 0.9){
+				this.wordSwing = this.wordFromLetter;
+			}
+
 			this.sendWord();
 
 

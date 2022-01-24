@@ -549,7 +549,7 @@ html,body
 .menu{
   position: absolute;
   left: 0;
-  top: 20px;
+  top: 0;
 
   width: 100%;
   padding: 5px 0;
@@ -803,6 +803,25 @@ html,body
   padding-right: 30px;
 
   cursor: pointer;
+}
+
+.words__letter-block_swing{
+  animation: swing 2s;
+}
+@keyframes swing {
+  0%{
+    transform: rotate(0deg);
+  }
+  33%{
+    transform: rotate(1deg);
+  }
+  66%{
+    transform: rotate(-1deg);
+  }
+  100%{
+    transform: rotate(0deg);
+  }
+
 }
 .words__letters-block_done .words__letter{
   /*background-color: rgba(166,82,174);*/

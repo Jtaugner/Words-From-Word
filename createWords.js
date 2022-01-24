@@ -1,6 +1,9 @@
 const { promises: fsp } = require('fs');
 var path = require('path');
 var words = require('./words');
+
+const addNewWords = ["татарка", "кокпит", "булат", "люд", "оргалит", "фенек", "ополоски", "отломок"];
+words = [...words, ...addNewWords];
 //    let keys = Object.keys(allWordsFromWords);
 //    let allWords = {};
 //    keys.forEach((key)=>{
@@ -183,7 +186,6 @@ function createWords(allWords, wordsFromWords) {
     }
 }
 
-createWords(allWords, wordsFromWords);
 
 const locationWordsFromWords = {};
 let locationAllWords = [];
@@ -197,11 +199,32 @@ Object.keys(locationAllWordsLocation).forEach(key => {
     locationString += `${key}:${JSON.stringify(locationAllWordsLocation[key])}`
 });
 
-fsp.writeFile(path.join(__dirname, 'src/russianWords.js'), `export let allWordsRU = ${JSON.stringify(allWords)}`);
-fsp.writeFile(path.join(__dirname, 'src/russianWordsFromWords.js'), `export let wordsFromWordsRU = ${JSON.stringify(wordsFromWords)}`);
-createWords(locationAllWords, locationWordsFromWords);
-fsp.writeFile(path.join(__dirname, 'src/locationWords.js'),
-    `export const locationWords = {
+// let animals = ["леопард", "утконос", "аллигатор", "серыйволк", "скорпион", "муравьед", "мартышка", "горностай", "дикобраз", "капибара", "кашалот", "антилопа", "морскойкотик", "летучаямышь", "фламинго", "альбатрос", "сурикат", "кошкаисобака", "саламандра", "динозавр"];
+//
+//[           ["серыйволк", "муравьед", "горностай", "альбатрос", "аллигатор", "кашалот", "морскойкотик", "фламинго", "скорпион", "дикобраз", "саламандра", "мартышка", "леопард", "летучаямышь", "антилопа", "сурикат", "капибара", "утконос", "кошкаисобака", "динозавр"];
+//Лес - "серыйволк", "муравьед", "горностай", "альбатрос"
+//Вода - "аллигатор", "кашалот", "морскойкотик", "фламинго"
+//Пустыня "скорпион", "дикобраз", "саламандра"
+//Джунгли - "мартышка", "леопард", "летучаямышь"
+//Степь - "антилопа", "сурикат", "капибара"
+//Какая-нибудь последняя местность - может, сама планета Земля? - "утконос", "кошкаисобака", "динозавр"
+// let www = {};
+// createWords(animals, www);
+// for(let name in www){
+//     console.log(name, ' - ', www[name].length)
+// }
+// console.log('len: ', animals.length);
+
+let createAll = true;
+if(createAll){
+    createWords(allWords, wordsFromWords);
+    fsp.writeFile(path.join(__dirname, 'src/russianWords.js'), `export let allWordsRU = ${JSON.stringify(allWords)}`);
+    fsp.writeFile(path.join(__dirname, 'src/russianWordsFromWords.js'), `export let wordsFromWordsRU = ${JSON.stringify(wordsFromWords)}`);
+    createWords(locationAllWords, locationWordsFromWords);
+    fsp.writeFile(path.join(__dirname, 'src/locationWords.js'),
+        `export const locationWords = {
             wordsFromWords: ${JSON.stringify(locationWordsFromWords)},
             ${locationString}
 }`);
+}
+
