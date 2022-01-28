@@ -1,0 +1,106 @@
+@charset "UTF-8";
+/*Фон 2*/
+#app.chosenAppBg2, .chosenAppBg2 .game, .chosenAppBg2 .levels {
+  background-image: url(../assets/bg2/bg2.png);
+}
+
+@media (min-width: 1800px) {
+  #app.chosenAppBg2, .chosenAppBg2 .game, .chosenAppBg2 .levels {
+    background-image: url(../assets/bg2/bg2-big.png);
+  }
+}
+.chosenAppBg2 .levelsTop__allStars {
+  color: #192B6C;
+}
+.chosenAppBg2 .leaderBoard {
+  background-image: url(../assets/bg2/leader.svg);
+}
+.chosenAppBg2 .switchShop {
+  background-image: url(../assets/bg2/shop.svg);
+}
+.chosenAppBg2 .switchShowLocation {
+  background-image: url(../assets/bg2/locations.svg);
+}
+.chosenAppBg2 .newElement {
+  background-color: #4c83cb;
+}
+.chosenAppBg2 .words__letters-block_done .words__letter, .chosenAppBg2 .action-block__letters .action-block__letter_selected {
+  background-color: #6277C2;
+}
+.chosenAppBg2 .menu__button-back {
+  background-image: url(../assets/bg2/home.svg);
+}
+.chosenAppBg2 .menu__tip {
+  background-image: url(../assets/bg2/tip.svg);
+}
+.chosenAppBg2 .menu__tip_count, .chosenAppBg2 .rules__goBg {
+  background-color: #192B6C;
+}
+.chosenAppBg2 .shop, .chosenAppBg2 .rules {
+  border-color: #192B6C;
+}
+.chosenAppBg2 .shop .rules__menu, .chosenAppBg2 .settings__text {
+  color: #192B6C;
+}
+.chosenAppBg2 .rules__cross {
+  background-image: url(../assets/bg2/cross.svg);
+}
+.chosenAppBg2 .menu__button-next-level_active {
+  background-image: url(../assets/bg2/arrow.svg);
+}
+.chosenAppBg2 .switchSettings {
+  background-image: url(../assets/bg2/settings.svg);
+}
+.chosenAppBg2 ::-webkit-scrollbar-thumb {
+  background-color: #6277C2;
+}
+.chosenAppBg2 .settings {
+  border-color: #192B6C;
+}
+.chosenAppBg2 .checkbox:checked + label:after {
+  background-color: #4C67CB;
+}
+.chosenAppBg2 .checkbox:checked + label:before {
+  background: #B5BFF4;
+}
+.chosenAppBg2 .newWord .words__letter {
+  background-color: #4a71ff;
+}
+.chosenAppBg2 .animWord .words__letter {
+  animation: 1s showNewWord2 forwards;
+}
+@keyframes showNewWord2 {
+  0% {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background-color: #4a71ff;
+  }
+}
+.chosenAppBg2 .shop__cart__item_2 {
+  background-image: url(../assets/bg2/cart1.svg);
+}
+.chosenAppBg2 .shop__cart__item_3 {
+  background-image: url(../assets/bg2/cart2.svg);
+}
+.chosenAppBg2 .shop__cart__item_4 {
+  background-image: url(../assets/bg2/cart3.svg);
+}
+.chosenAppBg2 .shop__cart__name {
+  color: #192B6C;
+  border-color: #192B6C;
+}
+.chosenAppBg2 .shop__cart__item {
+  border-color: #192B6C;
+}
+.chosenAppBg2 .wordWas .words__letter {
+  background-color: #14204a;
+}
+.chosenAppBg2 .menu__hint {
+  background-color: rgba(25, 43, 108, 0.9);
+}
+.chosenAppBg2 .leaderBoardInfo__player {
+  border-color: #192B6C;
+}
+
+/*# sourceMappingURL=stylesBg2.css.map */

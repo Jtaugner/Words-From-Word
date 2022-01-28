@@ -1,0 +1,43 @@
+@charset "UTF-8";
+/*Новый год*/
+.newYearLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/newYear/newYear.png);
+}
+
+.newYearLocation .popUp__locationName {
+  color: #2486CD;
+}
+
+.gameLocation-newYear {
+  background: url(../assets/locations/newYear/newYear-map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-newYear .levelsTop__allStars {
+  color: #DC5E5E;
+}
+.gameLocation-newYear .menu-star {
+  background-color: #DC5E5E;
+}
+.gameLocation-newYear .newElement {
+  background-color: #DC5E5E;
+}
+.gameLocation-newYear .menu__button-back {
+  background-image: url(../assets/locations/newYear/home.svg);
+}
+.gameLocation-newYear .leaderBoard {
+  background-image: url(../assets/locations/newYear/leader.svg);
+}
+.gameLocation-newYear .switchShop {
+  background-image: url(../assets/locations/newYear/shop.svg);
+}
+.gameLocation-newYear .switchShowLocation {
+  background-image: url(../assets/locations/newYear/locations.svg);
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-newYear .location__lastLevel {
+    box-shadow: 0 0 25px 10px #DC5E5E;
+  }
+}
+
+/*# sourceMappingURL=magicTales.css.map */

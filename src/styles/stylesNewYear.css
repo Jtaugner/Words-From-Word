@@ -1,0 +1,156 @@
+@charset "UTF-8";
+/*Фон 3*/
+#app.chosenAppBg-2, .chosenAppBg-2 .game, .chosenAppBg-2 .levels {
+  background-image: url(../assets/bgNewYear/bgNewYear.png);
+}
+
+@media (min-width: 1800px) {
+  #app.chosenAppBg-2, .chosenAppBg-2 .game, .chosenAppBg-2 .levels {
+    background-image: url(../assets/bgNewYear/bgNewYear-big.png);
+  }
+}
+.chosenAppBg-2 .levelsTop__allStars {
+  color: #C21332;
+}
+.chosenAppBg-2 .leaderBoard {
+  background-image: url(../assets/bgNewYear/leader.svg);
+}
+.chosenAppBg-2 .switchShop {
+  background-image: url(../assets/bgNewYear/shop.svg);
+}
+.chosenAppBg-2 .switchShowLocation {
+  background-image: url(../assets/bgNewYear/locations.svg);
+}
+.chosenAppBg-2 .newElement {
+  background-color: #C21332;
+}
+.chosenAppBg-2 .words__letters-block_done .words__letter, .chosenAppBg-2 .action-block__letters .action-block__letter_selected {
+  background-color: #E75858;
+}
+.chosenAppBg-2 .menu__button-back {
+  background-image: url(../assets/bgNewYear/home.svg);
+}
+.chosenAppBg-2 .menu__tip {
+  background-image: url(../assets/bgNewYear/tip.svg);
+}
+.chosenAppBg-2 .menu__tip_count, .chosenAppBg-2 .rules__goBg {
+  background-color: #C21332;
+}
+.chosenAppBg-2 .shop, .chosenAppBg-2 .rules {
+  border-color: #C21332;
+}
+.chosenAppBg-2 .shop .rules__menu, .chosenAppBg-2 .settings__text {
+  color: #C21332;
+}
+.chosenAppBg-2 .rules__cross {
+  background-image: url(../assets/bgNewYear/cross.svg);
+}
+.chosenAppBg-2 .menu__button-next-level_active {
+  background-image: url(../assets/bgNewYear/arrow.svg);
+}
+.chosenAppBg-2 .switchSettings {
+  background-image: url(../assets/bgNewYear/settings.svg);
+}
+.chosenAppBg-2 ::-webkit-scrollbar-thumb {
+  background-color: #E75858;
+}
+.chosenAppBg-2 .settings {
+  border-color: #CE1E1E;
+}
+.chosenAppBg-2 .checkbox:checked + label:after {
+  background-color: #D64646;
+}
+.chosenAppBg-2 .checkbox:checked + label:before {
+  background: #F4B5B5;
+}
+.chosenAppBg-2 .newWord .words__letter {
+  background-color: #C21332;
+}
+.chosenAppBg-2 .animWord .words__letter {
+  animation: 1s showNewWord5 forwards;
+}
+@keyframes showNewWord5 {
+  0% {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background-color: #C21332;
+  }
+}
+.chosenAppBg-2 .shop__cart__item_2 {
+  background-image: url(../assets/bgNewYear/cart1.svg);
+}
+.chosenAppBg-2 .shop__cart__item_3 {
+  background-image: url(../assets/bgNewYear/cart2.svg);
+}
+.chosenAppBg-2 .shop__cart__item_4 {
+  background-image: url(../assets/bgNewYear/cart3.svg);
+}
+.chosenAppBg-2 .shop__cart__name {
+  color: #CE1E1E;
+  border-color: #CE1E1E;
+}
+.chosenAppBg-2 .shop__cart__item {
+  border-color: #CE1E1E;
+}
+.chosenAppBg-2 .wordWas .words__letter {
+  background-color: #701414;
+}
+.chosenAppBg-2 .menu__hint {
+  background-color: rgba(194, 19, 50, 0.9);
+}
+.chosenAppBg-2 .levels .menu-star {
+  background-color: #C21332;
+}
+.chosenAppBg-2 .menu__level .level_full-star {
+  background: url(../assets/bgNewYear/star.svg) center center no-repeat;
+  background-size: 100%;
+}
+.chosenAppBg-2 .menu__level .level_full-star.getStar {
+  animation: showFullStar2 1s forwards;
+}
+@keyframes showFullStar2 {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
+    background: url(../assets/bgNewYear/star.svg) center center no-repeat;
+    background-size: 100%;
+  }
+}
+.chosenAppBg-2 .snowAnimation {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/snow_1.png"), url("../assets/snow_2.png"), url("../assets/snow_3.png");
+  animation: snow 20s linear infinite;
+}
+@keyframes snow {
+  0% {
+    background-position: 0px 0px, 0px 0px, 0px 0px;
+  }
+  100% {
+    background-position: 500px 1000px, 400px 400px, 300px 300px;
+  }
+}
+.chosenAppBg-2 .skipTutorial {
+  background-color: #76101f;
+}
+.chosenAppBg-2 .cloudHint {
+  color: #E75858;
+}
+.chosenAppBg-2 .cloudHint__mainText {
+  color: #e03f3f;
+}
+.chosenAppBg-2 .leaderBoardInfo__player {
+  border-color: #E75858;
+}
+
+/*# sourceMappingURL=stylesNewYear.css.map */

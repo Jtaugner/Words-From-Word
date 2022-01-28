@@ -1,5 +1,5 @@
 <template>
-	<div id="app" :class="['chosenAppBg' + chosenBgRight, showGameLocation ? 'locationOpened' : '']">
+	<div id="app" :class="['chosenAppBg' + chosenBgRight, showGameLocation ? 'locationOpened' : '', 'gameLocationWrapper-' + gameLocation]">
 		<!--    <div class="close-level-help prev-location next-location"></div>-->
 		<div class="levels"
 			 @updateAll="updateAll()"
@@ -97,17 +97,16 @@
 
 
 
-				<div class="popUp__location newYearLocation" @click="openGameLocation('newYear')">
+				<div
+					class="popUp__location"
+					v-for="loc in allLocationsNames"
+					:class="loc + 'Location'"
+					@click="openGameLocation(loc)"
+				>
 					<div class="popUp__locationPicture">
-						<div class="popUp__locationStars">{{getLocationAllStarsByLocation('newYear')}}/60</div>
+						<div class="popUp__locationStars">{{getLocationAllStarsByLocation(loc)}}/60</div>
 					</div>
-					<div class="popUp__locationName">Новогоднее приключение</div>
-				</div>
-				<div class="popUp__location closedLocation">
-					<div class="popUp__locationPicture">
-						<div class="popUp__locationStars">???</div>
-					</div>
-					<div class="popUp__locationName">В будущих обновлениях...</div>
+					<div class="popUp__locationName" v-html="getLocationName(loc)"></div>
 				</div>
 				<div class="popUp__location closedLocation">
 					<div class="popUp__locationPicture">
@@ -604,18 +603,21 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<div class="rules__cross" @click="toggleShowLastLevelInfo()"></div>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Что-то новенькое?' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Новая локация' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				<template v-if="gameLocation === 'newYear'">
 					Поздравляем! Вы прошли первую локацию - Новогоднее приключение!
 					За это мы дарим вам 30 подсказок и, конечно же, поздравляем с Новым годом!
 				</template>
+				<template v-else-if="gameLocation === 'magicTales'">
+					Поздравляем! Вы завершили локацию "Волшебство сказок"!
+					Желаем, чтобы волшебные моменты присутствовали на протяжении всей Вашей жизни!
+					И, конечно, дарим 30 подсказок!
+				</template>
 			</template>
 			<template v-else-if="wasUpdate">
-				Встречайте тематические локации! В каждой локации будет 20 уровней-слов, связанных одной темой.
-				Здесь мы отошли от привычной серьёзности, а почему - узнаете в игре.
-				Первая локация - Новый год, а найти её можно в меню, нажав на значок книжки.
+				Открыли новую тематическую локацию "Волшебство сказок"! Надеемся, что Вам понравится!
 				<div class="rules__goBg" @click="goToGetLocations()">Вперёд!</div>
 			</template>
 			<template v-else>
@@ -691,13 +693,13 @@
 
 
 <script>
-import './styles.scss';
-import './stylesBg1.scss';
-import './stylesBg2.scss';
-import './stylesBg3.scss';
-import './stylesHalloween.scss';
-import './stylesNewYear.scss';
-import './stylesLocations.scss';
+import './styles/styles.scss';
+import './styles/stylesBg1.scss';
+import './styles/stylesBg2.scss';
+import './styles/stylesBg3.scss';
+import './styles/stylesHalloween.scss';
+import './styles/stylesNewYear.scss';
+import './styles/stylesLocations.scss';
 import {allWordsRU} from './russianWords';
 import {dictionaryRU} from './russianDictionary';
 import {wordsFromWordsRU} from "./russianWordsFromWords";
@@ -1112,7 +1114,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-15";
+const lastVersion = "ver-16";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2227,6 +2229,10 @@ const lvl3CloudPhrase = 'По техническим причинам буква
 let tutorialStep = 0;
 let isShowTutorial = true;
 let bgLvlsOpen = [4, 14, 24];
+let translatedLocationsNames = {
+	newYear: 'Новогоднее приключение',
+	magicTales: 'Волшебство <br> сказок'
+}
 
 function getBanner(){
 	try{
@@ -2320,7 +2326,8 @@ export default {
 			gameLocation: 'newYear',
 			locationGame: false,
 			locationStars: [],
-			wordSwing: ''
+			wordSwing: '',
+			allLocationsNames: ['newYear', 'magicTales']
 		}
 	},
 	computed:{
@@ -2361,6 +2368,9 @@ export default {
 		// 	}catch(e){}
 		//
 		// },
+		getLocationName(loc){
+			return translatedLocationsNames[loc];
+		},
 		getLocationAllStarsByLocation(loc){
 			return getLocationStars(loc).reduce((acc, el)=> acc+ el, 0);
 		},
@@ -2372,7 +2382,7 @@ export default {
 			return 1.5+ (level-1) * 5 + '%';
 		},
 		goToGetLocations(){
-			params({'goToLocations': 1});
+			params({'goToMagicLocation': 1});
 			this.backMenu();
 			this.showLocations = true;
 			this.showLastLevelInfo = false;
@@ -2827,7 +2837,12 @@ export default {
 			}
 			if(this.doneWords.length === 0){
 				if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
-					params({['startLocationLevel-' + this.lvl]: 1});
+					if(this.gameLocation === 'newYear'){
+						params({['startLocationLevel-' + this.lvl]: 1});
+					}else if(this.gameLocation === 'magicTales'){
+						params({['startMagicLocation-' + this.lvl]: 1});
+					}
+
 				}
 			}
 
@@ -3134,8 +3149,6 @@ export default {
 					this.addWord(wordFromLetter);
 					this.animWord = wordFromLetter;
 					this.newWord = wordFromLetter;
-					console.log('save: ', this.locationGame);
-					console.log(locationDoneWords);
 					if(this.locationGame){
 						setToStorage('locationDoneWords', JSON.stringify(replaceLevelsToOne(locationDoneWords, true)));
 						console.log(replaceLevelsToOne(locationDoneWords, true));
@@ -3218,7 +3231,12 @@ export default {
 				if(this.locationGame){
 					this.locationStars.splice(this.lvl, 1, stars);
 					if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
-						params({['endLocationLevel-' + this.lvl]: stars});
+						if(this.gameLocation === 'newYear'){
+							params({['endLocationLevel-' + this.lvl]: stars});
+						}else if(this.gameLocation === 'magicTales'){
+							params({['endMagicLocation-' + this.lvl]: stars});
+						}
+
 					}
 					if(this.lvl === 19 && stars === 1){
 						this.showLastLevelInfo = true;

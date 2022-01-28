@@ -1,0 +1,48 @@
+/*Волшебство сказок*/
+.gameLocationWrapper-magicTales::-webkit-scrollbar-thumb {
+  background-color: #8963C7;
+}
+.gameLocationWrapper-magicTales::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+.magicTalesLocation .popUp__locationPicture{
+  background-image: url(../assets/locations/magicTales/magicTales.png);
+}
+.magicTalesLocation .popUp__locationName{
+  color: #8963C7;
+}
+.gameLocation-magicTales{
+  background: url(../assets/locations/magicTales/map.png) center center no-repeat;
+  background-size: cover;
+  .levelsTop__allStars{
+    color: #8963C7;
+  }
+  .menu-star{
+    background-color: #8963C7;
+  }
+  .newElement{
+    background-color: #8963C7;
+  }
+  .menu__button-back{
+    background-image: url(../assets/locations/magicTales/home.svg);
+  }
+  .leaderBoard{
+    background-image: url(../assets/locations/magicTales/leader.svg);
+  }
+  .switchShop{
+    background-image: url(../assets/locations/magicTales/shop.svg);
+  }
+  .switchShowLocation{
+    background-image: url(../assets/locations/magicTales/locations.svg);
+  }
+}
+.gameLocation-magicTales::-webkit-scrollbar-thumb {
+  //border-radius: 0;
+  background-color: #8963C7;
+}
+@media (min-width: 1000px) {
+  .gameLocation-magicTales .location__lastLevel{
+    box-shadow: 0 0 25px 10px #8963C7;
+  }
+}

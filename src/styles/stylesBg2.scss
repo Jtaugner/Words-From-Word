@@ -1,0 +1,108 @@
+/*Фон 2*/
+
+#app.chosenAppBg2, .chosenAppBg2 .game, .chosenAppBg2 .levels{
+  background-image: url(../assets/bg2/bg2.png);
+}
+
+@media (min-width: 1800px) {
+  #app.chosenAppBg2, .chosenAppBg2 .game, .chosenAppBg2 .levels{
+    background-image: url(../assets/bg2/bg2-big.png);
+  }
+}
+
+.chosenAppBg2{
+  .levelsTop__allStars{
+    color: #192B6C;
+  }
+  .leaderBoard{
+    background-image: url(../assets/bg2/leader.svg);
+  }
+  .switchShop{
+    background-image: url(../assets/bg2/shop.svg);
+  }
+  .switchShowLocation{
+    background-image: url(../assets/bg2/locations.svg);
+  }
+  .newElement{
+    background-color: #4c83cb;
+  }
+  .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
+    background-color: #6277C2;
+  }
+  .menu__button-back{
+    background-image: url(../assets/bg2/home.svg);
+  }
+  .menu__tip{
+    background-image: url(../assets/bg2/tip.svg);
+  }
+  .menu__tip_count, .rules__goBg{
+    background-color: #192B6C;
+  }
+  .shop, .rules{
+    border-color: #192B6C;
+  }
+  .shop .rules__menu, .settings__text{
+    color: #192B6C;
+  }
+  .rules__cross{
+    background-image: url(../assets/bg2/cross.svg);
+  }
+  .menu__button-next-level_active{
+    background-image: url(../assets/bg2/arrow.svg);
+  }
+  .switchSettings{
+    background-image: url(../assets/bg2/settings.svg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #6277C2;
+  }
+  .settings{
+    border-color: #192B6C;
+  }
+  .checkbox:checked + label:after {
+    background-color: #4C67CB;
+  }
+  .checkbox:checked + label:before {
+    background: #B5BFF4;
+  }
+
+  .newWord .words__letter{
+    background-color: #4a71ff;
+  }
+  .animWord .words__letter{
+    animation: 1s showNewWord2 forwards;
+  }
+  @keyframes  showNewWord2{
+    0%{background-color: rgba(255, 255, 255, 0.85);}
+    100%{background-color: #4a71ff;}
+  }
+
+  //Магазин
+  .shop__cart__item_2{
+    background-image: url(../assets/bg2/cart1.svg);
+  }
+  .shop__cart__item_3{
+    background-image: url(../assets/bg2/cart2.svg);
+  }
+  .shop__cart__item_4{
+    background-image: url(../assets/bg2/cart3.svg);
+  }
+  .shop__cart__name{
+    color: #192B6C;
+    border-color: #192B6C;
+  }
+  .shop__cart__item{
+    border-color: #192B6C;
+  }
+
+  .wordWas .words__letter{
+    background-color: #14204a;
+  }
+
+  .menu__hint{
+    background-color: rgba(25, 43, 108, 0.9);
+  }
+  .leaderBoardInfo__player{
+    border-color: #192B6C;
+  }
+}
