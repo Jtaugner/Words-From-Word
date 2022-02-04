@@ -2258,6 +2258,38 @@ function getBanner(){
 // 	lastColor++;
 // 	if(lastColor === randColors.length) lastColor = 0;
 // }
+
+function addScrollingLocationToDesktop(){
+	try{
+		let mouseLeft = 0;
+		function movePage(e) {
+			try{
+				let scrolled = document.getElementById('app').scrollLeft;
+				let newRes = e.clientX;
+				if(newRes > mouseLeft){
+					scrolled -= (newRes-mouseLeft)*1.5;
+				}else{
+					scrolled += (mouseLeft-newRes)*1.5;
+				}
+				mouseLeft = newRes;
+				document.getElementById('app').scrollTo({
+					left: scrolled
+				});
+			}catch(e){}
+		}
+		document.querySelector('.location').onmousedown = (e) => {
+			console.log('down');
+			mouseLeft = e.clientX;
+			document.body.addEventListener('mousemove', movePage);
+		}
+		document.querySelector('.location').onmouseup = () => {
+			document.body.removeEventListener('mousemove', movePage);
+		}
+	}catch(e){console.log(e)}
+}
+
+
+
 export default {
 	name: 'App',
 	data(){
@@ -2395,6 +2427,7 @@ export default {
 				this.gameLocation = location;
 				this.locationStars = getLocationStars(location);
 				this.getShowingLastLevelInLocation();
+				addScrollingLocationToDesktop();
 
 		},
 		getShowingLastLevelInLocation(){
@@ -3301,32 +3334,6 @@ export default {
 			document.addEventListener('keydown', this.pressKey)
 			console.log('Вызов баннера при заходе');
 			getBanner();
-			try{
-				let mouseLeft = 0;
-				function movePage(e) {
-					try{
-						let scrolled = document.getElementById('app').scrollLeft;
-						let newRes = e.clientX;
-						if(newRes > mouseLeft){
-							scrolled -= (newRes-mouseLeft)*1.5;
-						}else{
-							scrolled += (mouseLeft-newRes)*1.5;
-						}
-						mouseLeft = newRes;
-						document.getElementById('app').scrollTo({
-							left: scrolled
-						});
-					}catch(e){}
-				}
-				document.querySelector('.location').onmousedown = (e) => {
-					console.log('down');
-					mouseLeft = e.clientX;
-					document.body.addEventListener('mousemove', movePage);
-				}
-				document.querySelector('.location').onmouseup = () => {
-					document.body.removeEventListener('mousemove', movePage);
-				}
-			}catch(e){console.log(e)}
 		})
 	}
 }
