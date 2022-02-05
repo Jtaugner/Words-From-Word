@@ -284,7 +284,7 @@
 					<div class="menu__hint">{{moreGuessedWords}}</div>
 				</div>
 				<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
-					<div class="advert" v-if="canShowAdv && tipCount === 0"></div>
+					<div class="advert" v-if="tipCount === 0"></div>
 					<div class="menu__tip_count" v-else>{{lvl === 0 && !locationGame ? '∞' : tipCount}}</div>
 				</div>
 				<div class="menu__button-next-level menuItem"
@@ -1391,7 +1391,7 @@ function setState(isNow) {
 			};
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
 			console.log(newState);
-			playerGame.setData(newState, isNow).then(() => {}).catch((ignored) => {})
+			playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 
 
 		}else{
@@ -1403,7 +1403,7 @@ function setState(isNow) {
 			if(englishProgress) newState.allDoneWordsEN = englishProgress;
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
 			console.log(newState);
-			playerGame.setData(newState, isNow).then(() => {
+			playerGame.setData(newState, true).then(() => {
 			}).catch((error) => {
 				try{
 					if(error.toString().includes('large')){
@@ -1411,12 +1411,12 @@ function setState(isNow) {
 					}
 					params({'cantSave-first': error});
 				}catch(ignored){}
-				playerGame.setData(newState, isNow).then(() => {
+				playerGame.setData(newState, true).then(() => {
 				}).catch((ignored) => {
 					let state = {allDoneWords: replaceLevelsToOne(PLAYESTATE.allDoneWords), time: getSec()};
 					if(englishProgress) state.allDoneWordsEN = englishProgress;
 					if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
-					playerGame.setData(state, isNow).then(() => {
+					playerGame.setData(state, true).then(() => {
 					}).catch(() => {
 					});
 				})
@@ -1529,6 +1529,8 @@ let ruLangs = ['ru', 'be', 'kk', 'uk', 'uz', 'kz'];
 
 let payloadLevel = false;
 
+let isPhone = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 if(window.YaGames){
 	window.YaGames.init({
 		adv: {
@@ -1589,7 +1591,14 @@ if(window.YaGames){
 						console.log('close adv');
 						if(!wasShow){
 							advTime = true;
+						}else{
+							if(isPhone){
+								params({'showMobileAdv': 1});
+							}else{
+								params({'showDesktopAdv': 1});
+							}
 						}
+
 						canShowAdv();
 						setTimeout(()=>{
 							advTime = true;
@@ -2868,16 +2877,16 @@ export default {
 				locationDoneWords[this.word] = [];
 				this.doneWords = locationDoneWords[this.word];
 			}
-			if(this.doneWords.length === 0){
-				if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
-					if(this.gameLocation === 'newYear'){
-						params({['startLocationLevel-' + this.lvl]: 1});
-					}else if(this.gameLocation === 'magicTales'){
-						params({['startMagicLocation-' + this.lvl]: 1});
-					}
-
-				}
-			}
+			// if(this.doneWords.length === 0){
+			// 	if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
+			// 		if(this.gameLocation === 'newYear'){
+			// 			params({['startLocationLevel-' + this.lvl]: 1});
+			// 		}else if(this.gameLocation === 'magicTales'){
+			// 			params({['startMagicLocation-' + this.lvl]: 1});
+			// 		}
+			//
+			// 	}
+			// }
 
 			this.nowWords = locationWords.wordsFromWords[this.word].slice().sort().sort((a, b)=>{
 				if(a.length > b.length) return 1;
@@ -3060,34 +3069,29 @@ export default {
 
 		},
 		addTip(){
-			this.tipCount++;
+			this.tipCount += 3;
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
 		},
 		getTip(){
 			if(this.animWordStart !== '') return;
 			if(this.tipCount < 1){
-				if(showAdv && advTime){
-					params({'showRewarded': 1});
-					let that= this;
-					advTime = false;
-					YSDK.adv.showFullscreenAdv({
+				try{
+					let that = this;
+					YSDK.adv.showRewardedVideo({
 						callbacks: {
-							onClose: function() {
-								console.log('close adv tip');
-								canShowAdv();
-								setTimeout(()=>{
-									advTime = true;
-									console.log('set to true');
-									canShowAdv();
-								}, 160000);
-
+							onRewarded: () => {
+								if(isPhone){
+									params({'showMobileRewarded': 1});
+								}else{
+									params({'showDesktopRewarded': 1});
+								}
 								that.addTip();
 							}
 						}
-					});
-				}else{
-					this.toggleShop();
+					})
+				}catch(e){
+					console.log(e);
 				}
 				return;
 			}
@@ -3263,14 +3267,14 @@ export default {
 
 				if(this.locationGame){
 					this.locationStars.splice(this.lvl, 1, stars);
-					if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
-						if(this.gameLocation === 'newYear'){
-							params({['endLocationLevel-' + this.lvl]: stars});
-						}else if(this.gameLocation === 'magicTales'){
-							params({['endMagicLocation-' + this.lvl]: stars});
-						}
-
-					}
+					// if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
+					// 	if(this.gameLocation === 'newYear'){
+					// 		params({['endLocationLevel-' + this.lvl]: stars});
+					// 	}else if(this.gameLocation === 'magicTales'){
+					// 		params({['endMagicLocation-' + this.lvl]: stars});
+					// 	}
+					//
+					// }
 					if(this.lvl === 19 && stars === 1){
 						this.showLastLevelInfo = true;
 						this.tipCount += 30;
