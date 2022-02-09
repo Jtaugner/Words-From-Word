@@ -1603,7 +1603,7 @@ if(window.YaGames){
 						setTimeout(()=>{
 							advTime = true;
 							canShowAdv();
-						}, 150000);
+						}, 210000);
 					},
 					onError: function (e){
 						advTime = true;
