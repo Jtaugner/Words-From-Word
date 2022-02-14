@@ -743,7 +743,7 @@ var wordsFromWords = wordsFromWordsRU,
 let advTime = false;
 setTimeout(()=>{
 	advTime = true;
-}, 40000);
+}, 30000);
 let showAdv, playerGame, payments, YSDK;
 
 
@@ -1603,7 +1603,7 @@ if(window.YaGames){
 						setTimeout(()=>{
 							advTime = true;
 							canShowAdv();
-						}, 210000);
+						}, 140000);
 					},
 					onError: function (e){
 						advTime = true;
