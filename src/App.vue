@@ -65,7 +65,12 @@
 					<div class="prev-location" @click="prevLocation()" v-if="location > 0"></div>
 					<div class="next-location" @click="nextLocation()" v-if="location < allLocations-1 && showNextLoc"></div>
 
-					<div class="levels__loc" :class="[location > 98 ? 'levels__loc_big' : '']">{{location+1}}</div>
+					<div
+						class="levels__loc"
+						:class="[location > 98 ? 'levels__loc_big' : '']"
+						@click="toggleShowInfoAboutPageNumber"
+					>{{location+1}}
+					</div>
 				</div>
 
 
@@ -134,6 +139,22 @@
 				{{notRussian ?
 				'Complete the level' + closedLevel + ' by at least one star to unlock the level ' + (closedLevel+1) + '. Good luck!' :
 				'Пройдите уровень ' + closedLevel + ' хотя бы на одну звезду, чтобы открыть уровень ' + (closedLevel+1) + '. Удачной игры!'
+				}}
+			</div>
+
+		</div>
+
+		<div class="rules-blackout" v-if="showInfoAboutPageNumber" @click="toggleShowInfoAboutPageNumber"></div>
+
+		<div class="rules" v-if="showInfoAboutPageNumber">
+			<div class="rules__cross shop__cross" @click="toggleShowInfoAboutPageNumber"></div>
+			<h2 class="rules__menu">
+				{{notRussian ? 'It is page number' : 'Это - номер страницы'}}
+			</h2>
+			<div class="levelClosedText">
+				{{notRussian ?
+				'The number in the circle is the page number. There are a lot of pages and levels in the game. Have a good game!' :
+				'Число в кружочке - номер страницы. Их очень много в игре, как и уровней. Удачной игры!'
 				}}
 			</div>
 
@@ -603,7 +624,7 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<div class="rules__cross" @click="toggleShowLastLevelInfo()"></div>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Новая локация' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Уважаемые игроки!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				<template v-if="gameLocation === 'newYear'">
@@ -617,12 +638,11 @@
 				</template>
 			</template>
 			<template v-else-if="wasUpdate">
-				Открыли новую тематическую локацию "Волшебство сказок"! Надеемся, что Вам понравится!
-				<div class="rules__goBg" @click="goToGetLocations()">Вперёд!</div>
+					Вводим очередное большое обновление словаря. На уровнях, пройденных не на 3 звезды, может произойти перерасчёт звёзд - не волнуйтесь. Удачной игры!
 			</template>
 			<template v-else>
-				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы обновляем словарь несколько раз в месяц, и добавляем новые уровни каждый месяц.
-				Вы можете пройти все старые уровни на 3 звезды или же подождать, когда выйдут новые уровни. Про обновления вы можете узнать в
+				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
+				Вы можете пройти все старые уровни на 3 звезды (если ещё не прошли) или же подождать, когда выйдут новые уровни. Про обновления вы можете узнать в
 				<a href="https://vk.com/jaugr"
 				   target="_blank"
 				   rel="noopener noreferrer"
@@ -1114,7 +1134,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-16";
+const lastVersion = "ver-17";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1597,13 +1617,13 @@ if(window.YaGames){
 							}else{
 								params({'showDesktopAdv': 1});
 							}
+							setTimeout(()=>{
+								advTime = true;
+								canShowAdv();
+							}, 140000);
 						}
 
 						canShowAdv();
-						setTimeout(()=>{
-							advTime = true;
-							canShowAdv();
-						}, 140000);
 					},
 					onError: function (e){
 						advTime = true;
@@ -2368,7 +2388,8 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['newYear', 'magicTales']
+			allLocationsNames: ['newYear', 'magicTales'],
+			showInfoAboutPageNumber: false
 		}
 	},
 	computed:{
@@ -2409,6 +2430,14 @@ export default {
 		// 	}catch(e){}
 		//
 		// },
+		toggleShowInfoAboutPageNumber(){
+
+			this.showInfoAboutPageNumber = !this.showInfoAboutPageNumber;
+
+			if(this.showInfoAboutPageNumber){
+				params({'pageNumClick': 1});
+			}
+		},
 		getLocationName(loc){
 			return translatedLocationsNames[loc];
 		},
@@ -3069,7 +3098,7 @@ export default {
 
 		},
 		addTip(){
-			this.tipCount += 3;
+			this.tipCount += 2;
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
 		},
@@ -3206,12 +3235,13 @@ export default {
 					}, 1000)
 				}, 100);
 
-				if(this.lvl > 0){
-					tryShowAdv();
-				}
 
 			}else{
 				this.isBadWord = true;
+
+				if(this.lvl > 0){
+					tryShowAdv();
+				}
 
 
 				if(this.doneWords.includes(this.wordFromLetter)){
