@@ -113,12 +113,6 @@
 					</div>
 					<div class="popUp__locationName" v-html="getLocationName(loc)"></div>
 				</div>
-				<div class="popUp__location closedLocation">
-					<div class="popUp__locationPicture">
-						<div class="popUp__locationStars">???</div>
-					</div>
-					<div class="popUp__locationName">В будущих обновлениях...</div>
-				</div>
 
 
 
@@ -247,10 +241,7 @@
 				class="level location__level"
 				v-for="level in 20"
 				:key="'location-level-' + level"
-				:class="[
-					(level % 2) === 0 ? 'location__upLevel' : '',
-					level > 1 && locationStars[level-2] === 0 ? 'level_close' : ''
-					]"
+				:class="getLocationLevelClasses(level)"
 				:style="{left: getLevelLocationLeft(level)}"
 				@click="getLocationLevel(level-1)"
 				>
@@ -636,9 +627,13 @@
 					Желаем, чтобы волшебные моменты присутствовали на протяжении всей Вашей жизни!
 					И, конечно, дарим 30 подсказок!
 				</template>
+				<template v-else-if="gameLocation === 'animals'">
+					Поздравляем! Локация "Животные" пройдена! Вручаем Вам 30 подсказок! Хорошей игры!
+				</template>
 			</template>
 			<template v-else-if="wasUpdate">
-					Вводим очередное большое обновление словаря. На уровнях, пройденных не на 3 звезды, может произойти перерасчёт звёзд - не волнуйтесь. Удачной игры!
+				Третья тематическая локация "Животные" уже ждёт вас!
+				<div class="rules__goBg" @click="goToGetLocations()">Вперёд!</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -689,6 +684,9 @@
 
 				</p>
 				<img v-bind:src="!notRussian ? 'rules2.png' : 'rules2EN.png'" alt="Подсказка">
+				<p v-if="!notRussian">
+					Примечание: буква "е" и "ё" взаимозаменяемы по техническим причинам.
+				</p>
 				{{notRussian ?
 				'Click on a word to get its definition.' :
 				'Нажатие на слово позволит вам узнать его значение. Словарь игры постоянно пополняется. Если вы обнаружили лишнее или недостающее слово, пожалуйста, сообщите нам в'
@@ -1134,7 +1132,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-17";
+const lastVersion = "ver-18";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2260,7 +2258,8 @@ let isShowTutorial = true;
 let bgLvlsOpen = [4, 14, 24];
 let translatedLocationsNames = {
 	newYear: 'Новогоднее приключение',
-	magicTales: 'Волшебство <br> сказок'
+	magicTales: 'Волшебство <br> сказок',
+	animals: 'Животные'
 }
 
 function getBanner(){
@@ -2388,7 +2387,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['newYear', 'magicTales'],
+			allLocationsNames: ['newYear', 'magicTales', 'animals'],
 			showInfoAboutPageNumber: false
 		}
 	},
@@ -2430,6 +2429,22 @@ export default {
 		// 	}catch(e){}
 		//
 		// },
+		getLocationLevelClasses(level){
+			let arrClasses = [];
+			if(level > 1 && this.locationStars[level-2] === 0){
+				arrClasses.push('level_close');
+			}
+			if(this.gameLocation === 'animals'){
+				if((level % 2) === 1){
+					arrClasses.push('location__upLevel');
+				}
+			}else{
+				if((level % 2) === 0){
+					arrClasses.push('location__upLevel');
+				}
+			}
+			return arrClasses;
+		},
 		toggleShowInfoAboutPageNumber(){
 
 			this.showInfoAboutPageNumber = !this.showInfoAboutPageNumber;
@@ -2446,10 +2461,30 @@ export default {
 		},
 		getLevelLocationLeft(level){
 			if(level === 1) return '0.5%';
-			if(level < 7){
-				return (level-1) * 5 + '%';
+			if(this.gameLocation === 'animals'){
+				if(level < 4){
+					return (level-1) * 5 + '%';
+				}else if(level < 7){
+					return 3 + (level-1) * 4.5 + '%';
+				}else if(level === 7){
+					return 5 + (level-1) * 4.5 + '%';
+				} else if (level < 10){
+					return 6 + (level-1) * 4.5 + '%';
+				}else if(level < 12){
+					return 8 + (level-1) * 4.5 + '%';
+				}else if(level === 12){
+					return 9 + (level-1) * 4.5 + '%';
+				}else{
+					return 10 + (level-1) * 4.5 + '%';
+				}
+
+			}else{
+				if(level < 7){
+					return (level-1) * 5 + '%';
+				}
+				return 1.5+ (level-1) * 5 + '%';
 			}
-			return 1.5+ (level-1) * 5 + '%';
+
 		},
 		goToGetLocations(){
 			params({'goToMagicLocation': 1});
