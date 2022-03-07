@@ -1,0 +1,56 @@
+@charset "UTF-8";
+/*Волшебство сказок*/
+.gameLocationWrapper-magicTales::-webkit-scrollbar-thumb {
+  background-color: #8963C7;
+}
+
+.gameLocationWrapper-magicTales::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.magicTalesLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/magicTales/magicTales.png);
+}
+
+.magicTalesLocation .popUp__locationName {
+  color: #8963C7;
+}
+
+.gameLocation-magicTales {
+  background: url(../assets/locations/magicTales/map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-magicTales .levelsTop__allStars {
+  color: #8963C7;
+}
+.gameLocation-magicTales .menu-star {
+  background-color: #8963C7;
+}
+.gameLocation-magicTales .newElement {
+  background-color: #8963C7;
+}
+.gameLocation-magicTales .menu__button-back {
+  background-image: url(../assets/locations/eightMarch/home.svg);
+}
+.gameLocation-magicTales .leaderBoard {
+  background-image: url(../assets/locations/eightMarch/leader.svg);
+}
+.gameLocation-magicTales .switchShop {
+  background-image: url(../assets/locations/eightMarch/shop.svg);
+}
+.gameLocation-magicTales .switchShowLocation {
+  background-image: url(../assets/locations/eightMarch/locations.svg);
+}
+
+.gameLocation-magicTales::-webkit-scrollbar-thumb {
+  background-color: #8963C7;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-magicTales .location__lastLevel {
+    box-shadow: 0 0 25px 10px #8963C7;
+  }
+}
+
+/*# sourceMappingURL=eightMarch.css.map */

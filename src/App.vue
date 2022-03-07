@@ -630,6 +630,10 @@
 				<template v-else-if="gameLocation === 'animals'">
 					Поздравляем! Локация "Животные" пройдена! Вручаем Вам 30 подсказок! Хорошей игры!
 				</template>
+				<template v-else-if="gameLocation === 'eightMarch'">
+					Поздравляем всех милых дам с 8 марта! Пусть в вашей жизни будет как можно больше хороших моментов и приятных воспоминаний!
+					Спасибо, что играете в нашу игру! А 30 подсказок уже на Вашем счету :)
+				</template>
 			</template>
 			<template v-else-if="wasUpdate">
 				Третья тематическая локация "Животные" уже ждёт вас!
@@ -2259,7 +2263,8 @@ let bgLvlsOpen = [4, 14, 24];
 let translatedLocationsNames = {
 	newYear: 'Новогоднее приключение',
 	magicTales: 'Волшебство <br> сказок',
-	animals: 'Животные'
+	animals: 'Животные',
+	eightMarch: 'Восьмое марта'
 }
 
 function getBanner(){
@@ -2387,7 +2392,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['newYear', 'magicTales', 'animals'],
+			allLocationsNames: ['eightMarch', 'magicTales', 'animals', 'newYear'],
 			showInfoAboutPageNumber: false
 		}
 	},
@@ -2434,7 +2439,7 @@ export default {
 			if(level > 1 && this.locationStars[level-2] === 0){
 				arrClasses.push('level_close');
 			}
-			if(this.gameLocation === 'animals'){
+			if(this.gameLocation === 'animals' || this.gameLocation === 'eightMarch'){
 				if((level % 2) === 1){
 					arrClasses.push('location__upLevel');
 				}
@@ -2477,6 +2482,12 @@ export default {
 				}else{
 					return 10 + (level-1) * 4.5 + '%';
 				}
+
+			}else if(this.gameLocation === 'eightMarch') {
+				if(level < 8){
+					return (level-1) * 5 + '%';
+				}
+				return (level-1) * 5 - 1.5 + '%';
 
 			}else{
 				if(level < 7){

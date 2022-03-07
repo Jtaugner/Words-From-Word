@@ -1,0 +1,52 @@
+/*Волшебство сказок*/
+.gameLocationWrapper-eightMarch::-webkit-scrollbar-thumb {
+  background-color: #8a3d93;
+}
+.gameLocationWrapper-eightMarch::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+.eightMarchLocation .popUp__locationPicture{
+  background-image: url(../assets/locations/eightMarch/eightMarch.png);
+}
+.eightMarchLocation .popUp__locationName{
+  color: #8a3d93;
+}
+.gameLocation-eightMarch{
+  background: url(../assets/locations/eightMarch/map.png) center center no-repeat;
+  background-size: cover;
+  .levelsTop__allStars{
+    color: #8a3d93;
+  }
+  .menu-star{
+    background-color: #8a3d93;
+  }
+  .newElement{
+    background-color: #8a3d93;
+  }
+  .menu__button-back{
+    background-image: url(../assets/locations/eightMarch/home.svg);
+  }
+  .leaderBoard{
+    background-image: url(../assets/locations/eightMarch/leader.svg);
+  }
+  .switchShop{
+    background-image: url(../assets/locations/eightMarch/shop.svg);
+  }
+  .switchShowLocation{
+    background-image: url(../assets/locations/eightMarch/locations.svg);
+  }
+}
+.gameLocation-eightMarch::-webkit-scrollbar-thumb {
+  //border-radius: 0;
+  background-color: #8a3d93;
+}
+@media (min-width: 1000px) {
+  .gameLocation-eightMarch .location__lastLevel{
+    box-shadow: 0 0 25px 10px #8a3d93;
+  }
+}
+
+.gameLocation-eightMarch .location__upLevel{
+  top: 25%;
+}
