@@ -112,4 +112,9 @@
   .leaderBoardInfo__player{
     border-color: #3C9BA8;
   }
+  @media (orientation: portrait){
+    .shop__cart__buy-button{
+      background-color: #103A4D;
+    }
+  }
 }

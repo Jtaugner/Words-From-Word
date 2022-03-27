@@ -85,7 +85,27 @@
 
 
 
+			<div class="bottomMenu">
 
+				<div class="switchShowLocation menuItem" @click="toggleShowLocations" v-if="!notRussian">
+					<div class="newElement">!</div>
+				</div>
+
+
+
+				<div
+					class="levels__loc"
+					:class="[location > 98 ? 'levels__loc_big' : '']"
+					@click="toggleShowInfoAboutPageNumber"
+				>
+					{{location+1}}
+				</div>
+
+				<div class="leaderBoard menuItem" @click="toggleLeaderBoard()" v-if="!notRussian"></div>
+
+
+
+			</div>
 
 
 		</div>
@@ -98,7 +118,7 @@
 				<div class="popUp__title">Локации</div>
 				<div class="popUp__close" @click="toggleShowLocations"></div>
 			</div>
-			<div class="popUp__locations">
+			<div class="popUp__elements">
 
 
 
@@ -148,7 +168,24 @@
 			<div class="levelClosedText">
 				{{notRussian ?
 				'The number in the circle is the page number. There are a lot of pages and levels in the game. Have a good game!' :
-				'Число в кружочке - номер страницы. Их очень много в игре, как и уровней. Удачной игры!'
+				'Число в кружочке - номер страницы. В игре их очень много, как и уровней. Удачной игры!'
+				}}
+			</div>
+
+		</div>
+
+
+		<div class="rules-blackout" v-if="showInfoAboutPortrait" @click="toggleShowInfoAboutPortrait"></div>
+
+		<div class="rules" v-if="showInfoAboutPortrait">
+			<div class="rules__cross shop__cross" @click="toggleShowInfoAboutPortrait"></div>
+			<h2 class="rules__menu">
+				{{notRussian ? 'Advise' : 'Совет'}}
+			</h2>
+			<div class="levelClosedText">
+				{{notRussian ?
+				'We advise to play the game in a horizontal position if you have an opportunity. Thank you and have a good game!' :
+				'Мы советуем играть в игру в горизонтальном положении, если у вас есть такая возможность. Спасибо и хорошей Вам игры!'
 				}}
 			</div>
 
@@ -236,27 +273,35 @@
 				</div>
 			</div>
 
-
-			<div
-				class="level location__level"
-				v-for="level in 20"
-				:key="'location-level-' + level"
-				:class="getLocationLevelClasses(level)"
-				:style="{left: getLevelLocationLeft(level)}"
-				@click="getLocationLevel(level-1)"
+				<div
+					class="level location__level"
+					v-for="level in 20"
+					:key="'location-level-' + level"
+					:class="getLocationLevelClasses(level)"
+					:style="getLocationStyles(level)"
+					@click="getLocationLevel(level-1)"
 				>
 
 
 
 
-				<div>{{level}}</div>
-				<div class="newElement" v-if="lastLocationLevel === level"><div class="newElement__circle"></div></div>
-				<div class="menu__level_stars">
+					<div>{{level}}</div>
+					<div class="newElement" v-if="lastLocationLevel === level"><div class="newElement__circle"></div></div>
+					<div class="menu__level_stars">
 
-					<div class="level_star" v-for="star in 3" :key="star"
-						 :class="star <= locationStars[level-1] ? 'menu-star' : ''"></div>
+						<div class="level_star" v-for="star in 3" :key="star"
+							 :class="star <= locationStars[level-1] ? 'menu-star' : ''"></div>
+					</div>
 				</div>
+
+
+			<div class="bottomMenu">
+				<div class="switchShowLocation menuItem" @click="toggleShowLocations" v-if="!notRussian"></div>
+				<div class="leaderBoard menuItem" @click="toggleLeaderBoard()" v-if="!notRussian"></div>
 			</div>
+
+
+
 
 
 		</div>
@@ -352,8 +397,11 @@
 						<div class="action-block__letter"
 							 @click="selectLetter(index)"
 							 :class="
-							 [selectedLetters.includes(index) ? 'action-block__letter_selected' : '',
-							  tutorialSelected === index ? 'tutorialSelected' : '']"
+							  [
+							  selectedLetters.includes(index) ? 'action-block__letter_selected' : '',
+							  tutorialSelected === index ? 'tutorialSelected' : '',
+							  getBreakForPortrait(index) ? 'breakForPortrait' : ''
+							  ]"
 							 v-for="(letter,index) in letters" :key="letter + Math.random()"
 						>
 							<div class="action-block__letter action-block__letter_notSelected" v-show="notShowLetters.includes(letter)"></div>
@@ -369,6 +417,24 @@
 				</div>
 				<div class="skipTutorial" v-show="cloudHint && !showWordDesc && canShowSkip" @click="skipTutorial">Пропустить</div>
 
+
+				<div class="bottomMenu">
+
+					<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
+						<div class="advert" v-if="tipCount === 0"></div>
+						<div class="menu__tip_count" v-else>{{lvl === 0 && !locationGame ? '∞' : tipCount}}</div>
+					</div>
+
+
+
+					<div class="menu__words-amount">
+						{{doneWords.length}}/{{nowWords.length}}
+						<div class="menu__hint">{{notRussian ? 'Guessed' : 'Отгадано'}}</div>
+					</div>
+
+					<button class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord"></button>
+
+				</div>
 
 			</div>
 
@@ -425,7 +491,7 @@
 
 			<div class="rules-blackout" v-show="showBigWordWas" @click="toggleShowBigWordWas"></div>
 
-			<div class="rules shop showBigWordWas" v-show="showBigWordWas">
+			<div class="rules showBigWordWas" v-show="showBigWordWas">
 				<div class="rules__cross shop__cross" @click="toggleShowBigWordWas"></div>
 				<h2 class="rules__menu">
 					{{notRussian ? 'Nice try!' : 'Хорошая попытка!'}}
@@ -435,56 +501,73 @@
 			</div>
 
 
+			<div class="rules-blackout" v-show="showAdvError" @click="toggleShowAdvError"></div>
+			<div class="rules" v-show="showAdvError">
+				<div class="rules__cross shop__cross" @click="toggleShowAdvError"></div>
+				<h2 class="rules__menu">
+					{{notRussian ? 'Adv error' : 'Ошибка показа'}}
+				</h2>
+				<p v-if="notRussian">An ad display error has occurred. Most likely you have an ad blocker enabled.
+					Turn it off to get free hints.</p>
+				<p v-else>Произошла ошибка показа рекламы. Скорее всего, у вас включён блокировщик рекламы.
+					Выключите его, чтобы получать бесплатные подсказки.</p>
+			</div>
+
+
 
 		</div>
 
 
 
-		<div class="rules-blackout" v-show="shop" @click="toggleShop()"></div>
-
-		<div class="rules shop mainShop" v-show="shop">
-			<div class="rules__cross shop__cross" @click="toggleShop()"></div>
-			<h2 class="rules__menu black-friday">
-				{{notRussian ? 'Shop' : 'Магазин'}}
-			</h2>
-			<div class="shop__cart">
+		<div class="blurBackground" v-if="shop" @click="toggleShop"></div>
 
 
-				<div class="shop__cart__item" @click="buyTip(2)">
-					<div class="shop__cart__item_2">
+		<div class="popUp shopPopUp" v-if="shop">
+			<div class="popUp__header">
+				<div class="popUp__title">{{notRussian ? 'Shop' : 'Магазин'}}</div>
+				<div class="popUp__close" @click="toggleShop"></div>
+			</div>
+			<div class="popUp__elements">
+
+					<div class="shop__cart__item" @click="buyTip(2)">
+						<div class="shop__cart__card">
+							<div class="shop__cart__item_2"></div>
+							<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
+						</div>
+						<div class="shop__cart__buy-button" >
+							<!--						<div class="shop__lastPrice">49</div>-->
+							{{getItemPrice(0)}}
+						</div>
 					</div>
-					<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
-					<div class="shop__cart__buy-button" >
-<!--						<div class="shop__lastPrice">49</div>-->
-						{{getItemPrice(0)}}
-					</div>
-				</div>
 
 
-				<div class="shop__cart__item" @click="buyTip(3)">
-					<div class="shop__cart__item_3">
+					<div class="shop__cart__item" @click="buyTip(3)">
+						<div class="shop__cart__card">
+							<div class="shop__cart__item_3"></div>
+							<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
+						</div>
+						<div class="shop__cart__buy-button">
+							<!--						<div class="shop__lastPrice">99</div>-->
+							{{getItemPrice(1)}}
+						</div>
 					</div>
-					<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
-					<div class="shop__cart__buy-button">
-<!--						<div class="shop__lastPrice">99</div>-->
-						{{getItemPrice(1)}}
-					</div>
-				</div>
 
 
-				<div class="shop__cart__item" @click="buyTip(4)">
-					<div class="shop__cart__item_4">
+					<div class="shop__cart__item" @click="buyTip(4)">
+						<div class="shop__cart__card">
+							<div class="shop__cart__item_4"></div>
+							<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
+						</div>
+						<div class="shop__cart__buy-button">
+							<!--						<div class="shop__lastPrice">149</div>-->
+							{{getItemPrice(2)}}
+						</div>
 					</div>
-					<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
-					<div class="shop__cart__buy-button">
-<!--						<div class="shop__lastPrice">149</div>-->
-						{{getItemPrice(2)}}
-					</div>
-				</div>
 
 
 
 			</div>
+
 
 		</div>
 
@@ -675,7 +758,7 @@
 				<p>
 					{{notRussian ?
 					'Welcome to the game "Words from Words"! You are given the word. Create as many different words as possible from its letters. You can create only common nouns.' :
-					'Добро пожаловать в игру "Слова из слова"! Цель игры - составлять всевозможные слова из выданных вам слов. Создавать можно только нарицательные существительные в единственном числе. Нажмите на букву внизу, чтобы добавить или убрать эту букву из слова. Когда слово будет набрано - нажмите на стрелку.'
+					'Добро пожаловать в игру "Слова из слова"! Цель игры - составлять всевозможные слова из выданных вам слов. Создавать можно только нарицательные существительные в единственном числе. Нажмите на букву внизу, чтобы добавить или убрать эту букву из слова. Когда слово будет набрано, нажмите на галочку.'
 					}}
 
 				</p>
@@ -1230,6 +1313,7 @@ let isAdvShowed = getFromStorage('isAdvShowed');
 let isGameAdvShow = getFromStorage('isGameAdvShow');
 let isGameUpdate = getFromStorage('gameUpdate-1');
 let chosenBackground = getFromStorage('chosenBackground');
+let portraitAdviceAmount = getFromStorage('portraitAdviceAmount');
 if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
 	// importBg(chosenBackground, true);
@@ -1264,6 +1348,8 @@ let allStars = [];
 let isRules = false;
 let allLocations = Math.floor(allWords.length / 21);
 let lastLevel = 0;
+let wordsForReplace = ['ассиметрия', 'гитлеровец', 'барашкин', 'подмывание', 'карпенко'];
+let wordsToReplace = ['асимметрия', 'горицвет', 'банкирша', 'домывание', 'анкерок'];
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
 	for(let i = 0; i < keys.length; i++){
@@ -1272,12 +1358,8 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 		if(keys[i].indexOf('ё') !== -1){
 			k = k.replace(/ё/g, 'е');
 			console.log(k);
-		}else if(k === "ассиметрия"){
-			k = "асимметрия";
-		}else if(k === "гитлеровец"){
-			k = "горицвет";
-		}else if(k === "барашкин"){
-			k = "банкирша";
+		}else if(wordsForReplace.includes(k)){
+			k = wordsToReplace[wordsForReplace.indexOf(k)];
 		}
 		let words = allDoneWords[keys[i]] || allDoneWords[k];
 
@@ -1288,12 +1370,8 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 				allDoneWords[k] = wordsFromWords[k];
 			}
 
-			if(k === "асимметрия"){
-				delete allDoneWords["ассиметрия"];
-			}else if(k === "горицвет"){
-				delete allDoneWords["гитлеровец"];
-			}else if(k === "барашкин"){
-				delete allDoneWords["барашкин"];
+		 	if(wordsForReplace.includes(keys[i])){
+				delete allDoneWords[keys[i]];
 			}
 		}else{
 			if(keys[i].indexOf('ё')  !== -1){
@@ -2244,7 +2322,7 @@ function deletePreDownload(){
 const cloudPhrases = [
 	'Добро пожаловать в игру <span class="cloudHint__mainText">"Слова из слова"</span>! Составляйте слова, чтобы проходить уровни.',
 	'Нажимайте на <span class="cloudHint__mainText">буквы снизу</span>, чтобы составить слово!',
-	'Нажмите на <span class="cloudHint__mainText">стрелку</span>, чтобы отправить слово!',
+	'Нажмите на <span class="cloudHint__mainText">галочку</span>, чтобы отправить слово!',
 	'Поздравляем! Ваше <span class="cloudHint__mainText">первое слово</span> уже на уровне. Давайте попробуем ещё!',
 	'Игра принимает только <span class="cloudHint__mainText">нарицательные существительные</span> в единственном числе. Введём ещё слово!',
 	'Нажмите на слово, чтобы узнать его <span class="cloudHint__mainText">значение</span>.',
@@ -2269,7 +2347,7 @@ let translatedLocationsNames = {
 
 function getBanner(){
 	try{
-		if(window.innerHeight >= 650){
+		if(window.innerHeight >= 650 && window.innerWidth > window.innerHeight){
 			window.yaContextCb.push(()=>{
 				Ya.Context.AdvManager.render({
 					renderTo: 'yandex_rtb_R-A-518275-25',
@@ -2319,6 +2397,49 @@ function addScrollingLocationToDesktop(){
 			document.body.removeEventListener('mousemove', movePage);
 		}
 	}catch(e){console.log(e)}
+}
+
+//Свайп
+function addSwipeToMenu(funcSwipeLeft, funcSwipeRight){
+	try{
+		document.querySelector('.levels__property').addEventListener('touchstart', handleTouchStart, false);
+		document.querySelector('.levels__property').addEventListener('touchmove', handleTouchMove, false);
+		let xDown = null;
+		let yDown = null;
+
+		function getTouches(evt) {
+			return evt.touches || evt.originalEvent.touches;
+		}
+		function handleTouchStart(evt) {
+			const firstTouch = getTouches(evt)[0];
+			xDown = firstTouch.clientX;
+			yDown = firstTouch.clientY;
+		}
+		function handleTouchMove(evt) {
+			if ( ! xDown || ! yDown ) {
+				return;
+			}
+
+			let xUp = evt.touches[0].clientX;
+			let yUp = evt.touches[0].clientY;
+
+			let xDiff = xDown - xUp;
+			let yDiff = yDown - yUp;
+
+			if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
+				if ( xDiff > 0 ) {
+					funcSwipeLeft()
+				} else {
+					funcSwipeRight();
+				}
+			}
+			xDown = null;
+			yDown = null;
+		}
+	}catch(e){
+		console.log(e);
+	}
+
 }
 
 
@@ -2393,7 +2514,9 @@ export default {
 			locationStars: [],
 			wordSwing: '',
 			allLocationsNames: ['eightMarch', 'magicTales', 'animals', 'newYear'],
-			showInfoAboutPageNumber: false
+			showInfoAboutPageNumber: false,
+			showAdvError: false,
+			showInfoAboutPortrait: false
 		}
 	},
 	computed:{
@@ -2434,12 +2557,36 @@ export default {
 		// 	}catch(e){}
 		//
 		// },
+		toggleShowInfoAboutPortrait(){
+			if(!this.showInfoAboutPortrait){
+				if(portraitAdviceAmount){
+					if(Number(portraitAdviceAmount) > 4) return;
+					portraitAdviceAmount++;
+					setToStorage('portraitAdviceAmount', portraitAdviceAmount);
+				}else{
+					portraitAdviceAmount = 1;
+					setToStorage('portraitAdviceAmount', '1');
+				}
+			}
+
+			this.showInfoAboutPortrait = !this.showInfoAboutPortrait;
+
+		},
+		getBreakForPortrait(index){
+			let breakLetter = 7;
+			if(window.innerWidth > 400){
+				breakLetter += Math.floor((window.innerWidth - 350) / 50);
+			}
+			console.log('BREAK: ', breakLetter);
+			return this.letters.length > breakLetter && (index === Math.floor(this.letters.length/2));
+		},
 		getLocationLevelClasses(level){
 			let arrClasses = [];
 			if(level > 1 && this.locationStars[level-2] === 0){
 				arrClasses.push('level_close');
 			}
-			if(this.gameLocation === 'animals' || this.gameLocation === 'eightMarch'){
+
+			if(this.gameLocation === 'animals' || this.gameLocation === 'eightMarch' || window.innerHeight > window.innerWidth){
 				if((level % 2) === 1){
 					arrClasses.push('location__upLevel');
 				}
@@ -2448,6 +2595,7 @@ export default {
 					arrClasses.push('location__upLevel');
 				}
 			}
+
 			return arrClasses;
 		},
 		toggleShowInfoAboutPageNumber(){
@@ -2464,9 +2612,42 @@ export default {
 		getLocationAllStarsByLocation(loc){
 			return getLocationStars(loc).reduce((acc, el)=> acc+ el, 0);
 		},
+		getLocationStyles(level){
+			if(window.innerHeight > window.innerWidth){
+				return {bottom: this.getLevelLocationBottom(level)};
+			}else{
+				return {left: this.getLevelLocationLeft(level)};
+			}
+
+		},
+		getLevelLocationBottom(level){
+			if(level === 1) return  '3.2%';
+
+			if(level < 6){
+				return level * 4.5 + '%';
+			}else if(level < 8){
+				return 3 + level * 4.5 + '%';
+			}else if(level < 10 || level === 12 || level === 18){
+				return 5 + level * 4.5 + '%';
+			} else if(level === 10){
+				return 6 + level * 4.5 + '%';
+			}else if(level < 16){
+				return 4 + level * 4.5 + '%';
+			}else if(level === 16){
+				return 5.5 + level * 4.5 + '%';
+			}else if(level === 20){
+				return 3.5 + level * 4.5 + '%';
+			} else{
+				return 4 + level * 4.5 + '%';
+			}
+
+
+		},
 		getLevelLocationLeft(level){
 			if(level === 1) return '0.5%';
+
 			if(this.gameLocation === 'animals'){
+
 				if(level < 4){
 					return (level-1) * 5 + '%';
 				}else if(level < 7){
@@ -2776,7 +2957,7 @@ export default {
 					return paymentCatalog[item].price;
 				}
 			}catch(e){}
-			return itemsPrices[item] + ' рублей';
+			return itemsPrices[item] + 'р';
 		},
 		toggleShowLastLevelInfo(){
 			this.showLastLevelInfo = false;
@@ -2814,6 +2995,9 @@ export default {
 				this.openLastLevel();
 				this.startTutorial();
 			}else{
+				if(window.innerHeight > window.innerWidth){
+					this.toggleShowInfoAboutPortrait();
+				}
 				this.endTutorial();
 			}
 
@@ -2846,6 +3030,12 @@ export default {
 					this.closedLevel = lvl;
 				}
 				return;
+			}
+
+			if(window.innerWidth > window.innerHeight){
+				params({'orientation': 'landscape'});
+			}else{
+				params({'orientation': 'portrait'});
 			}
 
 
@@ -3094,6 +3284,7 @@ export default {
 			}
 		},
 		nextLocation(){
+			if(!this.showNextLoc) return;
 			if(this.location < this.allLocations-1){
 				this.location++;
 				this.clickSound();
@@ -3148,6 +3339,9 @@ export default {
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
 		},
+		toggleShowAdvError(){
+			this.showAdvError = !this.showAdvError;
+		},
 		getTip(){
 			if(this.animWordStart !== '') return;
 			if(this.tipCount < 1){
@@ -3162,6 +3356,9 @@ export default {
 									params({'showDesktopRewarded': 1});
 								}
 								that.addTip();
+							},
+							onError: () => {
+								that.toggleShowAdvError();
 							}
 						}
 					})
@@ -3408,12 +3605,16 @@ export default {
 				if(isRules && !payloadLevel){
 					this.openLastLevel();
 					this.startTutorial();
+				}else if(window.innerHeight > window.innerWidth){
+					this.toggleShowInfoAboutPortrait();
 				}
 				this.tryOpenPayloadLevel();
 			}
 			document.addEventListener('keydown', this.pressKey)
 			console.log('Вызов баннера при заходе');
 			getBanner();
+			params({'wasDownload': 1});
+			addSwipeToMenu(this.nextLocation, this.prevLocation);
 		})
 	}
 }

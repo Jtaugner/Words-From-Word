@@ -108,5 +108,10 @@
 .chosenAppBg-1 .leaderBoardInfo__player {
   border-color: #3C9BA8;
 }
+@media (orientation: portrait) {
+  .chosenAppBg-1 .shop__cart__buy-button {
+    background-color: #103A4D;
+  }
+}
 
 /*# sourceMappingURL=stylesHalloween.css.map */

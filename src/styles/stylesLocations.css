@@ -48,6 +48,12 @@
     box-shadow: 0 0 25px 10px #DC5E5E;
   }
 }
+@media (orientation: portrait) {
+  .gameLocation-newYear {
+    background: url(../assets/locations/newYear/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
 /*Волшебство сказок*/
 .gameLocationWrapper-magicTales::-webkit-scrollbar-thumb {
   background-color: #8963C7;
@@ -99,6 +105,12 @@
 @media (min-width: 1000px) {
   .gameLocation-magicTales .location__lastLevel {
     box-shadow: 0 0 25px 10px #8963C7;
+  }
+}
+@media (orientation: portrait) {
+  .gameLocation-magicTales {
+    background: url(../assets/locations/magicTales/map_port.png) center center no-repeat;
+    background-size: cover;
   }
 }
 /*Волшебство сказок*/
@@ -158,6 +170,12 @@
   top: 25%;
 }
 
+@media (orientation: portrait) {
+  .gameLocation-animals {
+    background: url(../assets/locations/animals/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
 /*Волшебство сказок*/
 .gameLocationWrapper-eightMarch::-webkit-scrollbar-thumb {
   background-color: #8a3d93;
@@ -215,6 +233,12 @@
   top: 25%;
 }
 
+@media (orientation: portrait) {
+  .gameLocation-eightMarch {
+    background: url(../assets/locations/eightMarch/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
 .locationOpened {
   overflow: auto !important;
 }
@@ -237,6 +261,7 @@
   transform: translate(-50%, -50%);
   width: 500px;
   z-index: 12;
+  max-width: 95%;
 }
 
 .popUp__header {
@@ -244,7 +269,7 @@
   width: 100%;
   height: 60px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -276,7 +301,7 @@
   cursor: pointer;
 }
 
-.popUp__locations {
+.popUp__elements {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
@@ -295,7 +320,7 @@
   cursor: pointer;
 }
 
-.popUp__locations .popUp__location:last-child {
+.popUp__elements .popUp__location:last-child {
   margin: 0;
 }
 
@@ -435,6 +460,29 @@
   .location .newElement__circle {
     width: 13px;
     height: 13px;
+  }
+}
+@media (orientation: portrait) {
+  .location {
+    height: 300%;
+    width: 100%;
+  }
+
+  .location__level {
+    top: auto !important;
+    left: 57% !important;
+  }
+
+  .location__upLevel {
+    top: auto !important;
+    left: 27% !important;
+  }
+
+  .location .bottomMenu {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
   }
 }
 

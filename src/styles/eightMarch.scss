@@ -50,3 +50,10 @@
 .gameLocation-eightMarch .location__upLevel{
   top: 25%;
 }
+
+@media (orientation: portrait) {
+  .gameLocation-eightMarch{
+    background: url(../assets/locations/eightMarch/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}

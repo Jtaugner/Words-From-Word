@@ -107,4 +107,11 @@
     border-color: #bd550c;
   }
 
+
+  @media (orientation: portrait){
+    .shop__cart__buy-button{
+      background-color: #6d3208;
+    }
+  }
+
 }

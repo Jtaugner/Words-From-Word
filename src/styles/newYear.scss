@@ -42,3 +42,10 @@
     box-shadow: 0 0 25px 10px #DC5E5E;
   }
 }
+
+@media (orientation: portrait) {
+  .gameLocation-newYear{
+    background: url(../assets/locations/newYear/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}

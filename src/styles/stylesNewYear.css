@@ -152,5 +152,10 @@
 .chosenAppBg-2 .leaderBoardInfo__player {
   border-color: #E75858;
 }
+@media (orientation: portrait) {
+  .chosenAppBg-2 .shop__cart__buy-button {
+    background-color: #C21332;
+  }
+}
 
 /*# sourceMappingURL=stylesNewYear.css.map */

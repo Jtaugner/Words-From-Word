@@ -29,6 +29,8 @@
     width: 500px;
 
     z-index: 12;
+
+    max-width: 95%;
 }
 .popUp__header{
     position: relative;
@@ -36,7 +38,7 @@
     height: 60px;
 
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 
     margin-bottom: 20px;
@@ -69,7 +71,7 @@
 
     cursor: pointer;
 }
-.popUp__locations{
+.popUp__elements{
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -90,7 +92,7 @@
 
     cursor: pointer;
 }
-.popUp__locations .popUp__location:last-child{
+.popUp__elements .popUp__location:last-child{
     margin: 0;
 }
 .popUp__locationPicture{
@@ -218,4 +220,30 @@
         width: 13px;
         height: 13px;
     }
+}
+
+
+
+@media (orientation: portrait) {
+    .location{
+        height: 300%;
+        width: 100%;
+    }
+
+    .location__level{
+        top: auto !important;
+        left: 57% !important;
+    }
+    .location__upLevel{
+        top: auto !important;
+        left: 27% !important;
+    }
+    .location .bottomMenu{
+        position: fixed;
+        left: 0;
+        bottom: 0;
+
+        width: 100%;
+    }
+
 }

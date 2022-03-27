@@ -46,3 +46,10 @@
     box-shadow: 0 0 25px 10px #8963C7;
   }
 }
+
+@media (orientation: portrait) {
+  .gameLocation-magicTales{
+    background: url(../assets/locations/magicTales/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}

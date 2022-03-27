@@ -50,3 +50,10 @@
 .gameLocation-animals .location__upLevel{
   top: 25%;
 }
+
+@media (orientation: portrait) {
+  .gameLocation-animals{
+    background: url(../assets/locations/animals/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
