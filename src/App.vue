@@ -2272,6 +2272,15 @@ function getEngDesc(word){
 
 }
 
+let dictWordsToReplace = {
+	'теша': 'тёша',
+	'еж': 'ёж',
+	'осел': 'осёл',
+	'орел': 'орёл',
+	'клев': 'клёв',
+	'шепот': 'шёпот'
+}
+
 
 function getWordDesc(word) {
 	console.log('getWordDesc --- ', word);
@@ -2283,6 +2292,9 @@ function getWordDesc(word) {
 			defIframe.classList.add('closedIframe');
 			return;
 		}
+
+		if(dictWordsToReplace[word]) word = dictWordsToReplace[word];
+
 		defIframe.classList.remove('closedIframe');
 		let wordDefinition = document.querySelector('.word-definition')
 		wordDefinition.innerHTML = 'Определение слова - загрузка...';
@@ -2577,7 +2589,6 @@ export default {
 			if(window.innerWidth > 400){
 				breakLetter += Math.floor((window.innerWidth - 350) / 50);
 			}
-			console.log('BREAK: ', breakLetter);
 			return this.letters.length > breakLetter && (index === Math.floor(this.letters.length/2));
 		},
 		getLocationLevelClasses(level){
