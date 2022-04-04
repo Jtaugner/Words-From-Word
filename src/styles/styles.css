@@ -1320,31 +1320,10 @@ html, body {
   font-size: 1.8rem;
 }
 
-.adv-show .rules__menu {
-  font-size: 3rem;
-}
-
-.adv-show .rules__cross {
-  width: 30px;
-  height: 30px;
-}
-
 @media (min-width: 1000px) {
   .adv-show {
-    padding: 20px;
-    width: 350px;
-    font-size: 2rem;
-  }
-
-  .adv-show .rules__menu {
-    font-size: 3rem;
-  }
-
-  .adv-show .rules__cross {
-    top: 26px;
-    right: 22px;
-    width: 32px;
-    height: 32px;
+    width: 500px;
+    font-size: 2.1rem;
   }
 }
 .ya-rules {

@@ -341,8 +341,16 @@
 					<div class="menu__hint">{{moreGuessedWords}}</div>
 				</div>
 				<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
-					<div class="advert" v-if="tipCount === 0"></div>
-					<div class="menu__tip_count" v-else>{{lvl === 0 && !locationGame ? '∞' : tipCount}}</div>
+					<div class="advert" v-if="tipCount === 0 && advTimer <= 0"></div>
+					<div class="menu__tip_count" v-else>
+						<template v-if="advTimer > 0 && tipCount === 0">
+							{{advTimerTime}}
+						</template>
+						<template v-else>
+							{{lvl === 0 && !locationGame ? '∞' : tipCount}}
+						</template>
+
+					</div>
 				</div>
 				<div class="menu__button-next-level menuItem"
 					 :class="[testShowNextLevel() ? 'menu__button-next-level_active' : '']"
@@ -390,7 +398,7 @@
 
 
 				<div class="action-block">
-					<div class="action-block__done-word">
+					<div class="action-block__done-word" @dblclick="eraseWord">
 						<div class="done-word" :class="[isBadWord ? 'badWord' : '']" >{{wordFromLetter}}</div>
 					</div>
 					<div class="action-block__letters">
@@ -446,15 +454,15 @@
 
 
 
-			<!--      <div class="rules-blackout" v-show="showAdvTip" @click="closeShowAdvTip()"></div>-->
-			<!--      <div class="rules adv-show" v-show="showAdvTip">-->
-			<!--        <div class="rules__cross" @click="closeShowAdvTip()"></div>-->
-			<!--        <h2 class="rules__menu">-->
-			<!--          Внимание-->
-			<!--        </h2>-->
-			<!--        Для получения подсказки нужно посмотреть рекламу не менее 3 секунд.-->
-			<!--        <span v-show="isAdvShowed">Но в первый раз вы её получаете.</span>-->
-			<!--      </div>-->
+			      <div class="rules-blackout" v-show="showAdvTip" @click="closeShowAdvTip()"></div>
+			      <div class="rules adv-show" v-show="showAdvTip">
+			        <div class="rules__cross" @click="closeShowAdvTip()"></div>
+			        <h2 class="rules__menu">
+			          Предупреждение
+			        </h2>
+			        Для получения подсказки нужно посмотреть рекламу не менее 3 секунд.
+			        <span v-show="isAdvShowed">Но в первый раз вы её получаете.</span>
+			      </div>
 
 			<div class="rules-blackout cloudHintBackground" v-show="cloudHint" @click="closeHint()"></div>
 
@@ -846,8 +854,10 @@ var wordsFromWords = wordsFromWordsRU,
 	dictionary = dictionaryRU;
 
 let advTime = false;
+let startAdvTime = false;
 setTimeout(()=>{
 	advTime = true;
+	startAdvTime = true;
 }, 30000);
 let showAdv, playerGame, payments, YSDK;
 
@@ -1630,7 +1640,19 @@ let ruLangs = ['ru', 'be', 'kk', 'uk', 'uz', 'kz'];
 let payloadLevel = false;
 
 let isPhone = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+let advTimeout = 0;
+let advInterval = 0;
+let timeToShowAdv = 200;
 
+function startAdvInterval(){
+	advInterval = setInterval(()=>{
+		timeToShowAdv -= 5;
+		if(timeToShowAdv <= 5){
+			timeToShowAdv = 5;
+			clearInterval(advInterval);
+		}
+	}, 5000);
+}
 if(window.YaGames){
 	window.YaGames.init({
 		adv: {
@@ -1683,7 +1705,7 @@ if(window.YaGames){
 					});
 			};
 		}
-		showAdv = () => {
+		showAdv = (onCloseFunc) => {
 			console.log('showAdv');
 			ysdk.adv.showFullscreenAdv({
 				callbacks: {
@@ -1692,15 +1714,25 @@ if(window.YaGames){
 						if(!wasShow){
 							advTime = true;
 						}else{
-							if(isPhone){
-								params({'showMobileAdv': 1});
-							}else{
-								params({'showDesktopAdv': 1});
-							}
-							setTimeout(()=>{
+							// if(isPhone){
+							// 	params({'showMobileAdv': 1});
+							// }else{
+							// 	params({'showDesktopAdv': 1});
+							// }
+							clearTimeout(advTimeout);
+							clearInterval(advInterval);
+
+							timeToShowAdv = 130;
+							startAdvInterval();
+
+							advTimeout = setTimeout(()=>{
 								advTime = true;
+								clearInterval(advInterval);
 								canShowAdv();
-							}, 140000);
+							}, 130000);
+
+
+							onCloseFunc();
 						}
 
 						canShowAdv();
@@ -1723,14 +1755,16 @@ if(window.YaGames){
 	doDeleteBlock = true;
 }
 
-function tryShowAdv(){
+function globalTryShowAdv(onCloseFunc){
 	if(showAdv && advTime){
 		advTime = false;
 		canShowAdv();
 		setTimeout(()=>{
-			showAdv();
+			showAdv(onCloseFunc);
 		}, 1000)
+		return true;
 	}
+	return false;
 }
 function update() {
 	if (document.querySelector('.levels')) {
@@ -2412,10 +2446,16 @@ function addScrollingLocationToDesktop(){
 }
 
 //Свайп
-function addSwipeToMenu(funcSwipeLeft, funcSwipeRight){
+function addSwipeTo(funcSwipeLeft, funcSwipeRight, isMenu){
 	try{
-		document.querySelector('.levels__property').addEventListener('touchstart', handleTouchStart, false);
-		document.querySelector('.levels__property').addEventListener('touchmove', handleTouchMove, false);
+		if(isMenu){
+			document.querySelector('.levels__property').addEventListener('touchstart', handleTouchStart, false);
+			document.querySelector('.levels__property').addEventListener('touchmove', handleTouchMove, false);
+		}else{
+			document.querySelector('.action-block__done-word').addEventListener('touchstart', handleTouchStart, false);
+			document.querySelector('.action-block__done-word').addEventListener('touchmove', handleTouchMove, false);
+		}
+
 		let xDown = null;
 		let yDown = null;
 
@@ -2438,13 +2478,19 @@ function addSwipeToMenu(funcSwipeLeft, funcSwipeRight){
 			let xDiff = xDown - xUp;
 			let yDiff = yDown - yUp;
 
-			if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
-				if ( xDiff > 0 ) {
-					funcSwipeLeft()
-				} else {
-					funcSwipeRight();
+			if ( Math.abs( xDiff ) > (Math.abs( yDiff )) ) {
+				if(isMenu){
+					if ( xDiff > 0 ) {
+						funcSwipeLeft()
+					} else {
+						funcSwipeRight();
+					}
+				}else{
+					funcSwipeLeft();
 				}
+
 			}
+
 			xDown = null;
 			yDown = null;
 		}
@@ -2484,7 +2530,7 @@ export default {
 			animWordStart: '',
 			isSounds: sounds,
 			advShowNow: false,
-			// showAdvTip: false,
+			showAdvTip: false,
 			isAdvShowed: false,
 			isSettings: false,
 			showGameAdv: false,
@@ -2528,7 +2574,8 @@ export default {
 			allLocationsNames: ['eightMarch', 'magicTales', 'animals', 'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
-			showInfoAboutPortrait: false
+			showInfoAboutPortrait: false,
+			advTimer: 0
 		}
 	},
 	computed:{
@@ -2557,6 +2604,16 @@ export default {
 				}
 			}
 			return 20;
+		},
+		advTimerTime(){
+			let firstTime = 0;
+			let addTime = this.advTimer;
+			if(this.advTimer >= 60){
+				firstTime = 1;
+				addTime = addTime - 60;
+			}
+			if(addTime < 10)  addTime = '0' + addTime;
+			return firstTime + ':' + addTime;
 		}
 	},
 	methods:{
@@ -2569,6 +2626,17 @@ export default {
 		// 	}catch(e){}
 		//
 		// },
+		startRewardedTimer(){
+			if(this.tipCount > 0) return;
+			this.advTimer = 65;
+			if(timeToShowAdv < this.advTimer) this.advTimer = timeToShowAdv;
+			let timer;
+			timer = setInterval(()=>{
+				console.log('timer');
+				this.advTimer--;
+				if(this.advTimer <= 0) clearInterval(timer);
+			}, 1000)
+		},
 		toggleShowInfoAboutPortrait(){
 			if(!this.showInfoAboutPortrait){
 				if(portraitAdviceAmount){
@@ -3043,11 +3111,11 @@ export default {
 				return;
 			}
 
-			if(window.innerWidth > window.innerHeight){
-				params({'orientation': 'landscape'});
-			}else{
-				params({'orientation': 'portrait'});
-			}
+			// if(window.innerWidth > window.innerHeight){
+			// 	params({'orientation': 'landscape'});
+			// }else{
+			// 	params({'orientation': 'portrait'});
+			// }
 
 
 			if(lvl !== 0 && lvl % 100 === 0 && notRussianGame){
@@ -3071,10 +3139,10 @@ export default {
 				allDoneWords[this.word] = [];
 				this.doneWords = allDoneWords[this.word];
 			}
-			if(this.lvl < 10 && this.doneWords.length === 0){
-				let lvlParams = 'startLevel-' + this.lvl;
-				params({[lvlParams]: 1});
-			}
+			// if(this.lvl < 10 && this.doneWords.length === 0){
+			// 	let lvlParams = 'startLevel-' + this.lvl;
+			// 	params({[lvlParams]: 1});
+			// }
 
 			if(this.doneWords.length === 0 && bgLvlsOpen.includes(lvl)){
 				this.toggleOpenNewBg();
@@ -3091,9 +3159,7 @@ export default {
 
 			this.findNotShowLetters();
 
-			if(!this.isTutorial){
-				tryShowAdv();
-			}
+			this.tryShowAdv();
 			if(this.doneWords.length === 0){
 				if(this.lvl === 3){
 					this.openLevel3Hint();
@@ -3210,6 +3276,7 @@ export default {
 		},
 		closeShowAdvTip(){
 			this.showAdvTip = false;
+			this.isAdvShowed = false;
 		},
 		isCloseLevelShow(level){
 			level--;
@@ -3346,7 +3413,7 @@ export default {
 
 		},
 		addTip(){
-			this.tipCount += 2;
+			this.tipCount += 1;
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
 		},
@@ -3354,25 +3421,76 @@ export default {
 			this.showAdvError = !this.showAdvError;
 		},
 		getTip(){
-			if(this.animWordStart !== '') return;
+			if(this.animWordStart !== '' || (this.tipCount < 1 && this.advTimer > 0)) return;
 			if(this.tipCount < 1){
 				try{
 					let that = this;
-					YSDK.adv.showRewardedVideo({
+
+					let advNotShow = true;
+
+					setTimeout(()=>{
+						advNotShow = false;
+					}, 2500);
+
+					YSDK.adv.showFullscreenAdv({
 						callbacks: {
-							onRewarded: () => {
-								if(isPhone){
-									params({'showMobileRewarded': 1});
-								}else{
-									params({'showDesktopRewarded': 1});
+							onClose: function(wasShow) {
+								console.log('close adv reward');
+								if(wasShow){
+									advTime = false;
+									startAdvTime = true;
 								}
-								that.addTip();
+								if(advNotShow){
+									that.showAdvTip = true;
+									if(!isAdvShowed){
+										that.isAdvShowed = true;
+										setToStorage('isAdvShowed', 'true');
+										isAdvShowed = true;
+									}else{
+										that.startRewardedTimer();
+										return;
+									}
+
+								}
+								if(wasShow){
+									that.addTip();
+									clearTimeout(advTimeout);
+									clearInterval(advInterval);
+
+									timeToShowAdv = 65;
+									startAdvInterval();
+									advTimeout = setTimeout(()=>{
+										advTime = true;
+									}, 65000);
+								}
 							},
-							onError: () => {
+							onError: function (e){
 								that.toggleShowAdvError();
+								console.log('error adv')
+								console.log(e);
 							}
 						}
-					})
+					});
+
+
+
+					// YSDK.adv.showRewardedVideo({
+					// 	callbacks: {
+					// 		onRewarded: () => {
+					// 			// if(isPhone){
+					// 			// 	params({'showMobileRewarded': 1});
+					// 			// }else{
+					// 			// 	params({'showDesktopRewarded': 1});
+					// 			// }
+					// 			that.addTip();
+					// 		},
+					// 		onError: () => {
+					// 			that.toggleShowAdvError();
+					// 		}
+					// 	}
+					// })
+
+
 				}catch(e){
 					console.log(e);
 				}
@@ -3384,6 +3502,11 @@ export default {
 			}
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
+			if(startAdvTime && this.tipCount === 0 && !advTime){
+				this.startRewardedTimer();
+			}else{
+				startAdvTime = true;
+			}
 			let arr = [];
 			if(this.locationGame){
 				arr = locationWords.wordsFromWords[this.word].slice();
@@ -3411,6 +3534,11 @@ export default {
 					this.cloudHint = true;
 					this.cloudsPhrase = cloudPhrases[7];
 				}, 2000);
+			}
+		},
+		tryShowAdv(){
+			if(!this.isTutorial && this.lvl > 0 && this.advTimer <= 0){
+				globalTryShowAdv(this.startRewardedTimer);
 			}
 		},
 		sendWord(){
@@ -3493,9 +3621,7 @@ export default {
 			}else{
 				this.isBadWord = true;
 
-				if(this.lvl > 0){
-					tryShowAdv();
-				}
+				this.tryShowAdv();
 
 
 				if(this.doneWords.includes(this.wordFromLetter)){
@@ -3527,7 +3653,6 @@ export default {
 				}
 
 
-				console.log(this.wordFromLetter, this.word);
 				if(this.wordFromLetter === this.word){
 					this.showBigWordWas = true;
 				}
@@ -3572,10 +3697,10 @@ export default {
 					this.gameLastLevel = lastLevel;
 					this.stars.splice(this.lvl, 1, stars);
 					this.addPlayerToLB();
-					if(this.lvl < 10){
-						let lvlParams = 'endLevel-' + this.lvl;
-						params({[lvlParams]: stars});
-					}
+					// if(this.lvl < 10){
+					// 	let lvlParams = 'endLevel-' + this.lvl;
+					// 	params({[lvlParams]: stars});
+					// }
 				}
 
 				if(this.isSounds){
@@ -3607,6 +3732,11 @@ export default {
 			try{
 				this.getLevel(lastLevel, true);
 			}catch(ignored){};
+		},
+		eraseWord(){
+			params({'erase': 1});
+			this.wordFromLetter = '';
+			this.selectedLetters = [];
 		}
 	},
 	mounted: function() {
@@ -3624,8 +3754,8 @@ export default {
 			document.addEventListener('keydown', this.pressKey)
 			console.log('Вызов баннера при заходе');
 			getBanner();
-			params({'wasDownload': 1});
-			addSwipeToMenu(this.nextLocation, this.prevLocation);
+			addSwipeTo(this.nextLocation, this.prevLocation, true);
+			addSwipeTo(this.eraseWord, this.eraseWord, false);
 		})
 	}
 }
