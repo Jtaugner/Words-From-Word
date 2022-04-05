@@ -1167,9 +1167,6 @@ html,body
     width: 20px;
     height: 20px;
   }
-  .game{
-    padding-bottom: 150px;
-  }
 
 
 
@@ -2325,4 +2322,9 @@ b{
     height: 600px;
   }
   
+}
+@media (min-width: 1000px) and (min-height: 700px) {
+  .game{
+    padding-bottom: 150px;
+  }
 }

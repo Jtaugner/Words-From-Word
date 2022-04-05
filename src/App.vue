@@ -1810,6 +1810,15 @@ function initPlayer(ysdk) {
 
 		// Игрок авторизован.
 		playerGame = _player;
+		try{
+			params({'auth': 1});
+			if(_player._personalInfo.mode === "lite" || _player.mode === "lite"){
+				params({'authLite': 1});
+			}
+		}catch(e){
+			console.log(e);
+		}
+
 		let someTrue = false;
 		let change = true;
 		isRules = false;
@@ -2632,7 +2641,6 @@ export default {
 			if(timeToShowAdv < this.advTimer) this.advTimer = timeToShowAdv;
 			let timer;
 			timer = setInterval(()=>{
-				console.log('timer');
 				this.advTimer--;
 				if(this.advTimer <= 0) clearInterval(timer);
 			}, 1000)
@@ -3502,10 +3510,12 @@ export default {
 			}
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
-			if(startAdvTime && this.tipCount === 0 && !advTime){
-				this.startRewardedTimer();
-			}else{
-				startAdvTime = true;
+			if(this.tipCount === 0 && !advTime){
+				if(startAdvTime){
+					this.startRewardedTimer();
+				}else{
+					startAdvTime = true;
+				}
 			}
 			let arr = [];
 			if(this.locationGame){

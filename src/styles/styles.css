@@ -1143,10 +1143,6 @@ html, body {
     height: 20px;
   }
 
-  .game {
-    padding-bottom: 150px;
-  }
-
   .shop {
     width: 650px;
     height: 350px;
@@ -2294,6 +2290,11 @@ b {
 @media (orientation: landscape) and (min-height: 600px) {
   .word-mean {
     height: 600px;
+  }
+}
+@media (min-width: 1000px) and (min-height: 700px) {
+  .game {
+    padding-bottom: 150px;
   }
 }
 
