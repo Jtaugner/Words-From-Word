@@ -484,6 +484,21 @@
 
 
 
+			<div class="rules-blackout" v-show="showWhyBadWord" @click="toggleShowWhyBadWord"></div>
+
+			<div class="rules shop whyBadWord" v-show="showWhyBadWord">
+				<div class="rules__cross shop__cross" @click="toggleShowWhyBadWord"></div>
+				<h2 class="rules__menu">
+					{{notRussian ? 'Definition' : 'Дорогой игрок!'}}
+				</h2>
+				<div class="word-definition">
+					{{textWhyBadWord}}
+				</div>
+
+			</div>
+
+
+
 
 			<div class="rules-blackout main-blackout" v-if="openNewBg" @click="toggleOpenNewBg()"></div>
 			<div class="rules rules__notification bgRules" v-if="openNewBg">
@@ -820,6 +835,7 @@ import {allWordsEN} from './englishWords';
 import {wordsFromWordsEN} from './englishWordsFromWords'
 import {getBusinessEvent} from "./gameAnalytics";
 import {locationWords} from "./locationWords";
+import {whyBadWord} from './whyBadWord'
 
 let deleteBlockBg = true;
 // function stylesBgThen(){
@@ -1358,8 +1374,8 @@ let allStars = [];
 let isRules = false;
 let allLocations = Math.floor(allWords.length / 21);
 let lastLevel = 0;
-let wordsForReplace = ['ассиметрия', 'гитлеровец', 'барашкин', 'подмывание', 'карпенко'];
-let wordsToReplace = ['асимметрия', 'горицвет', 'банкирша', 'домывание', 'анкерок'];
+let wordsForReplace = ['ассиметрия', 'гитлеровец', 'барашкин', 'подмывание', 'карпенко', 'прибалтика'];
+let wordsToReplace = ['асимметрия', 'горицвет', 'банкирша', 'домывание', 'анкерок', 'парилка'];
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
 	for(let i = 0; i < keys.length; i++){
@@ -2321,7 +2337,14 @@ let dictWordsToReplace = {
 	'осел': 'осёл',
 	'орел': 'орёл',
 	'клев': 'клёв',
-	'шепот': 'шёпот'
+	'шепот': 'шёпот',
+	'котел': 'котёл',
+	'отек': 'отёк',
+	'лен': 'лён',
+	'лет': 'лёт',
+	'отел': 'отёл',
+	'корье': 'корьё',
+	'тигренок': 'тигрёнок'
 }
 
 
@@ -2584,7 +2607,9 @@ export default {
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
-			advTimer: 0
+			advTimer: 0,
+			showWhyBadWord: false,
+			textWhyBadWord: ''
 		}
 	},
 	computed:{
@@ -2635,6 +2660,9 @@ export default {
 		// 	}catch(e){}
 		//
 		// },
+		toggleShowWhyBadWord(){
+			this.showWhyBadWord = !this.showWhyBadWord;
+		},
 		startRewardedTimer(){
 			if(this.tipCount > 0) return;
 			this.advTimer = 65;
@@ -3447,6 +3475,15 @@ export default {
 								if(wasShow){
 									advTime = false;
 									startAdvTime = true;
+
+									clearTimeout(advTimeout);
+									clearInterval(advInterval);
+
+									timeToShowAdv = 65;
+									startAdvInterval();
+									advTimeout = setTimeout(()=>{
+										advTime = true;
+									}, 65000);
 								}
 								if(advNotShow){
 									that.showAdvTip = true;
@@ -3456,20 +3493,14 @@ export default {
 										isAdvShowed = true;
 									}else{
 										that.startRewardedTimer();
+										params({'rewardedAdvDontWork': 1});
 										return;
 									}
 
 								}
 								if(wasShow){
+									params({'rewardedAdv': 1});
 									that.addTip();
-									clearTimeout(advTimeout);
-									clearInterval(advInterval);
-
-									timeToShowAdv = 65;
-									startAdvInterval();
-									advTimeout = setTimeout(()=>{
-										advTime = true;
-									}, 65000);
 								}
 							},
 							onError: function (e){
@@ -3660,6 +3691,20 @@ export default {
 							wrongWordSound.play();
 						}
 					}
+
+					try{
+						let isWhyBadWord = whyBadWord(this.wordFromLetter);
+						if(isWhyBadWord){
+							this.showWhyBadWord = true;
+							this.textWhyBadWord = isWhyBadWord;
+							params({isWhyBadWord: 1});
+						}else{
+							params({'badWord': this.wordFromLetter});
+						}
+					}catch(e){
+						console.log(e);
+					}
+
 				}
 
 
