@@ -742,8 +742,8 @@
 				</template>
 			</template>
 			<template v-else-if="wasUpdate">
-				Третья тематическая локация "Животные" уже ждёт вас!
-				<div class="rules__goBg" @click="goToGetLocations()">Вперёд!</div>
+				Новый фон "Весенний рассвет" уже в игре! Надеемся, что вам понравится!
+				<div class="rules__goBg" @click="goChangeBgFromUpdate()">Сменить фон</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -827,6 +827,8 @@ import './styles/stylesBg2.scss';
 import './styles/stylesBg3.scss';
 import './styles/stylesHalloween.scss';
 import './styles/stylesNewYear.scss';
+import './styles/stylesSpring.scss';
+
 import './styles/stylesLocations.scss';
 import {allWordsRU} from './russianWords';
 import {dictionaryRU} from './russianDictionary';
@@ -1245,7 +1247,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-18";
+const lastVersion = "ver-19";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1348,8 +1350,8 @@ if(chosenBackground){
 		chosenBackground = 0;
 		setToStorage('chosenBackground', '0');
 	}else{
-		chosenBackground = -2;
-		setToStorage('chosenBackground', '-2');
+		chosenBackground = -3;
+		setToStorage('chosenBackground', chosenBackground);
 	}
 	// deleteBlockBg = true;
 }
@@ -1529,7 +1531,7 @@ function setState(isNow) {
 			if(englishProgress) newState.allDoneWordsEN = englishProgress;
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
 			console.log(newState);
-			playerGame.setData(newState, true).then(() => {
+			playerGame.setData(newState, false).then(() => {
 			}).catch((error) => {
 				try{
 					if(error.toString().includes('large')){
@@ -1579,7 +1581,6 @@ function setStats(isNow) {
 }
 
 function saveAllData(isNow){
-	console.log('saveAllData');
 	setState(isNow);
 	setStats(isNow);
 }
@@ -1589,9 +1590,6 @@ window.onunload = () => saveAllData(true);
 window.onunload = () => saveAllData(true);
 window.onpagehide = () => saveAllData(true);
 
-setInterval(()=>{
-	saveAllData(false);
-}, 10000);
 
 
 
@@ -1703,6 +1701,9 @@ if(window.YaGames){
 				payloadLevel = Number(lvl) - 1;
 				if(payloadLevel < 0) payloadLevel = 0;
 				else if(payloadLevel > 2000) payloadLevel = 1999;
+				if(allDoneWords['милость']){
+					params({'payloadAlreadyGone': 1});
+				}
 			}
 		}catch(ignored){}
 
@@ -2240,10 +2241,10 @@ let wordWasSound = new NewAudioContext('word-was');
 let doneWordSound = new NewAudioContext('done-word');
 let doneWordSound2 = new NewAudioContext('done-word2');
 let starVolume = new NewAudioContext('star');
-let newLevel = new NewAudioContext('new-level');
+// let newLevel = new NewAudioContext('new-level');
 let clickSound = new NewAudioContext('click');
 let clickSound2 = new NewAudioContext('click2');
-let exitLevelSound = new NewAudioContext('exitLevel');
+// let exitLevelSound = new NewAudioContext('exitLevel');
 
 const lettersMap = {
 	'q' : 'й', 'w' : 'ц', 'e' : 'у', 'r' : 'к', 't' : 'е', 'y' : 'н', 'u' : 'г', 'i' : 'ш', 'o' : 'щ', 'p' : 'з', '[' : 'х', ']' : 'ъ', 'a' : 'ф', 's' : 'ы', 'd' : 'в', 'f' : 'а', 'g' : 'п', 'h' : 'р', 'j' : 'о', 'k' : 'л', 'l' : 'д', ';' : 'ж', '\'' : 'э', 'z' : 'я', 'x' : 'ч', 'c' : 'с', 'v' : 'м', 'b' : 'и', 'n' : 'т', 'm' : 'ь', ',' : 'б', '.' : 'ю','Q' : 'Й', 'W' : 'Ц', 'E' : 'У', 'R' : 'К', 'T' : 'Е', 'Y' : 'Н', 'U' : 'Г', 'I' : 'Ш', 'O' : 'Щ', 'P' : 'З', 'A' : 'Ф', 'S' : 'Ы', 'D' : 'В', 'F' : 'А', 'G' : 'П', 'H' : 'Р', 'J' : 'О', 'K' : 'Л', 'L' : 'Д', 'Z' : '?', 'X' : 'ч', 'C' : 'С', 'V' : 'М', 'B' : 'И', 'N' : 'Т', 'M' : 'Ь'
@@ -2344,7 +2345,10 @@ let dictWordsToReplace = {
 	'лет': 'лёт',
 	'отел': 'отёл',
 	'корье': 'корьё',
-	'тигренок': 'тигрёнок'
+	'тигренок': 'тигрёнок',
+	'тес': 'тёс',
+	'филер': 'филёр',
+	'флер': 'флёр'
 }
 
 
@@ -2408,8 +2412,24 @@ const cloudPhrases = [
 	'Для перехода на следующий уровень заработайте хотя бы 1 <span class="cloudHint__mainText">звезду</span>.',
 	'Ура! Вы <span class="cloudHint__mainText">успешно</span> закончили обучение. Желаем Вам удачи в прохождении игры!',
 ];
-const lvl2CloudPhrase = 'В игре есть <br><span class="cloudHint__mainText">тематические локации</span><br> Найдите их в меню, нажав на значок книжки.';
-const lvl3CloudPhrase = 'По техническим причинам буква <br><span class="cloudHint__mainText">Е приравнивается к Ё</span>. Учитывайте это при создании слов. Удачи!';
+
+const cloudLevelPhrases = [
+	'Перейдите в меню, нажав на домик, чтобы выбрать <span class="cloudHint__mainText">цветовое оформление</span> в настройках.',
+	'В игре есть <br><span class="cloudHint__mainText">тематические локации</span><br> Найдите их в меню, нажав на значок книжки.',
+	'По техническим причинам буква <br><span class="cloudHint__mainText">Е приравнивается к Ё</span>. Учитывайте это при создании слов. Удачи!'
+]
+
+let cloudPayloadPhrases = [
+	'Добро пожаловать в игру <span class="cloudHint__mainText">"Слова из слова"</span>! Составляйте слова, чтобы проходить уровни.',
+	'Нажимайте на <span class="cloudHint__mainText">буквы снизу</span>, чтобы составить слово, а затем на <span class="cloudHint__mainText">галочку</span>, чтобы его отправить!',
+	'Составлять можно только <span class="cloudHint__mainText">нарицательные существительные в единственном числе</span>',
+	'<span class="cloudHint__mainText">Удачной игры!</span>'
+];
+let cloudPayloadPhrases2 = [
+	'Нажимайте на слова, чтобы узнать их <span class="cloudHint__mainText">значение</span>.',
+	'Перейдите в меню, нажав на домик, чтобы выбрать <span class="cloudHint__mainText">цветовое оформление</span> в настройках.',
+	'Также в игре есть <br><span class="cloudHint__mainText">тематические локации</span><br> Найдите их в меню, нажав на значок книжки.',
+];
 
 
 
@@ -2532,7 +2552,7 @@ function addSwipeTo(funcSwipeLeft, funcSwipeRight, isMenu){
 
 }
 
-
+let showNextPayloadTutorial = false;
 
 export default {
 	name: 'App',
@@ -2609,7 +2629,8 @@ export default {
 			showInfoAboutPortrait: false,
 			advTimer: 0,
 			showWhyBadWord: false,
-			textWhyBadWord: ''
+			textWhyBadWord: '',
+			payloadTutorial: false
 		}
 	},
 	computed:{
@@ -2660,6 +2681,24 @@ export default {
 		// 	}catch(e){}
 		//
 		// },
+		startPayloadTutorial(){
+			if(!isShowTutorial && !showNextPayloadTutorial) return;
+			console.log('start');
+			this.payloadTutorial = true;
+			tutorialStep = 0;
+			this.startTutorial();
+			this.isTutorial = false;
+			if(showNextPayloadTutorial){
+				cloudPayloadPhrases = cloudPayloadPhrases2;
+				showNextPayloadTutorial = false;
+				isShowTutorial = false;
+			}else{
+				showNextPayloadTutorial = true;
+			}
+			this.cloudsPhrase = cloudPayloadPhrases[0];
+
+
+		},
 		toggleShowWhyBadWord(){
 			this.showWhyBadWord = !this.showWhyBadWord;
 		},
@@ -2846,12 +2885,12 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 4) this.chosenBg = -2;
+			if(this.chosenBg === 4) this.chosenBg = -3;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -3) this.chosenBg = 3;
+			if(this.chosenBg === -4) this.chosenBg = 3;
 			this.testBg();
 		},
 		testBg(){
@@ -2864,13 +2903,16 @@ export default {
 			params({'choseBg': this.chosenBgRight});
 			setToStorage('chosenBackground', this.chosenBgRight);
 		},
+		goChangeBgFromUpdate(){
+			this.goToChangeBg();
+			this.chosenBg = -3;
+			this.chosenBgRight = this.chosenBg;
+			setToStorage('chosenBackground', this.chosenBgRight);
+		},
 		goToChangeBg(){
 			params({'goChangeBg': 1});
 			this.backMenu();
 			this.isSettings = true;
-			this.chosenBg = -2;
-			this.chosenBgRight = this.chosenBg;
-			setToStorage('chosenBackground', this.chosenBgRight);
 			this.openNewBg = false;
 			this.showLastLevelInfo = false;
 		},
@@ -2897,11 +2939,16 @@ export default {
 			}
 		},
 		skipTutorial(){
-			params({'skipTutorial': 1});
+			if(this.payloadTutorial){
+				params({'skipPayloadTutorial': 1});
+			}else{
+				params({'skipTutorial': 1});
+			}
 			this.endTutorial();
 		},
 		endTutorial(){
 			console.log('end');
+			this.payloadTutorial = false;
 		 	this.isTutorial = false;
 		 	this.cloudHint = false;
 			this.selectTip = false;
@@ -2917,6 +2964,15 @@ export default {
 			this.cloudHint = true;
 		},
 		closeHint(){
+			if(this.payloadTutorial){
+				tutorialStep++;
+				if(tutorialStep >= cloudPayloadPhrases.length){
+					this.endTutorial();
+					return;
+				}
+				this.cloudsPhrase = cloudPayloadPhrases[tutorialStep];
+				return;
+			}
 			if(this.selectSend) return;
 			if(this.lvl !== 0){
 				this.cloudHint = false;
@@ -2944,15 +3000,9 @@ export default {
 
 			// this.cloudHint = false;
 		},
-		openLevel2Hint(){
-			console.log('lvl2Hint');
+		openLevelHint(lvl){
 			this.cloudHint = true;
-			this.cloudsPhrase = lvl2CloudPhrase;
-		},
-		openLevel3Hint(){
-			console.log('lvl3Hint');
-			this.cloudHint = true;
-			this.cloudsPhrase = lvl3CloudPhrase;
+			this.cloudsPhrase = cloudLevelPhrases[lvl-1];
 		},
 		nextStep(){
 
@@ -3123,20 +3173,27 @@ export default {
 		tryOpenPayloadLevel(){
 			if(payloadLevel){
 				this.getLevel();
-				this.rules = true;
+				// this.rules = true;
 			}
 		},
 		toggleLevelClosedShow(){
 			this.levelClosedShow = !this.levelClosedShow;
 		},
 		getLevel(lvl, notSound, fromMenu){
-			if(payloadLevel){
+			if(showNextPayloadTutorial){
+				this.endTutorial();
+				this.startPayloadTutorial();
+				params({'payloadTutor2': 1});
+			} else if(payloadLevel){
 				lvl = payloadLevel;
 				payloadLevel = false;
 				if(lastLevel < lvl) lastLevel = lvl;
 				params({'payload': 1});
 				this.endTutorial();
+				this.startPayloadTutorial();
 				isShowTutorial = false;
+				this.location = Math.floor(lvl/21);
+				this.rules = false;
 
 			} else if(this.isCloseLevelShow(lvl+1)){
 				console.log('dasd ', fromMenu);
@@ -3146,6 +3203,7 @@ export default {
 				}
 				return;
 			}
+
 
 			// if(window.innerWidth > window.innerHeight){
 			// 	params({'orientation': 'landscape'});
@@ -3158,7 +3216,6 @@ export default {
 				let name = 'eng' + lvl;
 				params({[name]: 1});
 			}
-
 
 
 
@@ -3197,10 +3254,8 @@ export default {
 
 			this.tryShowAdv();
 			if(this.doneWords.length === 0){
-				if(this.lvl === 3){
-					this.openLevel3Hint();
-				}else if(this.lvl === 2){
-					this.openLevel2Hint();
+				if(this.lvl >= 1 && this.lvl <=3){
+					this.openLevelHint(this.lvl);
 				}
 			}
 
@@ -3216,7 +3271,7 @@ export default {
 			}
 
 			if(this.isSounds && !notSound){
-				newLevel.play();
+				clickSound.play();
 			}
 
 			this.getStar = -1;
@@ -3243,6 +3298,7 @@ export default {
 		},
 		getLocationLevel(level){
 			if(level > 0 && this.locationStars[level-1] === 0) return;
+			params({'getLocationLevel': 1});
 			this.closeAllBeforeStartLevel();
 			this.locationGame = true;
 			this.lvl = level;
@@ -3424,7 +3480,7 @@ export default {
 		backMenu(){
 			if(this.isTutorial) return;
 			if(this.isSounds){
-				exitLevelSound.play();
+				clickSound.play();
 			}
 			if(this.locationGame){
 				this.showGameLocation = true;
@@ -3647,6 +3703,8 @@ export default {
 						PLAYESTATE.allDoneWords = allDoneWords;
 					}
 
+					saveAllData();
+
 
 					setTimeout(()=>{
 						this.animWordStart = '';
@@ -3749,6 +3807,9 @@ export default {
 
 				}else{
 					setLastLevel();
+					if(stars === 1){
+						params({'gotLevel': this.lvl});
+					}
 					this.gameLastLevel = lastLevel;
 					this.stars.splice(this.lvl, 1, stars);
 					this.addPlayerToLB();

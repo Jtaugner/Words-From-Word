@@ -1550,7 +1550,6 @@ html, body {
     height: 60px;
   }
 }
-/*Реклама кроссвордов*/
 .levels__loc {
   position: absolute;
   right: 7px;
@@ -1565,6 +1564,7 @@ html, body {
   font-size: 1.7rem;
   color: black;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .levels__loc_big {
@@ -1593,6 +1593,9 @@ html, body {
 .word-mean {
   overflow-y: auto;
   font-size: 2rem;
+  padding-bottom: 2px;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 @media (max-height: 350px) {
@@ -1791,6 +1794,10 @@ b {
   border-radius: 10px;
 }
 
+.chosenBg-3 {
+  background-image: url(../assets/settings/bg-3.png);
+}
+
 .chosenBg-2 {
   background-image: url(../assets/settings/bg-2.png);
 }
@@ -1859,7 +1866,7 @@ b {
 
 #definitionIframe {
   width: 100%;
-  height: 100%;
+  flex-grow: 3;
 }
 
 .closedIframe {
