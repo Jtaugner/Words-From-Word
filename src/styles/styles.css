@@ -1925,6 +1925,10 @@ b {
     padding: 10px;
   }
 
+  .words {
+    margin-top: 65px;
+  }
+
   .menu .menu__words-amount, .menu .menu__tip {
     display: none;
   }
@@ -2307,6 +2311,33 @@ b {
 .whyBadWord {
   height: auto;
   font-size: 2rem;
+}
+
+.bannerForVertical {
+  display: none;
+  height: 75px;
+  flex: 0 0 75px;
+  width: 100%;
+}
+
+@media (orientation: portrait) and (min-height: 600px) {
+  .bannerForVertical {
+    display: block;
+  }
+
+  .action-block {
+    margin: 15px 0;
+  }
+
+  .bottomMenu {
+    margin-bottom: 10px;
+  }
+}
+@media (min-height: 700px) {
+  .bannerForVertical {
+    height: 100px;
+    flex: 0 0 100px;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */

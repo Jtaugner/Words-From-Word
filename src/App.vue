@@ -444,6 +444,10 @@
 
 				</div>
 
+				<div class="bannerForVertical">
+					<div id="yandex_rtb_R-A-518275-38"></div>
+				</div>
+
 			</div>
 
 
@@ -1518,7 +1522,6 @@ function setState(isNow) {
 				time: getSec()
 			};
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
-			console.log(newState);
 			playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 
 
@@ -1530,8 +1533,7 @@ function setState(isNow) {
 
 			if(englishProgress) newState.allDoneWordsEN = englishProgress;
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
-			console.log(newState);
-			playerGame.setData(newState, false).then(() => {
+			playerGame.setData(newState, true).then(() => {
 			}).catch((error) => {
 				try{
 					if(error.toString().includes('large')){
@@ -1641,11 +1643,11 @@ function setLoc() {
 	}));
 	setLastLevel();
 	loc = Math.floor((lastLevel / 21));
-	if(allStars.reduce((acc, st)=>{
-		return acc + st;
-	}, 0) < loc*32){
-		loc--;
-	}
+	// if(allStars.reduce((acc, st)=>{
+	// 	return acc + st;
+	// }, 0) < loc*32){
+	// 	loc--;
+	// }
 	if(loc >= allLocations || loc < 0) loc = 0;
 }
 
@@ -1899,6 +1901,8 @@ function initPlayer(ysdk) {
 				let localStars = getAllStars(fixDoneWords(allDoneWords));
 				let serverStars = getAllStars(newData);
 				if(dataObject.time && lastProgressUpdate && lastProgressUpdate > dataObject.time && localStars > serverStars){
+					console.log('CHANGE DATA TO LOCAL');
+					params({'changeDataToLocal': 1});
 					PLAYESTATE = {allDoneWords: allDoneWords};
 				}else{
 					allDoneWords = newData;
@@ -2453,6 +2457,22 @@ function getBanner(){
 				})
 			});
 			params({'getBanner': 1});
+		}
+	}catch(e){
+		console.log(e);
+	}
+}
+function getVerticalBanner(){
+	console.log('getVerticalBanner');
+	try{
+		if(window.innerHeight > window.innerWidth){
+			window.yaContextCb.push(()=>{
+				Ya.Context.AdvManager.render({
+					renderTo: 'yandex_rtb_R-A-518275-38',
+					blockId: 'R-A-518275-38'
+				})
+			})
+			params({'getVerticalBanner': 1});
 		}
 	}catch(e){
 		console.log(e);
@@ -3259,6 +3279,8 @@ export default {
 				}
 			}
 
+
+			getVerticalBanner();
 
 		},
 		closeAllBeforeStartLevel(notSound){

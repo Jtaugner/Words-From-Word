@@ -16,7 +16,9 @@ const addNewWords = ["татарка", "кокпит", "булат", "люд", "
     "смайл", "промоутер", "ремикс", "дайвинг", "дайвер", "скиатлон", "подкаст", "глюк",
 "пиния", "ворог", "арабистка", "най", "шерп", "кутила", "пергола", "конкубина", "убоина",
 "кантина", "стотинка", "мотовка", "ионит", "мироед", "зоман", "сенна", "пикт", "микадо", "мурава", "намол", "сапун",
-"синапс", "сионистка", "криоген", "перчинка", "шмат", "кади", "морфин", "фавела", "актор"];
+"синапс", "сионистка", "криоген", "перчинка", "шмат", "кади", "морфин", "фавела", "актор", "мутизм",
+"огарь", "чокер", "литота", "кадавр", "сентаво", "девиант", "кержак", "годе", "лакец", "обиняк", "галеон", "мандала",
+"дреды"];
 words = [...words, ...addNewWords];
 //    let keys = Object.keys(allWordsFromWords);
 //    let allWords = {};
@@ -216,13 +218,13 @@ Object.keys(locationAllWordsLocation).forEach(key => {
     locationString += `${key}:${JSON.stringify(locationAllWordsLocation[key])},\n`
 });
 
-// let justWords = ["праздник", "ароматдухов", "открытка", "лучсолнца",  "подарки", "радость", "букетмимозы", "замилыхдам",  "пожелания", "корпоратив", "чудосвета", "дорогиедамы", "началовесны", "подснежники",  "комплименты", "стихдлямамы", "запахцветов", "единственная", "тюльпаны", "восьмоемарта"];
-// let www = {};
-// createWords(justWords, www);
-// for(let name in www){
-//     console.log(name, ' - ', www[name].length)
-// }
-// console.log('len: ', justWords.length);
+let justWords = [];
+let www = {};
+createWords(justWords, www);
+for(let name in www){
+    console.log(name, ' - ', www[name].length)
+}
+console.log('len: ', justWords.length);
 
 
 // let testWords = {};
@@ -254,7 +256,7 @@ if(isBadCompareLengths(locationAllWords) || isBadCompareLengths(allWords)){
     return 'ER';
 }
 
-let createAll = true;
+let createAll = false;
 if(createAll){
     createWords(allWords, wordsFromWords);
     fsp.writeFile(path.join(__dirname, 'src/russianWords.js'), `export let allWordsRU = ${JSON.stringify(allWords)}`);
