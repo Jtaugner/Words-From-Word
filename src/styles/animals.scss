@@ -13,6 +13,9 @@
   color: #429F40;
 }
 .gameLocation-animals{
+  .svgIcon{
+    fill: #714A11;
+  }
   background: url(../assets/locations/animals/map.png) center center no-repeat;
   background-size: cover;
   .levelsTop__allStars{
@@ -23,18 +26,6 @@
   }
   .newElement{
     background-color: #714A11;
-  }
-  .menu__button-back{
-    background-image: url(../assets/locations/animals/home.svg);
-  }
-  .leaderBoard{
-    background-image: url(../assets/locations/animals/leader.svg);
-  }
-  .switchShop{
-    background-image: url(../assets/locations/animals/shop.svg);
-  }
-  .switchShowLocation{
-    background-image: url(../assets/locations/animals/locations.svg);
   }
 }
 .gameLocation-animals::-webkit-scrollbar-thumb {

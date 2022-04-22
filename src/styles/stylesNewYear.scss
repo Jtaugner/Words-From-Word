@@ -12,47 +12,20 @@
 }
 
 .chosenAppBg-2{
-  .levelsTop__allStars{
+  .svgIcon{
+    fill: #C21332;
+  }
+  .levelsTop__allStars, .shop .rules__menu, .settings__text{
     color: #C21332;
   }
-  .leaderBoard{
-    background-image: url(../assets/bgNewYear/leader.svg);
-  }
-  .switchShop{
-    background-image: url(../assets/bgNewYear/shop.svg);
-  }
-  .switchShowLocation{
-    background-image: url(../assets/bgNewYear/locations.svg);
-  }
-  .newElement{
+  .newElement, .menu__tip_count, .rules__goBg{
     background-color: #C21332;
   }
   .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
     background-color: #E75858;
   }
-  .menu__button-back{
-    background-image: url(../assets/bgNewYear/home.svg);
-  }
-  .menu__tip{
-    background-image: url(../assets/bgNewYear/tip.svg);
-  }
-  .menu__tip_count, .rules__goBg{
-    background-color: #C21332;
-  }
   .shop, .rules{
     border-color: #C21332;
-  }
-  .shop .rules__menu, .settings__text{
-    color: #C21332;
-  }
-  .rules__cross{
-    background-image: url(../assets/bgNewYear/cross.svg);
-  }
-  .menu__button-next-level_active{
-    background-image: url(../assets/bgNewYear/arrow.svg);
-  }
-  .switchSettings{
-    background-image: url(../assets/bgNewYear/settings.svg);
   }
   ::-webkit-scrollbar-thumb {
     background-color: #E75858;
@@ -79,15 +52,6 @@
   }
 
   //Магазин
-  .shop__cart__item_2{
-    background-image: url(../assets/bgNewYear/cart1.svg);
-  }
-  .shop__cart__item_3{
-    background-image: url(../assets/bgNewYear/cart2.svg);
-  }
-  .shop__cart__item_4{
-    background-image: url(../assets/bgNewYear/cart3.svg);
-  }
   .shop__cart__name{
     color: #CE1E1E;
     border-color: #CE1E1E;

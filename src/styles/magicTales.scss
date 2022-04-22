@@ -13,6 +13,9 @@
   color: #8963C7;
 }
 .gameLocation-magicTales{
+  .svgIcon{
+    fill: #8963C7;
+  }
   background: url(../assets/locations/magicTales/map.png) center center no-repeat;
   background-size: cover;
   .levelsTop__allStars{
@@ -23,18 +26,6 @@
   }
   .newElement{
     background-color: #8963C7;
-  }
-  .menu__button-back{
-    background-image: url(../assets/locations/magicTales/home.svg);
-  }
-  .leaderBoard{
-    background-image: url(../assets/locations/magicTales/leader.svg);
-  }
-  .switchShop{
-    background-image: url(../assets/locations/magicTales/shop.svg);
-  }
-  .switchShowLocation{
-    background-image: url(../assets/locations/magicTales/locations.svg);
   }
 }
 .gameLocation-magicTales::-webkit-scrollbar-thumb {

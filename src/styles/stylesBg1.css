@@ -9,29 +9,17 @@
     background-image: url(../assets/bg1/bg1-big.png);
   }
 }
+.chosenAppBg1 .svgIcon {
+  fill: #6E3208;
+}
 .chosenAppBg1 .levelsTop__allStars {
   color: #4E2406;
-}
-.chosenAppBg1 .leaderBoard {
-  background-image: url(../assets/bg1/leader.svg);
-}
-.chosenAppBg1 .switchShop {
-  background-image: url(../assets/bg1/shop.svg);
-}
-.chosenAppBg1 .switchShowLocation {
-  background-image: url(../assets/bg1/locations.svg);
 }
 .chosenAppBg1 .newElement {
   background-color: #6E3208;
 }
 .chosenAppBg1 .words__letters-block_done .words__letter, .chosenAppBg1 .action-block__letters .action-block__letter_selected {
   background-color: #F69A5A;
-}
-.chosenAppBg1 .menu__button-back {
-  background-image: url(../assets/bg1/home.svg);
-}
-.chosenAppBg1 .menu__tip {
-  background-image: url(../assets/bg1/tip.svg);
 }
 .chosenAppBg1 .menu__tip_count, .chosenAppBg1 .rules__goBg {
   background-color: #6E3208;
@@ -41,15 +29,6 @@
 }
 .chosenAppBg1 .shop .rules__menu, .chosenAppBg1 .settings__text {
   color: #6d3208;
-}
-.chosenAppBg1 .rules__cross {
-  background-image: url(../assets/bg1/cross.svg);
-}
-.chosenAppBg1 .menu__button-next-level_active {
-  background-image: url(../assets/bg1/arrow.svg);
-}
-.chosenAppBg1 .switchSettings {
-  background-image: url(../assets/bg1/settings.svg);
 }
 .chosenAppBg1 ::-webkit-scrollbar-thumb {
   background-color: #DE8858;
@@ -76,15 +55,6 @@
   100% {
     background-color: #F6765A;
   }
-}
-.chosenAppBg1 .shop__cart__item_2 {
-  background-image: url(../assets/bg1/cart1.svg);
-}
-.chosenAppBg1 .shop__cart__item_3 {
-  background-image: url(../assets/bg1/cart2.svg);
-}
-.chosenAppBg1 .shop__cart__item_4 {
-  background-image: url(../assets/bg1/cart3.svg);
 }
 .chosenAppBg1 .shop__cart__name {
   color: #6d3208;

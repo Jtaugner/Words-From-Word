@@ -13,6 +13,9 @@
   color: #2486CD;
 }
 .gameLocation-newYear{
+  .svgIcon{
+    fill: #DC5E5E;
+  }
   background: url(../assets/locations/newYear/newYear-map.png) center center no-repeat;
   background-size: cover;
   .levelsTop__allStars{
@@ -23,18 +26,6 @@
   }
   .newElement{
     background-color: #DC5E5E;
-  }
-  .menu__button-back{
-    background-image: url(../assets/locations/newYear/home.svg);
-  }
-  .leaderBoard{
-    background-image: url(../assets/locations/newYear/leader.svg);
-  }
-  .switchShop{
-    background-image: url(../assets/locations/newYear/shop.svg);
-  }
-  .switchShowLocation{
-    background-image: url(../assets/locations/newYear/locations.svg);
   }
 }
 @media (min-width: 1000px) {

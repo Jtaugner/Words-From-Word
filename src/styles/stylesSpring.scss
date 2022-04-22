@@ -13,29 +13,17 @@
 //}
 
 .chosenAppBg-3{
+  .svgIcon{
+    fill: #3A307D;
+  }
   .levelsTop__allStars{
     color: #3A307D;
-  }
-  .leaderBoard{
-    background-image: url(../assets/bgSpring/leader.svg);
-  }
-  .switchShop{
-    background-image: url(../assets/bgSpring/shop.svg);
-  }
-  .switchShowLocation{
-    background-image: url(../assets/bgSpring/locations.svg);
   }
   .newElement{
     background-color: #6C72F0;
   }
   .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
     background-color: #6C72F0;
-  }
-  .menu__button-back{
-    background-image: url(../assets/bgSpring/home.svg);
-  }
-  .menu__tip{
-    background-image: url(../assets/bgSpring/tip.svg);
   }
   .menu__tip_count, .rules__goBg{
     background-color: #6C72F0;
@@ -45,15 +33,6 @@
   }
   .shop .rules__menu, .settings__text{
     color: #3A307D;
-  }
-  .rules__cross{
-    background-image: url(../assets/bgSpring/cross.svg);
-  }
-  .menu__button-next-level_active{
-    background-image: url(../assets/bgSpring/arrow.svg);
-  }
-  .switchSettings{
-    background-image: url(../assets/bgSpring/settings.svg);
   }
   ::-webkit-scrollbar-thumb {
     background-color: #6C72F0;
@@ -81,15 +60,6 @@
   }
 
   //Магазин
-  .shop__cart__item_2{
-    background-image: url(../assets/bgSpring/cart1.svg);
-  }
-  .shop__cart__item_3{
-    background-image: url(../assets/bgSpring/cart2.svg);
-  }
-  .shop__cart__item_4{
-    background-image: url(../assets/bgSpring/cart3.svg);
-  }
   .shop__cart__name{
     color:#3A307D;
     border-color: #3A307D;
@@ -104,30 +74,6 @@
 
   .menu__hint{
     background-color: rgba(108, 114, 240, 0.9);
-  }
-
-  .levels .menu-star {
-    background-color: #6C72F0;
-  }
-  .menu__level .level_full-star {
-    background: url(../assets/bgSpring/star.svg) center center no-repeat;
-    background-size: 100%;
-  }
-  .menu__level .level_full-star.getStar{
-    animation: showFullStar2 1s forwards;
-  }
-  @keyframes showFullStar2 {
-    0%{
-      transform: scale(1);
-    }
-    50%{
-      transform: scale(2);
-    }
-    100%{
-      transform: scale(1);
-      background: url(../assets/bgSpring/star.svg) center center no-repeat;
-      background-size: 100%;
-    }
   }
   .skipTutorial{
     background-color: #6C72F0;

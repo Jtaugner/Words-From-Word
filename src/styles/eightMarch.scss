@@ -13,6 +13,9 @@
   color: #8a3d93;
 }
 .gameLocation-eightMarch{
+  .svgIcon{
+    fill: #8a3d93;
+  }
   background: url(../assets/locations/eightMarch/map.png) center center no-repeat;
   background-size: cover;
   .levelsTop__allStars{
@@ -23,18 +26,6 @@
   }
   .newElement{
     background-color: #8a3d93;
-  }
-  .menu__button-back{
-    background-image: url(../assets/locations/eightMarch/home.svg);
-  }
-  .leaderBoard{
-    background-image: url(../assets/locations/eightMarch/leader.svg);
-  }
-  .switchShop{
-    background-image: url(../assets/locations/eightMarch/shop.svg);
-  }
-  .switchShowLocation{
-    background-image: url(../assets/locations/eightMarch/locations.svg);
   }
 }
 .gameLocation-eightMarch::-webkit-scrollbar-thumb {

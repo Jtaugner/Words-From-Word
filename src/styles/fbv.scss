@@ -1,0 +1,47 @@
+/*Волшебство сказок*/
+.gameLocationWrapper-fbv::-webkit-scrollbar-thumb {
+  background-color: #56349D;
+}
+.gameLocationWrapper-fbv::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+.fbvLocation .popUp__locationPicture{
+  background-image: url(../assets/locations/fbv/fbv.png);
+}
+.fbvLocation .popUp__locationName{
+  color: #56349D;
+}
+.gameLocation-fbv{
+  .svgIcon{
+    fill: #56349D;
+  }
+  background: url(../assets/locations/fbv/map.png) center center no-repeat;
+  background-size: cover;
+  .levelsTop__allStars{
+    color: #56349D;
+  }
+  .menu-star, .newElement{
+    background-color: #56349D;
+  }
+}
+.gameLocation-fbv::-webkit-scrollbar-thumb {
+  //border-radius: 0;
+  background-color: #56349D;
+}
+@media (min-width: 1000px) {
+  .gameLocation-fbv .location__lastLevel{
+    box-shadow: 0 0 25px 10px #56349D;
+  }
+}
+
+.gameLocation-fbv .location__upLevel{
+  top: 25%;
+}
+
+@media (orientation: portrait) {
+  .gameLocation-fbv{
+    background: url(../assets/locations/fbv/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
