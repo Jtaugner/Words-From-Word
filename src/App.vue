@@ -24,7 +24,11 @@
 				</div>
 
 
-				<div class="levelsTop__allStars" :class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']">
+				<div
+					class="levelsTop__allStars"
+					:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
+					@click="toggleShowInfoAboutStars"
+				>
 					{{allStars}}/{{ (location+1)*63}}
 <!--					<div class="menu-star"></div>-->
 				</div>
@@ -168,6 +172,25 @@
 			</div>
 
 		</div>
+
+
+		<div class="rules-blackout" v-if="showInfoAboutStars" @click="toggleShowInfoAboutStars"></div>
+
+		<div class="rules" v-if="showInfoAboutStars">
+			<cross-vue @click.native="toggleShowInfoAboutStars()" class="shop__cross"></cross-vue>
+			<h2 class="rules__menu">
+				{{notRussian ? 'Amount of stars' : 'Количество звёзд'}}
+			</h2>
+			<div class="levelClosedText">
+				{{notRussian ?
+				'The first number is the amount of earned stars. The second number is the total number of stars that you can earn. There are more stars with each page!' :
+				'Первое число -  количество заработанных звёзд. Второе число -  общее количество звёзд, которые можно получить. С каждой страницей звёзд всё больше!'
+				}}
+			</div>
+
+		</div>
+
+
 
 		<div class="rules-blackout" v-if="showInfoAboutPageNumber" @click="toggleShowInfoAboutPageNumber"></div>
 
@@ -408,8 +431,7 @@
                 animWordStart === word ? 'animWordStart' : '',
                 newWord === word ? 'newWord' : '',
                 wordWasIndex === index ? 'wordWas': '',
-                selectMainWord === word ? 'tutorialSelected' : '',
-                wordSwing === word ? 'words__letter-block_swing' : ''
+                selectMainWord === word ? 'tutorialSelected' : ''
                 ]"
 						 @click="openWordDescription(word)"
 					>
@@ -495,6 +517,7 @@
 					</div>
 					<div class="bannerContainer" v-show="!lbInGame">
 						<div id="yandex_rtb_R-A-518275-38"></div>
+						<div id="yandex_rtb_R-A-518275-39"></div>
 					</div>
 
 
@@ -1405,6 +1428,7 @@ let isGameAdvShow = getFromStorage('isGameAdvShow');
 let isGameUpdate = getFromStorage('gameUpdate-1');
 let chosenBackground = getFromStorage('chosenBackground');
 let portraitAdviceAmount = getFromStorage('portraitAdviceAmount');
+let isLvlFiveHintDone = getFromStorage('isLvlFiveHintDone');
 if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
 	// importBg(chosenBackground, true);
@@ -2482,6 +2506,8 @@ const cloudLevelPhrases = [
 	'По техническим причинам буква <br><span class="cloudHint__mainText">Е приравнивается к Ё</span>. Учитывайте это при создании слов. Удачи!'
 ]
 
+let lvl5Phrase = 'Этот уровень особенно сложен, дарим вам <span class="cloudHint__mainText">5 дополнительных подсказок</span>. Удачной игры!';
+
 let cloudPayloadPhrases = [
 	'Добро пожаловать в игру <span class="cloudHint__mainText">"Слова из слова"</span>! Составляйте слова, чтобы проходить уровни.',
 	'Нажимайте на <span class="cloudHint__mainText">буквы снизу</span>, чтобы составить слово, а затем на <span class="cloudHint__mainText">галочку</span>, чтобы его отправить!',
@@ -2528,17 +2554,29 @@ function getVerticalBanner(){
 	console.log('getVerticalBanner');
 	try{
 		isShowBanner = false;
-		if(window.innerHeight > window.innerWidth){
+		if(window.innerHeight >= 600){
+
 
 			setTimeout(()=>{
-				window.yaContextCb.push(()=>{
-					Ya.Context.AdvManager.render({
-						renderTo: 'yandex_rtb_R-A-518275-38',
-						blockId: 'R-A-518275-38'
-					})
-				})
-				params({'getVerticalBanner': 1});
 
+				if(window.innerWidth > window.innerHeight && window.innerHeight >= 700){
+					//Десктоп
+					window.yaContextCb.push(()=>{
+						Ya.Context.AdvManager.render({
+							renderTo: 'yandex_rtb_R-A-518275-39',
+							blockId: 'R-A-518275-39'
+						})
+					})
+				}else{
+					//Мобил в портрете
+					window.yaContextCb.push(()=>{
+						Ya.Context.AdvManager.render({
+							renderTo: 'yandex_rtb_R-A-518275-38',
+							blockId: 'R-A-518275-38'
+						})
+					})
+				}
+				// params({'getVerticalBanner': 1});
 				bannerTimeout = setTimeout(()=>{
 					isShowBanner = true;
 				}, 60000);
@@ -2558,12 +2596,15 @@ function getVerticalBanner(){
 // 	if(lastColor === randColors.length) lastColor = 0;
 // }
 
-function addScrollingLocationToDesktop(){
+function addScrollingToDesktop(isBottomBanner){
 	try{
 		let mouseLeft = 0;
 		function movePage(e) {
 			try{
 				let scrolled = document.getElementById('app').scrollLeft;
+				if(isBottomBanner){
+					scrolled = document.querySelector('.container-lbInGame').scrollLeft;
+				}
 				let newRes = e.clientX;
 				if(newRes > mouseLeft){
 					scrolled -= (newRes-mouseLeft)*1.5;
@@ -2571,19 +2612,33 @@ function addScrollingLocationToDesktop(){
 					scrolled += (mouseLeft-newRes)*1.5;
 				}
 				mouseLeft = newRes;
-				document.getElementById('app').scrollTo({
-					left: scrolled
-				});
+				if(isBottomBanner){
+					document.querySelector('.container-lbInGame').scrollTo({
+						left: scrolled
+					});
+				}else{
+					document.getElementById('app').scrollTo({
+						left: scrolled
+					});
+				}
+
 			}catch(e){}
 		}
-		document.querySelector('.location').onmousedown = (e) => {
+		function onMouseDown(e){
 			console.log('down');
 			mouseLeft = e.clientX;
 			document.body.addEventListener('mousemove', movePage);
 		}
-		document.querySelector('.location').onmouseup = () => {
+		function onMouseUp(){
 			document.body.removeEventListener('mousemove', movePage);
 		}
+		if(isBottomBanner){
+			document.querySelector('.container-lbInGame').onmousedown = onMouseDown;
+		}else{
+			document.querySelector('.location').onmousedown = onMouseDown;
+		}
+		document.body.onmouseup = onMouseUp;
+
 	}catch(e){console.log(e)}
 }
 
@@ -2647,6 +2702,7 @@ let showNextPayloadTutorial = false;
 function goToUserInLb(){
 	setTimeout(()=>{
 		try{
+			addScrollingToDesktop(true);
 			let scrollEl = document.querySelector('.leaderBoardInfo_my');
 			scrollEl.scrollIntoView({behavior: 'auto', block: "center", inline: "center"});
 		}catch(ignored){}
@@ -2733,7 +2789,8 @@ export default {
 			showWhyBadWord: false,
 			textWhyBadWord: '',
 			payloadTutorial: false,
-			lbInGame: false
+			lbInGame: false,
+			showInfoAboutStars: false
 		}
 	},
 	computed:{
@@ -2786,6 +2843,7 @@ export default {
 		// },
 		startPayloadTutorial(){
 			if(!isShowTutorial && !showNextPayloadTutorial) return;
+			if(this.allStars > 0) return;
 			console.log('start');
 			this.payloadTutorial = true;
 			tutorialStep = 0;
@@ -2855,13 +2913,20 @@ export default {
 
 			return arrClasses;
 		},
+		toggleShowInfoAboutStars(){
+			this.showInfoAboutStars = !this.showInfoAboutStars;
+
+			// if(this.showInfoAboutPageNumber){
+			// 	params({'pageNumClick': 1});
+			// }
+		},
 		toggleShowInfoAboutPageNumber(){
 
 			this.showInfoAboutPageNumber = !this.showInfoAboutPageNumber;
 
-			if(this.showInfoAboutPageNumber){
-				params({'pageNumClick': 1});
-			}
+			// if(this.showInfoAboutPageNumber){
+			// 	params({'pageNumClick': 1});
+			// }
 		},
 		getLocationName(loc){
 			return translatedLocationsNames[loc];
@@ -2949,7 +3014,7 @@ export default {
 				this.gameLocation = location;
 				this.locationStars = getLocationStars(location);
 				this.getShowingLastLevelInLocation();
-				addScrollingLocationToDesktop();
+				addScrollingToDesktop();
 
 		},
 		getShowingLastLevelInLocation(){
@@ -3104,6 +3169,7 @@ export default {
 			// this.cloudHint = false;
 		},
 		openLevelHint(lvl){
+			if(notRussianGame) return;
 			this.cloudHint = true;
 			this.cloudsPhrase = cloudLevelPhrases[lvl-1];
 		},
@@ -3144,34 +3210,34 @@ export default {
 
 		},
 		getPlayerLB(getGameLb){
-			/*
-			this.playerRait = {
-				rank: 14, score: 19
-			};
-			this.lbInGame = [
-				{rank: 1, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 2, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 3, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 4, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 5, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 6, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 7, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 8, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 9, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 10, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 11, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 12, score: 23, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 13, score: 21, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 14, score: 19, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 15, score: 18, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 16, score: 17, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 17, score: 17, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 18, score: 17, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 19, score: 17, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-				{rank: 20, score: 17, player: {getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			];
-			goToUserInLb();
-			return;*/
+
+			// this.playerRait = {
+			// 	rank: 14, score: 19, player: {uniqueID: 123}
+			// };
+			// this.lbInGame = [
+			// 	{rank: 1, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 2, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 3, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 4, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 5, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 6, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 7, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 8, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 9, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 10, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 11, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 12, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 13, score: 21, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 14, score: 19, player: {uniqueID: 123, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 15, score: 18, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 16, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 17, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 18, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 19, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// 	{rank: 20, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			// ].reverse();
+			// goToUserInLb();
+			// return;
 
 			try{
 				let that = this;
@@ -3246,7 +3312,7 @@ export default {
 				});
 		},
 		getLeaderBoardInGame(){
-			if(window.innerHeight > window.innerWidth){
+			if(window.innerHeight >= 600){
 				this.getPlayerLB(true);
 			}
 		},
@@ -3409,12 +3475,23 @@ export default {
 			if(this.doneWords.length === 0){
 				if(this.lvl >= 1 && this.lvl <=3){
 					this.openLevelHint(this.lvl);
+				}else if(this.lvl === 5){
+					this.getLvl5Hint();
 				}
 			}
 
 
 			this.getLBorBanner();
 
+		},
+		getLvl5Hint(){
+			if(notRussianGame || isLvlFiveHintDone) return;
+			setToStorage('isLvlFiveHintDone', 'true');
+			this.cloudHint = true;
+			this.cloudsPhrase = lvl5Phrase;
+			this.tipCount += 5;
+			setToStorage('tips', this.tipCount);
+			PLAYERSTATS.tips = this.tipCount;
 		},
 		getLBorBanner(){
 			if(lbWasShowed){
@@ -3670,8 +3747,9 @@ export default {
 
 
 		},
-		addTip(){
+		addTip(isAddTwo){
 			this.tipCount += 1;
+			if(isAddTwo) this.tipCount += 1;
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
 		},
@@ -3726,7 +3804,17 @@ export default {
 								}
 							},
 							onError: function (e){
-								that.toggleShowAdvError();
+								YSDK.adv.showRewardedVideo({
+									callbacks: {
+										onRewarded: () => {
+											setToStorage('isRewardedVideo', 'true');
+											that.addTip(true);
+										},
+										onError: () => {
+											that.toggleShowAdvError();
+										}
+									}
+								})
 								console.log('error adv')
 								console.log(e);
 							}
@@ -3735,21 +3823,6 @@ export default {
 
 
 
-					// YSDK.adv.showRewardedVideo({
-					// 	callbacks: {
-					// 		onRewarded: () => {
-					// 			// if(isPhone){
-					// 			// 	params({'showMobileRewarded': 1});
-					// 			// }else{
-					// 			// 	params({'showDesktopRewarded': 1});
-					// 			// }
-					// 			that.addTip();
-					// 		},
-					// 		onError: () => {
-					// 			that.toggleShowAdvError();
-					// 		}
-					// 	}
-					// })
 
 
 				}catch(e){
@@ -3782,9 +3855,9 @@ export default {
 			}
 			let rand = Math.floor(Math.random()*arr.length);
 			this.wordFromLetter = arr[rand];
-			if(Math.random() > 0.9){
-				this.wordSwing = this.wordFromLetter;
-			}
+			// if(Math.random() > 0.9){
+			// 	this.wordSwing = this.wordFromLetter;
+			// }
 
 			this.sendWord();
 
@@ -3930,9 +4003,6 @@ export default {
 						if(isWhyBadWord){
 							this.showWhyBadWord = true;
 							this.textWhyBadWord = isWhyBadWord;
-							params({isWhyBadWord: 1});
-						}else{
-							params({'badWord': this.wordFromLetter});
 						}
 					}catch(e){
 						console.log(e);

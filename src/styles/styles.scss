@@ -399,6 +399,8 @@ html,body
 
 
   letter-spacing: 2px;
+
+  cursor: pointer;
 }
 
 .levelsTop__allStars_withoutLB{
@@ -768,20 +770,14 @@ html,body
 }
 
 .words__letter-block_swing{
-  animation: swing 2s;
+  animation: swing2 1.5s;
 }
-@keyframes swing {
+@keyframes swing2 {
   0%{
     transform: rotate(0deg);
   }
-  33%{
-    transform: rotate(1deg);
-  }
-  66%{
-    transform: rotate(-1deg);
-  }
   100%{
-    transform: rotate(0deg);
+    transform: rotate(360deg);
   }
 
 }
@@ -1246,7 +1242,7 @@ html,body
 
 
   .words{
-    margin-top: 60px;
+    margin-top: 80px;
   }
   .words__letter{
     width: 40px;
@@ -1749,7 +1745,7 @@ b{
     justify-content: space-between;
   }
   .words{
-    padding: 0;
+    //padding: 0;
   }
 }
 
@@ -2301,7 +2297,7 @@ b{
 }
 @media (min-width: 1000px) and (min-height: 700px) {
   .game{
-    padding-bottom: 150px;
+    //padding-bottom: 150px;
   }
 }
 
@@ -2405,7 +2401,7 @@ b{
     transform: translateY(0);
   }
 }
-@media (orientation: portrait) and (min-height: 600px) {
+@media (min-height: 600px) {
   .bannerForVertical{
     display: block;
   }
@@ -2438,3 +2434,25 @@ b{
     font-size: 18px;
   }
 }
+
+//@media (min-height: 750px) {
+//  .bannerForVertical{
+//    height: 150px;
+//    flex: 0 0 150px;
+//  }
+//  .lbInGame__player{
+//    width: 85px;
+//    height: 85px;
+//    margin-top: 32.5px;
+//  }
+//  .lbInGame__score{
+//    font-size: 18px;
+//  }
+//  .lbInGame .leaderBoardInfo_my{
+//    width: 100px;
+//    height: 100px;
+//  }
+//  .lbInGame .leaderBoardInfo_my .lbInGame__score{
+//    font-size: 21px;
+//  }
+//}

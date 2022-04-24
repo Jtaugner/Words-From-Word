@@ -402,6 +402,7 @@ html, body {
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
   border-radius: 25px;
   letter-spacing: 2px;
+  cursor: pointer;
 }
 
 .levelsTop__allStars_withoutLB {
@@ -738,21 +739,15 @@ html, body {
 }
 
 .words__letter-block_swing {
-  animation: swing 2s;
+  animation: swing2 1.5s;
 }
 
-@keyframes swing {
+@keyframes swing2 {
   0% {
     transform: rotate(0deg);
   }
-  33% {
-    transform: rotate(1deg);
-  }
-  66% {
-    transform: rotate(-1deg);
-  }
   100% {
-    transform: rotate(0deg);
+    transform: rotate(360deg);
   }
 }
 .words__letters-block_done .words__letter {
@@ -1207,7 +1202,7 @@ html, body {
   }
 
   .words {
-    margin-top: 60px;
+    margin-top: 80px;
   }
 
   .words__letter {
@@ -1715,10 +1710,6 @@ b {
     left: 50%;
     margin-left: -600px;
     justify-content: space-between;
-  }
-
-  .words {
-    padding: 0;
   }
 }
 .changeDesign {
@@ -2249,11 +2240,6 @@ b {
     height: 600px;
   }
 }
-@media (min-width: 1000px) and (min-height: 700px) {
-  .game {
-    padding-bottom: 150px;
-  }
-}
 .whyBadWord {
   height: auto;
   font-size: 2rem;
@@ -2360,7 +2346,7 @@ b {
     transform: translateY(0);
   }
 }
-@media (orientation: portrait) and (min-height: 600px) {
+@media (min-height: 600px) {
   .bannerForVertical {
     display: block;
   }
