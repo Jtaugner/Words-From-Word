@@ -1786,9 +1786,6 @@ if(window.YaGames){
 				payloadLevel = Number(lvl) - 1;
 				if(payloadLevel < 0) payloadLevel = 0;
 				else if(payloadLevel > 2000) payloadLevel = 1999;
-				if(allDoneWords['милость']){
-					params({'payloadAlreadyGone': 1});
-				}
 			}
 		}catch(ignored){}
 

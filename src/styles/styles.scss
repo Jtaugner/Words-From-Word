@@ -2435,24 +2435,25 @@ b{
   }
 }
 
-//@media (min-height: 750px) {
-//  .bannerForVertical{
-//    height: 150px;
-//    flex: 0 0 150px;
-//  }
-//  .lbInGame__player{
-//    width: 85px;
-//    height: 85px;
-//    margin-top: 32.5px;
-//  }
-//  .lbInGame__score{
-//    font-size: 18px;
-//  }
-//  .lbInGame .leaderBoardInfo_my{
-//    width: 100px;
-//    height: 100px;
-//  }
-//  .lbInGame .leaderBoardInfo_my .lbInGame__score{
-//    font-size: 21px;
-//  }
-//}
+@media (min-height: 750px) and (orientation: landscape) {
+  .bannerForVertical{
+    height: 150px;
+    flex: 0 0 150px;
+  }
+  .lbInGame__player{
+    width: 75px;
+    height: 75px;
+    margin-top: 37.5px;
+  }
+  .lbInGame__score{
+    font-size: 18px;
+  }
+  .lbInGame .leaderBoardInfo_my{
+    width: 90px;
+    height: 90px;
+    margin-top: 27.5px;
+  }
+  .lbInGame .leaderBoardInfo_my .lbInGame__score{
+    font-size: 21px;
+  }
+}
