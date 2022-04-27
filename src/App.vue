@@ -1828,7 +1828,7 @@ if(window.YaGames){
 								advTime = true;
 								clearInterval(advInterval);
 								canShowAdv();
-							}, 130000);
+							}, 150000);
 
 
 							onCloseFunc();
@@ -2432,7 +2432,8 @@ let dictWordsToReplace = {
 	'тигренок': 'тигрёнок',
 	'тес': 'тёс',
 	'филер': 'филёр',
-	'флер': 'флёр'
+	'флер': 'флёр',
+	'смолье': 'смольё'
 }
 
 

@@ -19,7 +19,8 @@ const addNewWords = ["татарка", "кокпит", "булат", "люд", "
 "синапс", "сионистка", "криоген", "перчинка", "шмат", "кади", "морфин", "фавела", "актор", "мутизм",
 "огарь", "чокер", "литота", "кадавр", "сентаво", "девиант", "кержак", "годе", "лакец", "обиняк", "галеон", "мандала",
 "дреды", "гард", "дорама", "феромон", "ростер", "бзик", "сквош", "куверт", "токен", "берцы", "шутер", "фортель",
-"данник", "нитрон"];
+"данник", "нитрон", "картель", "кан", "шелом", "смолье", "цевка", "кокни", "картель", "кораль", "дробина",
+"лисенок"];
 words = [...words, ...addNewWords];
 //    let keys = Object.keys(allWordsFromWords);
 //    let allWords = {};
@@ -259,6 +260,28 @@ function isBadCompareLengths(arr){
 if(isBadCompareLengths(locationAllWords) || isBadCompareLengths(allWords)){
     return 'ER';
 }
+
+/*    let all3Words = {};
+    allWords.forEach(el => {
+        wordsFromWords[el].forEach((w)=>{
+            if(w.length === 3){
+                if(all3Words[w]){
+                    all3Words[w] = all3Words[w] + 1;
+                }else{
+                    all3Words[w] = 1;
+                }
+            }
+        })
+    })
+    let sort = [];
+    for (let w in all3Words) {
+        sort.push([w, all3Words[w]]);
+    }
+    sort.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    console.log(sort);
+    return;*/
 
 let createAll = true;
 if(createAll){
