@@ -2457,3 +2457,16 @@ b{
     font-size: 21px;
   }
 }
+@media (min-width: 1000px) {
+  .pageNumInfo{
+    width: 500px;
+  }
+}
+.pageNumInput{
+  width: 100%;
+  margin: 5px 0;
+}
+.pageNumVal{
+  text-align: center;
+  font-size: 2.5rem;
+}

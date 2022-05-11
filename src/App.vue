@@ -194,17 +194,35 @@
 
 		<div class="rules-blackout" v-if="showInfoAboutPageNumber" @click="toggleShowInfoAboutPageNumber"></div>
 
-		<div class="rules" v-if="showInfoAboutPageNumber">
+		<div class="rules pageNumInfo" v-if="showInfoAboutPageNumber">
 			<cross-vue @click.native="toggleShowInfoAboutPageNumber()" class="shop__cross"></cross-vue>
 			<h2 class="rules__menu">
-				{{notRussian ? 'It is page number' : 'Это - номер страницы'}}
+				{{notRussian ? 'Page number' : 'Номер страницы'}}
 			</h2>
-			<div class="levelClosedText">
-				{{notRussian ?
-				'The number in the circle is the page number. There are a lot of pages and levels in the game. Have a good game!' :
-				'Число в кружочке - номер страницы. В игре их очень много, как и уровней. Удачной игры!'
-				}}
-			</div>
+			<template v-if="gameLastLocation > 1">
+				<div class="pageNumVal">{{pageNumVal}}</div>
+				<input
+					class="pageNumInput"
+					v-model="pageNumVal"
+					type="range"
+					min="1"
+					v-bind:max="gameLastLocation"
+					step="1"
+					@change="changePageNum"
+				/>
+			</template>
+			<template v-else>
+				Позже вы сможете перемещаться по страницам, используя это окно
+			</template>
+
+
+
+<!--			<div class="levelClosedText">-->
+<!--				{{notRussian ?-->
+<!--				'The number in the circle is the page number. There are a lot of pages and levels in the game. Have a good game!' :-->
+<!--				'Число в кружочке - номер страницы. В игре их очень много, как и уровней. Удачной игры!'-->
+<!--				}}-->
+<!--			</div>-->
 
 		</div>
 
@@ -218,8 +236,8 @@
 			</h2>
 			<div class="levelClosedText">
 				{{notRussian ?
-				'We advise to play the game in a horizontal position if you have an opportunity. Thank you and have a good game!' :
-				'Мы советуем играть в игру в горизонтальном положении, если у вас есть такая возможность. Спасибо и хорошей Вам игры!'
+				'You can play in vertical and horizontal orientation. Have a good game!' :
+				'В игру можно играть и в вертикальном, и в горизонтальном положении. Хорошей Вам игры!'
 				}}
 			</div>
 
@@ -273,7 +291,7 @@
 
 				<template v-else>
 					<div class="settings__text authText" @click="getAuth">
-						{{notRussian ? 'Log in to your Yandex account to see the rating' : 'Чтобы увидеть рейтинг, пожалуйста, войдите в аккаунт Яндекс'}}
+						{{notRussian ? 'Rating is loading' : 'Рейтинг загружается, подождите...'}}
 
 					</div>
 				</template>
@@ -517,7 +535,8 @@
 					</div>
 					<div class="bannerContainer" v-show="!lbInGame">
 						<div id="yandex_rtb_R-A-518275-38"></div>
-						<div id="yandex_rtb_R-A-518275-39"></div>
+<!--						<div id="yandex_rtb_R-A-518275-39"></div>-->
+						<div id="yandex_rtb_R-A-518275-40"></div>
 					</div>
 
 
@@ -834,9 +853,7 @@
 				</template>
 			</template>
 			<template v-else-if="wasUpdate">
-					Новая локация "Фрукты, ягоды и овощи" ждёт вас! Удачной игры!
-<!--				<div class="rules__goBg" @click="goChangeBgFromUpdate()">Сменить фон</div>-->
-				<div class="rules__goBg" @click="goToGetLocations()">К локациям</div>
+					Мы добавили возможность быстро перемещаться по страницам игры. Для этого нажмите на номер страницы в меню и передвигайте ползунок. Хорошей Вам игры!
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -1333,7 +1350,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-20";
+const lastVersion = "ver-21";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1463,8 +1480,8 @@ let allStars = [];
 let isRules = false;
 let allLocations = Math.floor(allWords.length / 21);
 let lastLevel = 0;
-let wordsForReplace = ['ассиметрия', 'гитлеровец', 'барашкин', 'подмывание', 'карпенко', 'прибалтика'];
-let wordsToReplace = ['асимметрия', 'горицвет', 'банкирша', 'домывание', 'анкерок', 'парилка'];
+let wordsForReplace = ['ассиметрия', 'гитлеровец', 'барашкин', 'подмывание', 'карпенко', 'прибалтика', 'квашнин'];
+let wordsToReplace = ['асимметрия', 'горицвет', 'банкирша', 'домывание', 'анкерок', 'парилка', 'шинка'];
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
 	for(let i = 0; i < keys.length; i++){
@@ -1639,21 +1656,23 @@ function setState(isNow) {
 
 	}
 }
-function setStats(isNow) {
+function setStats() {
+	console.log('setStats');
 	const newData = JSON.stringify(PLAYERSTATS);
 	if(recentStats === newData) return;
+	console.log('setStats - done');
 	recentStats = newData;
 	if(playerGame){
 		if(notRussianGame){
 			const progress = {tipsEN: PLAYERSTATS.tips};
 			if(russianTips) progress.tips = russianTips;
-			playerGame.setStats(progress, isNow).then((ignored) => {}).catch((ignored)=>{});
+			playerGame.setStats(progress, false).then((ignored) => {}).catch((ignored)=>{});
 		}else{
 			const progress = {tips: PLAYERSTATS.tips};
 			if(englishTips) progress.tipsEN = englishTips;
 
-			playerGame.setStats(progress, isNow).then((ignored) => {}).catch(()=>{
-				playerGame.setStats(progress, isNow).then((ignored) => {})
+			playerGame.setStats(progress, false).then((ignored) => {}).catch(()=>{
+				playerGame.setStats(progress, true).then((ignored) => {})
 			});
 		}
 
@@ -1785,7 +1804,7 @@ if(window.YaGames){
 			if(lvl){
 				payloadLevel = Number(lvl) - 1;
 				if(payloadLevel < 0) payloadLevel = 0;
-				else if(payloadLevel > 2000) payloadLevel = 1999;
+				else if(payloadLevel > 2500) payloadLevel = 2500;
 			}
 		}catch(ignored){}
 
@@ -1828,7 +1847,7 @@ if(window.YaGames){
 								advTime = true;
 								clearInterval(advInterval);
 								canShowAdv();
-							}, 150000);
+							}, 180000);
 
 
 							onCloseFunc();
@@ -2069,6 +2088,8 @@ function initPlayer(ysdk) {
 		});
 
 		playerGame.getStats(['tips', 'tipsEN'], false).then((dataObject) => {
+			console.log('StATS');
+			console.log(dataObject);
 			if(notRussianGame){
 				if(dataObject.tipsEN){
 					tips = dataObject.tipsEN;
@@ -2418,6 +2439,7 @@ function getEngDesc(word){
 
 let dictWordsToReplace = {
 	'теша': 'тёша',
+	'приемка': 'приёмка',
 	'еж': 'ёж',
 	'осел': 'осёл',
 	'орел': 'орёл',
@@ -2557,12 +2579,12 @@ function getVerticalBanner(){
 
 			setTimeout(()=>{
 
-				if(window.innerWidth > window.innerHeight && window.innerHeight >= 700){
+				if(window.innerWidth > window.innerHeight && window.innerHeight >= 750){
 					//Десктоп
 					window.yaContextCb.push(()=>{
 						Ya.Context.AdvManager.render({
-							renderTo: 'yandex_rtb_R-A-518275-39',
-							blockId: 'R-A-518275-39'
+							renderTo: 'yandex_rtb_R-A-518275-40',
+							blockId: 'R-A-518275-40'
 						})
 					})
 				}else{
@@ -2788,7 +2810,8 @@ export default {
 			textWhyBadWord: '',
 			payloadTutorial: false,
 			lbInGame: false,
-			showInfoAboutStars: false
+			showInfoAboutStars: false,
+			pageNumVal: 0
 		}
 	},
 	computed:{
@@ -2827,6 +2850,9 @@ export default {
 			}
 			if(addTime < 10)  addTime = '0' + addTime;
 			return firstTime + ':' + addTime;
+		},
+		gameLastLocation(){
+			return Math.ceil((this.gameLastLevel+1) / 21);
 		}
 	},
 	methods:{
@@ -2874,7 +2900,7 @@ export default {
 		toggleShowInfoAboutPortrait(){
 			if(!this.showInfoAboutPortrait){
 				if(portraitAdviceAmount){
-					if(Number(portraitAdviceAmount) > 4) return;
+					if(Number(portraitAdviceAmount) > 1) return;
 					portraitAdviceAmount++;
 					setToStorage('portraitAdviceAmount', portraitAdviceAmount);
 				}else{
@@ -2922,9 +2948,20 @@ export default {
 
 			this.showInfoAboutPageNumber = !this.showInfoAboutPageNumber;
 
+			if(this.showInfoAboutPageNumber){
+				this.pageNumVal = this.location+1;
+			}
+
 			// if(this.showInfoAboutPageNumber){
 			// 	params({'pageNumClick': 1});
 			// }
+		},
+		changePageNum(){
+			let num = Number(this.pageNumVal);
+			if(num){
+				this.location = num - 1;
+			}
+
 		},
 		getLocationName(loc){
 			return translatedLocationsNames[loc];
@@ -3766,22 +3803,38 @@ export default {
 						advNotShow = false;
 					}, 2500);
 
+					function getRewardedVideo(){
+						YSDK.adv.showRewardedVideo({
+							callbacks: {
+								onRewarded: () => {
+									params({'isRewardedVideo': 1});
+									that.addTip(true);
+								},
+								onError: () => {
+									that.toggleShowAdvError();
+								}
+							}
+						})
+					}
+
 					YSDK.adv.showFullscreenAdv({
 						callbacks: {
 							onClose: function(wasShow) {
 								console.log('close adv reward');
+								advTime = false;
+								startAdvTime = true;
+
+								clearTimeout(advTimeout);
+								clearInterval(advInterval);
 								if(wasShow){
-									advTime = false;
-									startAdvTime = true;
-
-									clearTimeout(advTimeout);
-									clearInterval(advInterval);
-
 									timeToShowAdv = 65;
 									startAdvInterval();
 									advTimeout = setTimeout(()=>{
 										advTime = true;
 									}, 65000);
+								}else{
+									getRewardedVideo();
+									return;
 								}
 								if(advNotShow){
 									that.showAdvTip = true;
@@ -3796,23 +3849,11 @@ export default {
 									}
 
 								}
-								if(wasShow){
-									params({'rewardedAdv': 1});
-									that.addTip();
-								}
+								params({'rewardedAdv': 1});
+								that.addTip();
 							},
 							onError: function (e){
-								YSDK.adv.showRewardedVideo({
-									callbacks: {
-										onRewarded: () => {
-											setToStorage('isRewardedVideo', 'true');
-											that.addTip(true);
-										},
-										onError: () => {
-											that.toggleShowAdvError();
-										}
-									}
-								})
+								getRewardedVideo();
 								console.log('error adv')
 								console.log(e);
 							}
@@ -3876,7 +3917,7 @@ export default {
 			}
 		},
 		getVerticalBanner(){
-			if(isShowBanner && (this.locationGame || this.lvl > 1)){
+			if(isShowBanner && (this.locationGame || this.lvl > 3)){
 				this.lbInGame = false;
 				getVerticalBanner();
 			}
@@ -4053,6 +4094,12 @@ export default {
 					setLastLevel();
 					if(stars === 1){
 						params({'gotLevel': this.lvl});
+
+						let thisLvl = this.lvl+1;
+						if(thisLvl === 2 || thisLvl === 10 || thisLvl === 5 ||
+							thisLvl === 20 || thisLvl === 50 || thisLvl === 100){
+							reachGoal('level' + thisLvl);
+						}
 					}
 					this.gameLastLevel = lastLevel;
 					this.stars.splice(this.lvl, 1, stars);
