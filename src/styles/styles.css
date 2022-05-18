@@ -1728,6 +1728,10 @@ b {
   border-radius: 10px;
 }
 
+.chosenBg-4 {
+  background-image: url(../assets/settings/bg-4.png);
+}
+
 .chosenBg-3 {
   background-image: url(../assets/settings/bg-3.png);
 }
@@ -2423,6 +2427,31 @@ b {
 .pageNumVal {
   text-align: center;
   font-size: 2.5rem;
+}
+
+.payloadInfoText {
+  font-size: 1.8rem;
+}
+
+.payloadInfoButtons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.payloadInfoButtons .rules__goBg {
+  font-size: 2.1rem;
+  width: 45%;
+}
+
+.payloadInfoBlackout {
+  cursor: auto;
+}
+
+@media (orientation: portrait) {
+  .menu_verticalPayload {
+    justify-content: center;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */

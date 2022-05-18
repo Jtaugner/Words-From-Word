@@ -380,11 +380,18 @@
 		<div class="game" v-show="content">
 			<div class="blur"></div>
 
-			<header class="menu" :class="[isTutorial ? 'tutorialMenu' : '']">
-				<button class="menu__button-back menuItem" @click="backMenu">
+			<header class="menu" :class="[isTutorial ? 'tutorialMenu' : '', verticalPayload ? 'menu_verticalPayload': '']">
+				<button
+					class="menu__button-back menuItem"
+					@click="backMenu"
+					v-show="!verticalPayload"
+				>
 					<svg class="svgIcon" width="21" height="21" viewBox="0 0 21 21" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.6255 0.700921C9.6294 0.704508 9.6354 0.704507 9.6393 0.700921L10.0169 0.353633C10.2342 0.153729 10.5685 0.153729 10.7858 0.353633L19.786 8.63225C20.2443 9.05379 20.2443 9.77702 19.786 10.1986C19.5266 10.4372 19.1783 10.5238 18.8543 10.4584V19C18.8543 20.1046 17.9589 21 16.8543 21H13V15.5C13 14.1193 11.8807 13 10.5 13C9.11927 13 7.99999 14.1193 7.99999 15.5V21H3.80269C2.69812 21 1.80269 20.1046 1.80269 19V10.5808C1.47324 10.6538 1.11605 10.5686 0.851402 10.3251C0.39312 9.9036 0.39312 9.18037 0.851402 8.75883L9.46756 0.833511L9.4759 0.82223L9.4779 0.824005L9.61171 0.700921C9.61561 0.697335 9.6216 0.697335 9.6255 0.700921Z"/></svg>
 				</button>
-				<div class="menu__words-amount">
+				<div
+					class="menu__words-amount"
+					v-show="!verticalPayload"
+				>
 					{{doneWords.length}}/{{nowWords.length}}
 					<div class="menu__hint">{{notRussian ? 'Guessed' : 'Отгадано'}}</div>
 				</div>
@@ -406,7 +413,11 @@
 					</div>
 					<div class="menu__hint">{{moreGuessedWords}}</div>
 				</div>
-				<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
+				<div
+					class="menu__tip menuItem"
+					@click="getTip()"
+					:class="[selectTip ? 'tutorialSelected' : '']"
+				>
 					<svg class="svgIcon" width="15" height="23" viewBox="0 0 15 23" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M8.80952 22.0417C8.70168 22.5783 8.16247 23 7.5 23C6.83754 23 6.29832 22.5783 6.19048 22.0417H8.80952Z" /><path d="M9.66096 20.2853L5.24123 20.2725C5.22789 20.2736 5.21455 20.2747 5.18787 20.2769C5.07895 20.2589 4.97789 20.1726 4.96802 20.0518C4.95815 19.931 5.03051 19.8304 5.14838 19.7936C5.16172 19.7925 5.17507 19.7914 5.20175 19.7892L9.60813 19.8031C9.74154 19.7921 9.85703 19.8906 9.868 20.0249C9.87897 20.1591 9.79436 20.2742 9.66096 20.2853Z" /><path d="M5.15316 20.9796C5.16639 20.9785 5.17962 20.9774 5.20607 20.9753L9.57506 20.9922C9.70732 20.9813 9.82191 21.0799 9.83288 21.2142C9.84384 21.3484 9.74681 21.4645 9.61454 21.4755L5.23233 21.4596C5.2191 21.4607 5.20587 21.4618 5.17942 21.464C5.07141 21.4459 4.97115 21.3596 4.96128 21.2388C4.95141 21.118 5.03522 21.0029 5.15316 20.9796Z" /><path d="M5.27194 18.2083H9.72806C10.0099 18.2083 10.2381 18.4227 10.2381 18.6875C10.2381 18.9523 10.0099 19.1667 9.72806 19.1667H5.27194C4.99008 19.1667 4.76191 18.9523 4.76191 18.6875C4.76191 18.4227 4.99008 18.2083 5.27194 18.2083Z" /><path d="M7.4599 0C7.4733 0 7.4733 0 7.48669 0C7.50008 0 7.50008 0 7.51347 0C11.6518 0 15 3.40946 15 7.62354C15 10.5829 13.192 12.8332 11.1295 14.7425C10.3126 15.5062 9.83041 16.5972 9.83041 17.7292H7.52687C7.52687 17.7292 7.51347 17.7292 7.50008 17.7292C7.48669 17.7292 7.47329 17.7292 7.47329 17.7292H5.16975C5.16975 16.5836 4.68761 15.4926 3.87066 14.7425C1.80818 12.8332 0.000160217 10.5966 0.000160217 7.62354C-0.0266256 3.42309 3.32156 0 7.4599 0Z" /></svg>
 
 					<div class="advert" v-if="tipCount === 0 && advTimer <= 0"></div>
@@ -422,7 +433,9 @@
 				</div>
 				<div class="menu__button-next-level menuItem"
 					 :class="[!testShowNextLevel() ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
-					 @click="nextLevel()">
+					 @click="nextLevel()"
+					 v-show="!verticalPayload"
+				>
 					<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#C21332" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
 
 
@@ -605,6 +618,18 @@
 			</div>
 
 
+			<div class="rules-blackout payloadInfoBlackout" v-show="isPayloadInfo"></div>
+			<div class="rules" v-show="isPayloadInfo">
+				<h2 class="rules__menu">
+					Уведомление
+				</h2>
+				<div class="payloadInfoText">Поздравляем! Вы получили свою первую звезду!
+					Так как Вы попали в игру из рекламной акции, у Вас есть выбор: продолжить игру с этого уровня или начать с самого сначала. </div>
+				<div class="payloadInfoButtons">
+					<div class="rules__goBg" @click="startOver()">Сначала</div>
+					<div class="rules__goBg" @click="continueThere()">Продолжить</div>
+				</div>
+			</div>
 
 
 			<div class="rules-blackout main-blackout" v-if="openNewBg" @click="toggleOpenNewBg()"></div>
@@ -619,8 +644,8 @@
 
 			</div>
 
-			<div class="rules-blackout" v-show="showBigWordWas" @click="toggleShowBigWordWas"></div>
 
+			<div class="rules-blackout" v-show="showBigWordWas" @click="toggleShowBigWordWas"></div>
 			<div class="rules showBigWordWas" v-show="showBigWordWas">
 				<cross-vue @click.native="toggleShowBigWordWas()" class="shop__cross"></cross-vue>
 				<h2 class="rules__menu">
@@ -861,7 +886,8 @@
 				</template>
 			</template>
 			<template v-else-if="wasUpdate">
-					Мы добавили возможность быстро перемещаться по страницам игры. Для этого нажмите на номер страницы в меню и передвигайте ползунок. Хорошей Вам игры!
+				Представляем вам новый фон, на котором предстанет водная пещера!
+				<div class="rules__goBg" @click="goChangeBgFromUpdate()">Попробовать</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -937,6 +963,7 @@ import './styles/stylesBg3.scss';
 import './styles/stylesHalloween.scss';
 import './styles/stylesNewYear.scss';
 import './styles/stylesSpring.scss';
+import './styles/stylesCave.scss';
 
 import './styles/stylesLocations.scss';
 import {allWordsRU} from './russianWords';
@@ -1358,7 +1385,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-21";
+const lastVersion = "ver-22";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1764,6 +1791,8 @@ function setLoc() {
 let ruLangs = ['ru', 'be', 'kk', 'uk', 'uz', 'kz'];
 
 let payloadLevel = false;
+let payloadVertical = false;
+let playerPlayedAlready = false;
 
 let isPhone = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 let advTimeout = 0;
@@ -1810,9 +1839,18 @@ if(window.YaGames){
 			console.log('PAYLOAD');
 			console.log(lvl);
 			if(lvl){
+				let str = String(lvl);
+				if(str.indexOf('ver') === 0){
+					lvl = str.slice(3);
+					payloadVertical = true;
+				}
 				payloadLevel = Number(lvl) - 1;
+				if(!Number.isInteger(payloadLevel)) payloadLevel = 0;
 				if(payloadLevel < 0) payloadLevel = 0;
 				else if(payloadLevel > 2500) payloadLevel = 2500;
+				if(lastLevel !== 0){
+					playerPlayedAlready = true;
+				}
 			}
 		}catch(ignored){}
 
@@ -1940,10 +1978,13 @@ function initPlayer(ysdk) {
 			params({'auth': 1});
 			if(_player._personalInfo.mode === "lite" || _player.mode === "lite"){
 				params({'authLite': 1});
+				console.log('Lite auth');
 			}
 		}catch(e){
 			console.log(e);
 		}
+		console.log('PLAYER');
+		console.log(playerGame);
 
 		let someTrue = false;
 		let change = true;
@@ -2463,7 +2504,8 @@ let dictWordsToReplace = {
 	'тес': 'тёс',
 	'филер': 'филёр',
 	'флер': 'флёр',
-	'смолье': 'смольё'
+	'смолье': 'смольё',
+	'налет': 'налёт'
 }
 
 
@@ -2826,7 +2868,9 @@ export default {
 			payloadTutorial: false,
 			lbInGame: false,
 			showInfoAboutStars: false,
-			pageNumVal: 0
+			pageNumVal: 0,
+			verticalPayload: false,
+			isPayloadInfo: false
 		}
 	},
 	computed:{
@@ -3103,12 +3147,12 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 4) this.chosenBg = -3;
+			if(this.chosenBg === 4) this.chosenBg = -4;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -4) this.chosenBg = 3;
+			if(this.chosenBg === -5) this.chosenBg = 3;
 			this.testBg();
 		},
 		testBg(){
@@ -3123,12 +3167,12 @@ export default {
 		},
 		goChangeBgFromUpdate(){
 			this.goToChangeBg();
-			this.chosenBg = -3;
+			this.chosenBg = -4;
 			this.chosenBgRight = this.chosenBg;
 			setToStorage('chosenBackground', this.chosenBgRight);
+			params({'changeBgCave': 1});
 		},
 		goToChangeBg(){
-			params({'goChangeBg': 1});
 			this.backMenu();
 			this.isSettings = true;
 			this.openNewBg = false;
@@ -3416,6 +3460,10 @@ export default {
 			loc = 0;
 			console.log(allDoneWords);
 			setLoc();
+
+			if(lastLevel !== 0){
+				playerPlayedAlready = true;
+			}
 			this.isLeaderBoard = false;
 			this.stars = allStars;
 			this.location = loc;
@@ -3430,7 +3478,9 @@ export default {
 				this.startTutorial();
 			}else{
 				if(window.innerHeight > window.innerWidth){
-					this.toggleShowInfoAboutPortrait();
+					if(!payloadVertical){
+						this.toggleShowInfoAboutPortrait();
+					}
 				}
 				this.endTutorial();
 			}
@@ -3459,7 +3509,13 @@ export default {
 				if(lastLevel < lvl) lastLevel = lvl;
 				params({'payload': 1});
 				this.endTutorial();
-				this.startPayloadTutorial();
+				if(!playerPlayedAlready){
+					this.startPayloadTutorial();
+					if(payloadVertical){
+						this.verticalPayload = true;
+					}
+					this.tipCount = 30;
+				}
 				isShowTutorial = false;
 				this.location = Math.floor(lvl/21);
 				this.rules = false;
@@ -3544,6 +3600,7 @@ export default {
 			PLAYERSTATS.tips = this.tipCount;
 		},
 		getLBorBanner(){
+			if(this.verticalPayload) return;
 			if(lbWasShowed){
 				this.getVerticalBanner();
 			}else{
@@ -3927,11 +3984,13 @@ export default {
 			}
 		},
 		tryShowAdv(){
+			if(this.verticalPayload) return;
 			if(!this.isTutorial && this.lvl > 0 && this.advTimer <= 0){
 				globalTryShowAdv(this.startRewardedTimer);
 			}
 		},
 		getVerticalBanner(){
+			if(this.verticalPayload) return;
 			if(isShowBanner && (this.locationGame || this.lvl > 3)){
 				this.lbInGame = false;
 				getVerticalBanner();
@@ -4077,6 +4136,28 @@ export default {
 			}
 
 		},
+		startOver(){
+			this.verticalPayload = false;
+			allDoneWords = {};
+			PLAYESTATE = {allDoneWords: {}};
+			tips = 10;
+			PLAYERSTATS = {'tips': 10};
+			showNextPayloadTutorial = false;
+			lastLevel = 0;
+			this.updateAll();
+			saveAllData();
+			this.getLevel(0, true);
+			this.togglePayloadInfo();
+			params({'vertPayloadStartOver': 1});
+		},
+		continueThere(){
+			this.verticalPayload = false;
+			this.togglePayloadInfo();
+			params({'vertPayloadContinue': 1});
+		},
+		togglePayloadInfo(){
+			this.isPayloadInfo = !this.isPayloadInfo;
+		},
 		testStars(){
 			let stars = testStar(this.doneWords.length, this.nowWords.length);
 			if(
@@ -4125,6 +4206,8 @@ export default {
 					// }
 				}
 
+
+
 				if(this.isSounds){
 					starVolume.play();
 				}
@@ -4137,6 +4220,11 @@ export default {
 					} else{
 						this.tipCount++;
 					}
+
+
+					/*if(this.verticalPayload){
+						this.togglePayloadInfo();
+					}*/
 
 					setToStorage('tips', this.tipCount);
 					PLAYERSTATS.tips = this.tipCount;

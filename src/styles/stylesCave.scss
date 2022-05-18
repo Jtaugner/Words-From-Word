@@ -1,0 +1,98 @@
+
+/*Фон 3*/
+
+#app.chosenAppBg-4, .chosenAppBg-4 .game, .chosenAppBg-4 .levels{
+  background-image: url(../assets/bgCave/bgCave-big.png);
+}
+
+.chosenAppBg-4{
+  .svgIcon{
+    fill: #0D2A4C;
+  }
+  .levelsTop__allStars{
+    color: #0D2A4C;
+  }
+  .newElement{
+    background-color: #0087C0;
+  }
+  .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
+    background-color: #0087C0;
+    color: white;
+  }
+  .menu__tip_count, .rules__goBg{
+    background-color: #0087C0;
+  }
+  .shop, .rules{
+    border-color: #0D2A4C;
+  }
+  .shop .rules__menu, .settings__text{
+    color: #0D2A4C;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #0087C0;
+  }
+  .settings{
+    border-color: #0D2A4C;
+  }
+  .checkbox:checked + label:after {
+    background-color: #002f42;
+  }
+  .checkbox:checked + label:before {
+    background: #0087C0;
+  }
+
+  .newWord .words__letter{
+    background-color: #4eb6d1;
+  }
+  .animWord .words__letter{
+    animation: 1s showNewWord7 forwards;
+  }
+  //Смена названия
+  @keyframes  showNewWord7{
+    0%{background-color: rgba(255, 255, 255, 0.85);}
+    100%{background-color: #4eb6d1;}
+  }
+
+  //Магазин
+  .shop__cart__name{
+    color:#0D2A4C;
+    border-color: #0D2A4C;
+  }
+  .shop__cart__item{
+    border-color: #0D2A4C;
+  }
+
+  .wordWas .words__letter{
+    background-color: #173f6f;
+  }
+
+  .menu__hint{
+    background-color: rgba(0, 135, 192, 0.9);
+  }
+  .skipTutorial{
+    background-color: #0087C0;
+  }
+  .cloudHint{
+    color: #0087C0;
+  }
+  .cloudHint__mainText{
+    color: #0087C0;
+  }
+  .leaderBoardInfo__player{
+    border-color: #0087C0;
+  }
+
+  @media (orientation: portrait){
+    .shop__cart__buy-button{
+      background-color: #0D2A4C;
+    }
+  }
+  .action-block__letter{
+    color: #133045;
+  }
+  @media (max-width: 1400px) {
+    .blur{
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
