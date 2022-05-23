@@ -1515,8 +1515,8 @@ let allStars = [];
 let isRules = false;
 let allLocations = Math.floor(allWords.length / 21);
 let lastLevel = 0;
-let wordsForReplace = ['ассиметрия', 'гитлеровец', 'барашкин', 'подмывание', 'карпенко', 'прибалтика', 'квашнин'];
-let wordsToReplace = ['асимметрия', 'горицвет', 'банкирша', 'домывание', 'анкерок', 'парилка', 'шинка'];
+let wordsForReplace = ['ассиметрия', 'гитлеровец', 'барашкин', 'подмывание', 'карпенко', 'прибалтика', 'квашнин', 'минотавр', 'франциско', 'барселона', 'синестрол', 'головчинер', 'гончаренко', 'скрижапель'];
+let wordsToReplace = ['асимметрия', 'горицвет', 'банкирша', 'домывание', 'анкерок', 'парилка', 'шинка', 'норматив', 'фонарик', 'балансер', 'солитер', 'невролог', 'кочегар', 'скрижаль'];
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
 	for(let i = 0; i < keys.length; i++){
@@ -1843,6 +1843,7 @@ if(window.YaGames){
 				if(str.indexOf('ver') === 0){
 					lvl = str.slice(3);
 					payloadVertical = true;
+					params({'payloadVertical': 1});
 				}
 				payloadLevel = Number(lvl) - 1;
 				if(!Number.isInteger(payloadLevel)) payloadLevel = 0;
@@ -2048,6 +2049,9 @@ function initPlayer(ysdk) {
 
 				let localStars = getAllStars(fixDoneWords(allDoneWords));
 				let serverStars = getAllStars(newData);
+				if(localStars > serverStars){
+					params({'localMoreServerStars': 1});
+				}
 				if(dataObject.time && lastProgressUpdate && lastProgressUpdate > dataObject.time && localStars > serverStars){
 					console.log('CHANGE DATA TO LOCAL');
 					params({'changeDataToLocal': 1});
@@ -2505,7 +2509,9 @@ let dictWordsToReplace = {
 	'филер': 'филёр',
 	'флер': 'флёр',
 	'смолье': 'смольё',
-	'налет': 'налёт'
+	'налет': 'налёт',
+	'ворье': 'ворьё',
+	'стежка': 'стёжка'
 }
 
 
@@ -3017,6 +3023,7 @@ export default {
 		},
 		changePageNum(){
 			let num = Number(this.pageNumVal);
+			params({'changePageNum': 1});
 			if(num){
 				this.location = num - 1;
 			}
@@ -3530,11 +3537,12 @@ export default {
 			}
 
 
-			// if(window.innerWidth > window.innerHeight){
-			// 	params({'orientation': 'landscape'});
-			// }else{
-			// 	params({'orientation': 'portrait'});
-			// }
+
+			if(window.innerWidth > window.innerHeight){
+				params({'orientation': 'landscape'});
+			}else{
+				params({'orientation': 'portrait'});
+			}
 
 
 			if(lvl !== 0 && lvl % 100 === 0 && notRussianGame){
@@ -3845,6 +3853,7 @@ export default {
 				this.levelsAnim =  true;
 				this.showGameLocation = false;
 				setTimeout(()=>{
+					this.levels =  true;
 					this.content = false;
 					console.log('Вызов баннера');
 					getBanner();
@@ -4244,7 +4253,7 @@ export default {
 			}catch(ignored){};
 		},
 		eraseWord(){
-			params({'erase': 1});
+			// params({'erase': 1});
 			this.wordFromLetter = '';
 			this.selectedLetters = [];
 		}

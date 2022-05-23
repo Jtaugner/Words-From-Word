@@ -2440,24 +2440,28 @@ b{
 
 @media (min-height: 750px) and (orientation: landscape) {
   .bannerForVertical{
-    height: 150px;
-    flex: 0 0 150px;
+    height: 120px;
+    flex: 0 0 120px;
+  }
+  .bannerContainer{
+    max-width: 600px;
+    margin: 0 auto;
   }
   .lbInGame__player{
-    width: 75px;
-    height: 75px;
-    margin-top: 37.5px;
+    width: 70px;
+    height: 70px;
+    margin-top: 25px;
   }
   .lbInGame__score{
-    font-size: 18px;
+    font-size: 17px;
   }
   .lbInGame .leaderBoardInfo_my{
-    width: 90px;
-    height: 90px;
-    margin-top: 27.5px;
+    width: 80px;
+    height: 80px;
+    margin-top: 20px;
   }
   .lbInGame .leaderBoardInfo_my .lbInGame__score{
-    font-size: 21px;
+    font-size: 19px;
   }
 }
 @media (min-width: 1000px) {
