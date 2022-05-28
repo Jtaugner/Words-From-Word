@@ -1569,6 +1569,7 @@ if(allDoneWords){
 	allDoneWords = fixDoneWords(JSON.parse(allDoneWords));
 	console.log('dsd', allDoneWords);
 	tips = Number(tips);
+	if(!Number.isInteger(tips)) tips = 15;
 	sounds = sounds === 'true';
 	isLastSounds = isLastSounds === 'true';
 	setLoc();
@@ -2164,6 +2165,11 @@ function initPlayer(ysdk) {
 
 					setToStorage('tips', tips);
 				}
+			}else{
+				tips = 15;
+				PLAYERSTATS = {'tips': tips};
+				recentStats = JSON.stringify(PLAYERSTATS);
+				if(dataObject.tipsEN) englishTips = dataObject.tipsEN;
 			}
 
 			if(someTrue){
