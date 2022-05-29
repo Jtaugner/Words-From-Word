@@ -1,0 +1,47 @@
+/*Волшебство сказок*/
+.gameLocationWrapper-birds::-webkit-scrollbar-thumb {
+  background-color: #8F63C7;
+}
+.gameLocationWrapper-birds::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+.birdsLocation .popUp__locationPicture{
+  background-image: url(../assets/locations/birds/birds.png);
+}
+.birdsLocation .popUp__locationName{
+  color: #8F63C7;
+}
+.gameLocation-birds{
+  .svgIcon{
+    fill: #8F63C7;
+  }
+  background: url(../assets/locations/birds/map.png) center center no-repeat;
+  background-size: cover;
+  .levelsTop__allStars{
+    color: #8F63C7;
+  }
+  .menu-star, .newElement{
+    background-color: #8F63C7;
+  }
+}
+.gameLocation-birds::-webkit-scrollbar-thumb {
+  //border-radius: 0;
+  background-color: #8F63C7;
+}
+@media (min-width: 1000px) {
+  .gameLocation-birds .location__lastLevel{
+    box-shadow: 0 0 25px 10px #8F63C7;
+  }
+}
+
+.gameLocation-birds .location__upLevel{
+  top: 25%;
+}
+
+@media (orientation: portrait) {
+  .gameLocation-birds{
+    background: url(../assets/locations/birds/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}

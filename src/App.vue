@@ -884,10 +884,13 @@
 					Поздравляем с прохождением локации "Фрукты, ягоды и овощи"!
 					Спасибо, что играете в нашу игру, дополнительные 30 подсказок уже на Вашем счету!
 				</template>
+				<template v-else-if="gameLocation === 'birds'">
+					Локация "Птицы" пройдена! Вы - молодец! 30 подсказок в подарок уже на Вашем счету!
+				</template>
 			</template>
 			<template v-else-if="wasUpdate">
-				Представляем вам новый фон, на котором предстанет водная пещера!
-				<div class="rules__goBg" @click="goChangeBgFromUpdate()">Попробовать</div>
+				Новая локация "Птицы" ждёт вас! Попробуйте скорее!
+				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -1385,7 +1388,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-22";
+const lastVersion = "ver-23";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2086,6 +2089,8 @@ function initPlayer(ysdk) {
 			try{
 				let llsmz = getFromStorage('llsmz');
 				const ss = new URLSearchParams(window.location.search);
+				console.log('Progress');
+				console.log(ss);
 				if(!llsmz){
 
 					let lvl = Number(ss.get('llsmz'));
@@ -2517,7 +2522,10 @@ let dictWordsToReplace = {
 	'смолье': 'смольё',
 	'налет': 'налёт',
 	'ворье': 'ворьё',
-	'стежка': 'стёжка'
+	'стежка': 'стёжка',
+	'копер': 'копёр',
+	'cчес': 'счёс',
+	'расчес': 'расчёс'
 }
 
 
@@ -2612,7 +2620,8 @@ let translatedLocationsNames = {
 	magicTales: 'Волшебство <br> сказок',
 	animals: 'Животные',
 	eightMarch: 'Восьмое марта',
-	fbv: 'Фрукты, ягоды и овощи'
+	fbv: 'Фрукты, ягоды и овощи',
+	birds: 'Птицы'
 }
 
 function getBanner(){
@@ -2714,7 +2723,7 @@ function addScrollingToDesktop(isBottomBanner){
 			}catch(e){}
 		}
 		function onMouseDown(e){
-			console.log('down');
+			// console.log('down');
 			mouseLeft = e.clientX;
 			document.body.addEventListener('mousemove', movePage);
 		}
@@ -2870,7 +2879,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
