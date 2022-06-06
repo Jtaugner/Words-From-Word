@@ -45,11 +45,23 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/Inter-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/Inter-Medium.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
 html,body
 {
   width:100%;
   height:100%;
-  font: 10px/1.5 Roboto, sans-serif;
+  font: 10px/1.5 Inter, sans-serif;
   -webkit-tap-highlight-color: transparent;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -79,7 +91,7 @@ html,body
 }
 .newElement{
   position: absolute;
-  top: -3px;
+  bottom: -3px;
   right: -4px;
 
   width: 20px;
@@ -127,8 +139,21 @@ html,body
   margin-right: 25px;
 }
 
+.blurBackground, .rules-blackout{
+  position: absolute;
+  top: 0;
+  left: 0;
 
-.rules-blackout{
+  width: 100%;
+  height: 100%;
+
+  backdrop-filter: blur(5px);
+
+  z-index: 9;
+
+  cursor: pointer;
+}
+.blackout{
   position: absolute;
   left: 0;
   top: 0;
@@ -144,15 +169,10 @@ html,body
   z-index: 11;
 }
 .rules_lb{
-  overflow: hidden;
+  height: 80%;
+  max-height: 600px;
 }
 @media (min-height: 500px){
-  .rules_lb{
-    height: 500px !important;
-  }
-  .leaderBoardInfo{
-    height: 400px !important;
-  }
   .rules__text{
     height: 420px !important;
   }
@@ -170,8 +190,8 @@ html,body
 .leaderBoardInfo{
   width: 90%;
   margin: 0 auto;
-  height: 220px;
-  padding: 05px;
+  height: 100%;
+  padding: 5px;
   overflow-y: auto;
 
   font-size: 1.5rem;
@@ -180,9 +200,6 @@ html,body
   text-align: center;
   font-size: 2rem !important;
 }
-.leaderBoardInfo_my{
-  background-color: #e8e6f9;
-}
 .lastRang{
   margin-bottom: 80px !important;
 }
@@ -190,51 +207,97 @@ html,body
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  width: 77%;
+
+
+  background-color: #F6F6F6;
+  border-radius: 20px;
+  color: #000000;
+  font-size: 1.7rem;
+  font-weight: bold;
+  height: 100%;
 }
 .leaderBoardInfo__player{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid #a15eb9;
+  //border: 2px solid #a15eb9;
+  height: 40px;
 
-  padding: 7px 15px;
-  border-radius: 10px;
-
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .leaderBoardInfo__image{
-  width: 50px;
-  height: 50px;
-  margin: 0 15px;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+
+  border: 1.5px solid #B8B8B8;
 
   border-radius: 50%;
 
   background-size: cover !important;
+
+  flex: 0 0 40px;
+}
+.leaderBoardInfo__rank{
+  width: 20%;
+  height: 100%;
+  background-color: #F6F6F6;
+  border-radius: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2rem;
+  color: #414141;
+  font-weight: bold;
 }
 .leaderBoardInfo__image_no{
   background: url("../assets/user.png") center center no-repeat !important;
   background-size: cover !important;
 }
-.leaderBoardInfo_1{
-  font-size: 2.4rem;
+.leaderBoardInfo_1 .leaderBoardInfo__rank{
+  background: linear-gradient(154.13deg, #FFEC44 5.25%, #FFBF44 83.67%);
+  color: white;
 }
 .leaderBoardInfo_1 .leaderBoardInfo__image{
-  width: 70px;
-  height: 70px;
+  border-color: #FFBF44;
 }
-.leaderBoardInfo_2{
-  font-size: 2.1rem;
+.leaderBoardInfo_2 .leaderBoardInfo__rank{
+  background: linear-gradient(142.28deg, #D9EBED 4.36%, #9FCDE1 100.91%);
+  color: white;
 }
 .leaderBoardInfo_2 .leaderBoardInfo__image{
-  width: 62px;
-  height: 62px;
+  border-color: #b7dae5;
 }
-.leaderBoardInfo_3{
-  font-size: 1.75rem;
+.leaderBoardInfo_3 .leaderBoardInfo__rank{
+  background: linear-gradient(157.89deg, #FFC978 9.81%, #CC8110 85.56%);
+  color: white;
 }
 .leaderBoardInfo_3 .leaderBoardInfo__image{
-  width: 55px;
-  height: 55px;
+  border-color: #CC8110;
+}
+
+.leaderBoardInfo_my .leaderBoardInfo__rank, .leaderBoardInfo_my .leaderBoardInfo__playerInfo{
+  background-color: #66196C;
+  color: white;
+}
+.leaderBoardInfo_my .leaderBoardInfo__image{
+  border-color: #66196C;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.leaderBoardInfo__score{
+  margin: 0 20px 0 5px;
+}
+.leaderBoardInfo__name{
+  margin-right: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
 }
 
 .rules{
@@ -245,17 +308,19 @@ html,body
 
 
 
-  padding: 8px;
+  padding: 40px 8px 8px 8px;
   width: 520px;
 
   font-size: 1.4rem;
   color: #302431;
 
-  border: 3px solid #9e6db5;
-  border-radius: 15px;
-  background-color: rgba(250,250,250, 0.9);
+  //border: 3px solid #9e6db5;
+  border-radius: 20px;
+  //background-color: rgba(250,250,250, 0.9);
+  background-color: white;
 
   z-index: 12;
+
 }
 .rules__text{
   width: 99%;
@@ -271,25 +336,30 @@ html,body
 .rules__notification{
   font-size: 1.8rem;
 }
-.rules__cross{
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-}
-.rules__cross .svgIcon{
-  width: 100%;
-  height: 100%;
-}
 .rules__menu{
-  font-size: 3rem;
-  line-height: 3rem;
-  text-align: center;
-  color: #302431;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  margin: 5px 0 15px 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 300px;
+  height: 40px;
+
+  font-size: 2.5rem;
+  line-height: 2.5em;
+  text-align: center;
+
+
+  background-color: #66196C;
+  color: white;
+
+  margin: 0;
+  border-radius: 25px;
+
 }
 #app, .game, .levels{
   background: url(../assets/bg-new.png) 50% no-repeat;
@@ -360,7 +430,7 @@ html,body
   align-items: center;
 }
 .levels{
-
+  display: flex;
 }
 .levelsTop{
   position: absolute;
@@ -368,14 +438,16 @@ html,body
   top: 0;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   width: 540px;
-  height: 70px;
+  height: 60px;
 
   z-index: 3;
   transform: translateX(-50%);
+
+  font-family: 'Roboto', sans-serif;
 }
 .levelsTop__allStars{
 
@@ -402,7 +474,25 @@ html,body
 
   cursor: pointer;
 }
+.levelsTop__allStars .svgIcon{
+  position: static;
+  width: 20px;
+  height: 20px;
+  transform: none;
+  margin-left: 5px;
+}
+.gameWordMistake{
+  color: #a50000;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  height: 25px;
+  width: 100%;
 
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .levelsTop__allStars_withoutLB{
   margin-left: 0;
 }
@@ -450,7 +540,7 @@ html,body
   width: 100%;
   height: auto;
 
-  margin-top: 60px;
+  margin-top: 0;
   padding: 10px;
 }
 .level{
@@ -460,21 +550,21 @@ html,body
   justify-content: center;
   align-items: center;
 
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
 
 
-  background-color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 50%;
 
   margin: 0 20px 26px 0;
 
-  font-size: 2.9rem;
+  font-size: 2.7rem;
   color: #2C2C2C;
 
   cursor: pointer;
 
-  box-shadow: 0 0 4px rgba(159, 102, 173, 0.4);
 
 }
 .levels-wrapper::before, .levels-wrapper::after {
@@ -482,13 +572,13 @@ html,body
   width: 100%;
   order: 1;
 }
-.level:nth-child(7n){
+.level:nth-child(6n){
   margin-right: 0;
 }
-.level:nth-child(n + 8) {
+.level:nth-child(n + 7) {
   order: 1;
 }
-.level:nth-child(n + 15) {
+.level:nth-child(n + 13) {
   order: 2;
 }
 .level-done{
@@ -611,7 +701,10 @@ html,body
   min-width: 60px;
   text-align: center;
 }
-.menu__words-amount:after, .menu__button-next-level:after, .menu__button-back:after, .menu__tip:after, .prev-location:after, .next-location:after, .switchSettings:after, .popUp__close:after, .switchShowLocation:after{
+.menu__words-amount:after, .menu__button-next-level:after,
+.menu__button-back:after, .menu__tip:after,
+.prev-location:after, .next-location:after, .switchSettings:after,
+.popUp__close:after, .switchShowLocation:after, .switchShop:after{
   position: absolute;
   content: '';
   top: -10px;
@@ -677,8 +770,8 @@ html,body
 
   border-radius: 50%;
 
-  background-color: #DFDFDF;
-
+  //background-color: #DFDFDF;
+  background-color: rgba(223,223,223,0.43);
 }
 .menu__level_stars .level_star{
   margin-right: 4px;
@@ -719,29 +812,30 @@ html,body
   }
 }
 .next-location, .prev-location{
-  position: absolute;
-  top: 99px;
+  position: relative;
 
-  width: 14px;
-  height: 53px;
+  width: 35px;
+  height: 35px;
 
-
-  background: url(../assets/angle-left.svg) center center no-repeat;
-  background-size: 100%;
-
+  border-radius: 50%;
+  background-color: white;
   cursor: pointer;
   z-index: 2;
-}
-.next-location{
-  background: url(../assets/angle-right.svg) center center no-repeat;
-  background-size: 100%;
-  right: 10px;
 }
 .next-location:active, .prev-location:active{
   transform: scale(0.98);
 }
+.prev-location .svgIcon{
+  transform: translate(-45%, -50%);
+}
+.next-location .svgIcon{
+  transform: translate(-40%, -50%);
+}
 .prev-location{
-  left: 10px;
+  transform: rotate(180deg);
+}
+.prev-location:active{
+  transform: scale(0.98) rotate(180deg);
 }
 /*Блок со всеми словами*/
 .words{
@@ -915,23 +1009,14 @@ html,body
 
 
 /*Магазин*/
-.shop{
+.bigRules{
   min-height: 280px;
-  border: 3px solid #9e6db5;
-  border-radius: 15px;
-  background-color: rgba(250,250,250, 0.9);
-
   height: 310px;
-
   min-width: 500px;
   width: 540px;
 }
 .mainShop{
   font-family: 'Roboto', sans-serif;
-}
-.shop .rules__menu{
-  margin: 5px 0 15px 0;
-  color: #514056;
 }
 .shopPopUp .popUp__elements{
   justify-content: space-between;
@@ -1095,31 +1180,29 @@ html,body
   .levelsTop{
     width: 750px;
   }
-  .levelsTop .menuItem, .bottomMenu .menuItem{
+  .sideHorizontalMenu .menuItem, .bottomMenu .menuItem{
     width: 70px;
     height: 70px;
   }
   .rules__menu{
     font-size: 3.5rem;
     line-height: 3.5rem;
+
+    width: 400px;
+    height: 50px;
   }
   .rules{
     font-size: 2rem;
-    padding: 20px 30px 30px 30px;
-    width: auto;
-
+    padding: 50px 20px 20px 20px;
+    //width: auto;
     max-width: 650px;
+  }
+  .rules_lb{
+    width: 650px;
   }
   .rules__notification{
     font-size: 2.3rem;
     padding-bottom: 15px;
-  }
-
-  .rules__cross{
-    top: 25px;
-    right: 25px;
-    width: 35px;
-    height: 35px;
   }
 
   .advert {
@@ -1129,7 +1212,7 @@ html,body
 
 
 
-  .shop{
+  .bigRules{
     width: 650px;
     height: 350px;
   }
@@ -1163,7 +1246,7 @@ html,body
     margin: 0 auto;
   }
   .levels-wrapper{
-    max-width: 1000px;
+    //max-width: 1000px;
     margin: 0 auto;
   }
   .level{
@@ -1190,14 +1273,6 @@ html,body
   .menu__button-back, .menu__button-next-level{
     width: 60px;
     height: 60px;
-  }
-  .next-location, .prev-location{
-    width: 28px;
-    height: 106px;
-    top: 123px;
-  }
-  .next-location:active, .prev-location:active{
-    transform: scale(0.98);
   }
   .menu__words-amount, .menu__level{
     font-size: 2.6rem;
@@ -1493,6 +1568,14 @@ html,body
 
 
 @media (min-width: 1000px) {
+  .levels__property{
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .levelsTop__allStars .svgIcon{
+    width: 30px;
+    height: 30px;
+  }
   .settings__header{
     font-size: 2.9rem;
 
@@ -1517,20 +1600,20 @@ html,body
     width: 30px;
     height: 30px;
   }
-  .switchSettings, .leaderBoard, .switchShop, .switchShowLocation{
-    width: 60px;
-    height: 60px;
+  .switchSettings, .leaderBoard, .switchShop, .switchShowLocation, .createLevel{
+    width: 70px;
+    height: 70px;
   }
 }
 
 .levels__loc{
-  position: absolute;
-  right: 7px;
-  bottom: 7px;
+  //position: absolute;
+  //right: 7px;
+  //bottom: 7px;
 
 
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
 
   background-color: white;
 
@@ -1540,29 +1623,18 @@ html,body
   justify-content: center;
   align-items: center;
 
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   color: black;
   box-shadow: 0 0 6px rgba(0,0,0,0.2);
 
   cursor: pointer;
 }
 .levels__loc_big{
-  font-size: 1.25rem;
+  font-size: 1.35rem;
 }
 
 
-@media (min-width: 1000px) {
-  .levels__loc{
-    width: 50px;
-    height: 50px;
-    right: 10px;
-    bottom: 10px;
-    font-size: 3rem;
-  }
-  .levels__loc_big{
-    font-size: 2.6rem;
-  }
-}
+
 .word-definition{
   overflow: auto;
   user-select: text;
@@ -1570,11 +1642,12 @@ html,body
 }
 .word-mean{
   //overflow: hidden;
-  overflow-y: auto;
+  //overflow-y: auto;
   font-size: 2rem;
-  padding-bottom: 2px;
   display: flex;
   flex-flow: column nowrap;
+  min-height: 300px;
+  padding-bottom: 15px;
 
 }
 
@@ -1617,17 +1690,16 @@ b{
     height: 40px;
   }
   .level{
-    font-size: 2.5rem;
+    font-size: 2.4rem;
+    width: 50px;
+    height: 50px;
   }
   .levels-wrapper {
-    margin-top: 45px;
-    padding: 3px;
+    //margin-top: 45px;
+    //padding: 3px;
+    padding: 10px 0 0 0;
   }
-  .next-location, .prev-location {
-    width: 25px;
-    height: 35px;
-  }
-  .shop{
+  .bigRules{
     height: 280px;
   }
   .shop__cart{
@@ -1635,10 +1707,10 @@ b{
   }
 }
 .level__big{
-  font-size: 2.2rem;
+  font-size: 2.1rem;
 }
 .levels-wrapper_bigLevels .level__big{
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 @media (min-width: 1000px) {
   .level__big{
@@ -1677,6 +1749,7 @@ b{
   background-size: 100%;
 
   z-index: 10;
+  font-family: "Roboto", sans-serif;
 }
 .cloudHint_wordSelected{
   left: auto;
@@ -1867,9 +1940,9 @@ b{
   .banner-wrapper{
     display: block;
   }
-  .levels__property{
-    padding-top: 150px;
-  }
+  //.levels__property{
+  //  padding-top: 150px;
+  //}
 }
 .levelClosedText{
   font-size: 2rem;
@@ -1884,15 +1957,73 @@ b{
     margin-bottom: 25px;
   }
 }
+
+
+.sideHorizontalMenu{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  background-color: #07091B;
+  border-radius: 20px 0 0 20px;
+}
+.sideHorizontalMenu .menuItem{
+  margin: 20px 0 0 0;
+}
+.sideHorizontalMenu .menuItem:first-child{
+  margin: 0;
+}
+
+.bottomHorizontalMenu{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.closedGetLoc .svgIcon{
+  fill: #DFDFDF !important;
+}
 // Вертикальная игра
-
-
 
 .bottomMenu{
   display: none;
 }
+@media (orientation: portrait), (min-width: 1000px) and (min-height: 650px){
+  .levels{
+    flex-flow: column nowrap;
+  }
+  .sideHorizontalMenu{
+    height: 75px;
+    width: 100%;
+    flex-flow: row nowrap;
+    border-radius: 10px 10px 0 0;
+  }
+  .sideHorizontalMenu .menuItem{
+    margin: 0 0 0 20px;
+  }
+  .sideHorizontalMenu .menuItem:first-child{
+    margin: 0;
+  }
+}
 
+@media (min-width: 1000px) and (min-height: 650px) {
+  .sideHorizontalMenu{
+    height: 120px;
+    width: 1000px;
+    margin: 0 auto;
+    border-radius: 20px 20px 0 0;
+  }
+}
 @media (orientation: portrait) {
+  .gameWordMistake{
+    height: 50px;
+  }
   //Игра
   .menu{
     justify-content: space-between;
@@ -1937,7 +2068,7 @@ b{
 
   //Меню
   .levels__property{
-    overflow-y: auto;
+    //overflow-y: auto;
   }
 
   .levels-wrapper{
@@ -1953,31 +2084,17 @@ b{
     width: 0;
   }
 
-  .prev-location{
-    left: -30px;
-  }
-  .next-location{
-    right: -25px;
-  }
-  .prev-location, .next-location{
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .next-location:active, .prev-location:active{
-    transform: scale(0.98) translateY(-50%);
-  }
-
   .level{
     margin-right: 30px;
     margin-bottom: 22px;
   }
-  .level:nth-child(7n){
+  .level:nth-child(6n){
     margin-right: 30px;
   }
-  .level:nth-child(n + 8) {
+  .level:nth-child(n + 7) {
     order: 0;
   }
-  .level:nth-child(n + 15) {
+  .level:nth-child(n + 13) {
     order: 0;
   }
 
@@ -2038,34 +2155,14 @@ b{
     width: 100%;
     padding: 0;
   }
-  .leaderBoardInfo_1{
-    font-size: 2rem;
-  }
-  .leaderBoardInfo_1 .leaderBoardInfo__image{
-    width: 65px;
-    height: 65px;
-  }
-  .leaderBoardInfo_2{
-    font-size: 1.8rem;
-  }
-  .leaderBoardInfo_2 .leaderBoardInfo__image{
-    width: 60px;
-    height: 60px;
-  }
-  .leaderBoardInfo_3{
-    font-size: 1.7rem;
-  }
 
   .rules__menu{
-    font-size: 2.5rem;
-    line-height: 2.5rem;
+    font-size: 2rem;
+    line-height: 2rem;
+    width: 220px;
+    transform: translate(-50%, -30%);
   }
-  .rules__cross{
-    width: 25px;
-    height: 25px;
-    right: 10px;
-  }
-  .shop{
+  .bigRules{
     height: 500px;
     max-height: 90%;
   }
@@ -2296,12 +2393,6 @@ b{
   .word-mean{
     height: 600px;
   }
-  
-}
-@media (min-width: 1000px) and (min-height: 700px) {
-  .game{
-    //padding-bottom: 150px;
-  }
 }
 
 .whyBadWord{
@@ -2464,9 +2555,47 @@ b{
     font-size: 19px;
   }
 }
+.pageNumInfo{
+  font-size: 2rem;
+}
 @media (min-width: 1000px) {
   .pageNumInfo{
     width: 500px;
+  }
+  .bottomHorizontalMenu{
+    height: 80px;
+  }
+  .levels__loc{
+    width: 50px;
+    height: 50px;
+    right: 10px;
+    bottom: 10px;
+    font-size: 3rem;
+  }
+  .levels__loc_big{
+    font-size: 2.6rem;
+  }
+  .next-location, .prev-location{
+    width: 55px;
+    height: 55px;
+  }
+
+  //Рейтинг
+  .leaderBoardInfo__player{
+    margin-bottom: 25px;
+  }
+  .leaderBoardInfo__playerInfo{
+    height: 50px;
+    font-size: 2rem;
+    border-radius: 25px;
+  }
+  .leaderBoardInfo__image{
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+  }
+  .leaderBoardInfo__rank{
+    font-size: 2.4rem;
   }
 }
 .pageNumInput{
@@ -2497,4 +2626,91 @@ b{
     justify-content: center;
   }
   
+}
+
+//Создание своего уровня
+.createGameRules{
+  width: 500px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column nowrap;
+
+  padding-bottom: 20px;
+}
+.createLevelInput, .startCreateGame{
+  width: 300px;
+  height: 50px;
+
+  text-align: center;
+
+  background-color: #eaeaea;
+  border: none;
+  border-radius: 40px;
+  color: #000000;
+
+  font-size: 2rem;
+}
+.createLevelInput::placeholder{
+  color: #aaaaaa;
+
+}
+.startCreateGame{
+  width: 175px;
+  color: white;
+  background-color: #66196C;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 20px;
+  font-size: 2.3rem;
+
+  cursor: pointer;
+}
+.location .sideHorizontalMenu{
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  z-index: 2;
+  border-radius: 0 0 0 20px;
+}
+
+@media (orientation: portrait), (min-width: 1000px) and (min-height: 650px){
+  .location{
+    margin: 0 0 75px 0 !important;
+  }
+  .location .sideHorizontalMenu{
+    right: auto;
+    top: auto;
+    left: 50%;
+    bottom: 0;
+    height: 75px;
+    //width: 100%;
+    border-radius: 0 10px 0 0;
+    transform: translateX(-50%);
+  }
+}
+
+@media (min-width: 1000px) and (min-height: 650px) {
+  .location .sideHorizontalMenu{
+    height: 120px;
+    border-radius: 20px 20px 0 0;
+  }
+  .location{
+    margin: 0 !important;
+  }
+}
+
+.blackoutInfoCreateGame{
+  z-index: 12;
+}
+.infoCreateGame{
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

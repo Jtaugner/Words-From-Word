@@ -20,7 +20,10 @@
 .chosenAppBg-4 .menu__tip_count, .chosenAppBg-4 .rules__goBg {
   background-color: #0087C0;
 }
-.chosenAppBg-4 .shop, .chosenAppBg-4 .rules {
+.chosenAppBg-4 .rules__menu, .chosenAppBg-4 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg-4 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg-4 .startCreateGame {
+  background-color: #0D2A4C;
+}
+.chosenAppBg-4 .shop, .chosenAppBg-4 .rules, .chosenAppBg-4 .leaderBoardInfo_my .leaderBoardInfo__image {
   border-color: #0D2A4C;
 }
 .chosenAppBg-4 .shop .rules__menu, .chosenAppBg-4 .settings__text {

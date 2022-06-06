@@ -27,7 +27,10 @@
   .menu__tip_count, .rules__goBg{
     background-color: #103A4D;
   }
-  .shop, .rules{
+  .rules__menu, .leaderBoardInfo_my .leaderBoardInfo__rank, .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .startCreateGame{
+    background-color: #103A4D;
+  }
+  .shop, .rules, .leaderBoardInfo_my .leaderBoardInfo__image{
     border-color: #103A4D;
   }
   .shop .rules__menu, .settings__text{

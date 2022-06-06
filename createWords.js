@@ -25,7 +25,8 @@ const addNewWords = ["татарка", "кокпит", "булат", "люд", "
 "цинка", "ведовство", "световод", "драм", "отмостка", "выточка", "анкетер", "бергамот", "суши",
 "фронда", "таурин", "тыкание", "тонировка", "спаивание", "мазила", "склочник", "хаммам", "стланец",
 "квач", "вероника", "биос", "аколит", "сусек", "одорант", "мегера", "фосса", "коми", "ворье", "стежка",
-"метанол", "дневка", "расчес", "смартфон", "квочка", "сванка", "колон", "веритель"];
+"метанол", "дневка", "расчес", "смартфон", "квочка", "сванка", "колон", "веритель", "капри",
+"урду", "вуду", "потреба", "отельер"];
 words = [...words, ...addNewWords];
 //    let keys = Object.keys(allWordsFromWords);
 //    let allWords = {};
@@ -302,6 +303,7 @@ if(isBadCompareLengths(locationAllWords) || isBadCompareLengths(allWords)){
     return;*/
 
 let createAll = true;
+fsp.writeFile(path.join(__dirname, 'src/wordsList.js'), `export let wordsList = ${JSON.stringify(words.sort((a,b) => a.localeCompare(b)))}`);
 if(createAll){
     createWords(allWords, wordsFromWords);
     fsp.writeFile(path.join(__dirname, 'src/russianWords.js'), `export let allWordsRU = ${JSON.stringify(allWords)}`);

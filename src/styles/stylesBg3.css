@@ -21,10 +21,13 @@
 .chosenAppBg3 .words__letters-block_done .words__letter, .chosenAppBg3 .action-block__letters .action-block__letter_selected {
   background-color: #A47BCD;
 }
+.chosenAppBg3 .rules__menu, .chosenAppBg3 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg3 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg3 .startCreateGame {
+  background-color: #47196C;
+}
 .chosenAppBg3 .menu__tip_count, .chosenAppBg3 .rules__goBg {
   background-color: #47196C;
 }
-.chosenAppBg3 .shop, .chosenAppBg3 .rules {
+.chosenAppBg3 .shop, .chosenAppBg3 .rules, .chosenAppBg3 .leaderBoardInfo_my .leaderBoardInfo__image {
   border-color: #47196C;
 }
 .chosenAppBg3 .shop .rules__menu, .chosenAppBg3 .settings__text {

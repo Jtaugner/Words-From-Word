@@ -24,10 +24,13 @@
   .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
     background-color: #A47BCD;
   }
+  .rules__menu, .leaderBoardInfo_my .leaderBoardInfo__rank, .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .startCreateGame{
+    background-color: #47196C;
+  }
   .menu__tip_count, .rules__goBg{
     background-color: #47196C;
   }
-  .shop, .rules{
+  .shop, .rules, .leaderBoardInfo_my .leaderBoardInfo__image{
     border-color: #47196C;
   }
   .shop .rules__menu, .settings__text{

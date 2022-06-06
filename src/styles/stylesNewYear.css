@@ -21,7 +21,10 @@
 .chosenAppBg-2 .words__letters-block_done .words__letter, .chosenAppBg-2 .action-block__letters .action-block__letter_selected {
   background-color: #E75858;
 }
-.chosenAppBg-2 .shop, .chosenAppBg-2 .rules {
+.chosenAppBg-2 .rules__menu, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg-2 .startCreateGame {
+  background-color: #C21332;
+}
+.chosenAppBg-2 .shop, .chosenAppBg-2 .rules, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__image {
   border-color: #C21332;
 }
 .chosenAppBg-2 ::-webkit-scrollbar-thumb {
@@ -49,6 +52,9 @@
   100% {
     background-color: #C21332;
   }
+}
+.chosenAppBg-2 .level .level_star {
+  background-color: rgba(184, 177, 177, 0.83);
 }
 .chosenAppBg-2 .shop__cart__name {
   color: #CE1E1E;
@@ -93,8 +99,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../assets/snow_1.png"), url("../assets/snow_2.png"), url("../assets/snow_3.png");
-  animation: snow 20s linear infinite;
 }
 @keyframes snow {
   0% {
