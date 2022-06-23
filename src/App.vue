@@ -86,11 +86,11 @@
 
 				<div class="switchShowLocation menuItem" @click="toggleShowLocations" v-if="!notRussian">
 					<svg class="svgIcon" width="28" height="22" viewBox="0 0 28 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M1.73723 16.9893V3.60855H0.715328C0.143066 3.60855 0 4.1575 0 4.43198V21.0036C0 22.074 1.0219 22.0672 1.53285 21.9299C3.9854 20.9418 9.50365 21.381 11.9562 21.7241C9.50365 19.3567 5.51825 19.3567 3.88321 19.1509C2.57518 18.9862 1.90754 17.6412 1.73723 16.9893Z"/><path d="M3.37226 0.932388C3.45401 0.108954 4.29197 -0.0282848 4.70073 0.00602489C10.1781 -0.158664 12.8418 3.0939 13.4891 4.74077L13.3869 20.9007C9.81022 17.2981 4.70073 17.504 4.18978 17.504C3.78102 17.504 3.47445 16.8864 3.37226 16.5776V0.932388Z"/><path d="M26.2628 16.9954V3.61458H27.2847C27.8569 3.61458 28 4.16353 28 4.43801V21.0096C28 22.0801 26.9781 22.0732 26.4672 21.936C24.0146 20.9479 18.4963 21.387 16.0438 21.7301C18.4963 19.3627 22.4818 19.3627 24.1168 19.1569C25.4248 18.9922 26.0925 17.6473 26.2628 16.9954Z"/><path d="M24.6277 0.938419C24.546 0.114985 23.708 -0.0222538 23.2993 0.0120559C17.8219 -0.152633 15.1582 3.09993 14.5109 4.7468L14.6131 20.9067C18.1898 17.3042 23.2993 17.51 23.8102 17.51C24.219 17.51 24.5255 16.8925 24.6277 16.5837V0.938419Z"/></svg>
+					<div class="newElement">!</div>
 				</div>
 
 				<div class="createLevel menuItem" @click="toggleIsCreateGameWindow()" v-if="!notRussian">
 					<svg class="svgIcon" width="21" height="21" viewBox="0 0 21 21" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M1.76337 14.8255L12.9366 3.70016C13.1735 3.46428 13.5575 3.46428 13.7944 3.70016L17.2839 7.1747C17.5208 7.41058 17.5208 7.79302 17.2839 8.0289L6.11073 19.1542C5.87384 19.3901 5.48976 19.3901 5.25286 19.1542L1.76337 15.6797C1.52648 15.4438 1.52648 15.0614 1.76337 14.8255Z"/><path d="M4.52596 19.6385L1.29214 16.4185C1.05791 16.1853 0.656847 16.316 0.606478 16.642L0.00483613 20.5359C-0.0372803 20.8085 0.202055 21.0416 0.474818 20.9937L4.31028 20.3198C4.63248 20.2631 4.75731 19.8688 4.52596 19.6385Z"/><path d="M16.4751 0.176764L14.2999 2.34262C14.0631 2.5785 14.0631 2.96094 14.2999 3.19682L17.7894 6.67136C18.0263 6.90724 18.4104 6.90724 18.6473 6.67136L20.8225 4.50551C21.0594 4.26963 21.0591 3.88689 20.8222 3.65101L17.3333 0.177057C17.0964 -0.0588234 16.712 -0.0591169 16.4751 0.176764Z"/></svg>
-					<div class="newElement">!</div>
 				</div>
 
 				<div class="leaderBoard menuItem" @click="toggleLeaderBoard()" v-if="!notRussian">
@@ -824,32 +824,12 @@
 				{{locationGame ? 'Ура!' : wasUpdate ? 'Уважаемые игроки!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
-				<template v-if="gameLocation === 'newYear'">
-					Поздравляем! Вы прошли локацию "Новогоднее приключение"!
-					За это мы дарим вам 30 подсказок и, конечно же, поздравляем с Новым годом!
-				</template>
-				<template v-else-if="gameLocation === 'magicTales'">
-					Поздравляем! Вы завершили локацию "Волшебство сказок"!
-					Желаем, чтобы волшебные моменты присутствовали на протяжении всей Вашей жизни!
-					И, конечно, дарим 30 подсказок!
-				</template>
-				<template v-else-if="gameLocation === 'animals'">
-					Поздравляем! Локация "Животные" пройдена! Вручаем Вам 30 подсказок! Хорошей игры!
-				</template>
-				<template v-else-if="gameLocation === 'eightMarch'">
-					Поздравляем всех милых дам с 8 марта! Пусть в вашей жизни будет как можно больше хороших моментов и приятных воспоминаний!
-					Спасибо, что играете в нашу игру! А 30 подсказок уже на Вашем счету :)
-				</template>
-				<template v-else-if="gameLocation === 'fbv'">
-					Поздравляем с прохождением локации "Фрукты, ягоды и овощи"!
-					Спасибо, что играете в нашу игру, дополнительные 30 подсказок уже на Вашем счету!
-				</template>
-				<template v-else-if="gameLocation === 'birds'">
-					Локация "Птицы" пройдена! Вы - молодец! 30 подсказок в подарок уже на Вашем счету!
-				</template>
+				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
+				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Теперь вы можете создать уровень из собственного слова! Для этого нажмите в меню на значок карандаша.
+				Новая локация "Кино и мультфильмы" ждёт вас! Удачной игры!
+				<div class="rules__goBg" @click="goToGetLocations()">К локациям</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -928,6 +908,7 @@ import './styles/stylesSpring.scss';
 import './styles/stylesCave.scss';
 
 import './styles/stylesLocations.scss';
+// import './styles/stylesDarkTheme.scss';
 import {allWordsRU} from './russianWords';
 import {dictionaryRU} from './russianDictionary';
 import {wordsFromWordsRU} from "./russianWordsFromWords";
@@ -1348,7 +1329,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-24";
+const lastVersion = "ver-25";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2501,7 +2482,8 @@ let dictWordsToReplace = {
 	'стежка': 'стёжка',
 	'копер': 'копёр',
 	'cчес': 'счёс',
-	'расчес': 'расчёс'
+	'расчес': 'расчёс',
+	'тенета': 'тенёта'
 }
 
 
@@ -2597,7 +2579,8 @@ let translatedLocationsNames = {
 	animals: 'Животные',
 	eightMarch: 'Восьмое марта',
 	fbv: 'Фрукты, ягоды и овощи',
-	birds: 'Птицы'
+	birds: 'Птицы',
+	cinema: 'Кино и мультфильмы'
 }
 
 // function getBanner(){
@@ -2876,7 +2859,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -2897,7 +2880,8 @@ export default {
 			gameWordMistake: false,
 			savedMyGame: savedMyGame,
 			levelStars: 0,
-			isInfoAboutCreateGame: false
+			isInfoAboutCreateGame: false,
+			howManyTips: 10
 		}
 	},
 	computed:{
@@ -4140,7 +4124,7 @@ export default {
 						this.savedMyGame = obj;
 					}else if(this.locationGame){
 						setToStorage('locationDoneWords', JSON.stringify(replaceLevelsToOne(locationDoneWords, true)));
-						console.log(replaceLevelsToOne(locationDoneWords, true));
+						// console.log(replaceLevelsToOne(locationDoneWords, true));
 						PLAYESTATE.locationDoneWords = locationDoneWords;
 					}else{
 						setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
@@ -4254,18 +4238,16 @@ export default {
 					}
 				} else if(this.locationGame){
 					this.locationStars.splice(this.lvl, 1, stars);
-					// if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
-					// 	if(this.gameLocation === 'newYear'){
-					// 		params({['endLocationLevel-' + this.lvl]: stars});
-					// 	}else if(this.gameLocation === 'magicTales'){
-					// 		params({['endMagicLocation-' + this.lvl]: stars});
-					// 	}
-					//
-					// }
+
 					if(this.lvl === 19 && stars === 1){
-						this.showLastLevelInfo = true;
-						this.tipCount += 30;
 						params({['endLoc-' + this.gameLocation]: 1});
+					}
+					if(this.locationAllStars === 20
+						|| this.locationAllStars === 40 || this.locationAllStars === 60) {
+
+						this.showLastLevelInfo = true;
+						this.tipCount += this.locationAllStars / 2;
+						this.howManyTips = this.locationAllStars / 2;
 						setToStorage('tips', this.tipCount);
 						PLAYERSTATS.tips = this.tipCount;
 						saveAllData(false);

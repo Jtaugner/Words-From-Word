@@ -1,3 +1,18 @@
+.level, .levelsTop__allStars, .prev-location, .next-location, .levels__loc {
+  background-color: #2D273C;
+  color: #F5F5F5 !important;
+}
 
+.menuItem {
+  background-color: #2D273B !important;
+}
+
+.menuItem .svgIcon {
+  fill: #F5F5F5 !important;
+}
+
+.next-location .svgIcon, .prev-location .svgIcon {
+  fill: #F5F5F5 !important;
+}
 
 /*# sourceMappingURL=stylesDarkTheme.css.map */
