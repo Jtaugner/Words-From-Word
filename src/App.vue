@@ -446,7 +446,8 @@
 					</div>
 					<div class="action-block__letters">
 						<div class="action-block__letter"
-							 @click="selectLetter(index)"
+							 @click="selectLetter(index, $event)"
+							 @touchend="selectLetter(index, $event)"
 							 :class="
 							  [
 							  selectedLetters.includes(index) ? 'action-block__letter_selected' : '',
@@ -914,7 +915,7 @@ import {dictionaryRU} from './russianDictionary';
 import {wordsFromWordsRU} from "./russianWordsFromWords";
 import {allWordsEN} from './englishWords';
 import {wordsFromWordsEN} from './englishWordsFromWords'
-import {getBusinessEvent} from "./gameAnalytics";
+// import {getBusinessEvent} from "./gameAnalytics";
 import {wordsList} from './wordsList';
 import {locationWords} from "./locationWords";
 import {whyBadWord} from './whyBadWord';
@@ -1475,8 +1476,24 @@ let isRules = false;
 let lvlsOnPage = 18;
 let allLocations = Math.floor(allWords.length / lvlsOnPage);
 let lastLevel = 0;
-let wordsForReplace = ['ассиметрия', 'гитлеровец', 'барашкин', 'подмывание', 'карпенко', 'прибалтика', 'квашнин', 'минотавр', 'франциско', 'барселона', 'синестрол', 'головчинер', 'гончаренко', 'скрижапель'];
-let wordsToReplace = ['асимметрия', 'горицвет', 'банкирша', 'домывание', 'анкерок', 'парилка', 'шинка', 'норматив', 'фонарик', 'балансер', 'солитер', 'невролог', 'кочегар', 'скрижаль'];
+let wordsForReplace = {
+	'ассиметрия': 'асимметрия',
+	'гитлеровец': 'горицвет',
+	'барашкин': 'банкирша',
+	'подмывание': 'домывание',
+	'карпенко': 'анкерок',
+	'прибалтика': 'парилка',
+	'квашнин': 'шинка',
+	'минотавр': 'норматив',
+	'франциско': 'фонарик',
+	'барселона': 'балансер',
+	'синестрол': 'солитер',
+	'головчинер': 'невролог',
+	'гончаренко': 'кочегар',
+	'скрижапель': 'скрижаль',
+	'ленинград': 'гренадин',
+	'костылева': 'выселок'
+};
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
 	for(let i = 0; i < keys.length; i++){
@@ -1485,8 +1502,8 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 		if(keys[i].indexOf('ё') !== -1){
 			k = k.replace(/ё/g, 'е');
 			console.log(k);
-		}else if(wordsForReplace.includes(k)){
-			k = wordsToReplace[wordsForReplace.indexOf(k)];
+		}else if(wordsForReplace[k]){
+			k = wordsForReplace[k];
 		}
 		let words = allDoneWords[keys[i]] || allDoneWords[k];
 
@@ -1497,7 +1514,7 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 				allDoneWords[k] = wordsFromWords[k];
 			}
 
-		 	if(wordsForReplace.includes(keys[i])){
+		 	if(wordsForReplace[keys[i]]){
 				delete allDoneWords[keys[i]];
 			}
 		}else{
@@ -2183,7 +2200,7 @@ function buyTips(item) {
 				document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 				payments.consumePurchase(purchase.purchaseToken);
 
-				getBusinessEvent(itemsPrices[item-2], 'tip' + item);
+				// getBusinessEvent(itemsPrices[item-2], 'tip' + item);
 			}
 		}).catch((e)=>{
 			console.log("PAYMENTS ERROR: " + e);
@@ -2483,7 +2500,9 @@ let dictWordsToReplace = {
 	'копер': 'копёр',
 	'cчес': 'счёс',
 	'расчес': 'расчёс',
-	'тенета': 'тенёта'
+	'тенета': 'тенёта',
+	'затес': 'затёс',
+	'елка': 'ёлка'
 }
 
 
@@ -3407,6 +3426,9 @@ export default {
 										isShowBanner = true;
 									}, 40000);
 								}
+								if(this.allStars > player.score){
+									lb.setLeaderboardScore('lvl', this.allStars);
+								}
 							})
 							.catch(e => {
 								console.log(e);
@@ -3868,8 +3890,10 @@ export default {
 				this.clickSound();
 			}
 		},
-		selectLetter(index){
+		selectLetter(index, ev){
 			// if(this.animWordStart !== '') return;
+			ev.stopPropagation();
+			ev.preventDefault();
 			if(this.notShowLetters.includes(this.letters[index])) return;
 			this.clickSound();
 			if(this.isTutorial){

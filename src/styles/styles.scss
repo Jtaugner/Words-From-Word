@@ -704,7 +704,8 @@ html,body
 .menu__words-amount:after, .menu__button-next-level:after,
 .menu__button-back:after, .menu__tip:after,
 .prev-location:after, .next-location:after, .switchSettings:after,
-.popUp__close:after, .switchShowLocation:after, .switchShop:after{
+.popUp__close:after, .switchShowLocation:after, .switchShop:after,
+.action-block__button-send:after{
   position: absolute;
   content: '';
   top: -10px;
@@ -1143,6 +1144,7 @@ html,body
   -webkit-user-select: none;
 }
 .action-block__button-send{
+  position: relative;
   display: block;
 
   margin-left: 25px;
