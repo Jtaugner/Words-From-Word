@@ -1816,7 +1816,7 @@ if(window.YaGames){
 			let lvl = ysdk.environment.payload;
 			console.log('PAYLOAD');
 			console.log(lvl);
-			if(lvl){
+			if(lvl && Number(lvl)){
 				let str = String(lvl);
 				if(str.indexOf('ver') === 0){
 					lvl = str.slice(3);
@@ -2061,48 +2061,22 @@ function initPlayer(ysdk) {
 			}
 			//Вовзврат прогресса
 			try{
-				let llsmz = getFromStorage('llsmz');
-				const ss = new URLSearchParams(window.location.search);
-				console.log('Progress');
-				console.log(ss);
-				if(!llsmz){
+				let pay = ysdk.environment.payload;
 
-					let lvl = Number(ss.get('llsmz'));
-					if(lvl){
+				let lvl2 = pay.match(/zlms\d+/);
+				if(lvl2) {
+					lvl2 = Number(lvl2[0].replace('zlms', ''));
+					if(lvl2){
 						let newObj = {};
-						for(let i = 0; i < lvl; i++){
+						for (let i = 0; i < lvl2; i++) {
 							newObj[allWords[i]] = wordsFromWords[allWords[i]];
 						}
-						console.log(newObj);
 						PLAYESTATE.allDoneWords = newObj;
 						allDoneWords = newObj;
 						setState();
-						setToStorage('llsmz', 'true');
 					}
 				}
-
-				let lvl2 = Number(ss.get('zlms'));
-				if(lvl2) {
-					let newObj = {};
-					for (let i = 0; i < lvl2; i++) {
-						newObj[allWords[i]] = wordsFromWords[allWords[i]];
-					}
-					PLAYESTATE.allDoneWords = newObj;
-					allDoneWords = newObj;
-					setState();
-					delParams('zlms');
-				}
-				let tps = Number(ss.get('tps'));
-				if(tps) {
-					tips = tps;
-					PLAYERSTATS.tips = tips;
-					setStats();
-					delParams('tps');
-				}
-
-
 			}catch(e){
-				console.log('прогресс - errr')
 				console.log(e);
 			}
 
@@ -2155,6 +2129,21 @@ function initPlayer(ysdk) {
 				update();
 			}
 			someTrue = true;
+			//Вовзврат прогресса
+			try{
+				let pay = ysdk.environment.payload;
+				let tps = pay.match(/tps\d+/);
+				if(tps) {
+					tps = Number(tps[0].replace('tps', ''));
+					if(tps){
+						tips = tps;
+						PLAYERSTATS.tips = tips;
+						setStats();
+					}
+				}
+			}catch(e){
+				console.log(e);
+			}
 		}).catch((e) => {
 			console.log(e);
 			if(someTrue){
