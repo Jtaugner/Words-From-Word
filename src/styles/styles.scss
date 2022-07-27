@@ -441,7 +441,7 @@ html,body
   justify-content: center;
   align-items: center;
 
-  width: 540px;
+  width: 430px;
   height: 60px;
 
   z-index: 3;
@@ -473,6 +473,9 @@ html,body
   letter-spacing: 2px;
 
   cursor: pointer;
+}
+.location .levelsTop__allStars{
+  margin-right: 100px;
 }
 .levelsTop__allStars .svgIcon{
   position: static;
@@ -572,13 +575,13 @@ html,body
   width: 100%;
   order: 1;
 }
-.level:nth-child(6n){
+.levels__property .level:nth-child(6n){
   margin-right: 0;
 }
-.level:nth-child(n + 7) {
+.levels__property .level:nth-child(n + 7) {
   order: 1;
 }
-.level:nth-child(n + 13) {
+.levels__property .level:nth-child(n + 13) {
   order: 2;
 }
 .level-done{
@@ -1180,7 +1183,7 @@ html,body
 }
 @media (min-width: 1000px) {
   .levelsTop{
-    width: 750px;
+    width: 640px;
   }
   .sideHorizontalMenu .menuItem, .bottomMenu .menuItem{
     width: 70px;
@@ -1927,7 +1930,6 @@ b{
   height: 150px;
   min-height: 150px;
   width: 500px;
-  padding: 8px !important;
 }
 .snowAnimation{
   display: none;
@@ -2005,6 +2007,9 @@ b{
     width: 100%;
     flex-flow: row nowrap;
     border-radius: 10px 10px 0 0;
+  }
+  .location .levelsTop__allStars{
+    margin: 0;
   }
   .sideHorizontalMenu .menuItem{
     margin: 0 0 0 20px;
@@ -2090,13 +2095,13 @@ b{
     margin-right: 30px;
     margin-bottom: 22px;
   }
-  .level:nth-child(6n){
+  .levels__property .level:nth-child(6n){
     margin-right: 30px;
   }
-  .level:nth-child(n + 7) {
+  .levels__property .level:nth-child(n + 7) {
     order: 0;
   }
-  .level:nth-child(n + 13) {
+  .levels__property .level:nth-child(n + 13) {
     order: 0;
   }
 
@@ -2338,7 +2343,7 @@ b{
     margin-bottom: 28px;
     margin-right: 35px;
   }
-  .level:nth-child(7n){
+  .levels__property .level:nth-child(7n){
     margin-right: 35px;
   }
   .level__big{
@@ -2371,7 +2376,7 @@ b{
   .levels-wrapper{
     width: 360px;
   }
-  .level, .level:nth-child(7n){
+  .level, .levels__property .level:nth-child(7n){
     margin-right: 45px;
   }
 
@@ -2385,7 +2390,7 @@ b{
 }
 
 @media (orientation: portrait) {
-  .level:nth-child(3n){
+  .levels__property .level:nth-child(3n){
     margin-right: 0;
   }
 }
@@ -2715,4 +2720,268 @@ b{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.eventIcon-wrapper{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  //top: 10px;
+  transform: translateY(-50%);
+
+  width: 45px;
+  height: 45px;
+  background: url(../assets/eventIcon.png) center center no-repeat, rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background-size: 29%;
+
+  //box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+
+  cursor: pointer;
+
+  &::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    transform: scale(0.9) translateZ(0);
+    filter: blur(15px);
+    background: linear-gradient(
+                    to left,
+                    #ff5770,
+                    #e4428d,
+                    #c42da8,
+                    #9e16c3,
+                    #6501de,
+                    #9e16c3,
+                    #c42da8,
+                    #e4428d,
+                    #ff5770
+    );
+    background-size: 200% 200%;
+    animation: animateGlow 1.25s linear infinite;
+  }
+}
+.eventIcon{
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  background: url(../assets/eventIcon.png) center center no-repeat, rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background-size: 28%;
+}
+
+@keyframes animateGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+.eventGameLocation{
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 !important;
+  overflow: hidden;
+}
+.eventGameLocation .levels-wrapper{
+  position: relative;
+  height: 70%;
+  width: 95%;
+  overflow-y: auto;
+  max-width: 430px;
+  max-height: 250px;
+
+  margin-left: 20px;
+}
+.eventGameLocation .sideHorizontalMenu{
+  position: static
+}
+.eventProperty{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 1000px) {
+  .eventGameLocation .levels-wrapper{
+    max-width: 700px;
+    max-height: 368px;
+  }
+}
+
+@media (orientation: portrait), (min-width: 1000px) and (min-height: 650px) {
+  .eventGameLocation{
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+}
+@media (min-width: 1000px) and (min-height: 650px) {
+  .eventGameLocation .sideHorizontalMenu{
+    position: absolute;
+  }
+  .eventGameLocation .levels-wrapper{
+    margin: 0;
+  }
+}
+
+@media (min-width: 1000px){
+  .eventIcon-wrapper{
+    width: 75px;
+    height: 75px;
+  }
+}
+@media (orientation: portrait){
+  .eventGameLocation .sideHorizontalMenu{
+    transform: none;
+  }
+  .eventGameLocation .levels-wrapper{
+    max-width: 260px;
+    max-height: 318px;
+    margin: 0 0 0 30px;
+    padding: 10px 0;
+  }
+  .eventIcon-wrapper{
+    left: 15px;
+  }
+}
+@media (orientation: portrait) and (min-height: 720px) {
+  .eventGameLocation .levels-wrapper{
+    max-width: 320px;
+    margin: 0 0 0 35px;
+    max-height: 372px;
+  }
+}
+
+.uniqueID{
+  font-size: 1.25rem;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -25px;
+  color: black;
+  background-color: white;
+
+  width: 90%;
+  margin: 0 !important;
+}
+.eventRules__wrapper{
+  overflow-y: auto;
+}
+.eventRules .levelClosedText{
+  margin: 0 auto;
+  overflow-y: auto;
+  font-size: 1.8rem;
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .eventRules .levelClosedText{
+    height: 250px;
+  }
+}
+.eventRules .levelClosedText::-webkit-scrollbar-thumb{
+  background-color: #C05252;
+}
+.eventRules .rules__goBg{
+  margin: 5px auto;
+}
+.eventLocationText {
+  font-size: 1.8rem;
+}
+@media (max-height: 340px), (max-width: 340px) {
+  .eventRules .levelClosedText{
+    font-size: 1.7rem;
+  }
+  .uniqueID{
+    font-size: 1.15rem;
+  }
+  .eventLocationText {
+    font-size: 1.65rem;
+  }
+}
+@media (max-height: 340px) {
+  .eventRules .levelClosedText{
+    height: 230px;
+  }
+}
+@media (min-height: 550px) {
+  .eventRules .levelClosedText{
+    //margin: 0 auto;
+    //overflow-y: auto;
+    //height: 400px;
+  }
+}
+@media (min-width: 1000px) {
+  .eventLocationText {
+    font-size: 2rem;
+  }
+  .uniqueID{
+    bottom: -40px;
+    font-size: 1.6rem;
+  }
+  .eventRules{
+    width: 550px;
+  }
+  .eventRules .levelClosedText{
+    font-size: 2rem;
+  }
+}
+.eventLocationText ul{
+  margin: 0;
+}
+.fullRules{
+  text-align: center;
+  cursor: pointer;
+}
+.fullRules a{
+  color: #898989 !important;
+  font-size: 1.5rem;
+  text-decoration: underline;
+}
+.prizesText, .prizeText{
+  color: #c05251;
+}
+.prizesText{
+  text-decoration: underline;
+  cursor: pointer;
+}
+.levelClosedText ul{
+  margin: 0 0 10px 0;
+}
+.eventRules .rules__goBg{
+  background-color: #c05251 !important;
+}
+.levelClosedText h2, .levelClosedText p{
+  text-align: center;
+}
+.levelClosedText p{
+  margin: 10px;
+}
+.eventReceive{
+  font-weight: bold;
+  margin: 10px 0;
+}
+.levelClosedText a{
+  text-decoration: none;
+}
+.eventDivWithMargins{
+  margin: 10px 0;
+}
+.promoCode, .mailPrize{
+  user-select: text;
 }

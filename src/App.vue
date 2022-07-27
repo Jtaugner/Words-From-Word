@@ -17,6 +17,9 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
+					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian">
+						<div class="eventIcon"></div>
+					</div>
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -120,7 +123,9 @@
 					@click="openGameLocation(loc)"
 				>
 					<div class="popUp__locationPicture">
-						<div class="popUp__locationStars">{{getLocationAllStarsByLocation(loc)}}/60</div>
+						<div class="popUp__locationStars">
+							{{getLocationAllStarsByLocation(loc)}}/{{loc === 'event' ? eventLocationWordsAMount*3 : 60}}
+						</div>
 					</div>
 					<div class="popUp__locationName" v-html="getLocationName(loc)"></div>
 				</div>
@@ -284,16 +289,49 @@
 		<!--Блок с локацией-->
 		<div
 			class="location"
-			:class="['gameLocation-' + gameLocation, levelsAnim ? 'levelsAnim' : '']"
+			:class="[
+				'gameLocation-' + gameLocation,
+				 levelsAnim ? 'levelsAnim' : '',
+				 eventLocation ? 'eventGameLocation' : ''
+				 ]"
 			v-show="showGameLocation"
 		>
 			<div class="levelsTop">
 				<div class="levelsTop__allStars" :class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']">
-					{{locationAllStars}}/60
+					{{locationAllStars}}/{{eventLocation ? eventLocationWordsAMount*3 : 60}}
 				</div>
 			</div>
 
+				<div
+					class="eventProperty"
+					v-if="eventLocation"
+				>
+					<div
+						class="levels-wrapper"
+					>
+						<div
+							class="level"
+							v-for="level in eventLocationWordsAMount"
+							:key="'event' + level"
+							@click="getLocationLevel(level-1)"
+							:class="getLocationLevelClasses(level)"
+						>
 
+
+
+
+							<div :class="level > 99 ? 'level__big' : ''">{{level}}</div>
+							<div class="newElement" v-if="lastLocationLevel === level"><div class="newElement__circle"></div></div>
+							<div class="menu__level_stars">
+
+								<div class="level_star" v-for="star in 3" :key="star"
+									 :class="star <= locationStars[level-1] ? 'menu-star' : ''"></div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
 
 				<div
 					class="level location__level"
@@ -302,6 +340,7 @@
 					:class="getLocationLevelClasses(level)"
 					:style="getLocationStyles(level)"
 					@click="getLocationLevel(level-1)"
+					v-else
 				>
 					<div>{{level}}</div>
 					<div class="newElement" v-if="lastLocationLevel === level"><div class="newElement__circle"></div></div>
@@ -317,11 +356,21 @@
 				<div class="menu__button-back menuItem" @click="backMenu">
 					<svg class="svgIcon" width="21" height="21" viewBox="0 0 21 21" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.6255 0.700921C9.6294 0.704508 9.6354 0.704507 9.6393 0.700921L10.0169 0.353633C10.2342 0.153729 10.5685 0.153729 10.7858 0.353633L19.786 8.63225C20.2443 9.05379 20.2443 9.77702 19.786 10.1986C19.5266 10.4372 19.1783 10.5238 18.8543 10.4584V19C18.8543 20.1046 17.9589 21 16.8543 21H13V15.5C13 14.1193 11.8807 13 10.5 13C9.11927 13 7.99999 14.1193 7.99999 15.5V21H3.80269C2.69812 21 1.80269 20.1046 1.80269 19V10.5808C1.47324 10.6538 1.11605 10.5686 0.851402 10.3251C0.39312 9.9036 0.39312 9.18037 0.851402 8.75883L9.46756 0.833511L9.4759 0.82223L9.4779 0.824005L9.61171 0.700921C9.61561 0.697335 9.6216 0.697335 9.6255 0.700921Z"/></svg>
 				</div>
-				<div class="switchShowLocation menuItem" @click="toggleShowLocations" v-if="!notRussian">
+				<div v-if="!eventLocation" class="switchShowLocation menuItem" @click="toggleShowLocations">
 					<svg class="svgIcon" width="28" height="22" viewBox="0 0 28 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M1.73723 16.9893V3.60855H0.715328C0.143066 3.60855 0 4.1575 0 4.43198V21.0036C0 22.074 1.0219 22.0672 1.53285 21.9299C3.9854 20.9418 9.50365 21.381 11.9562 21.7241C9.50365 19.3567 5.51825 19.3567 3.88321 19.1509C2.57518 18.9862 1.90754 17.6412 1.73723 16.9893Z"/><path d="M3.37226 0.932388C3.45401 0.108954 4.29197 -0.0282848 4.70073 0.00602489C10.1781 -0.158664 12.8418 3.0939 13.4891 4.74077L13.3869 20.9007C9.81022 17.2981 4.70073 17.504 4.18978 17.504C3.78102 17.504 3.47445 16.8864 3.37226 16.5776V0.932388Z"/><path d="M26.2628 16.9954V3.61458H27.2847C27.8569 3.61458 28 4.16353 28 4.43801V21.0096C28 22.0801 26.9781 22.0732 26.4672 21.936C24.0146 20.9479 18.4963 21.387 16.0438 21.7301C18.4963 19.3627 22.4818 19.3627 24.1168 19.1569C25.4248 18.9922 26.0925 17.6473 26.2628 16.9954Z"/><path d="M24.6277 0.938419C24.546 0.114985 23.708 -0.0222538 23.2993 0.0120559C17.8219 -0.152633 15.1582 3.09993 14.5109 4.7468L14.6131 20.9067C18.1898 17.3042 23.2993 17.51 23.8102 17.51C24.219 17.51 24.5255 16.8925 24.6277 16.5837V0.938419Z"/></svg>
 				</div>
-				<div class="switchShop menuItem" @click="toggleShop()">
+				<div v-if="eventLocation" class="leaderBoard menuItem" @click="toggleLeaderBoard(true)">
+					<svg class="svgIcon" width="22" height="18" viewBox="0 0 22 18" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M5.80626 0.657311C5.80626 0.294288 6.10055 0 6.46357 0H14.601C14.964 0 15.2583 0.294288 15.2583 0.657311V16.7614C15.2583 17.1245 14.964 17.4188 14.601 17.4188H6.46357C6.10055 17.4188 5.80626 17.1245 5.80626 16.7614V0.657311Z"/><path d="M16.8786 9.70424C16.8786 9.34122 17.1729 9.04693 17.5359 9.04693H20.9473C21.3104 9.04693 21.6047 9.34122 21.6047 9.70424V16.7614C21.6047 17.1244 21.3104 17.4187 20.9473 17.4187H17.5359C17.1729 17.4187 16.8786 17.1244 16.8786 16.7614V9.70424Z"/><path d="M0 5.38332C0 5.0203 0.294288 4.72601 0.657311 4.72601H3.52859C3.89161 4.72601 4.1859 5.0203 4.1859 5.38332V16.7614C4.1859 17.1245 3.89161 17.4187 3.52859 17.4187H0.657312C0.294289 17.4187 0 17.1245 0 16.7614V5.38332Z"/><path d="M10.7837 1.77475L11.3749 3.59415H13.2879L11.7403 4.71861L12.3314 6.53801L10.7837 5.41356L9.23605 6.53801L9.82721 4.71861L8.27954 3.59415H10.1926L10.7837 1.77475Z" fill="white"/></svg>
+				</div>
+				<div v-if="!eventLocation" class="switchShop menuItem" @click="toggleShop()">
 					<svg class="svgIcon" width="22" height="17" viewBox="0 0 22 17" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M5.33709 7.2C8.28468 7.2 10.6742 5.58823 10.6742 3.6C10.6742 1.61177 8.28468 0 5.33709 0C2.3895 0 0 1.61177 0 3.6C0 5.58823 2.3895 7.2 5.33709 7.2Z" /><path d="M5.33709 8.6C7.77026 8.6 9.82314 7.50171 10.4656 6C10.6014 6.31749 10.6742 6.65301 10.6742 7C10.6742 8.98822 8.28468 10.6 5.33709 10.6C2.3895 10.6 0 8.98822 0 7C0 6.65301 0.0727786 6.31749 0.208601 6C0.851035 7.50171 2.90391 8.6 5.33709 8.6Z" /><path d="M10.4656 9.2C9.82314 10.7017 7.77026 11.8 5.33709 11.8C2.90391 11.8 0.851035 10.7017 0.208601 9.2C0.0727786 9.51749 0 9.85301 0 10.2C0 12.1882 2.3895 13.8 5.33709 13.8C8.28468 13.8 10.6742 12.1882 10.6742 10.2C10.6742 9.85301 10.6014 9.51749 10.4656 9.2Z" /><path d="M5.33709 15C7.77026 15 9.82314 13.9017 10.4656 12.4C10.6014 12.7175 10.6742 13.053 10.6742 13.4C10.6742 15.3882 8.28468 17 5.33709 17C2.3895 17 0 15.3882 0 13.4C0 13.053 0.0727786 12.7175 0.208601 12.4C0.851035 13.9017 2.90391 15 5.33709 15Z" /><path d="M11.4649 14.2199C12.015 15.8131 14.1335 17 16.6629 17C19.6105 17 22 15.3882 22 13.4C22 13.053 21.9272 12.7175 21.7914 12.4C21.149 13.9017 19.0961 15 16.6629 15C14.43 15 12.5174 14.0751 11.7212 12.7622V12.8C11.7212 13.3 11.6305 13.7786 11.4649 14.2199Z" /><path d="M11.7212 11.5622C12.5174 12.8751 14.43 13.8 16.6629 13.8C19.6105 13.8 22 12.1882 22 10.2C22 9.85301 21.9272 9.51749 21.7914 9.2C21.149 10.7017 19.0961 11.8 16.6629 11.8C14.43 11.8 12.5174 10.8751 11.7212 9.56225V11.5622Z" /><path d="M11.7212 8.16225C12.5174 9.47508 14.43 10.4 16.6629 10.4C19.6105 10.4 22 8.78823 22 6.8C22 4.81177 19.6105 3.2 16.6629 3.2C14.1861 3.2 12.1034 4.33802 11.5012 5.88115C11.6437 6.29409 11.7212 6.7379 11.7212 7.2V8.16225Z" /></svg>
+				</div>
+				<div v-if="eventLocation" class="menuItem" @click="toggleRules()">
+					<svg class="svgIcon" width="16" height="27" viewBox="0 0 16 27" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M5.375 18.8885V18.6591C5.3911 17.1619 5.54001 15.9706 5.82173 15.0852C6.11151 14.1998 6.52202 13.4834 7.05327 12.9361C7.58452 12.3887 8.22443 11.8897 8.97301 11.4389C9.45597 11.133 9.89063 10.791 10.277 10.4126C10.6634 10.0343 10.9692 9.59967 11.1946 9.10866C11.42 8.61766 11.5327 8.07434 11.5327 7.47869C11.5327 6.76231 11.3636 6.14252 11.0256 5.61932C10.6875 5.09612 10.2367 4.69365 9.6733 4.41193C9.1179 4.12216 8.49811 3.97727 7.81392 3.97727C7.19413 3.97727 6.60251 4.10606 6.03906 4.36364C5.47562 4.62121 5.00876 5.02367 4.63849 5.57102C4.26823 6.11032 4.05492 6.80658 3.99858 7.6598H0.328125C0.38447 6.21094 0.75071 4.98745 1.42685 3.98935C2.10298 2.98319 2.99645 2.22254 4.10724 1.70738C5.22609 1.19223 6.46165 0.934658 7.81392 0.934658C9.29498 0.934658 10.5909 1.21236 11.7017 1.76776C12.8125 2.3151 13.6738 3.08381 14.2855 4.07386C14.9053 5.05587 15.2152 6.20289 15.2152 7.51491C15.2152 8.41643 15.0743 9.2294 14.7926 9.95383C14.5109 10.6702 14.1084 11.3101 13.5852 11.8736C13.0701 12.437 12.4503 12.9361 11.7259 13.3707C11.0417 13.7973 10.4863 14.2401 10.0597 14.6989C9.6411 15.1577 9.33523 15.701 9.14205 16.3288C8.94886 16.9567 8.84422 17.7334 8.82812 18.6591V18.8885H5.375ZM7.19815 26.2294C6.53812 26.2294 5.97064 25.996 5.49574 25.5291C5.02083 25.0542 4.78338 24.4827 4.78338 23.8146C4.78338 23.1546 5.02083 22.5911 5.49574 22.1243C5.97064 21.6494 6.53812 21.4119 7.19815 21.4119C7.85014 21.4119 8.41359 21.6494 8.88849 22.1243C9.37145 22.5911 9.61293 23.1546 9.61293 23.8146C9.61293 24.2573 9.50024 24.6638 9.27486 25.0341C9.05753 25.3963 8.76776 25.6861 8.40554 25.9034C8.04332 26.1207 7.64086 26.2294 7.19815 26.2294Z"/></svg>
+				</div>
+				<div v-if="eventLocation" class="menuItem" @click="toggleIsEventResult()">
+					<<svg class="svgIcon" width="24" height="29" viewBox="0 0 24 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.9375 16.7257C12.9375 16.2738 13.3153 15.9074 13.7812 15.9074H21.75C22.216 15.9074 22.5937 16.2738 22.5937 16.7257V28.1817C22.5937 28.6336 22.216 29 21.75 29H13.7812C13.3153 29 12.9375 28.6336 12.9375 28.1817V16.7257Z" /><path d="M12.9375 10.764C12.9375 10.3121 13.3153 9.94572 13.7812 9.94572H23.1562C23.6222 9.94572 24 10.3121 24 10.764V14.219C24 14.6709 23.6222 15.0373 23.1562 15.0373H13.7812C13.3153 15.0373 12.9375 14.6709 12.9375 14.219V10.764Z" /><path d="M14.4375 1.99016C13.6875 2.863 12.5 6.08159 12 7.58178V9.4002C21.1875 9.4002 22.5 6.08159 22.5469 4.94509C22.5937 3.80858 20.625 0.990037 18.6562 0.217211C16.6875 -0.555614 15.375 0.899116 14.4375 1.99016Z" /><path d="M11.0625 16.7257C11.0625 16.2738 10.6847 15.9074 10.2187 15.9074H2.25C1.78401 15.9074 1.40625 16.2738 1.40625 16.7257V28.1817C1.40625 28.6336 1.78401 29 2.25 29H10.2187C10.6847 29 11.0625 28.6336 11.0625 28.1817V16.7257Z" /><path d="M11.0625 10.764C11.0625 10.3121 10.6847 9.94572 10.2187 9.94572H0.84375C0.37776 9.94572 0 10.3121 0 10.764V14.219C0 14.6709 0.37776 15.0373 0.84375 15.0373H10.2187C10.6847 15.0373 11.0625 14.6709 11.0625 14.219V10.764Z" /><path d="M9.5625 1.99016C10.3125 2.863 11.5 6.08159 12 7.58178V9.4002C2.8125 9.4002 1.5 6.08159 1.45312 4.94509C1.40625 3.80858 3.375 0.990037 5.34375 0.217211C7.3125 -0.555614 8.625 0.899116 9.5625 1.99016Z" /></svg>
+
 				</div>
 			</div>
 
@@ -504,8 +553,7 @@
 								class="lbInGame__player"
 								v-for="player in lbInGame"
 								:class="[
-									playerRait && playerRait.player.uniqueID === player.player.uniqueID ? 'leaderBoardInfo_my' : '',
-								 	playerRait && player.rank === 1 && (playerRait.rank !== player.rank) ? 'dontShowFirstRank' : ''
+									playerRait && playerRait.player.uniqueID === player.player.uniqueID ? 'leaderBoardInfo_my' : ''
 								 ]"
 								:style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat, whitesmoke'}"
 							>
@@ -574,6 +622,19 @@
 				</h2>
 				<div class="word-definition">
 					{{textWhyBadWord}}
+				</div>
+
+			</div>
+
+			<div class="rules-blackout" v-show="isInfoAboutTips" @click="toggleIsInfoAboutTips"></div>
+
+			<div class="rules whyBadWord" v-show="isInfoAboutTips">
+				<cross-vue @click.native="toggleIsInfoAboutTips()"></cross-vue>
+				<h2 class="rules__menu">
+					Уведомление
+				</h2>
+				<div class="word-definition">
+					На "Фестивале Слов" подсказки отключены, вводить слова можно только вручную
 				</div>
 
 			</div>
@@ -822,15 +883,16 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Уважаемые игроки!' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Фестиваль слов' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Новая локация "Кино и мультфильмы" ждёт вас! Удачной игры!
-				<div class="rules__goBg" @click="goToGetLocations()">К локациям</div>
+				Начался Фестиваль Слов! Проходите уровни, зарабатывайте очки и боритесь за подарки!
+				Главный приз -  Яндекс.Станция!
+				<div class="rules__goBg" @click="getEventLocation()">Перейти</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -853,38 +915,149 @@
 		<div class="rules" v-show="rules">
 			<cross-vue @click.native="toggleRules()"></cross-vue>
 			<h2 class="rules__menu">
-				{{notRussian ? 'Rules' : 'Правила'}}
+				{{notRussian ? 'Rules' : eventLocation ? 'Фестиваль Слов' : 'Правила'}}
 			</h2>
-			<div class="rules__text">
-				<p>
+
+			<template v-if="eventLocation">
+				<div class="	eventLocationText">
+					Вместе с платформой Яндекс.Игры мы проводим розыгрыш
+					<span @click="toggleIsEventResult" class="prizesText">500 призов</span>, главный из которых - умная колонка «Яндекс Станция Мини» 🏆<br>
+					Для участия в розыгрыше необходимо:
+					<ul>
+						<li>
+							Авторизоваться на платформе Яндекс.Игры 🎮
+						</li>
+						<li>
+							Проходить специальные уровни Фестиваля Слов ⚡
+						</li>
+						<li>
+							Получать очки за отгаданные слова (слово из 2 букв приносит 2 очка, из 5 букв - 5 очков) 🎁
+						</li>
+					</ul>
+					<p class="fullRules"><a href="https://disk.yandex.ru/i/KBsfQXcVNBpCbw" target="_blank">Полные условия</a></p>
+				</div>
+
+			</template>
+			<template v-else>
+				<div class="rules__text">
+					<p>
+						{{notRussian ?
+						'Welcome to the game "Words from Words"! You are given the word. Create as many different words as possible from its letters. You can create only common nouns.' :
+						'Добро пожаловать в игру "Слова из слова"! Цель игры - составлять всевозможные слова из выданных вам слов. Создавать можно только нарицательные существительные в единственном числе. Нажмите на букву внизу, чтобы добавить или убрать эту букву из слова. Когда слово будет набрано, нажмите на галочку.'
+						}}
+
+					</p>
+					<img v-bind:src="!notRussian ? 'rules1.png' : 'rules1EN.png'" alt="Пример слова">
+					<p>
+						{{notRussian ?
+						'Use hints to add words that you can\'t find. Hints can be obtained by earning stars. Level progress is 33% - 1 star, 66% - 2 stars, 100% -3 stars. Get at least 1 star and click on the arrow in the upper right corner to go to the next level.' :
+						'Если у вас закончились идеи, используйте подсказку (она нарисована как лампочка). Подсказки можно получить за звёзды. Уровень пройден на 33% - 1 звезда, 66% - 2 звезды, 100% - 3 звезды. Чтобы перейти на следующий уровень, получите хотя бы 1 звезду и нажмите на стрелку в правом верхнем углу.'
+						}}
+
+					</p>
+					<img v-bind:src="!notRussian ? 'rules2.png' : 'rules2EN.png'" alt="Подсказка">
+					<p v-if="!notRussian">
+						Примечание: буква "е" и "ё" взаимозаменяемы по техническим причинам.
+					</p>
 					{{notRussian ?
-					'Welcome to the game "Words from Words"! You are given the word. Create as many different words as possible from its letters. You can create only common nouns.' :
-					'Добро пожаловать в игру "Слова из слова"! Цель игры - составлять всевозможные слова из выданных вам слов. Создавать можно только нарицательные существительные в единственном числе. Нажмите на букву внизу, чтобы добавить или убрать эту букву из слова. Когда слово будет набрано, нажмите на галочку.'
+					'Click on a word to get its definition.' :
+					'Нажатие на слово позволит вам узнать его значение. Словарь игры постоянно пополняется. Если вы обнаружили лишнее или недостающее слово, пожалуйста, сообщите нам в'
 					}}
+					<a href="https://vk.com/jaugr"  v-if="!notRussian" target="_blank" rel="noopener noreferrer" class="settings__text" @click="()=>{sendParams({'vk-fromRules': 1})}"
+					>
+						группу ВКонтакте.
+					</a>
+					{{notRussian ? 'We also inform you that the game is still under development. Have a good game!' : 'Удачной игры!'}}
 
-				</p>
-				<img v-bind:src="!notRussian ? 'rules1.png' : 'rules1EN.png'" alt="Пример слова">
-				<p>
-					{{notRussian ?
-					'Use hints to add words that you can\'t find. Hints can be obtained by earning stars. Level progress is 33% - 1 star, 66% - 2 stars, 100% -3 stars. Get at least 1 star and click on the arrow in the upper right corner to go to the next level.' :
-					'Если у вас закончились идеи, используйте подсказку (она нарисована как лампочка). Подсказки можно получить за звёзды. Уровень пройден на 33% - 1 звезда, 66% - 2 звезды, 100% - 3 звезды. Чтобы перейти на следующий уровень, получите хотя бы 1 звезду и нажмите на стрелку в правом верхнем углу.'
-					}}
+				</div>
+			</template>
 
-				</p>
-				<img v-bind:src="!notRussian ? 'rules2.png' : 'rules2EN.png'" alt="Подсказка">
-				<p v-if="!notRussian">
-					Примечание: буква "е" и "ё" взаимозаменяемы по техническим причинам.
-				</p>
-				{{notRussian ?
-				'Click on a word to get its definition.' :
-				'Нажатие на слово позволит вам узнать его значение. Словарь игры постоянно пополняется. Если вы обнаружили лишнее или недостающее слово, пожалуйста, сообщите нам в'
-				}}
-				<a href="https://vk.com/jaugr"  v-if="!notRussian" target="_blank" rel="noopener noreferrer" class="settings__text" @click="()=>{sendParams({'vk-fromRules': 1})}"
-				>
-					группу ВКонтакте.
-				</a>
-				{{notRussian ? 'We also inform you that the game is still under development. Have a good game!' : 'Удачной игры!'}}
+		</div>
 
+
+		<div class="rules-blackout" v-if="isEventResult" @click="toggleIsEventResult"></div>
+
+		<div class="rules eventRules" v-if="isEventResult">
+			<cross-vue @click.native="toggleIsEventResult()" ></cross-vue>
+			<h2 class="rules__menu">
+				{{notShowResult ? 'Призы' : 'Результаты'}}
+			</h2>
+			<div class="levelClosedText">
+				<template v-if="notShowResult">
+					Список призов:
+					<ul>
+						<li>Первое место - умная колонка «Яндекс Станция Мини»</li>
+						<li>Второе место - промокод в Яндекс Маркет на 3000 ₽</li>
+						<li>Третье место - промокод в Яндекс Маркет на 2000 ₽</li>
+						<li>4-50 места - промокод в Яндекс Маркет на 300 ₽</li>
+						<li>51-500 места - 50 Янов на игровой баланс платформы Яндекс.Игры</li>
+					</ul>
+
+					Результаты Фестиваля Слов будут опубликованы 27 июля после 12:00 по МСК!
+				</template>
+				<template v-else-if="isResultLoading">
+					Идёт загрузка результатов...
+				</template>
+				<template v-if="!notShowResult && !isResultLoading">
+
+					<template v-if="eventResult >= 1 && eventResult <= 3">
+						<h2>Поздравляем!</h2>
+						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> на Фестивале Слов!</p>
+						<div>Ваш приз: 🏆 {{getPrize()}} 🏆</div>
+					</template>
+					<template v-if="eventResult === 4">
+						<h2>Спасибо за участие!</h2>
+						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> на Фестивале Слов!</p>
+						<div class="eventDivWithMargins">К сожалению, вы не заняли одно из призовых мест.</div>
+						<div class="eventDivWithMargins">Но без подарков не останетесь, ведь 35 дополнительных подсказок уже на вашем счету!</div>
+					</template>
+
+					<template v-if="eventResult === 1">
+						<div class="eventReceive">Для его получения вам необходимо</div>
+						<ul>
+							<li>Сделать скриншот этого сообщения</li>
+							<li class="mailPrize">
+								Отправить скриншот на почту
+								<a class="prizesText" href="mailto:yndx-games-prizes@yandex.ru">yndx-games-prizes@yandex.ru</a>
+							</li>
+						</ul>
+						А дополнительные 100 подсказок уже на вашем счету!
+					</template>
+					<template v-if="eventResult === 2">
+						<div class="eventReceive promoCode">Ваш промокод: {{getPromoCode()}}</div>
+						А дополнительные 75 подсказок уже на вашем счету!
+					</template>
+					<template v-if="eventResult === 3">
+						<div class="eventDivWithMargins">Яны автоматически зачислятся на ваш баланс Яндекс.Игр через некоторое время.</div>
+						<div class="eventDivWithMargins">А дополнительные 50 подсказок уже на вашем счету!</div>
+					</template>
+					<template v-if="eventResult === 1 || eventResult === 2">
+						<a class="rules__goBg" href="mailto:yndx-games-prizes@yandex.ru" v-if="eventResult === 1">Связаться</a>
+						<div class="rules__goBg" @click="copyPromoCode()" v-if="eventResult === 2">Скопировать</div>
+						<p class="uniqueID">{{playerInfo.player.uniqueID}}</p>
+					</template>
+					<template v-if="eventResult === 0">
+						К сожалению, вы не участвовали в Фестивале Слов или не были авторизованы
+					</template>
+
+
+				</template>
+
+			</div>
+
+
+		</div>
+
+		<div class="rules-blackout" v-if="isInfoAboutClosedEvent" @click="toggleInfoAboutClosedEvent"></div>
+
+		<div class="rules" v-if="isInfoAboutClosedEvent">
+			<cross-vue @click.native="toggleInfoAboutClosedEvent()" ></cross-vue>
+			<h2 class="rules__menu">
+				Фестиваль завершён
+			</h2>
+			<div class="levelClosedText">
+				Начисление очков в Фестивале Слов завершено. Теперь вы можете играть только без зачёта очков в рейтинг.
+				Результаты фестиваля вы сможете увидеть 27 июля после 12:00 по МСК! Спасибо за участие!
 			</div>
 
 		</div>
@@ -1330,7 +1503,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-25";
+const lastVersion = "ver-27";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1397,10 +1570,10 @@ function setToStorage(name, val) {
 		if(name === 'allDoneWords'){
 			if(notRussianGame){
 				localStorage.setItem('allDoneWordsEN', val);
-				localStorage.setItem('timeEN', getSec() );
+				// localStorage.setItem('timeEN', getSec() );
 				return;
 			}else{
-				localStorage.setItem('time', getSec() );
+				// localStorage.setItem('time', getSec() );
 			}
 		}else if(name === 'tips' && notRussianGame){
 			localStorage.setItem('tipsEN', val);
@@ -1428,6 +1601,9 @@ let portraitAdviceAmount = getFromStorage('portraitAdviceAmount');
 let isLvlFiveHintDone = getFromStorage('isLvlFiveHintDone');
 let savedMyGame = getFromStorage('savedMyGame');
 let infoAboutMyGame = getFromStorage('infoAboutMyGame');
+let infoAboutClosedEvent = !!getFromStorage('infoAboutClosedEvent');
+let infoAboutEvent = !!getFromStorage('infoAboutEvent');
+let gotGift = !!getFromStorage('gotGift');
 if(savedMyGame){
 	try{
 		savedMyGame = JSON.parse(savedMyGame);
@@ -1509,7 +1685,13 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 
 		if(words === 1){
 			if(isLocationWords){
-				allDoneWords[k] = locationWords.wordsFromWords[k];
+				if(locationWords.wordsFromWords[k]){
+					allDoneWords[k] = locationWords.wordsFromWords[k];
+				}else{
+					delete allDoneWords[keys[i]];
+				}
+
+
 			}else{
 				allDoneWords[k] = wordsFromWords[k];
 			}
@@ -1542,15 +1724,41 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 	}
 	return allDoneWords;
 }
+
+
+let eventProgress = getFromStorage('eventProgress');
+if(eventProgress){
+	eventProgress = fixDoneWords(JSON.parse(eventProgress), true);
+}else{
+	eventProgress = {};
+}
+
+function getEventScore(eventProgress){
+	let score = 0;
+	Object.keys(eventProgress).forEach((key) => {
+		if(eventProgress[key] === 1){
+			if(locationWords.wordsFromWords[key]){
+				for(let i = 0; i < locationWords.wordsFromWords[key].length; i++){
+					score += locationWords.wordsFromWords[key].length;
+				}
+			}
+		}else{
+			for(let i = 0; i < eventProgress[key].length; i++){
+				score += eventProgress[key][i].length;
+			}
+		}
+	})
+	return score;
+}
+let thatTips = 15;
 if(allDoneWords){
 	allDoneWords = fixDoneWords(JSON.parse(allDoneWords));
-	console.log('dsd', allDoneWords);
 	tips = Number(tips);
+	thatTips = tips;
 	if(!Number.isInteger(tips)) tips = 15;
 	sounds = sounds === 'true';
 	isLastSounds = isLastSounds === 'true';
 	setLoc();
-	console.log(allDoneWords);
 	isGameAdvShow = !isGameAdvShow;
 }else{
 
@@ -1570,9 +1778,7 @@ if(allDoneWords){
 
 }
 if(locationDoneWords){
-	console.log(JSON.parse(locationDoneWords));
 	locationDoneWords = fixDoneWords(JSON.parse(locationDoneWords), true);
-	console.log(locationDoneWords);
 }else{
 	locationDoneWords = {};
 }
@@ -1618,10 +1824,11 @@ function getSec(){
 	let date = new Date();
 	return date.getTime()
 }
-
+let recentEventState = JSON.stringify(eventProgress);
 function setState(isNow) {
 	const newData = JSON.stringify(PLAYESTATE);
-	if(recentState === newData) return;
+	const newData2 = JSON.stringify(eventProgress);
+	if(recentState === newData && recentEventState === newData2 && !isNow) return;
 	console.log('setState');
 	recentState = newData;
 
@@ -1631,38 +1838,31 @@ function setState(isNow) {
 			console.log(PLAYESTATE);
 			const newState = {
 				allDoneWords: russianProgressSave,
-				allDoneWordsEN: compressData(PLAYESTATE.allDoneWords),
-				time: getSec()
+				allDoneWordsEN: compressData(PLAYESTATE.allDoneWords)
 			};
+			newState.gotGift = gotGift;
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
+			if(eventProgress) newState.eventProgress = compressData(eventProgress, true)
 			playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 
 
 		}else{
 			const newState = {
-				allDoneWords: compressData(PLAYESTATE.allDoneWords),
-				time: getSec()
+				allDoneWords: compressData(PLAYESTATE.allDoneWords)
 			};
-
+			newState.gotGift = gotGift;
 			if(englishProgress) newState.allDoneWordsEN = englishProgress;
-			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
-			playerGame.setData(newState, false).then(() => {
-			}).catch((error) => {
+			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
+			if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
+			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
 				try{
 					if(error.toString().includes('large')){
 						params({'cantSave-bigData-first': lastLevel});
 					}
 					params({'cantSave-first': error});
+					console.log(error)
 				}catch(ignored){}
-				playerGame.setData(newState, true).then(() => {
-				}).catch((ignored) => {
-					let state = {allDoneWords: replaceLevelsToOne(PLAYESTATE.allDoneWords), time: getSec()};
-					if(englishProgress) state.allDoneWordsEN = englishProgress;
-					if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
-					playerGame.setData(state, true).then(() => {
-					}).catch(() => {
-					});
-				})
+				// playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 			});
 		}
 
@@ -1673,7 +1873,6 @@ function setStats() {
 	console.log('setStats');
 	const newData = JSON.stringify(PLAYERSTATS);
 	if(recentStats === newData) return;
-	console.log('setStats - done');
 	recentStats = newData;
 	if(playerGame){
 		if(notRussianGame){
@@ -1702,21 +1901,28 @@ function saveAllData(isNow){
 	setStats(isNow);
 }
 
-window.onblur = () => saveAllData(true);
-window.onunload = () => saveAllData(true);
-window.onunload = () => saveAllData(true);
-window.onpagehide = () => saveAllData(true);
+window.onblur = () => saveAllData();
+window.onunload = () => saveAllData();
+window.onunload = () => saveAllData();
+window.onpagehide = () => saveAllData();
 
 
 
 
-function setLastLevel() {
+function setLastLevel(getLastLevel, words) {
 	for(let i = allWords.length-1; i >= 0 ; i--){
-		if(allDoneWords[allWords[i]].length > 0){
-			console.log('last level, ', i);
-			lastLevel = i;
-			break;
+		if(getLastLevel){
+			if(words[allWords[i]] && words[allWords[i]].length > 0){
+				return i;
+			}
+		}else{
+			if(allDoneWords[allWords[i]] && allDoneWords[allWords[i]].length > 0){
+				console.log('last level, ', i);
+				lastLevel = i;
+				break;
+			}
 		}
+
 	}
 }
 
@@ -1734,12 +1940,20 @@ function getLocationStars(currentLocation){
 	let allWords = locationWords[currentLocation];
 	allWords.forEach((key => {
 		try{
-			if(locationDoneWords[key]){
-				allStars.push(testStar(locationDoneWords[key].length, locationWords.wordsFromWords[key].length));
+			if(currentLocation === 'event'){
+				if(eventProgress[key]){
+					allStars.push(testStar(eventProgress[key].length, locationWords.wordsFromWords[key].length));
+				}else{
+					allStars.push(0);
+				}
 			}else{
-				locationDoneWords[key] = [];
-				allStars.push(0);
+				if(locationDoneWords[key]){
+					allStars.push(testStar(locationDoneWords[key].length, locationWords.wordsFromWords[key].length));
+				}else{
+					allStars.push(0);
+				}
 			}
+
 		}catch(e){}
 	}));
 	return allStars;
@@ -1944,6 +2158,8 @@ function decompressLocationWords(locationDoneWords){
 	return locationDoneWords;
 }
 
+let isChangeTips = true;
+
 function initPlayer(ysdk) {
 	console.log(ysdk);
 	ysdk.getPlayer().then(_player => {
@@ -1969,8 +2185,17 @@ function initPlayer(ysdk) {
 		let change = true;
 		isRules = false;
 
-		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords'], false).then((dataObject) => {
+		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords', 'eventProgress', 'gotGift'], false).then((dataObject) => {
 			console.log(dataObject);
+			if(dataObject.gotGift){
+				gotGift = dataObject.gotGift;
+			}
+			if(dataObject.eventProgress){
+				dataObject.eventProgress = fixDoneWords(decompressLocationWords(dataObject.eventProgress), true);
+				let playerScore = getEventScore(dataObject.eventProgress);
+				let lastScore = getEventScore(eventProgress);
+				if(playerScore > lastScore) eventProgress = dataObject.eventProgress;
+			}
 			if(notRussianGame){
 				allDoneWords = {};
 				PLAYESTATE = {allDoneWords: {}};
@@ -2027,13 +2252,21 @@ function initPlayer(ysdk) {
 
 				let localStars = getAllStars(fixDoneWords(allDoneWords));
 				let serverStars = getAllStars(newData);
-				if(localStars > serverStars){
-					params({'localMoreServerStars': 1});
+				let localLevel = 0;
+				let serverLevel = 0;
+				try{
+					localLevel = setLastLevel(true, fixDoneWords(allDoneWords));
+					serverLevel = setLastLevel(true, newData);
+				}catch(e){
+					console.log(e);
 				}
-				if(dataObject.time && lastProgressUpdate && lastProgressUpdate > dataObject.time && localStars > serverStars){
+				console.log(localStars, serverStars, localLevel, serverLevel);
+				if(localStars > serverStars && localLevel > serverLevel){
 					console.log('CHANGE DATA TO LOCAL');
 					params({'changeDataToLocal': 1});
 					PLAYESTATE = {allDoneWords: allDoneWords};
+					isChangeTips = false;
+					tips = thatTips;
 				}else{
 					allDoneWords = newData;
 					PLAYESTATE = {allDoneWords: newData};
@@ -2062,18 +2295,20 @@ function initPlayer(ysdk) {
 			//Вовзврат прогресса
 			try{
 				let pay = ysdk.environment.payload;
+				if(pay){
 
-				let lvl2 = pay.match(/zlms\d+/);
-				if(lvl2) {
-					lvl2 = Number(lvl2[0].replace('zlms', ''));
-					if(lvl2){
-						let newObj = {};
-						for (let i = 0; i < lvl2; i++) {
-							newObj[allWords[i]] = wordsFromWords[allWords[i]];
+					let lvl2 = pay.match(/zlms\d+/);
+					if(lvl2) {
+						lvl2 = Number(lvl2[0].replace('zlms', ''));
+						if(lvl2){
+							let newObj = {};
+							for (let i = 0; i < lvl2; i++) {
+								newObj[allWords[i]] = wordsFromWords[allWords[i]];
+							}
+							PLAYESTATE.allDoneWords = newObj;
+							allDoneWords = newObj;
+							setState();
 						}
-						PLAYESTATE.allDoneWords = newObj;
-						allDoneWords = newObj;
-						setState();
 					}
 				}
 			}catch(e){
@@ -2103,25 +2338,25 @@ function initPlayer(ysdk) {
 				}else{
 					tips = 10;
 				}
-				if(dataObject.tips) russianTips = dataObject.tips;
+				if(dataObject.tips && isChangeTips) russianTips = dataObject.tips;
 
 				PLAYERSTATS = {'tips': dataObject.tipsEN};
 				recentStats = JSON.stringify(PLAYERSTATS);
 
 			}else if (Number.isInteger(dataObject.tips)) {
-				if(change){
+				if(change && isChangeTips) {
 					tips = dataObject.tips;
 					PLAYERSTATS = {'tips': tips};
 					recentStats = JSON.stringify(PLAYERSTATS);
-
-					if(dataObject.tipsEN) englishTips = dataObject.tipsEN;
-
 					setToStorage('tips', tips);
 				}
+				if (dataObject.tipsEN) englishTips = dataObject.tipsEN;
 			}else{
-				tips = 15;
-				PLAYERSTATS = {'tips': tips};
-				recentStats = JSON.stringify(PLAYERSTATS);
+				if(isChangeTips){
+					tips = 15;
+					PLAYERSTATS = {'tips': tips};
+					recentStats = JSON.stringify(PLAYERSTATS);
+				}
 				if(dataObject.tipsEN) englishTips = dataObject.tipsEN;
 			}
 
@@ -2588,7 +2823,8 @@ let translatedLocationsNames = {
 	eightMarch: 'Восьмое марта',
 	fbv: 'Фрукты, ягоды и овощи',
 	birds: 'Птицы',
-	cinema: 'Кино и мультфильмы'
+	cinema: 'Кино и мультфильмы',
+	event: 'Фестиваль Слов'
 }
 
 // function getBanner(){
@@ -2796,7 +3032,40 @@ function getWordsFromWords(word){
 	}
 	return allWords;
 }
-
+let eventScore = 0;
+let eventWord = 0;
+function testShowResult(){
+	const today = new Date();
+	const day = today.getUTCDate();
+	const hours = today.getUTCHours();
+	const month = today.getUTCMonth();
+	return (day === 27 && hours >= 9) || day > 27 || month > 6;
+}
+function testSendResult(){
+	const today = new Date();
+	const day = today.getUTCDate();
+	const hours = today.getUTCHours();
+	const month = today.getUTCMonth();
+	return (day === 26 && hours >= 21) || day > 26 || month > 6;
+}
+function testFastSendResult(){
+	const today = new Date();
+	const day = today.getUTCDate();
+	const hours = today.getUTCHours();
+	return day === 26 && hours >= 20;
+}
+function copyToClipboard(str) {
+	const el = document.createElement('textarea');
+	el.value = str;
+	el.setAttribute('readonly', '');
+	el.style.position = 'absolute';
+	el.style.left = '-9999px';
+	document.body.appendChild(el);
+	el.select();
+	document.execCommand('copy');
+	document.body.removeChild(el);
+}
+const proms = ['','S9EGUU3H', 'XGKA0D5H', 'S4CSRGZP', '3A8PGG7D', 'EDCSH7GE', 'FD8ZSV9D', '95F3MEV1', 'PZDVMFEW', 'MM4DS8MG', '9448GRNB', '830F80MG', '33K4HXU7', 'ZXR6FW9V', '54TXER60', 'PP8N040R', '2GRCE3FN', '2ZE5R0B8', '4EKPYGRB', 'SVB171SH', 'BKZD4VM8', 'VWK9M33S', '4BGB9193', '212K1XWM', 'SKR30G5Y', 'VRBY4F21', '9P5NH4R8', 'GR83KS6N', '85DXSFHZ', '68ZBWVES', 'SSFKP5NE', 'AZCZYTUW', 'R0X69GMN', 'C9NCPASC', 'YH4CWAG8', 'Z7E2AV97', 'ACUM8PZN', '9993S2DA', 'W9BYGVW2', '3N9SUDHD', 'Z86256RK', 'DXZ4B2U7', 'D0KWF6AA', '7G1W0SFB', '6E2ARNPT', '0EGA98NU', '9FXHNSGG', '2T6RMG8F', 'UB87KFPH', 'T7GS52D5'];
 export default {
 	name: 'App',
 	components: {CrossVue, CrossComponent},
@@ -2867,7 +3136,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['event', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -2889,7 +3158,21 @@ export default {
 			savedMyGame: savedMyGame,
 			levelStars: 0,
 			isInfoAboutCreateGame: false,
-			howManyTips: 10
+			howManyTips: 10,
+			eventLocation: false,
+			eventLocationWordsAMount: locationWords['event'].length,
+			isInfoAboutTips: false,
+			isEventResult: false,
+			eventResult: 0,
+			notShowResult: false,
+			isResultLoading: false,
+			playerInfo: {
+				"player": {
+					"uniqueID": 'dasdasd/Pdsa--BsfSs/jhWk=',
+				},
+				rank: 26
+			},
+			isInfoAboutClosedEvent: false
 		}
 	},
 	computed:{
@@ -2899,7 +3182,6 @@ export default {
 		locationAllStars(){
 			return this.locationStars.reduce((acc, el)=> acc+ el, 0);
 		},
-
 		showNextLoc(){
 			return (this.gameLastLevel+1) >= (this.location + 1) * lvlsOnPage;
 		},
@@ -2934,6 +3216,99 @@ export default {
 		}
 	},
 	methods:{
+		getEventPrize(){
+			if(!gotGift){
+				params({'getGift': this.eventResult});
+				if(this.eventResult === 1){
+					this.tipCount += 100;
+				}else if(this.eventResult === 2){
+					this.tipCount += 75;
+				}else if(this.eventResult === 3){
+					this.tipCount += 50;
+				}else if(this.eventResult === 4){
+					this.tipCount += 35;
+				}
+				setToStorage('tips', this.tipCount);
+				PLAYERSTATS.tips = this.tipCount;
+				setToStorage('gotGift', 'true');
+				gotGift = true;
+				saveAllData(true);
+			}
+		},
+		getEventResult(){
+			let isResult = testShowResult();
+			if(isResult){
+				this.notShowResult = false;
+				this.isResultLoading = true;
+				try{
+					let that = this;
+					YSDK.getLeaderboards()
+						.then(lb => {
+							lb.getLeaderboardPlayerEntry('event')
+								.then(player => {
+									this.isResultLoading = false;
+									that.playerInfo = player;
+									if(player.rank === 1){
+										this.eventResult = 1;
+									}else if(player.rank <= 50){
+										this.eventResult = 2;
+									} else if(player.rank <= 500){
+										this.eventResult = 3;
+									}else if(player.score !== 0){
+										this.eventResult = 4;
+									}else{
+										this.eventResult = 0;
+									}
+									this.getEventPrize();
+								})
+								.catch(e => {
+									console.log(e);
+									this.eventResult = 0;
+								})
+						}).catch(e => {
+							console.log(e);
+							this.eventResult = 0;
+						});
+				}catch(e){
+					console.log(e);
+				}
+			}else{
+				this.notShowResult = true;
+			}
+
+		},
+		getPrize(){
+			if(this.playerInfo.rank === 1) return 'умная колонка «Яндекс Станция Мини»';
+			if(this.playerInfo.rank === 2) return 'промокод в Яндекс Маркет на 3000 ₽';
+			if(this.playerInfo.rank === 3) return 'промокод в Яндекс Маркет на 2000 ₽';
+			if(this.playerInfo.rank <= 50) return 'промокод в Яндекс Маркет на 300 ₽';
+			if(this.playerInfo.rank <= 500) return '50 Янов';
+			return '50 подсказок'
+		},
+		getPromoCode(){
+			return proms[this.playerInfo.rank-1];
+		},
+		copyPromoCode(){
+			copyToClipboard(this.getPromoCode());
+		},
+		toggleInfoAboutClosedEvent(){
+		this.isInfoAboutClosedEvent = !this.isInfoAboutClosedEvent;
+		},
+		toggleIsEventResult(){
+			this.rules = false;
+			this.isEventResult = !this.isEventResult;
+			this.getEventResult();
+		},
+		toggleIsInfoAboutTips(){
+			this.isInfoAboutTips = !this.isInfoAboutTips;
+		},
+		getEventLocation(){
+			this.openGameLocation('event');
+			this.showLastLevelInfo = false;
+		},
+		openEventLocation(){
+			this.eventLocation = true;
+		},
 		toggleIsInfoAboutCreateGame(){
 			this.isInfoAboutCreateGame = !this.isInfoAboutCreateGame;
 		},
@@ -3020,7 +3395,7 @@ export default {
 		toggleShowInfoAboutPortrait(){
 			if(!this.showInfoAboutPortrait){
 				if(portraitAdviceAmount){
-					if(Number(portraitAdviceAmount) > 1) return;
+					if(Number(portraitAdviceAmount) >= 1) return;
 					portraitAdviceAmount++;
 					setToStorage('portraitAdviceAmount', portraitAdviceAmount);
 				}else{
@@ -3044,6 +3419,8 @@ export default {
 			if(level > 1 && this.locationStars[level-2] === 0){
 				arrClasses.push('level_close');
 			}
+
+			if(this.eventLocation) return arrClasses;
 
 			if(this.gameLocation === 'fbv' || this.gameLocation === 'animals' || this.gameLocation === 'eightMarch' || window.innerHeight > window.innerWidth){
 				if((level % 2) === 1){
@@ -3163,15 +3540,26 @@ export default {
 			this.showLastLevelInfo = false;
 		},
 		openGameLocation(location){
-				this.endTutorial();
-				this.levels = false;
-				this.showLocations = false;
-				this.showGameLocation = true;
-				this.gameLocation = location;
-				this.locationStars = getLocationStars(location);
-				this.getShowingLastLevelInLocation();
-				addScrollingToDesktop();
-
+			this.eventLocation = false;
+			this.endTutorial();
+			this.levels = false;
+			this.showLocations = false;
+			this.showGameLocation = true;
+			this.gameLocation = location;
+			this.locationStars = getLocationStars(location);
+			this.getShowingLastLevelInLocation();
+			addScrollingToDesktop();
+			if(location === 'event') {
+				eventScore = getEventScore(eventProgress);
+				this.openEventLocation();
+				if(!infoAboutEvent){
+					this.toggleRules();
+					setToStorage('infoAboutEvent', 'true');
+				}
+				if(testShowResult() && !gotGift){
+					this.toggleIsEventResult();
+				}
+			}
 		},
 		getShowingLastLevelInLocation(){
 			setTimeout(()=>{
@@ -3365,7 +3753,7 @@ export default {
 			}catch(ignored){}
 
 		},
-		getPlayerLB(getGameLb){
+		getPlayerLB(getGameLb, getEventLb){
 
 			// this.playerRait = {
 			// 	rank: 14, score: 19, player: {uniqueID: 123}
@@ -3395,34 +3783,52 @@ export default {
 			// goToUserInLb();
 			// return;
 
+
+
 			try{
 				let that = this;
 				isShowBanner = false;
 				clearTimeout(bannerTimeout);
 				YSDK.getLeaderboards()
 					.then(lb => {
-						//Получаем игрока
-						lb.getLeaderboardPlayerEntry("lvl")
-							.then(player => {
-								console.log(player);
-								that.playerRait = player;
-								if(getGameLb){
-									lb.getLeaderboardEntries('lvl', {quantityTop: 1, includeUser: true, quantityAround: 10}).then(res => {
-										this.lbInGame = res.entries.reverse();
-										goToUserInLb();
-									})
-									bannerTimeout = setTimeout(()=>{
-										isShowBanner = true;
-									}, 40000);
-								}
-								if(this.allStars > player.score){
-									lb.setLeaderboardScore('lvl', this.allStars);
-								}
-							})
-							.catch(e => {
-								console.log(e);
-								isShowBanner = true;
-							})
+						function getMyLbByName(name){
+							//Получаем игрока
+							lb.getLeaderboardPlayerEntry(name)
+								.then(player => {
+									console.log(player);
+									that.playerRait = player;
+									if(getGameLb){
+										lb.getLeaderboardEntries(name, {quantityTop: 1, includeUser: true, quantityAround: 10}).then(res => {
+											that.lbInGame = res.entries.reverse();
+											goToUserInLb();
+										})
+										bannerTimeout = setTimeout(()=>{
+											isShowBanner = true;
+										}, 40000);
+									}
+
+									if(getEventLb){
+										eventScore = getEventScore(eventProgress);
+										console.log('myScore: ', eventScore);
+										if(eventScore > player.score && !testSendResult()){
+											lb.setLeaderboardScore('event', eventScore);
+										}
+									}else{
+										if(that.allStars > player.score){
+											lb.setLeaderboardScore('lvl', that.allStars);
+										}
+									}
+
+								})
+								.catch(e => {
+									console.log(e);
+									isShowBanner = true;
+								})
+						}
+						if(getEventLb) getMyLbByName('event');
+						else getMyLbByName('lvl');
+
+
 					})
 				;
 			}catch(e){
@@ -3432,10 +3838,16 @@ export default {
 			}
 		},
 		addPlayerToLB(fromTestStars){
+			let that = this;
 			try{
 				YSDK.getLeaderboards()
 					.then(lb => {
-						lb.setLeaderboardScore('lvl', this.allStars);
+						if(this.eventLocation) {
+							if(!testSendResult()){
+								lb.setLeaderboardScore('event', eventScore);
+							}
+						}
+						else lb.setLeaderboardScore('lvl', that.allStars);
 						if(fromTestStars){
 							this.getLeaderBoardInGame();
 						}
@@ -3445,25 +3857,32 @@ export default {
 				console.log(e);
 			}
 		},
-		getLeaderBoard(){
+		getLeaderBoard(getEventLb){
 			let that = this;
-			this.getPlayerLB();
+			this.getPlayerLB(false, getEventLb);
 			YSDK.getLeaderboards()
 				.then(lb => {
 					console.log(lb);
-					// Получение 10 топов
-					lb.getLeaderboardEntries('lvl', { quantityTop: 20, includeUser: true, quantityAround: 10}).then(res => {
-						that.leaderBoard = res.entries;
-						goToUserInLb();
-						console.log(that.leaderBoard);
-					}).catch((error)=>{
-						console.log('er', error);
-						//Пробуем без юзера
-						lb.getLeaderboardEntries('lvl', { quantityTop: 20}).then(res => {
+					function getLbByName(name){
+						// Получение 10 топов
+						lb.getLeaderboardEntries(name, { quantityTop: 20, includeUser: true, quantityAround: 10}).then(res => {
 							that.leaderBoard = res.entries;
+							goToUserInLb();
 							console.log(that.leaderBoard);
+						}).catch((error)=>{
+							console.log('er', error);
+							//Пробуем без юзера
+							lb.getLeaderboardEntries(name, { quantityTop: 20}).then(res => {
+								that.leaderBoard = res.entries;
+								console.log(that.leaderBoard);
+							});
 						});
-					});
+					}
+					if(getEventLb){
+						getLbByName('event');
+					}else{
+						getLbByName('lvl');
+					}
 				})
 				.catch(e => {
 					that.leaderBoard = false;
@@ -3472,13 +3891,13 @@ export default {
 		},
 		getLeaderBoardInGame(){
 			if(window.innerHeight >= 600){
-				this.getPlayerLB(true);
+				this.getPlayerLB(true, this.eventLocation);
 			}
 		},
-		toggleLeaderBoard(){
+		toggleLeaderBoard(getEventLb){
 			this.isLeaderBoard = !this.isLeaderBoard;
 			if(this.isLeaderBoard){
-				this.getLeaderBoard();
+				this.getLeaderBoard(getEventLb);
 			}
 		},
 		toggleShowWordDesc(){
@@ -3544,7 +3963,7 @@ export default {
 			}else{
 				if(window.innerHeight > window.innerWidth){
 					if(!payloadVertical){
-						this.toggleShowInfoAboutPortrait();
+						// this.toggleShowInfoAboutPortrait();
 					}
 				}
 				this.endTutorial();
@@ -3719,12 +4138,27 @@ export default {
 			this.lvl = level;
 			this.word = locationWords[this.gameLocation][level];
 			this.letters = this.word.split('');
-			this.doneWords = locationDoneWords[this.word];
-			if(locationDoneWords[this.word] === 1){
-				this.doneWords = wordsFromWords[this.word];
-			}else if(locationDoneWords[this.word] === undefined){
-				locationDoneWords[this.word] = [];
+
+			if(this.eventLocation){
+				this.doneWords = eventProgress[this.word];
+				if(eventProgress[this.word] === 1){
+					this.doneWords = locationWords.wordsFromWords[this.word];
+				}else if(eventProgress[this.word] === undefined){
+					eventProgress[this.word] = [];
+					this.doneWords = eventProgress[this.word];
+				}
+
+				this.getLBorBanner();
+			}else{
 				this.doneWords = locationDoneWords[this.word];
+				if(locationDoneWords[this.word] === 1){
+					this.doneWords = locationWords.wordsFromWords[this.word];
+				}else if(locationDoneWords[this.word] === undefined){
+					locationDoneWords[this.word] = [];
+					this.doneWords = locationDoneWords[this.word];
+				}
+				isShowBanner = true;
+				this.getVerticalBanner();
 			}
 			// if(this.doneWords.length === 0){
 			// 	if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
@@ -3746,8 +4180,6 @@ export default {
 			this.findNotShowLetters();
 			this.lbInGame = false;
 			this.levelStars = testStar(this.doneWords.length, this.nowWords.length);
-			isShowBanner = true;
-			this.getVerticalBanner();
 
 		},
 		getLevelByLevelAndLocation(level){
@@ -3846,6 +4278,9 @@ export default {
 		},
 		testShowNextLevel(){
 			if(this.locationGame){
+				if(this.eventLocation){
+					return this.lvl !== (locationWords.event.length - 1) && this.locationStars[this.lvl] > 0;
+				}
 				return this.lvl !== 19 && this.locationStars[this.lvl] > 0;
 			}
 			if(this.lvl < lastLevel) return true;
@@ -3853,9 +4288,13 @@ export default {
 		},
 		nextLevel(){
 			if(this.locationGame){
-				if(this.lvl === 19) return;
+				if(this.eventLocation){
+					if(this.lvl === (locationWords.event.length - 1)) return;
+				}else{
+					if(this.lvl === 19) return;
+				}
+
 				if(this.locationStars[this.lvl] > 0){
-					console.log('dasd');
 					this.getLocationLevel(this.lvl+1);
 				}
 			}else if(this.testShowNextLevel()){
@@ -3913,6 +4352,8 @@ export default {
 					this.getShowingLastLevelInLocation();
 				}, 500);
 			}else{
+				this.eventLocation = false;
+				this.gameLocation = '';
 				this.levels =  true;
 				this.levelsAnim =  true;
 				this.showGameLocation = false;
@@ -3937,6 +4378,10 @@ export default {
 			this.showAdvError = !this.showAdvError;
 		},
 		getTip(){
+			if(this.eventLocation){
+				this.toggleIsInfoAboutTips();
+				return;
+			}
 			if(this.animWordStart !== '' || (this.tipCount < 1 && this.advTimer > 0)) return;
 			if(this.tipCount < 1){
 				try{
@@ -3989,7 +4434,7 @@ export default {
 										isAdvShowed = true;
 									}else{
 										that.startRewardedTimer();
-										params({'rewardedAdvDontWork': 1});
+										// params({'rewardedAdvDontWork': 1});
 										return;
 									}
 
@@ -4136,9 +4581,27 @@ export default {
 						setToStorage('savedMyGame', JSON.stringify(obj));
 						this.savedMyGame = obj;
 					}else if(this.locationGame){
-						setToStorage('locationDoneWords', JSON.stringify(replaceLevelsToOne(locationDoneWords, true)));
-						// console.log(replaceLevelsToOne(locationDoneWords, true));
-						PLAYESTATE.locationDoneWords = locationDoneWords;
+						if(this.eventLocation){
+							eventWord++;
+							if(eventWord >= 5 || testFastSendResult()){
+								this.addPlayerToLB(false);
+								console.log('add player');
+								eventWord = 0;
+							}
+							if(testSendResult() && !infoAboutClosedEvent){
+								this.toggleInfoAboutClosedEvent();
+								infoAboutClosedEvent = true;
+								setToStorage('infoAboutClosedEvent', 'true');
+								console.log("DONE");
+							}
+							setToStorage('eventProgress', JSON.stringify(replaceLevelsToOne(eventProgress, true)));
+							eventScore += wordFromLetter.length;
+
+						}else{
+							setToStorage('locationDoneWords', JSON.stringify(replaceLevelsToOne(locationDoneWords, true)));
+							PLAYESTATE.locationDoneWords = locationDoneWords;
+						}
+
 					}else{
 						setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
 						PLAYESTATE.allDoneWords = allDoneWords;
@@ -4255,17 +4718,20 @@ export default {
 					if(this.lvl === 19 && stars === 1){
 						params({['endLoc-' + this.gameLocation]: 1});
 					}
-					if(this.locationAllStars === 20
-						|| this.locationAllStars === 40 || this.locationAllStars === 60) {
+					if(this.eventLocation){
+						this.addPlayerToLB(true);
+					}else{
+						if(this.locationAllStars === 20
+							|| this.locationAllStars === 40 || this.locationAllStars === 60) {
 
-						this.showLastLevelInfo = true;
-						this.tipCount += this.locationAllStars / 2;
-						this.howManyTips = this.locationAllStars / 2;
-						setToStorage('tips', this.tipCount);
-						PLAYERSTATS.tips = this.tipCount;
-						saveAllData(false);
+							this.showLastLevelInfo = true;
+							this.tipCount += this.locationAllStars / 2;
+							this.howManyTips = this.locationAllStars / 2;
+							setToStorage('tips', this.tipCount);
+							PLAYERSTATS.tips = this.tipCount;
+							saveAllData(false);
+						}
 					}
-
 				}else{
 					setLastLevel();
 					if(stars === 1){
@@ -4279,11 +4745,11 @@ export default {
 					}
 					this.gameLastLevel = lastLevel;
 					this.stars.splice(this.lvl, 1, stars);
-					this.addPlayerToLB(true);
 					// if(this.lvl < 10){
 					// 	let lvlParams = 'endLevel-' + this.lvl;
 					// 	params({[lvlParams]: stars});
 					// }
+					this.addPlayerToLB(true);
 				}
 				if(this.isSounds){
 					starVolume.play();
@@ -4335,7 +4801,7 @@ export default {
 					this.openLastLevel();
 					this.startTutorial();
 				}else if(window.innerHeight > window.innerWidth){
-					this.toggleShowInfoAboutPortrait();
+					// this.toggleShowInfoAboutPortrait();
 				}
 				this.tryOpenPayloadLevel();
 			}
