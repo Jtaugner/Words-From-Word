@@ -2091,7 +2091,7 @@ if(window.YaGames){
 								advTime = true;
 								clearInterval(advInterval);
 								canShowAdv();
-							}, 150000);
+							}, 120000);
 
 
 							onCloseFunc();
@@ -4369,6 +4369,7 @@ export default {
 					this.locationGame = false;
 				}, 500);
 			}
+			this.tryShowAdv();
 
 
 		},
