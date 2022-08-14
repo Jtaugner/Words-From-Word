@@ -17,9 +17,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian">
-						<div class="eventIcon"></div>
-					</div>
+<!--					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian"><div class="eventIcon"></div></div>-->
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -1760,6 +1758,8 @@ if(allDoneWords){
 	isLastSounds = isLastSounds === 'true';
 	setLoc();
 	isGameAdvShow = !isGameAdvShow;
+
+	// PLAYESTATE.allDoneWords = allDoneWords;
 }else{
 
 	allDoneWords = {};
@@ -1818,6 +1818,7 @@ if(lastUpdate !== lastVersion && lastLevel > 0) {
 	showUpdate = true;
 	console.log(lastVersion + '; showUpdate: ', showUpdate);
 }
+showUpdate = false;
 setToStorage('wasUpdate', lastVersion);
 
 function getSec(){
@@ -1847,6 +1848,8 @@ function setState(isNow) {
 
 
 		}else{
+			// console.log(PLAYESTATE);
+			// console.log(fixDoneWords(JSON.parse(getFromStorage('allDoneWords'))));
 			const newState = {
 				allDoneWords: compressData(PLAYESTATE.allDoneWords)
 			};
@@ -1854,15 +1857,17 @@ function setState(isNow) {
 			if(englishProgress) newState.allDoneWordsEN = englishProgress;
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
 			if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
+			// console.log('SendState');
+			// console.log(newState);
 			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
 				try{
+					params({'cantSave-first': error});
+					console.log(error)
 					if(error.toString().includes('large')){
 						params({'cantSave-bigData-first': lastLevel});
 					}
-					params({'cantSave-first': error});
-					console.log(error)
 				}catch(ignored){}
-				// playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
+				playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 			});
 		}
 
@@ -2158,7 +2163,6 @@ function decompressLocationWords(locationDoneWords){
 	return locationDoneWords;
 }
 
-let isChangeTips = true;
 
 function initPlayer(ysdk) {
 	console.log(ysdk);
@@ -2182,8 +2186,6 @@ function initPlayer(ysdk) {
 		console.log(playerGame);
 
 		let someTrue = false;
-		let change = true;
-		isRules = false;
 
 		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords', 'eventProgress', 'gotGift'], false).then((dataObject) => {
 			console.log(dataObject);
@@ -2223,10 +2225,6 @@ function initPlayer(ysdk) {
 				if(dataObject.allDoneWords){
 					russianProgressSave = dataObject.allDoneWords;
 				}
-				if(dataObject.locationDoneWords){
-					PLAYESTATE.locationDoneWords = dataObject.locationDoneWords;
-				}
-
 			}else if (dataObject.allDoneWords) {
 				isRules = false;
 
@@ -2261,36 +2259,42 @@ function initPlayer(ysdk) {
 					console.log(e);
 				}
 				console.log(localStars, serverStars, localLevel, serverLevel);
-				if(localStars > serverStars && localLevel > serverLevel){
-					console.log('CHANGE DATA TO LOCAL');
-					params({'changeDataToLocal': 1});
-					PLAYESTATE = {allDoneWords: allDoneWords};
-					isChangeTips = false;
-					tips = thatTips;
-				}else{
-					allDoneWords = newData;
-					PLAYESTATE = {allDoneWords: newData};
+				let dataNotChanged = true;
+				if(localLevel >= serverLevel && localStars >= serverStars){
+					let isChange = localStars > serverStars;
+					try{
+						if(!isChange && localLevel === serverLevel){
+							let w = allWordsRU[localLevel];
+							let localWords = fixDoneWords(allDoneWords)[w].length;
+							let serverWords = newData[w].length;
+							if(localWords > serverWords){
+								isChange = true;
+								console.log('LocalWords > ServerWords');
+							}
+						}
+					}catch(er){}
 
-					recentState = JSON.stringify(PLAYESTATE);
-					if(change){
-						allDoneWords = newData;
-						setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
-					}else{
-						PLAYESTATE.allDoneWords = fixDoneWords(allDoneWords);
-						recentState = JSON.stringify(PLAYESTATE);
-						setState();
+					if(isChange){
+						console.log('CHANGE DATA TO LOCAL');
+						dataNotChanged = false;
+						params({'changeDataToLocal': 1});
+						PLAYESTATE.allDoneWords = allDoneWords;
 					}
 				}
 
-				if(dataObject.locationDoneWords){
-					PLAYESTATE.locationDoneWords = fixDoneWords(decompressLocationWords(dataObject.locationDoneWords), true);
-					locationDoneWords = PLAYESTATE.locationDoneWords;
+				if(dataNotChanged){
+					console.log("GET SERVER DATA");
+					allDoneWords = newData;
+					PLAYESTATE.allDoneWords = newData;
+
+					recentState = JSON.stringify(PLAYESTATE);
+					setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
 				}
-			}else if(dataObject.locationDoneWords){
+			}
+
+			if(dataObject.locationDoneWords){
 				PLAYESTATE.locationDoneWords = fixDoneWords(decompressLocationWords(dataObject.locationDoneWords), true);
 				locationDoneWords = PLAYESTATE.locationDoneWords;
-			} else{
-				isRules = true;
 			}
 			//Вовзврат прогресса
 			try{
@@ -2338,27 +2342,24 @@ function initPlayer(ysdk) {
 				}else{
 					tips = 10;
 				}
-				if(dataObject.tips && isChangeTips) russianTips = dataObject.tips;
+				if(dataObject.tips) russianTips = dataObject.tips;
 
-				PLAYERSTATS = {'tips': dataObject.tipsEN};
-				recentStats = JSON.stringify(PLAYERSTATS);
 
 			}else if (Number.isInteger(dataObject.tips)) {
-				if(change && isChangeTips) {
+				if(dataObject.tips > tips){
 					tips = dataObject.tips;
-					PLAYERSTATS = {'tips': tips};
-					recentStats = JSON.stringify(PLAYERSTATS);
-					setToStorage('tips', tips);
 				}
 				if (dataObject.tipsEN) englishTips = dataObject.tipsEN;
 			}else{
-				if(isChangeTips){
+				if(!Number.isInteger(tips) || 15 > tips){
 					tips = 15;
-					PLAYERSTATS = {'tips': tips};
-					recentStats = JSON.stringify(PLAYERSTATS);
 				}
 				if(dataObject.tipsEN) englishTips = dataObject.tipsEN;
 			}
+
+			PLAYERSTATS = {'tips': dataObject.tipsEN};
+			recentStats = JSON.stringify(PLAYERSTATS);
+			setToStorage('tips', tips);
 
 			if(someTrue){
 				update();
@@ -2367,13 +2368,15 @@ function initPlayer(ysdk) {
 			//Вовзврат прогресса
 			try{
 				let pay = ysdk.environment.payload;
-				let tps = pay.match(/tps\d+/);
-				if(tps) {
-					tps = Number(tps[0].replace('tps', ''));
-					if(tps){
-						tips = tps;
-						PLAYERSTATS.tips = tips;
-						setStats();
+				if(pay){
+					let tps = pay.match(/tps\d+/);
+					if(tps) {
+						tps = Number(tps[0].replace('tps', ''));
+						if(tps){
+							tips = tps;
+							PLAYERSTATS.tips = tips;
+							setStats();
+						}
 					}
 				}
 			}catch(e){
@@ -2726,7 +2729,8 @@ let dictWordsToReplace = {
 	'расчес': 'расчёс',
 	'тенета': 'тенёта',
 	'затес': 'затёс',
-	'елка': 'ёлка'
+	'елка': 'ёлка',
+	'валер': 'валёр'
 }
 
 
@@ -3136,7 +3140,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['event', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -3160,7 +3164,7 @@ export default {
 			isInfoAboutCreateGame: false,
 			howManyTips: 10,
 			eventLocation: false,
-			eventLocationWordsAMount: locationWords['event'].length,
+			eventLocationWordsAMount: 300,
 			isInfoAboutTips: false,
 			isEventResult: false,
 			eventResult: 0,
@@ -3455,7 +3459,7 @@ export default {
 		},
 		changePageNum(){
 			let num = Number(this.pageNumVal);
-			params({'changePageNum': 1});
+			// params({'changePageNum': 1});
 			if(num){
 				this.location = num - 1;
 			}
@@ -3957,7 +3961,7 @@ export default {
 			this.isSounds = sounds;
 			deletePreDownload();
 			this.getPlayerLB();
-			if(isRules && !notRussianGame && isShowTutorial && !payloadLevel){
+			if(isRules && !notRussianGame && isShowTutorial && !payloadLevel && lastLevel === 0){
 				this.openLastLevel();
 				this.startTutorial();
 			}else{
