@@ -1842,8 +1842,8 @@ function setState(isNow) {
 				allDoneWordsEN: compressData(PLAYESTATE.allDoneWords)
 			};
 			newState.gotGift = gotGift;
-			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true)
-			if(eventProgress) newState.eventProgress = compressData(eventProgress, true)
+			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
+			// if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
 			playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 
 
@@ -1856,7 +1856,7 @@ function setState(isNow) {
 			newState.gotGift = gotGift;
 			if(englishProgress) newState.allDoneWordsEN = englishProgress;
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
-			if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
+			// if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
 			// console.log('SendState');
 			// console.log(newState);
 			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
