@@ -1,5 +1,10 @@
 <template>
-	<div id="app" :class="['chosenAppBg' + chosenBgRight, showGameLocation ? 'locationOpened' : '', 'gameLocationWrapper-' + gameLocation]">
+	<div id="app"
+		 :class="[
+			 'chosenAppBg' + chosenBgRight,
+		  showGameLocation ? 'locationOpened' : '',
+		   'gameLocationWrapper-' + locationClassID]"
+	>
 		<!--    <div class="close-level-help prev-location next-location"></div>-->
 		<div class="levels"
 			 @updateAll="updateAll()"
@@ -288,7 +293,7 @@
 		<div
 			class="location"
 			:class="[
-				'gameLocation-' + gameLocation,
+				'gameLocation-' + locationClassID,
 				 levelsAnim ? 'levelsAnim' : '',
 				 eventLocation ? 'eventGameLocation' : ''
 				 ]"
@@ -881,16 +886,15 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Фестиваль слов' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Новая локация!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Начался Фестиваль Слов! Проходите уровни, зарабатывайте очки и боритесь за подарки!
-				Главный приз -  Яндекс.Станция!
-				<div class="rules__goBg" @click="getEventLocation()">Перейти</div>
+				Представляем вам новую локацию - "Дом, милый дом"!
+				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -1501,7 +1505,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-27";
+const lastVersion = "ver-28";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1666,7 +1670,11 @@ let wordsForReplace = {
 	'гончаренко': 'кочегар',
 	'скрижапель': 'скрижаль',
 	'ленинград': 'гренадин',
-	'костылева': 'выселок'
+	'костылева': 'выселок',
+	'опанасенко': 'поноска',
+	'распутина': 'парусина',
+	'таблеточка': 'таблетка',
+	'обругание': 'абориген',
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
@@ -1818,7 +1826,6 @@ if(lastUpdate !== lastVersion && lastLevel > 0) {
 	showUpdate = true;
 	console.log(lastVersion + '; showUpdate: ', showUpdate);
 }
-showUpdate = false;
 setToStorage('wasUpdate', lastVersion);
 
 function getSec(){
@@ -1859,6 +1866,12 @@ function setState(isNow) {
 			// if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
 			// console.log('SendState');
 			// console.log(newState);
+			if(newState.allDoneWords === undefined){
+				params({'allWords-undefined': 1});
+			}
+			if(newState.locationDoneWords === undefined){
+				params({'locationWords-undefined': 1});
+			}
 			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
 				try{
 					params({'cantSave-first': error});
@@ -2775,6 +2788,7 @@ if(iOS){
 
 
 function deletePreDownload(){
+	params({'deletePreDownload': 1});
 	if (document.querySelector(".pre-download")) {
 		document.querySelector(".pre-download").remove()
 	}
@@ -2828,8 +2842,11 @@ let translatedLocationsNames = {
 	fbv: 'Фрукты, ягоды и овощи',
 	birds: 'Птицы',
 	cinema: 'Кино и мультфильмы',
-	event: 'Фестиваль Слов'
+	event: 'Фестиваль Слов',
+	house: 'Дом, милый дом'
 }
+
+let defaultLocations = ['house'];
 
 // function getBanner(){
 // 	try{
@@ -3140,7 +3157,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -3217,7 +3234,11 @@ export default {
 		},
 		gameLastLocation(){
 			return Math.ceil((this.gameLastLevel+1) / lvlsOnPage);
-		}
+		},
+		locationClassID(){
+			if(defaultLocations.includes(this.gameLocation)) return 'default';
+			return this.gameLocation;
+		},
 	},
 	methods:{
 		getEventPrize(){

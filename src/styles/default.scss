@@ -1,0 +1,64 @@
+/*Волшебство сказок*/
+.gameLocationWrapper-default::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #C05252;
+}
+.gameLocationWrapper-default::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+//.defaultLocation .popUp__locationPicture{
+//  background-image: url(../assets/locations/default/default.png);
+//}
+.defaultLocation .popUp__locationName{
+  color: #C05252;
+}
+.gameLocation-default{
+  .svgIcon{
+    fill: #C05252;
+  }
+  background: url(../assets/locations/default/map.png) center center no-repeat;
+  background-size: cover;
+  .levelsTop__allStars{
+    color: #C05252;
+  }
+  .menu-star, .newElement{
+    background-color: #d22f2f;
+  }
+  .defaultProperty{
+    background: url(../assets/locations/default/map.png) center center no-repeat;
+    background-size: cover;
+  }
+}
+.gameLocationWrapper-default{
+  .rules__menu{
+    background-color: #C05252;
+  }
+  .rules .settings__text{
+    color: #C05252;
+  }
+  .rules .svgIcon{
+    fill: #C05252;
+  }
+}
+.gameLocation-default::-webkit-scrollbar-thumb {
+  //border-radius: 0;
+  background-color: #C05252;
+}
+@media (min-width: 1000px) {
+  .gameLocation-default .location__lastLevel{
+    box-shadow: 0 0 25px 10px #C05252;
+  }
+}
+
+@media (orientation: portrait) {
+  .gameLocation-default, .gameLocation-default .defaultProperty{
+    background: url(../assets/locations/default/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
+
+
+//Картинки для локаций
+.houseLocation .popUp__locationPicture{
+  background-image: url(../assets/locations/default/house.png);
+}
