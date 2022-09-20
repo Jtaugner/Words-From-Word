@@ -1866,11 +1866,8 @@ function setState(isNow) {
 			// if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
 			// console.log('SendState');
 			// console.log(newState);
-			if(newState.allDoneWords === undefined){
-				params({'allWords-undefined': 1});
-			}
-			if(newState.locationDoneWords === undefined){
-				params({'locationWords-undefined': 1});
+			if(newState.allDoneWords === undefined && lastLevel > 0){
+				params({'allWords-NO': 1});
 			}
 			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
 				try{
@@ -2842,8 +2839,9 @@ let translatedLocationsNames = {
 	fbv: 'Фрукты, ягоды и овощи',
 	birds: 'Птицы',
 	cinema: 'Кино и мультфильмы',
-	event: 'Фестиваль Слов',
-	house: 'Дом, милый дом'
+	event: 'Олимпиада Яндекс.Игр',
+	house: 'Дом, милый дом',
+	farm: 'Моя деревня'
 }
 
 let defaultLocations = ['house'];
@@ -3157,7 +3155,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,

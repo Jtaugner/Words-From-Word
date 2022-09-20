@@ -358,7 +358,7 @@
 }
 /*Волшебство сказок*/
 .gameLocationWrapper-event::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
-  background-color: #C05252;
+  background-color: #4E8B00;
 }
 
 .gameLocationWrapper-event::-webkit-scrollbar-track {
@@ -371,7 +371,7 @@
 }
 
 .eventLocation .popUp__locationName {
-  color: #C05252;
+  color: #4E8B00;
 }
 
 .gameLocation-event {
@@ -379,13 +379,13 @@
   background-size: cover;
 }
 .gameLocation-event .svgIcon {
-  fill: #C05252;
+  fill: #4E8B00;
 }
 .gameLocation-event .levelsTop__allStars {
-  color: #C05252;
+  color: #4E8B00;
 }
 .gameLocation-event .menu-star, .gameLocation-event .newElement {
-  background-color: #d22f2f;
+  background-color: #417200;
 }
 .gameLocation-event .eventProperty {
   background: url(../assets/locations/event/map.png) center center no-repeat;
@@ -393,22 +393,22 @@
 }
 
 .gameLocationWrapper-event .rules__menu {
-  background-color: #C05252;
+  background-color: #4E8B00;
 }
 .gameLocationWrapper-event .rules .settings__text {
-  color: #C05252;
+  color: #4E8B00;
 }
 .gameLocationWrapper-event .rules .svgIcon {
-  fill: #C05252;
+  fill: #4E8B00;
 }
 
 .gameLocation-event::-webkit-scrollbar-thumb {
-  background-color: #C05252;
+  background-color: #4E8B00;
 }
 
 @media (min-width: 1000px) {
   .gameLocation-event .location__lastLevel {
-    box-shadow: 0 0 25px 10px #C05252;
+    box-shadow: 0 0 25px 10px #4E8B00;
   }
 }
 @media (orientation: portrait) {
@@ -478,6 +478,71 @@
   background-image: url(../assets/locations/default/house.png);
 }
 
+.houseLocation .popUp__locationName {
+  color: #C05252;
+}
+
+/*Волшебство сказок*/
+.gameLocationWrapper-farm::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #009C63;
+}
+
+.gameLocationWrapper-farm::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.farmLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/farm/farm.png);
+}
+
+.farmLocation .popUp__locationName {
+  color: #009C63;
+}
+
+.gameLocation-farm {
+  background: url(../assets/locations/farm/map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-farm .svgIcon {
+  fill: #009C63;
+}
+.gameLocation-farm .levelsTop__allStars {
+  color: #009C63;
+}
+.gameLocation-farm .menu-star, .gameLocation-farm .newElement {
+  background-color: #00784e;
+}
+.gameLocation-farm .farmProperty {
+  background: url(../assets/locations/farm/map.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-farm .rules__menu {
+  background-color: #009C63;
+}
+.gameLocationWrapper-farm .rules .settings__text {
+  color: #009C63;
+}
+.gameLocationWrapper-farm .rules .svgIcon {
+  fill: #009C63;
+}
+
+.gameLocation-farm::-webkit-scrollbar-thumb {
+  background-color: #009C63;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-farm .location__lastLevel {
+    box-shadow: 0 0 25px 10px #009C63;
+  }
+}
+@media (orientation: portrait) {
+  .gameLocation-farm, .gameLocation-farm .farmProperty {
+    background: url(../assets/locations/farm/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
 .locationOpened {
   overflow: auto !important;
 }
