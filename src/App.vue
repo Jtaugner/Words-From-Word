@@ -893,7 +893,7 @@
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Представляем вам новую локацию - "Дом, милый дом"!
+				Представляем новую локацию, в которой можно заработать бесплатные подсказки - "Моя деревня"!
 				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>
 			</template>
 			<template v-else>
@@ -1505,7 +1505,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-28";
+const lastVersion = "ver-29";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
