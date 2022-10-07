@@ -1686,6 +1686,9 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 			console.log(k);
 		}else if(wordsForReplace[k]){
 			k = wordsForReplace[k];
+			if(k === 'подмывание' && i > 5000){
+				k = 'своенравие';
+			}
 		}
 		let words = allDoneWords[keys[i]] || allDoneWords[k];
 
