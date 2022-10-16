@@ -4114,12 +4114,14 @@ export default {
 		},
 		getLBorBanner(){
 			if(this.verticalPayload) return;
-			if(lbWasShowed){
-				this.getVerticalBanner();
-			}else{
-				lbWasShowed = true;
-				this.getLeaderBoardInGame();
-			}
+			this.getLeaderBoardInGame();
+			//
+			// if(lbWasShowed){
+			// 	this.getVerticalBanner();
+			// }else{
+			// 	lbWasShowed = true;
+			// 	this.getLeaderBoardInGame();
+			// }
 		},
 		closeAllBeforeStartLevel(notSound){
 			this.advShowNow = false;
@@ -4537,11 +4539,11 @@ export default {
 			}
 		},
 		getVerticalBanner(){
-			if(this.verticalPayload) return;
-			if(isShowBanner && (this.locationGame || this.lvl > 3 || this.isMyGame)){
-				this.lbInGame = false;
-				getVerticalBanner();
-			}
+			// if(this.verticalPayload) return;
+			// if(isShowBanner && (this.locationGame || this.lvl > 3 || this.isMyGame)){
+			// 	this.lbInGame = false;
+			// 	getVerticalBanner();
+			// }
 		},
 		sendWord(){
 			if(this.wordFromLetter.length === 0 || this.isBadWord) return;
