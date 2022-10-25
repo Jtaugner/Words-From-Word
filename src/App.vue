@@ -22,7 +22,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-<!--					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian"><div class="eventIcon"></div></div>-->
+					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -717,7 +717,7 @@
 							<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button" >
-							<!--						<div class="shop__lastPrice">49</div>-->
+													<div class="shop__lastPrice">49</div>
 							{{getItemPrice(0)}}
 						</div>
 					</div>
@@ -732,7 +732,7 @@
 							<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button">
-							<!--						<div class="shop__lastPrice">99</div>-->
+													<div class="shop__lastPrice">99</div>
 							{{getItemPrice(1)}}
 						</div>
 					</div>
@@ -747,7 +747,7 @@
 							<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button">
-							<!--						<div class="shop__lastPrice">149</div>-->
+													<div class="shop__lastPrice">149</div>
 							{{getItemPrice(2)}}
 						</div>
 					</div>
@@ -886,15 +886,15 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Новая локация!' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Хэллоуин!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Представляем новую локацию, в которой можно заработать бесплатные подсказки - "Моя деревня"!
-				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>
+				Тематическая локация "Хэллоуин" и скидки в магазинах уже ждут вас!
+				<div class="rules__goBg" @click="goToGetLocations()">К локацями</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -1505,7 +1505,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-29";
+const lastVersion = "ver-30";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2426,7 +2426,7 @@ function consumePurchase(purchase) {
 	document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 	payments.consumePurchase(purchase.purchaseToken);
 }
-const itemsPrices = [49, 99, 149];
+const itemsPrices = [29, 49, 89];
 function buyTips(item) {
 	if(payments && playerGame){
 		let purchaseItem = 'cart_item' + item;
@@ -2844,7 +2844,8 @@ let translatedLocationsNames = {
 	cinema: 'Кино и мультфильмы',
 	event: 'Олимпиада Яндекс.Игр',
 	house: 'Дом, милый дом',
-	farm: 'Моя деревня'
+	farm: 'Моя деревня',
+	halloween: 'Хэллоуин'
 }
 
 let defaultLocations = ['house'];
@@ -3158,7 +3159,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,

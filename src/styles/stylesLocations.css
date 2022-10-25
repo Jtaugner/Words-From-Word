@@ -543,6 +543,67 @@
     background-size: cover;
   }
 }
+/*Волшебство сказок*/
+.gameLocationWrapper-halloween::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #00CBA6;
+}
+
+.gameLocationWrapper-halloween::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.halloweenLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/halloween/halloween.png);
+}
+
+.halloweenLocation .popUp__locationName {
+  color: #00CBA6;
+}
+
+.gameLocation-halloween {
+  background: url(../assets/locations/halloween/map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-halloween .svgIcon {
+  fill: #006854;
+}
+.gameLocation-halloween .levelsTop__allStars {
+  color: #00CBA6;
+}
+.gameLocation-halloween .menu-star, .gameLocation-halloween .newElement {
+  background-color: #00e2b8;
+}
+.gameLocation-halloween .halloweenProperty {
+  background: url(../assets/locations/halloween/map.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-halloween .rules__menu {
+  background-color: #00CBA6;
+}
+.gameLocationWrapper-halloween .rules .settings__text {
+  color: #00CBA6;
+}
+.gameLocationWrapper-halloween .rules .svgIcon {
+  fill: #00CBA6;
+}
+
+.gameLocation-halloween::-webkit-scrollbar-thumb {
+  background-color: #00CBA6;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-halloween .location__lastLevel {
+    box-shadow: 0 0 25px 10px #00CBA6;
+  }
+}
+@media (orientation: portrait) {
+  .gameLocation-halloween, .gameLocation-halloween .halloweenProperty {
+    background: url(../assets/locations/halloween/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
 .locationOpened {
   overflow: auto !important;
 }
