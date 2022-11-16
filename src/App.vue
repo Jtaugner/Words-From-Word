@@ -717,7 +717,7 @@
 							<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button" >
-													<div class="shop__lastPrice">49</div>
+<!--													<div class="shop__lastPrice">49</div>-->
 							{{getItemPrice(0)}}
 						</div>
 					</div>
@@ -732,7 +732,7 @@
 							<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button">
-													<div class="shop__lastPrice">99</div>
+<!--													<div class="shop__lastPrice">99</div>-->
 							{{getItemPrice(1)}}
 						</div>
 					</div>
@@ -747,7 +747,7 @@
 							<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button">
-													<div class="shop__lastPrice">149</div>
+<!--													<div class="shop__lastPrice">149</div>-->
 							{{getItemPrice(2)}}
 						</div>
 					</div>
@@ -893,8 +893,8 @@
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Тематическая локация "Хэллоуин" и скидки в магазинах уже ждут вас!
-				<div class="rules__goBg" @click="goToGetLocations()">К локацями</div>
+				Тематическая локация "Хэллоуин"!
+				<div class="rules__goBg" @click="goToGetLocations()">К локациям</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -2426,7 +2426,7 @@ function consumePurchase(purchase) {
 	document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 	payments.consumePurchase(purchase.purchaseToken);
 }
-const itemsPrices = [29, 49, 89];
+const itemsPrices = [49, 99, 149];
 function buyTips(item) {
 	if(payments && playerGame){
 		let purchaseItem = 'cart_item' + item;
