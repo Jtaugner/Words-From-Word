@@ -357,8 +357,8 @@
   }
 }
 /*Волшебство сказок*/
-.gameLocationWrapper-event::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
-  background-color: #4E8B00;
+.gameLocationWrapper-event::-webkit-scrollbar-thumb, .gameLocationWrapper-event .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #E44500;
 }
 
 .gameLocationWrapper-event::-webkit-scrollbar-track {
@@ -371,7 +371,7 @@
 }
 
 .eventLocation .popUp__locationName {
-  color: #4E8B00;
+  color: #E44500;
 }
 
 .gameLocation-event {
@@ -379,13 +379,13 @@
   background-size: cover;
 }
 .gameLocation-event .svgIcon {
-  fill: #4E8B00;
+  fill: #E44500;
 }
 .gameLocation-event .levelsTop__allStars {
-  color: #4E8B00;
+  color: #E44500;
 }
 .gameLocation-event .menu-star, .gameLocation-event .newElement {
-  background-color: #417200;
+  background-color: #ec4400;
 }
 .gameLocation-event .eventProperty {
   background: url(../assets/locations/event/map.png) center center no-repeat;
@@ -393,22 +393,22 @@
 }
 
 .gameLocationWrapper-event .rules__menu {
-  background-color: #4E8B00;
+  background-color: #E44500;
 }
 .gameLocationWrapper-event .rules .settings__text {
-  color: #4E8B00;
+  color: #E44500;
 }
 .gameLocationWrapper-event .rules .svgIcon {
-  fill: #4E8B00;
+  fill: #E44500;
 }
 
 .gameLocation-event::-webkit-scrollbar-thumb {
-  background-color: #4E8B00;
+  background-color: #E44500;
 }
 
 @media (min-width: 1000px) {
   .gameLocation-event .location__lastLevel {
-    box-shadow: 0 0 25px 10px #4E8B00;
+    box-shadow: 0 0 25px 10px #E44500;
   }
 }
 @media (orientation: portrait) {

@@ -22,7 +22,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>
+					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian"><div class="eventIcon"></div></div>
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -261,16 +261,22 @@
 					<div
 						class="leaderBoardInfo__player"
 						v-for="player in leaderBoard"
-						:class="['leaderBoardInfo_' + player.rank, playerRait && playerRait.rank === player.rank ? 'leaderBoardInfo_my' : '', player.rank === 20 ? 'lastRang' : '']"
+						:class="[
+							'leaderBoardInfo_' + player.rank,
+							 playerRait && playerRait.rank === player.rank ? 'leaderBoardInfo_my' : '',
+							 (eventLocation && player.rank === 19) || (!eventLocation && player.rank === 20)
+							  ? 'lastRang' : '']"
+						v-if="player.rank !== 0"
 					>
-						<div class="leaderBoardInfo__rank">{{ player.rank }}</div>
-						<div class="leaderBoardInfo__playerInfo">
-							<div class="leaderBoardInfo__image"
-								 :style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat'}"
-								 :class="[player.player.getAvatarSrc('medium') ? '' : 'leaderBoardInfo__image_no']"></div>
-							<div class="leaderBoardInfo__name">{{ player.player.publicName ? player.player.publicName : 'Нет имени' }}</div>
-							<div class="leaderBoardInfo__score">{{ player.score }}</div>
-						</div>
+							<div class="leaderBoardInfo__rank">{{ player.rank }}</div>
+							<div class="leaderBoardInfo__playerInfo">
+								<div class="leaderBoardInfo__image"
+									 :style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat'}"
+									 :class="[player.player.getAvatarSrc('medium') ? '' : 'leaderBoardInfo__image_no']"></div>
+								<div class="leaderBoardInfo__name">{{ player.player.publicName ? player.player.publicName : 'Нет имени' }}</div>
+								<div class="leaderBoardInfo__score">{{ player.score }}</div>
+							</div>
+
 
 					</div>
 				</template>
@@ -637,7 +643,7 @@
 					Уведомление
 				</h2>
 				<div class="word-definition">
-					На "Фестивале Слов" подсказки отключены, вводить слова можно только вручную
+					В турнире подсказки отключены, вводить слова можно только вручную
 				</div>
 
 			</div>
@@ -717,7 +723,7 @@
 							<div class="shop__cart__name">{{notRussian ? '20 hints' : '20 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button" >
-<!--													<div class="shop__lastPrice">49</div>-->
+													<div class="shop__lastPrice">49</div>
 							{{getItemPrice(0)}}
 						</div>
 					</div>
@@ -732,7 +738,7 @@
 							<div class="shop__cart__name">{{notRussian ? '50 hints' : '50 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button">
-<!--													<div class="shop__lastPrice">99</div>-->
+													<div class="shop__lastPrice">99</div>
 							{{getItemPrice(1)}}
 						</div>
 					</div>
@@ -747,7 +753,7 @@
 							<div class="shop__cart__name">{{notRussian ? '100 hints' : '100 подсказок'}}</div>
 						</div>
 						<div class="shop__cart__buy-button">
-<!--													<div class="shop__lastPrice">149</div>-->
+													<div class="shop__lastPrice">149</div>
 							{{getItemPrice(2)}}
 						</div>
 					</div>
@@ -886,15 +892,16 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Хэллоуин!' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Чёрная пятница' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Тематическая локация "Хэллоуин"!
-				<div class="rules__goBg" @click="goToGetLocations()">К локациям</div>
+				Участвуйте в турнире Чёрной Пятницы, проходите особые уровни и боритесь за призы!
+				Главный приз - умная колонка «Яндекс Станция Мини» 🎁
+				<div class="rules__goBg" @click="getEventLocation()">К турниру</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -917,26 +924,26 @@
 		<div class="rules" v-show="rules">
 			<cross-vue @click.native="toggleRules()"></cross-vue>
 			<h2 class="rules__menu">
-				{{notRussian ? 'Rules' : eventLocation ? 'Фестиваль Слов' : 'Правила'}}
+				{{notRussian ? 'Rules' : eventLocation ? 'Чёрная Пятница' : 'Правила'}}
 			</h2>
 
 			<template v-if="eventLocation">
 				<div class="	eventLocationText">
 					Вместе с платформой Яндекс.Игры мы проводим розыгрыш
 					<span @click="toggleIsEventResult" class="prizesText">500 призов</span>, главный из которых - умная колонка «Яндекс Станция Мини» 🏆<br>
-					Для участия в розыгрыше необходимо:
+					Для участия в турнире необходимо:
 					<ul>
 						<li>
 							Авторизоваться на платформе Яндекс.Игры 🎮
 						</li>
 						<li>
-							Проходить специальные уровни Фестиваля Слов ⚡
+							Проходить специальные уровни Чёрной Пятницы до 12:00 26 ноября 2022 ⚡
 						</li>
 						<li>
 							Получать очки за отгаданные слова (слово из 2 букв приносит 2 очка, из 5 букв - 5 очков) 🎁
 						</li>
 					</ul>
-					<p class="fullRules"><a href="https://disk.yandex.ru/i/KBsfQXcVNBpCbw" target="_blank">Полные условия</a></p>
+					<p class="fullRules"><a href="https://disk.yandex.ru/i/elZt6uwFVD2how" target="_blank">Полные условия</a></p>
 				</div>
 
 			</template>
@@ -995,7 +1002,7 @@
 						<li>51-500 места - 50 Янов на игровой баланс платформы Яндекс.Игры</li>
 					</ul>
 
-					Результаты Фестиваля Слов будут опубликованы 27 июля после 12:00 по МСК!
+					Результаты Чёрной Пятницы будут опубликованы 26 ноября после 15:00 по МСК!
 				</template>
 				<template v-else-if="isResultLoading">
 					Идёт загрузка результатов...
@@ -1004,12 +1011,12 @@
 
 					<template v-if="eventResult >= 1 && eventResult <= 3">
 						<h2>Поздравляем!</h2>
-						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> на Фестивале Слов!</p>
+						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> в турнире Чёрной Пятницы!</p>
 						<div>Ваш приз: 🏆 {{getPrize()}} 🏆</div>
 					</template>
 					<template v-if="eventResult === 4">
 						<h2>Спасибо за участие!</h2>
-						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> на Фестивале Слов!</p>
+						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> в турнире Чёрной Пятницы</p>
 						<div class="eventDivWithMargins">К сожалению, вы не заняли одно из призовых мест.</div>
 						<div class="eventDivWithMargins">Но без подарков не останетесь, ведь 35 дополнительных подсказок уже на вашем счету!</div>
 					</template>
@@ -1039,7 +1046,7 @@
 						<p class="uniqueID">{{playerInfo.player.uniqueID}}</p>
 					</template>
 					<template v-if="eventResult === 0">
-						К сожалению, вы не участвовали в Фестивале Слов или не были авторизованы
+						К сожалению, вы не участвовали в турнире или не были авторизованы
 					</template>
 
 
@@ -1055,11 +1062,11 @@
 		<div class="rules" v-if="isInfoAboutClosedEvent">
 			<cross-vue @click.native="toggleInfoAboutClosedEvent()" ></cross-vue>
 			<h2 class="rules__menu">
-				Фестиваль завершён
+				Турнир завершён
 			</h2>
 			<div class="levelClosedText">
-				Начисление очков в Фестивале Слов завершено. Теперь вы можете играть только без зачёта очков в рейтинг.
-				Результаты фестиваля вы сможете увидеть 27 июля после 12:00 по МСК! Спасибо за участие!
+				Начисление очков в турнире Чёрной Пятницы завершено. Теперь вы можете играть только без зачёта очков в рейтинг.
+				Результаты вы сможете увидеть 26 ноября после 15:00 по МСК! Спасибо за участие!
 			</div>
 
 		</div>
@@ -1505,7 +1512,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-30";
+const lastVersion = "ver-31";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1605,7 +1612,7 @@ let savedMyGame = getFromStorage('savedMyGame');
 let infoAboutMyGame = getFromStorage('infoAboutMyGame');
 let infoAboutClosedEvent = !!getFromStorage('infoAboutClosedEvent');
 let infoAboutEvent = !!getFromStorage('infoAboutEvent');
-let gotGift = !!getFromStorage('gotGift');
+let gotBfGift = !!getFromStorage('gotBfGift');
 if(savedMyGame){
 	try{
 		savedMyGame = JSON.parse(savedMyGame);
@@ -1851,9 +1858,9 @@ function setState(isNow) {
 				allDoneWords: russianProgressSave,
 				allDoneWordsEN: compressData(PLAYESTATE.allDoneWords)
 			};
-			newState.gotGift = gotGift;
+			newState.gotBfGift = gotBfGift;
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
-			// if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
+			if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
 			playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 
 
@@ -1863,10 +1870,10 @@ function setState(isNow) {
 			const newState = {
 				allDoneWords: compressData(PLAYESTATE.allDoneWords)
 			};
-			newState.gotGift = gotGift;
+			newState.gotBfGift = gotBfGift;
 			if(englishProgress) newState.allDoneWordsEN = englishProgress;
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
-			// if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
+			if(eventProgress) newState.eventProgress = compressData(eventProgress, true);
 			// console.log('SendState');
 			// console.log(newState);
 			if(newState.allDoneWords === undefined && lastLevel > 0){
@@ -2200,10 +2207,10 @@ function initPlayer(ysdk) {
 
 		let someTrue = false;
 
-		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords', 'eventProgress', 'gotGift'], false).then((dataObject) => {
+		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords', 'eventProgress', 'gotBfGift'], false).then((dataObject) => {
 			console.log(dataObject);
-			if(dataObject.gotGift){
-				gotGift = dataObject.gotGift;
+			if(dataObject.gotBfGift){
+				gotBfGift = dataObject.gotBfGift;
 			}
 			if(dataObject.eventProgress){
 				dataObject.eventProgress = fixDoneWords(decompressLocationWords(dataObject.eventProgress), true);
@@ -2426,7 +2433,7 @@ function consumePurchase(purchase) {
 	document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 	payments.consumePurchase(purchase.purchaseToken);
 }
-const itemsPrices = [49, 99, 149];
+const itemsPrices = [29, 49, 89];
 function buyTips(item) {
 	if(payments && playerGame){
 		let purchaseItem = 'cart_item' + item;
@@ -2842,7 +2849,7 @@ let translatedLocationsNames = {
 	fbv: 'Фрукты, ягоды и овощи',
 	birds: 'Птицы',
 	cinema: 'Кино и мультфильмы',
-	event: 'Олимпиада Яндекс.Игр',
+	event: 'Чёрная пятница',
 	house: 'Дом, милый дом',
 	farm: 'Моя деревня',
 	halloween: 'Хэллоуин'
@@ -3062,20 +3069,20 @@ function testShowResult(){
 	const day = today.getUTCDate();
 	const hours = today.getUTCHours();
 	const month = today.getUTCMonth();
-	return (day === 27 && hours >= 9) || day > 27 || month > 6;
+	return (day === 26 && hours >= 12) || day > 26 || month > 10;
 }
 function testSendResult(){
 	const today = new Date();
 	const day = today.getUTCDate();
 	const hours = today.getUTCHours();
 	const month = today.getUTCMonth();
-	return (day === 26 && hours >= 21) || day > 26 || month > 6;
+	return (day === 26 && hours >= 9) || day > 26 || month > 10;
 }
 function testFastSendResult(){
 	const today = new Date();
 	const day = today.getUTCDate();
 	const hours = today.getUTCHours();
-	return day === 26 && hours >= 20;
+	return day === 26 && hours >= 8;
 }
 function copyToClipboard(str) {
 	const el = document.createElement('textarea');
@@ -3088,7 +3095,7 @@ function copyToClipboard(str) {
 	document.execCommand('copy');
 	document.body.removeChild(el);
 }
-const proms = ['','S9EGUU3H', 'XGKA0D5H', 'S4CSRGZP', '3A8PGG7D', 'EDCSH7GE', 'FD8ZSV9D', '95F3MEV1', 'PZDVMFEW', 'MM4DS8MG', '9448GRNB', '830F80MG', '33K4HXU7', 'ZXR6FW9V', '54TXER60', 'PP8N040R', '2GRCE3FN', '2ZE5R0B8', '4EKPYGRB', 'SVB171SH', 'BKZD4VM8', 'VWK9M33S', '4BGB9193', '212K1XWM', 'SKR30G5Y', 'VRBY4F21', '9P5NH4R8', 'GR83KS6N', '85DXSFHZ', '68ZBWVES', 'SSFKP5NE', 'AZCZYTUW', 'R0X69GMN', 'C9NCPASC', 'YH4CWAG8', 'Z7E2AV97', 'ACUM8PZN', '9993S2DA', 'W9BYGVW2', '3N9SUDHD', 'Z86256RK', 'DXZ4B2U7', 'D0KWF6AA', '7G1W0SFB', '6E2ARNPT', '0EGA98NU', '9FXHNSGG', '2T6RMG8F', 'UB87KFPH', 'T7GS52D5'];
+const proms = [];
 export default {
 	name: 'App',
 	components: {CrossVue, CrossComponent},
@@ -3159,7 +3166,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['event', 'halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -3183,7 +3190,7 @@ export default {
 			isInfoAboutCreateGame: false,
 			howManyTips: 10,
 			eventLocation: false,
-			eventLocationWordsAMount: 300,
+			eventLocationWordsAMount: 200,
 			isInfoAboutTips: false,
 			isEventResult: false,
 			eventResult: 0,
@@ -3244,7 +3251,7 @@ export default {
 	},
 	methods:{
 		getEventPrize(){
-			if(!gotGift){
+			if(!gotBfGift){
 				params({'getGift': this.eventResult});
 				if(this.eventResult === 1){
 					this.tipCount += 100;
@@ -3257,8 +3264,8 @@ export default {
 				}
 				setToStorage('tips', this.tipCount);
 				PLAYERSTATS.tips = this.tipCount;
-				setToStorage('gotGift', 'true');
-				gotGift = true;
+				setToStorage('gotBfGift', 'true');
+				gotBfGift = true;
 				saveAllData(true);
 			}
 		},
@@ -3274,8 +3281,9 @@ export default {
 							lb.getLeaderboardPlayerEntry('event')
 								.then(player => {
 									this.isResultLoading = false;
+									player.rank = player.rank - 1;
 									that.playerInfo = player;
-									if(player.rank === 1){
+									if(player.rank === 1 || player.rank === 0){
 										this.eventResult = 1;
 									}else if(player.rank <= 50){
 										this.eventResult = 2;
@@ -3583,7 +3591,7 @@ export default {
 					this.toggleRules();
 					setToStorage('infoAboutEvent', 'true');
 				}
-				if(testShowResult() && !gotGift){
+				if(testShowResult() && !gotBfGift){
 					this.toggleIsEventResult();
 				}
 			}
@@ -3840,6 +3848,7 @@ export default {
 										if(eventScore > player.score && !testSendResult()){
 											lb.setLeaderboardScore('event', eventScore);
 										}
+										that.playerRait.rank = that.playerRait.rank-1;
 									}else{
 										if(that.allStars > player.score){
 											lb.setLeaderboardScore('lvl', that.allStars);
@@ -3893,8 +3902,13 @@ export default {
 					function getLbByName(name){
 						// Получение 10 топов
 						lb.getLeaderboardEntries(name, { quantityTop: 20, includeUser: true, quantityAround: 10}).then(res => {
-							that.leaderBoard = res.entries;
 							goToUserInLb();
+							if(name === 'event'){
+								Object.keys(res.entries).forEach((a)=>{
+									res.entries[a].rank = res.entries[a].rank - 1;
+								})
+							}
+							that.leaderBoard = res.entries;
 							console.log(that.leaderBoard);
 						}).catch((error)=>{
 							console.log('er', error);
