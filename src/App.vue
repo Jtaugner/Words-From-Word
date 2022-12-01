@@ -22,7 +22,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian"><div class="eventIcon"></div></div>
+<!--					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian"><div class="eventIcon"></div></div>-->
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -892,16 +892,15 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Чёрная пятница' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Хэллоуин' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Участвуйте в турнире Чёрной Пятницы, проходите особые уровни и боритесь за призы!
-				Главный приз - умная колонка «Яндекс Станция Мини» 🎁
-				<div class="rules__goBg" @click="getEventLocation()">К турниру</div>
+				Новая локация - "Хэллоуин"!
+				<div class="rules__goBg" @click="goToGetLocations()">К локациям</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -3166,7 +3165,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['event', 'halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
