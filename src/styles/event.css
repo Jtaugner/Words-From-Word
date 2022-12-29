@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*Волшебство сказок*/
-.gameLocationWrapper-event::-webkit-scrollbar-thumb {
-  background-color: #9C0F0F;
+.gameLocationWrapper-event::-webkit-scrollbar-thumb, .gameLocationWrapper-event .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #E44500;
 }
 
 .gameLocationWrapper-event::-webkit-scrollbar-track {
@@ -9,8 +9,12 @@
   border-radius: 0;
 }
 
+.eventLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/event/event.png);
+}
+
 .eventLocation .popUp__locationName {
-  color: #9C0F0F;
+  color: #E44500;
 }
 
 .gameLocation-event {
@@ -18,32 +22,58 @@
   background-size: cover;
 }
 .gameLocation-event .svgIcon {
-  fill: #9C0F0F;
+  fill: #E44500;
 }
 .gameLocation-event .levelsTop__allStars {
-  color: #9C0F0F;
+  color: #E44500;
 }
 .gameLocation-event .menu-star, .gameLocation-event .newElement {
-  background-color: #DD0000;
+  background-color: #ec4400;
+}
+.gameLocation-event .eventProperty {
+  background: url(../assets/locations/event/map.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-event .rules__menu {
+  background-color: #E44500;
+}
+.gameLocationWrapper-event .rules .settings__text {
+  color: #E44500;
+}
+.gameLocationWrapper-event .rules .svgIcon {
+  fill: #E44500;
 }
 
 .gameLocation-event::-webkit-scrollbar-thumb {
-  background-color: #9C0F0F;
+  background-color: #E44500;
 }
 
 @media (min-width: 1000px) {
   .gameLocation-event .location__lastLevel {
-    box-shadow: 0 0 25px 10px #9C0F0F;
+    box-shadow: 0 0 25px 10px #E44500;
   }
 }
-.gameLocation-event .location__upLevel {
-  top: 25%;
-}
-
 @media (orientation: portrait) {
-  .gameLocation-event {
+  .gameLocation-event, .gameLocation-event .eventProperty {
+    background: url(../assets/locations/event/map_port.png) center center no-repeat;
     background-size: cover;
   }
+}
+.gameLocationWrapper-event .rules {
+  background-color: red;
+}
+
+.gameLocationWrapper-event .rules:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 8px;
+  left: 8px;
+  height: 100%;
+  width: 100%;
+  background: repeating-linear-gradient(-45deg, transparent 0, transparent 4px, blue 4px, blue 8px);
+  transition: all 0.25s ease;
 }
 
 /*# sourceMappingURL=event.css.map */

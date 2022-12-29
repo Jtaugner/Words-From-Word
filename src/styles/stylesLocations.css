@@ -357,6 +357,263 @@
   }
 }
 /*Волшебство сказок*/
+.gameLocationWrapper-event::-webkit-scrollbar-thumb, .gameLocationWrapper-event .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #DC2B51;
+}
+
+.gameLocationWrapper-event::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.eventLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/event/event.png);
+}
+
+.eventLocation .popUp__locationName {
+  color: #DC2B51;
+}
+
+.gameLocation-event {
+  background: url(../assets/locations/event/map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-event .svgIcon {
+  fill: #DC2B51;
+}
+.gameLocation-event .levelsTop__allStars {
+  color: #DC2B51;
+}
+.gameLocation-event .menu-star, .gameLocation-event .newElement {
+  background-color: #ec4400;
+}
+.gameLocation-event .eventProperty {
+  background: url(../assets/locations/event/map.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-event .rules__menu {
+  background-color: #DC2B51;
+}
+.gameLocationWrapper-event .rules .settings__text {
+  color: #DC2B51;
+}
+.gameLocationWrapper-event .rules .svgIcon {
+  fill: #DC2B51;
+}
+
+.gameLocation-event::-webkit-scrollbar-thumb {
+  background-color: #DC2B51;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-event .location__lastLevel {
+    box-shadow: 0 0 25px 10px #DC2B51;
+  }
+}
+@media (orientation: portrait) {
+  .gameLocation-event, .gameLocation-event .eventProperty {
+    background: url(../assets/locations/event/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
+.gameLocationWrapper-event .rules {
+  transform-style: preserve-3d;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 0;
+}
+
+.gameLocationWrapper-event .rules__menu {
+  background-color: #F54A5E;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  transform: none;
+  left: -32px;
+  padding: 0 32px;
+  box-sizing: content-box;
+  top: -20px;
+  height: 45px;
+}
+
+.gameLocationWrapper-event .rules__menu:after,
+.gameLocationWrapper-event .rules__menu:before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  width: 79px;
+  height: 56px;
+  z-index: -1;
+}
+
+.gameLocationWrapper-event .rules__menu:after {
+  right: -62px;
+  background: url("../assets/flag-right.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.gameLocationWrapper-event .rules__menu:before {
+  left: -62px;
+  background: url("../assets/flag-left.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.gameLocationWrapper-event .rules::after {
+  content: "";
+  position: absolute;
+  box-sizing: content-box;
+  z-index: -1;
+  top: -15px;
+  left: -15px;
+  height: 100%;
+  width: 100%;
+  border: 15px solid white;
+  border-image: repeating-linear-gradient(45deg, #DE454D, #DE454D 20px, white 20px, white 40px) 20;
+  transform: translateZ(-1px);
+  border-radius: 20px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.gameLocationWrapper-event .rules::before {
+  content: "";
+  position: absolute;
+  top: 25px;
+  left: -15px;
+  height: 9px;
+  width: 100%;
+  padding-right: 30px;
+  box-sizing: content-box;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.gameLocationWrapper-event .rules__cross {
+  top: -10px !important;
+  right: -5% !important;
+  z-index: 2;
+}
+
+.gameLocationWrapper-event .rules__cross .svgIcon {
+  width: 45% !important;
+  height: 45% !important;
+}
+
+@media (orientation: portrait) {
+  .gameLocationWrapper-event .rules {
+    width: calc(100% - 30px);
+  }
+
+  .gameLocationWrapper-event .rules__menu {
+    width: calc(100% - 158px);
+    left: 47px;
+    top: -30px;
+  }
+
+  .gameLocationWrapper-event .rules__cross {
+    top: -25px !important;
+    right: 50px !important;
+    transform: translate(50%, -50%) !important;
+  }
+
+  .gameLocationWrapper-event .rules::before {
+    display: none !important;
+  }
+
+  .gameLocationWrapper-event .levelClosedText {
+    max-height: 75vh;
+  }
+}
+.viberClass {
+  color: #7060EA;
+}
+
+.eventLocationText ul {
+  padding-left: 20px;
+}
+
+.smallText {
+  font-size: 1.2rem;
+}
+
+.infoAboutCopy {
+  display: none;
+  position: absolute;
+  width: 150px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid black;
+  font-size: 1.5rem;
+  transform: translateX(-50%);
+  padding: 5px 0;
+  text-align: center;
+  left: 50%;
+  bottom: 20px;
+  z-index: 1000;
+}
+
+.eventRules .rules__goBg, .eventLocationText .rules__goBg,
+.gameLocationWrapper-event .rules__goBg {
+  background-color: #F54A5E !important;
+}
+
+.gameLocationWrapper-event .rules__goBg {
+  width: 250px;
+  height: 50px;
+}
+
+.eventRules .rules__copyPromo {
+  font-size: 1.9rem;
+  background-color: #ff7686 !important;
+}
+
+.linkStation {
+  display: block;
+  margin: 20px 0;
+}
+
+.gameLocationWrapper-event .level .level_star {
+  background-color: rgba(255, 255, 255, 0.83) !important;
+}
+
+.gameLocationWrapper-event .level .menu-star {
+  background-color: #DC2B51 !important;
+}
+
+.gameLocationWrapper-event .newElement {
+  background: url(../assets/head.png) center center no-repeat;
+  background-size: 100%;
+  width: 120% !important;
+  height: 96% !important;
+  top: -30%;
+  left: 0;
+  border-radius: 0;
+}
+
+.eventGameLocation .levels-wrapper {
+  padding-top: 30px;
+  margin-bottom: 30px;
+}
+
+.gameLocationWrapper-event .eventGameLocation .levels-wrapper {
+  max-height: 270px;
+}
+
+@media (min-width: 1000px) {
+  .gameLocationWrapper-event .eventGameLocation .levels-wrapper {
+    max-height: 388px;
+  }
+}
+@media (orientation: portrait) {
+  .gameLocationWrapper-event .eventGameLocation .levels-wrapper {
+    max-height: 338px;
+  }
+}
+@media (orientation: portrait) and (min-height: 720px) {
+  .gameLocationWrapper-event .eventGameLocation .levels-wrapper {
+    max-height: 392px;
+  }
+}
+/*Волшебство сказок*/
 .gameLocationWrapper-default::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
   background-color: #C05252;
 }
