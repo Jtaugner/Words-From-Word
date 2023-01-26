@@ -120,6 +120,10 @@
 .chosenAppBg-2 .leaderBoardInfo__player {
   border-color: #E75858;
 }
+.chosenAppBg-2 .done-word {
+  color: black;
+  text-shadow: 0 0 8px white;
+}
 @media (orientation: portrait) {
   .chosenAppBg-2 .shop__cart__buy-button {
     background-color: #C21332;
