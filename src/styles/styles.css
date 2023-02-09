@@ -751,7 +751,7 @@ html, body {
 }
 
 .menu__level .level_full-star.getStar {
-  animation: showFullStar 1s forwards;
+  animation: showFullStar 1.1s forwards;
 }
 
 .menu__level .level_full-star {
@@ -764,7 +764,7 @@ html, body {
     transform: scale(1);
   }
   50% {
-    transform: scale(2);
+    transform: scale(5);
   }
   100% {
     transform: scale(1);

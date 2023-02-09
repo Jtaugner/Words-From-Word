@@ -3,8 +3,7 @@
 		 :class="[
 			 'chosenAppBg' + chosenBgRight,
 		  showGameLocation ? 'locationOpened' : '',
-		   'gameLocationWrapper-' + locationClassID,
-		   showLastLevelInfo ? 'gameLocationWrapper-event' : ''
+		   'gameLocationWrapper-' + locationClassID
 		   ]"
 	>
 		<!--    <div class="close-level-help prev-location next-location"></div>-->
@@ -24,7 +23,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian"><div class="eventIcon"></div></div>
+<!--					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian"><div class="eventIcon"></div></div>-->
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -892,15 +891,15 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Новый год' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Уведомление' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Участвуйте в Новогоднем турнире «Слова из слова» и выигрывайте призы!
-				<div class="rules__goBg" @click="getEventLocation">Поехали!</div>
+				Если вы ещё не проходили наши тематические локации, предлагаем вам обязательно их оценить!
+				<div class="rules__goBg" @click="goToGetLocations">К локациям</div>
 			</template>
 			<template v-else>
 				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
@@ -3238,7 +3237,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['event','halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -4219,6 +4218,17 @@ export default {
 					this.getLvl5Hint();
 				}
 			}
+			try{
+				if(this.doneWords.length === 0 && (lvl === 4 || lvl === 9 || lvl === 19 || lvl === 29
+					|| lvl === 39 || lvl === 49 || lvl === 99 || lvl === 199 || lvl === 299
+					|| lvl === 399 || lvl === 499)){
+					let name = 'tipsLvl' + (lvl + 1);
+					params({[name]: this.tipCount})
+				}
+			}catch(e){
+				console.log(e);
+			}
+
 
 
 			this.getLBorBanner();
