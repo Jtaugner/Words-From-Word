@@ -36,7 +36,7 @@
 .chosenAppBg1 ::-webkit-scrollbar-thumb {
   background-color: #DE8858;
 }
-.chosenAppBg1 .settings {
+.chosenAppBg1 .settings, .chosenAppBg1 .lbInGame__player, .chosenAppBg1 .lbInGame__score {
   border-color: #DE8858;
 }
 .chosenAppBg1 .checkbox:checked + label:after {

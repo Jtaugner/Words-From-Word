@@ -78,7 +78,7 @@
 .chosenAppBg-1 .cloudHint, .chosenAppBg-1 .cloudHint__mainText {
   color: #3C9BA8;
 }
-.chosenAppBg-1 .leaderBoardInfo__player {
+.chosenAppBg-1 .leaderBoardInfo__player, .chosenAppBg-1 .lbInGame__player, .chosenAppBg-1 .lbInGame__score {
   border-color: #3C9BA8;
 }
 @media (orientation: portrait) {

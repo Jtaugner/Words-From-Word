@@ -117,7 +117,7 @@
 .chosenAppBg-2 .cloudHint__mainText {
   color: #e03f3f;
 }
-.chosenAppBg-2 .leaderBoardInfo__player {
+.chosenAppBg-2 .leaderBoardInfo__player, .chosenAppBg-2 .lbInGame__player, .chosenAppBg-2 .lbInGame__score {
   border-color: #E75858;
 }
 .chosenAppBg-2 .done-word {

@@ -23,7 +23,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-<!--					<div class="eventIcon-wrapper" @click="getEventLocation" v-if="!notRussian"><div class="eventIcon"></div></div>-->
+					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -891,14 +891,14 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Уведомление' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'День Валентина' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Если вы ещё не проходили наши тематические локации, предлагаем вам обязательно их оценить!
+				Представляем новую локацию ко Дню Святого Валентина! А также вы можете найти новое тематическое оформление в настройках игры!
 				<div class="rules__goBg" @click="goToGetLocations">К локациям</div>
 			</template>
 			<template v-else>
@@ -1128,6 +1128,7 @@ import './styles/stylesHalloween.scss';
 import './styles/stylesNewYear.scss';
 import './styles/stylesSpring.scss';
 import './styles/stylesCave.scss';
+import './styles/stylesValentines.scss';
 
 import './styles/stylesLocations.scss';
 // import './styles/stylesDarkTheme.scss';
@@ -1560,7 +1561,7 @@ function newDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-32";
+const lastVersion = "ver-34";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1678,13 +1679,8 @@ if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
 	// importBg(chosenBackground, true);
 }else{
-	if(allDoneWords){
-		chosenBackground = 0;
-		setToStorage('chosenBackground', '0');
-	}else{
-		chosenBackground = -3;
-		setToStorage('chosenBackground', chosenBackground);
-	}
+	chosenBackground = 4;
+	setToStorage('chosenBackground', '4');
 	// deleteBlockBg = true;
 }
 try{
@@ -1733,6 +1729,11 @@ let wordsForReplace = {
 	'распутина': 'парусина',
 	'таблеточка': 'таблетка',
 	'обругание': 'абориген',
+	'злотникова': 'котлован',
+	'пронякина': 'канонир',
+	'буратино': 'трибуна',
+	'корнилова': 'ковролин',
+	'оскопление': 'поколение'
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
@@ -1932,9 +1933,9 @@ function setState(isNow) {
 			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
 			if(newYearProgress) newState.newYearProgress = compressData(newYearProgress, true);
 			// console.log('SendState');
-			// console.log(newState);
+			// console.log(newState);createGameLevel
 			if(newState.allDoneWords === undefined && lastLevel > 0){
-				params({'allWords-NO': 1});
+				params({'allWords-NO': PLAYESTATE.allDoneWords});
 			}
 			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
 				try{
@@ -2083,6 +2084,7 @@ function startAdvInterval(){
 	}, 5000);
 }
 if(window.YaGames){
+	params({'TryGetYaGames': 1});
 	window.YaGames.init({
 		adv: {
 			onAdvClose: wasShown => {
@@ -2095,6 +2097,7 @@ if(window.YaGames){
 		}
 	}).then(ysdk => {
 		YSDK = ysdk;
+		params({'GotYaGames': 1});
 		try{
 			console.log("LANG: ", ysdk.environment.i18n.lang);
 			notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
@@ -2252,9 +2255,9 @@ function initPlayer(ysdk) {
 		// Игрок авторизован.
 		playerGame = _player;
 		try{
-			params({'auth': 1});
+			params({'authDone': 1});
 			if(_player._personalInfo.mode === "lite" || _player.mode === "lite"){
-				params({'authLite': 1});
+				// params({'authLite': 1});
 				console.log('Lite auth');
 			}else{
 				isPlayerAuth = true;
@@ -2394,6 +2397,7 @@ function initPlayer(ysdk) {
 							setState();
 						}
 					}
+					params({'payloadZlms': lvl2});
 				}
 			}catch(e){
 				console.log(e);
@@ -2912,7 +2916,8 @@ let translatedLocationsNames = {
 	event: 'Новогодний турнир',
 	house: 'Дом, милый дом',
 	farm: 'Моя деревня',
-	halloween: 'Хэллоуин'
+	halloween: 'Хэллоуин',
+	valentines: 'День Валентина'
 }
 
 let defaultLocations = ['house'];
@@ -3237,7 +3242,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['valentines','halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -3483,7 +3488,7 @@ export default {
 				this.findNotShowLetters();
 				this.getVerticalBanner();
 				this.gameWord = '';
-				params({'createGameLevel': 1});
+				// params({'createGameLevel': 1});
 			}else{
 				this.gameWordMistake = true;
 			}
@@ -3674,7 +3679,7 @@ export default {
 
 		},
 		goToGetLocations(){
-			params({'goToGetLoc': 1});
+			params({'goToGetLValentine': 1});
 			this.backMenu();
 			this.showLocations = true;
 			this.showLastLevelInfo = false;
@@ -3737,12 +3742,12 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 4) this.chosenBg = -4;
+			if(this.chosenBg === 5) this.chosenBg = -4;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -5) this.chosenBg = 3;
+			if(this.chosenBg === -5) this.chosenBg = 4;
 			this.testBg();
 		},
 		testBg(){
@@ -3752,7 +3757,7 @@ export default {
 			}else if(this.chosenBg <= 0){
 				this.chosenBgRight = this.chosenBg;
 			}
-			params({'choseBg': this.chosenBgRight});
+			// params({'choseBg': this.chosenBgRight});
 			setToStorage('chosenBackground', this.chosenBgRight);
 		},
 		goChangeBgFromUpdate(){
@@ -4161,11 +4166,11 @@ export default {
 
 
 
-			if(window.innerWidth > window.innerHeight){
-				params({'orientation': 'landscape'});
-			}else{
-				params({'orientation': 'portrait'});
-			}
+			// if(window.innerWidth > window.innerHeight){
+			// 	params({'orientation': 'landscape'});
+			// }else{
+			// 	params({'orientation': 'portrait'});
+			// }
 
 
 			if(lvl !== 0 && lvl % 100 === 0 && notRussianGame){
@@ -4196,6 +4201,11 @@ export default {
 			if(this.doneWords.length === 0 && bgLvlsOpen.includes(lvl)){
 				this.toggleOpenNewBg();
 			}
+			if(this.doneWords.length === 0 && lvl === 0){
+				try{
+					params({'getLevel0': 1});
+				}catch(e){}
+			}
 
 
 
@@ -4218,7 +4228,7 @@ export default {
 					this.getLvl5Hint();
 				}
 			}
-			try{
+			/*try{
 				if(this.doneWords.length === 0 && (lvl === 4 || lvl === 9 || lvl === 19 || lvl === 29
 					|| lvl === 39 || lvl === 49 || lvl === 99 || lvl === 199 || lvl === 299
 					|| lvl === 399 || lvl === 499)){
@@ -4227,7 +4237,7 @@ export default {
 				}
 			}catch(e){
 				console.log(e);
-			}
+			}*/
 
 
 
@@ -4569,7 +4579,7 @@ export default {
 						YSDK.adv.showRewardedVideo({
 							callbacks: {
 								onRewarded: () => {
-									params({'isRewardedVideo': 1});
+									// params({'isRewardedVideo': 1});
 									that.addTip(true);
 								},
 								onError: () => {
@@ -4611,7 +4621,7 @@ export default {
 									}
 
 								}
-								params({'rewardedAdv': 1});
+								// params({'rewardedAdv': 1});
 								that.addTip();
 							},
 							onError: function (e){
@@ -4882,7 +4892,7 @@ export default {
 				this.levelStars = stars;
 				if(this.isMyGame){
 					if(stars === 1){
-						params({'endMyGame': 1});
+						// params({'endMyGame': 1});
 					}
 				} else if(this.locationGame){
 					this.locationStars.splice(this.lvl, 1, stars);
@@ -4907,7 +4917,12 @@ export default {
 				}else{
 					setLastLevel();
 					if(stars === 1){
-						params({'gotLevel': this.lvl});
+						if(this.lvl < 20){
+							params({'doneLevel': this.lvl});
+						}else if(this.lvl > 6029){
+							params({'doneBigLevel': this.lvl});
+						}
+
 
 						let thisLvl = this.lvl+1;
 						if(thisLvl === 2 || thisLvl === 10 || thisLvl === 5 ||

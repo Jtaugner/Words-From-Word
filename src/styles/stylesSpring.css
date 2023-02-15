@@ -61,6 +61,9 @@
 .chosenAppBg-3 .shop__cart__item {
   border-color: #3A307D;
 }
+.chosenAppBg-3 .lbInGame__player, .chosenAppBg-3 .lbInGame__score {
+  border-color: #6c72f1;
+}
 .chosenAppBg-3 .wordWas .words__letter {
   background-color: #39307c;
 }

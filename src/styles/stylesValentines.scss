@@ -1,0 +1,107 @@
+
+/*Фон Валентин*/
+
+#app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels{
+  background-image: url(../assets/valentines.png);
+}
+
+.chosenAppBg4{
+  .svgIcon{
+    fill: #D15784;
+  }
+  .levelsTop__allStars{
+    color: #D15784;
+  }
+  .newElement, .levels .menu-star{
+    background-color: #c74573;
+  }
+  .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
+    background-color: #c74573;
+    color: white;
+  }
+  .menu__tip_count, .rules__goBg{
+    background-color: #c74573;
+  }
+  .rules__menu, .leaderBoardInfo_my .leaderBoardInfo__rank, .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .startCreateGame{
+    background-color: #D15784;
+  }
+  .shop, .rules, .leaderBoardInfo_my .leaderBoardInfo__image{
+    border-color: #D15784;
+  }
+  .shop .rules__menu, .settings__text{
+    color: #D15784;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #c74573;
+  }
+  .settings{
+    border-color: #D15784;
+  }
+  .checkbox:checked + label:after {
+    background: #c74573;
+  }
+  .checkbox:checked + label:before {
+
+    background-color: #fc6c9f;
+  }
+
+  .newWord .words__letter{
+    background-color: #f06a99;
+  }
+  .animWord .words__letter{
+    animation: 1s showNewWord8 forwards;
+  }
+  //Смена названия
+  @keyframes  showNewWord8{
+    0%{background-color: rgba(255, 255, 255, 0.85);}
+    100%{background-color: #f06a99;}
+  }
+
+  //Магазин
+  .shop__cart__name{
+    color:#D15784;
+    border-color: #D15784;
+  }
+  .shop__cart__item{
+    border-color: #D15784;
+  }
+
+  .wordWas .words__letter{
+    background-color: #a32752;
+  }
+
+  .menu__hint{
+    background-color: rgba(199, 69, 115, 0.9);
+  }
+  .skipTutorial{
+    background-color: #c74573;
+  }
+  .cloudHint{
+    color: #c74573;
+  }
+  .cloudHint__mainText{
+    color: #c74573;
+  }
+  .leaderBoardInfo__player, .lbInGame__player, .lbInGame__score{
+    border-color: #c74573;
+  }
+
+  @media (orientation: portrait){
+    .shop__cart__buy-button{
+      background-color: #D15784;
+    }
+  }
+  .action-block__letter{
+    color: #470f21;
+  }
+  @media (max-width: 1400px) {
+    .blur{
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+@media (orientation: portrait) {
+  #app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels{
+    background-image: url(../assets/locations/valentines/map_port.png);
+  }
+}

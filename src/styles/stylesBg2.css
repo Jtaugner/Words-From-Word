@@ -27,7 +27,7 @@
 .chosenAppBg2 .menu__tip_count, .chosenAppBg2 .rules__goBg {
   background-color: #192B6C;
 }
-.chosenAppBg2 .shop, .chosenAppBg2 .rules, .chosenAppBg2 .leaderBoardInfo_my .leaderBoardInfo__image {
+.chosenAppBg2 .shop, .chosenAppBg2 .rules, .chosenAppBg2 .leaderBoardInfo_my .leaderBoardInfo__image, .chosenAppBg2 .lbInGame__player, .chosenAppBg2 .lbInGame__score {
   border-color: #192B6C;
 }
 .chosenAppBg2 .shop .rules__menu, .chosenAppBg2 .settings__text {
