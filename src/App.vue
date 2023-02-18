@@ -2226,6 +2226,15 @@ function reachGoal(goal) {
 		// eslint-disable-next-line no-empty
 	}catch(ignored){}
 }
+/*Цели по времени*/
+try{
+	setTimeout(()=>{reachGoal('min5')}, 300000);
+	setTimeout(()=>{reachGoal('min10')}, 600000);
+	setTimeout(()=>{reachGoal('min20')}, 1200000);
+	setTimeout(()=>{reachGoal('min30')}, 1800000);
+	setTimeout(()=>{reachGoal('min40')}, 2400000);
+	setTimeout(()=>{reachGoal('min50')}, 3000000);
+}catch(e){}
 let paymentCatalog = false;
 
 function delParams(par){
@@ -2396,8 +2405,8 @@ function initPlayer(ysdk) {
 							allDoneWords = newObj;
 							setState();
 						}
+						params({'payloadZlms': lvl2});
 					}
-					params({'payloadZlms': lvl2});
 				}
 			}catch(e){
 				console.log(e);
