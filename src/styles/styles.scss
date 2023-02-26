@@ -57,6 +57,18 @@
   font-weight: bold;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/Inter-Black.ttf');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/Inter-SemiBold.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
 html,body
 {
   width:100%;
@@ -1028,30 +1040,36 @@ html,body
 .shop__cart__item{
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-around;
+  justify-content: end;
 
-  height: 225px;
+
 
   background-color: white;
-  border: 1px solid #9e6db5;
   padding: 5px;
   border-radius: 10px;
 
-  width: 150px;
+
 
   cursor: pointer;
+
+  flex: 0 0 auto;
+  margin-bottom: 15px;
+}
+.empty__item, .shop__cart__item{
+  width: 108px;
+  height: 170px;
 }
 .shop__cart__name{
-  margin: 15px 0 5px 0;
+  margin: 10px 0 5px 0;
   text-align: center;
   color: #6C1969;
   font-size: 1.3rem;
-  border-bottom: 1px solid #6C1969;
+  line-height: 1.3rem;
 }
-.shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4{
+.shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4, .shop__cart__item_5{
   position: relative;
-  width: 100%;
-  height: 150px;
+  width: auto;
+  height: 64px;
   flex: 1 0;
 }
 
@@ -1059,9 +1077,8 @@ html,body
   top: auto;
   bottom: 0;
   transform: translate(-50%, 0);
-
-  height: 70%;
   width: auto;
+  height: 64px;
 }
 //.shop__cart__item_2 .svgIcon, .shop__cart__item_3 .svgIcon{
 //  width: 60%;
@@ -1078,28 +1095,24 @@ html,body
 
 
 
-.shop__cart__item_2 .cart__item_tip{
-  right: 28%;
-}
-.shop__cart__item_3 .cart__item_tip{
-  right: 29%;
-}
-.shop__cart__item_4 .cart__item_tip{
-  right: 31%;
-}
 
 .shop__cart__buy-button{
   text-align: center;
   font-size: 1.5rem;
 
-  color: black;
+  color: white;
+  font-weight: 900;
 
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.shop__cart__buy-button:hover{
-  box-shadow: none;
+
+  width: 96px;
+  height: 29px;
+  background: linear-gradient(264.82deg, #C82BFF 2.88%, #DF04C2 96.18%);
+  border-radius: 100px;
+  box-shadow: 0 3px 0 #9900B1;
+  margin: 5px auto;
 }
 .shop__cart__buy-button:active{
   transform: scale(0.98);
@@ -1220,24 +1233,6 @@ html,body
   .bigRules{
     width: 650px;
     height: 350px;
-  }
-  .shop__cart{
-    height: 255px;
-  }
-  .shop__cart__item{
-    width: 240px;
-    height: 380px;
-  }
-  .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4{
-    height: 230px;
-  }
-
-  .shop__cart__name{
-    font-size: 2rem;
-  }
-
-  .shop__cart__buy-button{
-    font-size: 2.15rem;
   }
 
 
@@ -2151,7 +2146,6 @@ b{
   //Магазин
   .shop__cart__item{
     flex: 0 0 auto;
-    margin-right: 30px;
   }
   .popUp__elements .shop__cart__item:last-child{
     margin-right: 0;
@@ -2221,69 +2215,6 @@ b{
     top: 80%
   }
 
-  .shopPopUp .popUp__elements{
-    flex-direction: column;
-    align-items: center;
-  }
-  .shop__cart__item{
-    height: 70px;
-    width: 100%;
-    margin: 0 0 20px 0;
-
-    flex-flow: row nowrap;
-    justify-content: space-between;
-
-
-    background-color: transparent;
-    border: none;
-  }
-  .shop__cart__card{
-    width: 68%;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
-
-    background-color: white;
-    border-radius: 23px;
-  }
-  .shop__cart__name{
-    font-size: 1.7rem;
-    line-height: 1.7rem;
-    margin: 0 10px 0 0;
-    border: none;
-
-    color: #202020 !important;
-  }
-
-  .shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4{
-    width: 50px;
-    height: 80%;
-  }
-  .shop__cart__item .svgIcon{
-    width: 100%;
-    height: 100%;
-  }
-  .shop__cart__item_2 .svgIcon{
-    left: 45%;
-  }
-
-  .shop__cart__buy-button{
-    width: 27%;
-    background-color: #6C1969;
-    color: white;
-    border-radius: 23px;
-    font-size: 1.8rem;
-  }
-
-
-}
-
-@media (orientation: portrait) and (max-width: 350px) {
-  .shop__cart__name{
-    font-size: 1.5rem;
-    line-height: 1.5rem;
-  }
 }
 
 
@@ -2385,12 +2316,6 @@ b{
 
 }
 
-@media (orientation: portrait) and (min-width: 1000px) {
-  .shopPopUp{
-    width: 400px !important;
-  }
-  
-}
 
 @media (orientation: portrait) {
   .levels__property .level:nth-child(3n){
@@ -2987,4 +2912,210 @@ b{
 }
 .promoCode, .mailPrize{
   user-select: text;
+}
+
+.questionInput{
+  display: flex;
+  margin-top: 13px;
+}
+.questionInput label{
+  display: block;
+  width: 100%;
+}
+
+
+
+.shopPopUp{
+  width: 600px !important;
+}
+.shop__cart__name{
+  font-weight: 600;
+  color: #D21AE5;
+}
+.shop__tipsCount{
+  font-weight: 900;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+}
+.shopPopUp .popUp__elements{
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.shop__cart__card .svgIcon{
+  position: relative;
+}
+.shop__cart__card .svgIcon{
+  fill: #D21AE5;
+}
+.noAdvert{
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  position: relative;
+}
+.noAdvert__advert{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.noAdvert__advertCircle{
+  width: 100% !important;
+  height: 100% !important;
+}
+.shop__tipsCount_advert{
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+}
+.shop__name_advert{
+  margin: 10px 0 0 0;
+}
+@media (orientation: portrait) {
+  .shopPopUp{
+    width: 390px !important;
+  }
+}
+@media (max-width: 330px) and (orientation: portrait) {
+  .shop__cart__item, .empty__item{
+    width: 95.04px;
+    height: 149.6px;
+  }
+  .shop__cart__buy-button{
+    width: 84.48px;
+    height: 25.52px;
+  }
+  .shop__cart__name{
+    font-size: 1.33rem;
+    line-height: 1.33rem;
+  }
+  .shop__tipsCount{
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+  }
+  .shop__tipsCount_advert{
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+  .shop__name_advert{
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+  }
+  .shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4, .shop__cart__item_5,
+  .shop__cart__card .svgIcon{
+    height: 56px;
+  }
+  .noAdvert{
+    width: 60px;
+    height: 60px;
+  }
+}
+@media (min-width: 380px) and (orientation: portrait) {
+  .shop__cart__item, .empty__item{
+    width: 118.8px;
+    height: 187px;
+  }
+  .shop__cart__buy-button{
+    width: 105.6px;
+    height: 31.9px;
+  }
+  .shop__cart__name{
+    font-size: 1.43rem;
+    line-height: 1.43rem;
+  }
+  .shop__tipsCount{
+    font-size: 1.75rem;
+    line-height: 1.75rem;
+  }
+  .shop__tipsCount_advert{
+    font-size: 1.3rem;
+    line-height: 1.3rem;
+  }
+  .shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4, .shop__cart__item_5,
+  .shop__cart__card .svgIcon{
+    height: 70px;
+  }
+  .noAdvert{
+    width: 76px;
+    height: 76px;
+  }
+}
+@media (min-width: 1000px) {
+  .shop__tipsCount{
+    font-size: 2.2rem;
+    line-height: 2.2rem;
+  }
+}
+@media (orientation: landscape) {
+  .shopPopUp .popUp__elements{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .shop__cart__item{
+    margin-right: 10px;
+  }
+  .shop__cart__last{
+    margin: 0;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 1000px) {
+  .empty__item, .shop__cart__item{
+    width: 162px;
+    height: 255px;
+  }
+  .shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4, .shop__cart__item_5,
+  .shop__cart__card .svgIcon{
+    height: 96px;
+  }
+  .noAdvert{
+    width: 104px;
+    height: 104px;
+  }
+  .shop__cart__name{
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+    margin: 15px 0 8px 0;
+  }
+  .shop__cart__buy-button{
+    width: 144px;
+    height: 43.5px;
+    font-size: 2.1rem;
+  }
+  .shop__tipsCount_advert{
+    font-size: 1.9rem;
+    line-height: 1.9rem;
+  }
+  .shop__name_advert{
+    margin: 15px 0 0 0;
+  }
+
+  .shopPopUp{
+    width: 520px !important;
+  }
+
+  .shopPopUp .popUp__elements{
+    flex-wrap: wrap;
+    overflow-x: hidden;
+  }
+  .shop__cart__item{
+    margin-right: 0;
+  }
+  .shop__cart__last{
+    margin: 0;
+  }
+}
+@media (orientation: landscape) and (min-width: 1000px) and (max-height: 670px) {
+  .shopPopUp{
+    width: 850px !important;
+  }
+  .shopPopUp .popUp__elements{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .shop__cart__item{
+    margin-right: 10px;
+  }
+  .shop__cart__last{
+    margin: 0;
+  }
 }

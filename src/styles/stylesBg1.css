@@ -12,6 +12,16 @@
 .chosenAppBg1 .svgIcon {
   fill: #6E3208;
 }
+.chosenAppBg1 .shop__cart__card .svgIcon {
+  fill: #FF5C39;
+}
+.chosenAppBg1 .shop__cart__card .shop__cart__name {
+  color: #FF5C39;
+}
+.chosenAppBg1 .shop__cart__buy-button {
+  background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+  box-shadow: 0 3px 0 #C1381C;
+}
 .chosenAppBg1 .levelsTop__allStars {
   color: #4E2406;
 }

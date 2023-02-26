@@ -15,6 +15,16 @@
   .svgIcon{
     fill: #C21332;
   }
+  .shop__cart__card .svgIcon{
+    fill: #4395F5;
+  }
+  .shop__cart__card .shop__cart__name{
+    color: #4395F5;
+  }
+  .shop__cart__buy-button{
+    background: linear-gradient(264.82deg, #3A9DF8 2.88%, #33E0F8 96.18%);
+    box-shadow: 0px 3px 0px #237EE9;
+  }
   .levelsTop__allStars, .shop .rules__menu, .settings__text{
     color: #C21332;
   }
