@@ -522,10 +522,44 @@
 				</div>
 
 
-				<div class="cloudHint" v-show="cloudHint && !showWordDesc" :class="[selectMainWord ? 'cloudHint_wordSelected' : '']" @click="closeHint()">
-					<p v-html="cloudsPhrase"></p>
+				<div class="cloudHint"
+					 :class="[
+						 selectMainWord ? 'cloudHint_wordSelected' : '',
+						 !cloudHint || showWordDesc ? 'cloudHint_notShowed': '']"
+					 @click="closeHint()">
+					<p v-if="Array.isArray(cloudsPhrase)">
+						<span
+							v-for="letterArr in cloudsPhrase"
+							:key="letterArr[0] + letterArr[1] + letterArr[2]"
+							:class="{
+								'cloudHint__letter': true,
+								'cloudHint__mainText':  letterArr[2]
+							}"
+							v-bind:style="{
+								animationDelay: letterArr[1]
+							}"
+						>{{letterArr[0]}}</span>
+					</p>
+					<p v-else v-html="cloudsPhrase"></p>
 				</div>
 				<div class="skipTutorial" v-show="cloudHint && !showWordDesc && canShowSkip" @click="skipTutorial">Пропустить</div>
+				<div v-show="cloudHint && !showWordDesc && canShowSkip" @click="switchSoundsTutorial"
+					 class="switchSoundsTutorial menuItem">
+
+					<svg v-if="isSounds" width="24" class="svgIcon" height="22" viewBox="0 0 24 22" xmlns="http://www.w3.org/2000/svg">
+						<path d="M17 7.42856C17 7.42856 18.6071 8.34693 18.6071 10.6428C18.6071 12.9388 17 13.8571 17 13.8571" stroke="#731E47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M21 5C21 5 23 6.57143 23 10.5C23 14.4286 21 16 21 16" stroke="#731E47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M1 6.5102V14.7755H5.94505L13.8571 20.2857V1L5.94505 6.5102H1Z" stroke="#731E47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					<svg v-else class="svgIcon" width="26" height="22" viewBox="0 0 26 22" fill="#731E47" xmlns="http://www.w3.org/2000/svg">
+						<path d="M1 6.5102V14.7755H5.94505L13.8571 20.2857V1L5.94505 6.5102H1Z" stroke="#731E47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+						<rect x="24" y="6" width="2" height="11.0203" rx="1" transform="rotate(45 24 6)"/>
+						<rect x="25.4142" y="13.7925" width="2" height="11.0203" rx="1" transform="rotate(135 25.4142 13.7925)"/>
+					</svg>
+
+
+
+				</div>
 
 
 				<div class="bottomMenu">
@@ -671,7 +705,7 @@
 				</h2>
 				Вам открылся новый фон и цветовое оформление. Перейдите в настройки, чтобы испытать его в игре!
 
-				<div class="rules__goBg" @click="goTo()">Перейти</div>
+				<div class="rules__goBg" @click="goToChangeBg()">Перейти</div>
 
 			</div>
 
@@ -1200,7 +1234,7 @@ import './styles/stylesLocations.scss';
 // import './styles/stylesDarkTheme.scss';
 import {allWordsRU} from './russianWords';
 import {dictionaryRU} from './russianDictionary';
-import {wordsFromWordsRU} from "./russianWordsFromWords";
+import {newWordsFromWords} from "./russianNewWordsFromWords";
 import {allWordsEN} from './englishWords';
 import {wordsFromWordsEN} from './englishWordsFromWords'
 // import {getBusinessEvent} from "./gameAnalytics";
@@ -1209,6 +1243,24 @@ import {locationWords} from "./locationWords";
 import {whyBadWord} from './whyBadWord';
 import CrossComponent from './cross';
 import CrossVue from "@/cross";
+
+
+function getNewWordsFromWords(){
+	let wfww = {};
+	Object.keys(newWordsFromWords).forEach((word) => {
+		newWordsFromWords[word].forEach((lvl)=>{
+			let lvlWord = allWordsRU[lvl];
+			if(wfww[lvlWord]){
+				wfww[lvlWord].push(word);
+			}else{
+				wfww[lvlWord] = [word];
+			}
+		})
+	})
+	// params({'getNewWordsFromWords': t2-t1});
+	return wfww;
+}
+let wordsFromWordsRU = getNewWordsFromWords();
 //
 // let allCount = 0;
 // locationWords.event.forEach(w => {
@@ -1505,8 +1557,6 @@ function decompressDataObj(compressedWords){
 			data[ allWords[dl[i]] ] = 1;
 		}
 	}
-	console.log(dl);
-	console.log(data);
 	const midData = {};
 	Object.keys(compressedWords).forEach(el => {
 		if(el === 'doneLevels') return;
@@ -1529,8 +1579,6 @@ function decompressDataObj(compressedWords){
 	//   }
 	// }
 
-	console.log(data);
-
 	return data;
 }
 
@@ -1547,7 +1595,7 @@ function compressData(data, isLocationData){
 	// console.log(newData);
 	// return LZString.compressToUTF16(JSON.stringify(newData));
 }
-function decompressData(data){
+function decompressData(data, isEnglishVersion){
 	let newData = data;
 	if(typeof newData === "string"){
 		newData = JSON.parse(LZString.decompressFromUTF16(data));
@@ -1556,14 +1604,19 @@ function decompressData(data){
 
 
 	if(newData.doneLevels !== undefined){
-		console.log('doneLevels');
-
-		if(newData.newCompress){
-			console.log('newCompress');
-			newData = newDecompress(newData);
+		if(isEnglishVersion){
+			if(newData.newCompress){
+				newData = englishNewDecompress(newData);
+			}
+			newData = decompressDataObj(newData);
+		}else{
+			if(newData.newCompress){
+				newData = newDecompress(newData);
+			}else{
+				newData = decompressDataObj(newData);
+			}
 		}
-		console.log(newData.doneLevels);
-		newData = decompressDataObj(newData);
+
 	}
 	console.log(newData);
 	return newData;
@@ -1603,6 +1656,35 @@ function newCompress(compressedWords){
 // }
 
 function newDecompress(compressedWords){
+	let t1 = new Date();
+	let doneWords = {};
+	Object.keys(compressedWords).forEach(el => {
+		if(el === 'doneLevels' || el === 'notStringed' || el === 'newCompress') return;
+		let lastLevel = compressedWords[el];
+		for(let i = 0; i < newWordsFromWords[el].length; i++){
+			let lvl = newWordsFromWords[el][i];
+			if(lvl > lastLevel) break;
+			if(compressedWords.doneLevels.includes(lvl)) continue;
+			let lvlWord = allWords[lvl];
+			if(doneWords[lvlWord]){
+				doneWords[lvlWord].push(el)
+			}else{
+				doneWords[lvlWord] = [el];
+			}
+		}
+	});
+
+	compressedWords.doneLevels.forEach(doneLevel => {
+		doneWords[allWords[doneLevel]] = 1;
+	});
+
+	let t2 = new Date();
+	console.log('New Descompress Time: ', t2 - t1);
+
+	return doneWords;
+}
+
+function englishNewDecompress(compressedWords){
 	Object.keys(compressedWords).forEach(el => {
 		if(el === 'doneLevels' || el === 'notStringed' || el === 'newCompress') return;
 		let lastLevel = compressedWords[el];
@@ -1621,8 +1703,6 @@ function newDecompress(compressedWords){
 
 	return compressedWords;
 }
-
-
 
 
 
@@ -1745,15 +1825,15 @@ if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = 3;
-	setToStorage('chosenBackground', '4');
+	chosenBackground = -3;
+	setToStorage('chosenBackground', '-3');
 	// deleteBlockBg = true;
 }
 try{
 	localStorage.removeItem('eventProgress');
 }catch(e){}
 
-params({'chosenBackground': chosenBackground});
+// params({'chosenBackground': chosenBackground});
 
 let russianProgressSave = {};
 let englishProgress = false;
@@ -1810,7 +1890,7 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 		if(keys[i].indexOf('ё') !== -1){
 			k = k.replace(/ё/g, 'е');
 			console.log(k);
-		}else if(wordsForReplace[k]){
+		}else if(wordsForReplace[k] && !isLocationWords){
 			k = wordsForReplace[k];
 			if(k === 'подмывание' && i > 5000){
 				k = 'своенравие';
@@ -1930,7 +2010,26 @@ try{
 	}
 }catch(e){}
 
-
+let navigatorBrowser = (function(){
+	try{
+		var ua= navigator.userAgent;
+		var tem;
+		var M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+		if(/trident/i.test(M[1])){
+			tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+			return 'IE '+(tem[1] || '');
+		}
+		if(M[1]=== 'Chrome'){
+			tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+			if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+		}
+		M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+		if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+		return M.join(' ');
+	}catch(e){
+		return 'No browser';
+	}
+})();
 
 
 function switchToEnglishVersion(){
@@ -2001,7 +2100,17 @@ function setState(isNow) {
 			// console.log('SendState');
 			// console.log(newState);createGameLevel
 			if(newState.allDoneWords === undefined && lastLevel > 0){
-				params({'allWords-NO': PLAYESTATE.allDoneWords});
+				params({'allWords-NO': 1});
+				if(PLAYESTATE.allDoneWords === undefined){
+					params({'PLAYERSTATE-NO': 1});
+					params({'browserLag': navigatorBrowser});
+					if(allDoneWords === undefined){
+						params({'allDoneWords-NO': 1});
+					}else{
+						PLAYESTATE.allDoneWords = allDoneWords;
+						newState.allDoneWords = compressData(allDoneWords)
+					}
+				}
 			}
 			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
 				try{
@@ -2031,6 +2140,10 @@ function setStats() {
 		}else{
 			const progress = {tips: PLAYERSTATS.tips};
 			if(englishTips) progress.tipsEN = englishTips;
+
+			if(progress === undefined || progress.tips === undefined){
+				params({'tipsUndefined': 1});
+			}
 
 			playerGame.setStats(progress, false).then((ignored) => {}).catch(()=>{
 				playerGame.setStats(progress, true).then((ignored) => {})
@@ -2150,7 +2263,6 @@ function startAdvInterval(){
 	}, 5000);
 }
 if(window.YaGames){
-	params({'TryGetYaGames': 1});
 	window.YaGames.init({
 		adv: {
 			onAdvClose: wasShown => {
@@ -2163,7 +2275,6 @@ if(window.YaGames){
 		}
 	}).then(ysdk => {
 		YSDK = ysdk;
-		params({'GotYaGames': 1});
 		try{
 			console.log("LANG: ", ysdk.environment.i18n.lang);
 			notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
@@ -2320,6 +2431,17 @@ function decompressLocationWords(locationDoneWords){
 
 let isPlayerAuth = false;
 
+function getAmountLocationWords(locationWords){
+	let wordsAmount = 0;
+	try{
+		Object.keys(locationWords).forEach((key)=>{
+			wordsAmount += locationWords[key].length;
+		})
+	}catch(e){
+		return 0;
+	}
+	return wordsAmount;
+}
 function initPlayer(ysdk) {
 	console.log(ysdk);
 	ysdk.getPlayer().then(_player => {
@@ -2330,7 +2452,6 @@ function initPlayer(ysdk) {
 		// Игрок авторизован.
 		playerGame = _player;
 		try{
-			params({'authDone': 1});
 			if(_player._personalInfo.mode === "lite" || _player.mode === "lite"){
 				// params({'authLite': 1});
 				console.log('Lite auth');
@@ -2350,12 +2471,12 @@ function initPlayer(ysdk) {
 			if(dataObject.gotEventBfGift){
 				gotEventBfGift = dataObject.gotEventBfGift;
 			}
-			if(dataObject.newYearProgress){
-				dataObject.newYearProgress = fixDoneWords(decompressLocationWords(dataObject.newYearProgress), true);
-				let playerScore = getEventScore(dataObject.newYearProgress);
-				let lastScore = getEventScore(newYearProgress);
-				if(playerScore > lastScore) newYearProgress = dataObject.newYearProgress;
-			}
+			// if(dataObject.newYearProgress){
+			// 	dataObject.newYearProgress = fixDoneWords(decompressLocationWords(dataObject.newYearProgress), true);
+			// 	let playerScore = getEventScore(dataObject.newYearProgress);
+			// 	let lastScore = getEventScore(newYearProgress);
+			// 	if(playerScore > lastScore) newYearProgress = dataObject.newYearProgress;
+			// }
 			if(notRussianGame){
 				allDoneWords = {};
 				PLAYESTATE = {allDoneWords: {}};
@@ -2365,7 +2486,7 @@ function initPlayer(ysdk) {
 					let newData = dataObject.allDoneWordsEN;
 
 					if(typeof newData === "string" || (typeof newData === "object" && newData.notStringed)){
-						newData = decompressData(newData);
+						newData = decompressData(newData, true);
 					}
 
 					newData = fixDoneWords(newData);
@@ -2451,8 +2572,16 @@ function initPlayer(ysdk) {
 			}
 
 			if(dataObject.locationDoneWords){
-				PLAYESTATE.locationDoneWords = fixDoneWords(decompressLocationWords(dataObject.locationDoneWords), true);
-				locationDoneWords = PLAYESTATE.locationDoneWords;
+				let serverWords = fixDoneWords(decompressLocationWords(dataObject.locationDoneWords), true);
+				let serverWordsAmount = getAmountLocationWords(serverWords);
+				let localWordsAmount = getAmountLocationWords(locationDoneWords);
+
+				if(serverWordsAmount > localWordsAmount){
+					PLAYESTATE.locationDoneWords = 	serverWords;
+					locationDoneWords = PLAYESTATE.locationDoneWords;
+				}else{
+					PLAYESTATE.locationDoneWords = 	locationDoneWords;
+				}
 			}
 			//Вовзврат прогресса
 			try{
@@ -2470,8 +2599,9 @@ function initPlayer(ysdk) {
 							PLAYESTATE.allDoneWords = newObj;
 							allDoneWords = newObj;
 							setState();
+							params({'zlms': lvl2});
 						}
-						params({'payloadZlms': lvl2});
+
 					}
 				}
 			}catch(e){
@@ -2949,7 +3079,6 @@ if(iOS){
 
 
 function deletePreDownload(){
-	params({'deletePreDownload': 1});
 	if (document.querySelector(".pre-download")) {
 		document.querySelector(".pre-download").remove()
 	}
@@ -2970,13 +3099,13 @@ const cloudPhrases = [
 	'Ура! Вы <span class="cloudHint__mainText">успешно</span> закончили обучение. Желаем Вам удачи в прохождении игры!',
 ];
 
-const cloudLevelPhrases = [
-	'Перейдите в меню, нажав на домик, чтобы выбрать <span class="cloudHint__mainText">цветовое оформление</span> в настройках.',
-	'В игре есть <br><span class="cloudHint__mainText">тематические локации</span><br> Найдите их в меню, нажав на значок книжки.',
-	'По техническим причинам буква <br><span class="cloudHint__mainText">Е приравнивается к Ё</span>. Учитывайте это при создании слов. Удачи!'
-]
 
-let lvl5Phrase = 'Этот уровень особенно сложен, дарим вам <span class="cloudHint__mainText">5 дополнительных подсказок</span>. Удачной игры!';
+let infoAboutBackgrounds = 'Перейдите в меню, нажав на домик, чтобы выбрать <span class="cloudHint__mainText">цветовое оформление</span> в настройках.';
+let infoAboutEletter = 'По техническим причинам буква <br><span class="cloudHint__mainText">Е приравнивается к Ё</span>. Учитывайте это при создании слов. Удачи!';
+let infoAboutLocation = 'В игре есть <br><span class="cloudHint__mainText">тематические локации</span><br> Найдите их в меню, нажав на значок книжки.';
+let infoAboutEndFirstLevel = 'Вы получили <span class="cloudHint__mainText">первую звезду</span> и теперь можете перейти на следующий уровень!';
+
+let lvl5Phrase = 'Этот уровень особенно сложен, дарим вам <span class="cloudHint__mainText">10 дополнительных подсказок</span>. Удачной игры!';
 
 let cloudPayloadPhrases = [
 	'Добро пожаловать в игру <span class="cloudHint__mainText">"Слова из слова"</span>! Составляйте слова, чтобы проходить уровни.',
@@ -3450,6 +3579,15 @@ export default {
 				saveAllData(true);
 			}
 		},
+		scamTest(){
+			try{
+				if(playerGame._personalInfo.uniqueID === "CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg="){
+					return true;
+				}
+			}catch(e){
+				return false;
+			}
+		},
 		getEventResult(){
 			let isResult = testShowResult();
 			if(isResult){
@@ -3867,6 +4005,14 @@ export default {
 			this.backMenu();
 			this.isSettings = true;
 			this.openNewBg = false;
+			let bg = 1;
+			if(this.lvl === 14){
+				bg = 2;
+			}else if(this.lvl === 24){
+				bg = 3;
+			}
+			this.chosenBg = bg;
+			this.chosenBgRight = bg;
 			this.showLastLevelInfo = false;
 		},
 		findNotShowLetters(){
@@ -3895,7 +4041,7 @@ export default {
 			if(this.payloadTutorial){
 				params({'skipPayloadTutorial': 1});
 			}else{
-				params({'skipTutorial': 1});
+				params({'skipNewTutorial': 1});
 			}
 			this.endTutorial();
 		},
@@ -3911,12 +4057,34 @@ export default {
 		},
 		startTutorial(){
 			console.log('Start tutorial');
+			params({'startNewTutorial': 1});
 			tutorialStep = 0;
 			this.canShowSkip = true;
 			this.isTutorial = true;
 			this.cloudHint = true;
 		},
+		setCloudsPhrase(text){
+			this.cloudsPhrase = '';
+			let cloudsPhrase = [];
+			let firstIndex = text.indexOf('<span class="cloudHint__mainText">');
+			text = text.slice(0, firstIndex) + text.slice(firstIndex + 34);
+			let secondIndex = text.indexOf('</span>');
+			text = text.slice(0, secondIndex) + text.slice(secondIndex + 7);
+			for(let i = 0; i < text.length; i++){
+				let letter = document.createElement('span')
+				letter.classList.add('cloudHint__letter');
+				letter.innerText = text[i];
+				let animationDelay = i/30+'s'
+				let isSelected = i >= firstIndex && i <= secondIndex;
+				cloudsPhrase.push([text[i], animationDelay, isSelected])
+			}
+			this.cloudsPhrase = cloudsPhrase;
+		},
 		closeHint(){
+			if(tutorialStep === 50){
+				this.cloudHint = false;
+				return;
+			}
 			if(this.payloadTutorial){
 				tutorialStep++;
 				if(tutorialStep >= cloudPayloadPhrases.length){
@@ -3932,7 +4100,8 @@ export default {
 				return;
 			}
 			if(tutorialStep === 0){
-				this.cloudsPhrase = cloudPhrases[1];
+				// this.cloudsPhrase = cloudPhrases[1];
+				this.setCloudsPhrase(cloudPhrases[1])
 				this.tutorialSelected = 0;
 			} else if(tutorialStep === 5){
 				this.tutorialSelected = 2;
@@ -3941,7 +4110,7 @@ export default {
 				this.tutorialSelected = 1;
 				this.cloudsPhrase = cloudPhrases[1];
 			}else if(tutorialStep === 17){
-				this.cloudsPhrase = cloudPhrases[8];
+				this.setCloudsPhrase(cloudPhrases[8])
 			}else if(tutorialStep === 18){
 				this.endTutorial();
 			}else{
@@ -3956,8 +4125,14 @@ export default {
 		openLevelHint(lvl){
 			if(notRussianGame) return;
 			this.cloudHint = true;
-			this.cloudsPhrase = cloudLevelPhrases[lvl-1];
+			if(lvl === 7){
+				this.cloudsPhrase = infoAboutLocation;
+			}else if(lvl === 3){
+				this.cloudsPhrase = infoAboutEletter
+			}
+
 		},
+
 		nextStep(){
 
 			if(tutorialStep >=1 && tutorialStep <= 3){
@@ -3975,7 +4150,11 @@ export default {
 			}else if(tutorialStep === 4 || tutorialStep === 9 || tutorialStep === 14){
 				this.tutorialSelected = -1;
 				this.selectSend = true;
-				this.cloudsPhrase = cloudPhrases[2];
+				if(tutorialStep === 4){
+					this.setCloudsPhrase(cloudPhrases[2]);
+				}else{
+					this.cloudsPhrase = cloudPhrases[2];
+				}
 			}else{
 				return;
 			}
@@ -4056,8 +4235,7 @@ export default {
 											lb.setLeaderboardScore('event', eventScore);
 										}
 									}else{
-										if(that.allStars > player.score){
-											console.log('set another');
+										if(that.allStars > player.score && !that.scamTest()){
 											lb.setLeaderboardScore('lvl', that.allStars);
 										}
 									}
@@ -4091,7 +4269,9 @@ export default {
 							}
 						}
 						else {
-							lb.setLeaderboardScore('lvl', that.allStars);
+							let stars = that.allStars;
+							if(that.scamTest()) stars = 0;
+							lb.setLeaderboardScore('lvl', stars);
 						}
 						if(fromTestStars){
 							this.getLeaderBoardInGame();
@@ -4157,7 +4337,7 @@ export default {
 			}
 			this.selectMainWord = '';
 			if(!this.showWordDesc && this.isTutorial && tutorialStep === 15){
-				this.cloudsPhrase = cloudPhrases[6];
+				this.setCloudsPhrase(cloudPhrases[6])
 				tutorialStep++;
 				this.selectMainWord = false;
 				this.selectTip = true;
@@ -4321,7 +4501,7 @@ export default {
 
 			this.tryShowAdv();
 			if(this.doneWords.length === 0){
-				if(this.lvl >= 1 && this.lvl <=3){
+				if(this.lvl === 3 || this.lvl === 7){
 					this.openLevelHint(this.lvl);
 				}else if(this.lvl === 5){
 					this.getLvl5Hint();
@@ -4348,7 +4528,7 @@ export default {
 			setToStorage('isLvlFiveHintDone', 'true');
 			this.cloudHint = true;
 			this.cloudsPhrase = lvl5Phrase;
-			this.tipCount += 5;
+			this.tipCount += 10;
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
 		},
@@ -4455,6 +4635,9 @@ export default {
 		},
 		toggleSettings(){
 			this.isSettings = !this.isSettings;
+			if(this.isSettings){
+				params({'getSettings': 1});
+			}
 			this.chosenBg = this.chosenBgRight;
 		},
 		addBuyTips(){
@@ -4500,12 +4683,16 @@ export default {
 
 		},
 		goToShop(){
-			params({'goToShop': 1});
+			params({'goToShop': 1 })
 			this.showLastLevelInfo = false;
 			this.toggleShop();
 		},
 		toggleShop(){
 			this.shop = !this.shop;
+		},
+		switchSoundsTutorial(){
+			this.isSounds = !this.isSounds;
+			setToStorage('sounds', this.isSounds);
 		},
 		switchSounds(e){
 			this.isSounds = e.target.checked;
@@ -4794,7 +4981,7 @@ export default {
 				tutorialStep++;
 				setTimeout(()=>{
 					this.cloudHint = true;
-					this.cloudsPhrase = cloudPhrases[7];
+					this.setCloudsPhrase(cloudPhrases[7])
 				}, 2000);
 			}
 		},
@@ -4829,11 +5016,11 @@ export default {
 						setTimeout(()=>{
 							this.cloudHint = true;
 							if(tutorialStep === 5){
-								this.cloudsPhrase = cloudPhrases[3];
+								this.setCloudsPhrase(cloudPhrases[3]);
 							}else if(tutorialStep === 10){
-								this.cloudsPhrase = cloudPhrases[4];
+								this.setCloudsPhrase(cloudPhrases[4]);
 							}else if(tutorialStep === 15){
-								this.cloudsPhrase = cloudPhrases[5];
+								this.setCloudsPhrase(cloudPhrases[5]);
 								this.selectMainWord = 'илот';
 
 								setTimeout(()=>{
@@ -5032,8 +5219,17 @@ export default {
 					if(stars === 1){
 						if(this.lvl < 20){
 							params({'doneLevel': this.lvl});
-						}else if(this.lvl > 6029){
-							params({'doneBigLevel': this.lvl});
+							if(this.lvl === 0){
+								tutorialStep = 50;
+								this.cloudHint = true;
+								this.cloudsPhrase = infoAboutEndFirstLevel;
+							}
+						}else if(this.lvl > 6246){
+							if(this.lvl === 6250 || this.lvl === 6280 || this.lvl === 6320 || this.lvl === 6350
+							|| this.lvl === 6400 || this.lvl === 6450){
+								params({'doneNewLvl': this.lvl});
+							}
+
 						}
 
 
@@ -5041,6 +5237,14 @@ export default {
 						if(thisLvl === 2 || thisLvl === 10 || thisLvl === 5 ||
 							thisLvl === 20 || thisLvl === 50 || thisLvl === 100){
 							reachGoal('level' + thisLvl);
+						}
+					}else if(stars === 3){
+						if(this.lvl > 6246){
+							if(this.lvl === 6250 || this.lvl === 6280 || this.lvl === 6320 || this.lvl === 6350
+								|| this.lvl === 6400 || this.lvl === 6450){
+								params({'doneNewLvl3': this.lvl});
+							}
+
 						}
 					}
 					this.gameLastLevel = lastLevel;
