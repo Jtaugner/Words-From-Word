@@ -1660,16 +1660,18 @@ function newDecompress(compressedWords){
 	let doneWords = {};
 	Object.keys(compressedWords).forEach(el => {
 		if(el === 'doneLevels' || el === 'notStringed' || el === 'newCompress') return;
-		let lastLevel = compressedWords[el];
-		for(let i = 0; i < newWordsFromWords[el].length; i++){
-			let lvl = newWordsFromWords[el][i];
-			if(lvl > lastLevel) break;
-			if(compressedWords.doneLevels.includes(lvl)) continue;
-			let lvlWord = allWords[lvl];
-			if(doneWords[lvlWord]){
-				doneWords[lvlWord].push(el)
-			}else{
-				doneWords[lvlWord] = [el];
+		if(newWordsFromWords[el]){
+			let lastLevel = compressedWords[el];
+			for(let i = 0; i < newWordsFromWords[el].length; i++){
+				let lvl = newWordsFromWords[el][i];
+				if(lvl > lastLevel) break;
+				if(compressedWords.doneLevels.includes(lvl)) continue;
+				let lvlWord = allWords[lvl];
+				if(doneWords[lvlWord]){
+					doneWords[lvlWord].push(el)
+				}else{
+					doneWords[lvlWord] = [el];
+				}
 			}
 		}
 	});
@@ -2115,6 +2117,7 @@ function setState(isNow) {
 			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
 				try{
 					params({'cantSave-first': error});
+					params({'cantSave-err': error.toString().slice(0,150)});
 					console.log(error)
 					if(error.toString().includes('large')){
 						params({'cantSave-bigData-first': lastLevel});
@@ -2606,6 +2609,10 @@ function initPlayer(ysdk) {
 				}
 			}catch(e){
 				console.log(e);
+				try{
+					params({'cantGet-first': 1});
+					params({'cantGet-error': e.toString().slice(0,150)});
+				}catch(ignored){}
 			}
 
 			if(someTrue){
@@ -2619,6 +2626,10 @@ function initPlayer(ysdk) {
 			if(someTrue){
 				update();
 			}
+			try{
+				params({'getPlayer-first': 1});
+				params({'getPlayer-error': e.toString().slice(0,150)});
+			}catch(ignored){}
 			someTrue = true;
 		});
 
