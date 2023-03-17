@@ -185,6 +185,7 @@ html, body {
 .rules_lb {
   height: 80%;
   max-height: 600px;
+  padding: 40px 6px 8px 0 !important;
 }
 
 @media (min-height: 500px) {
@@ -203,10 +204,10 @@ html, body {
   }
 }
 .leaderBoardInfo {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   height: 100%;
-  padding: 5px;
+  padding: 0;
   overflow-y: auto;
   font-size: 1.5rem;
 }
@@ -220,48 +221,62 @@ html, body {
   margin-bottom: 80px !important;
 }
 
+.leaderBoardInfo__firstBlock {
+  display: flex;
+}
+
 .leaderBoardInfo__playerInfo {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 77%;
-  background-color: #F6F6F6;
-  border-radius: 20px;
+  width: 90%;
+  margin: 0 auto;
   color: #000000;
   font-size: 1.7rem;
   font-weight: bold;
   height: 100%;
+  border-bottom: 1px solid #EFEFEF;
 }
 
 .leaderBoardInfo__player {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 40px;
+  height: 66px;
   margin-bottom: 10px;
 }
 
 .leaderBoardInfo__image {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   margin-right: 8px;
   border: 1.5px solid #B8B8B8;
   border-radius: 50%;
   background-size: cover !important;
-  flex: 0 0 40px;
+  flex: 0 0 50px;
 }
 
-.leaderBoardInfo__rank {
-  width: 20%;
-  height: 100%;
-  background-color: #F6F6F6;
-  border-radius: 20px;
+.leaderBoardInfo__rank, .leaderBoardInfo__rankInner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
-  color: #414141;
+  font-size: 1.8rem;
+  color: #FFFFFF;
   font-weight: bold;
+  margin-right: 8px;
+}
+
+.leaderBoardInfo__rankInner {
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  background-color: #BCBCBC;
 }
 
 .leaderBoardInfo__image_no {
@@ -270,44 +285,59 @@ html, body {
 }
 
 .leaderBoardInfo_1 .leaderBoardInfo__rank {
-  background: linear-gradient(154.13deg, #FFEC44 5.25%, #FFBF44 83.67%);
-  color: white;
+  background-color: #FEE476;
+  border: 1px solid #FEDA42;
 }
 
-.leaderBoardInfo_1 .leaderBoardInfo__image {
-  border-color: #FFBF44;
+.leaderBoardInfo_1 .leaderBoardInfo__rankInner {
+  background-color: #FFAC44;
+  border: 1px solid #FF9C20;
+  color: #FEE476;
 }
 
 .leaderBoardInfo_2 .leaderBoardInfo__rank {
-  background: linear-gradient(142.28deg, #D9EBED 4.36%, #9FCDE1 100.91%);
-  color: white;
+  background-color: #D0DCDE;
+  border: 1px solid #C1CECD;
 }
 
-.leaderBoardInfo_2 .leaderBoardInfo__image {
-  border-color: #b7dae5;
+.leaderBoardInfo_2 .leaderBoardInfo__rankInner {
+  background-color: #9DA5A5;
+  border: 1px solid #91A1A1;
+  color: #D0DCDE;
 }
 
 .leaderBoardInfo_3 .leaderBoardInfo__rank {
-  background: linear-gradient(157.89deg, #FFC978 9.81%, #CC8110 85.56%);
-  color: white;
+  background-color: #FC9634;
+  border: 1px solid #F48922;
 }
 
-.leaderBoardInfo_3 .leaderBoardInfo__image {
-  border-color: #CC8110;
+.leaderBoardInfo_3 .leaderBoardInfo__rankInner {
+  background-color: #CD702D;
+  border: 1px solid #C56A20;
+  color: #FFB268;
 }
 
-.leaderBoardInfo_my .leaderBoardInfo__rank, .leaderBoardInfo_my .leaderBoardInfo__playerInfo {
-  background-color: #66196C;
-  color: white;
+.leaderBoardInfo_1 .leaderBoardInfo__rankInner,
+.leaderBoardInfo_2 .leaderBoardInfo__rankInner,
+.leaderBoardInfo_3 .leaderBoardInfo__rankInner {
+  font-size: 2rem;
 }
 
-.leaderBoardInfo_my .leaderBoardInfo__image {
-  border-color: #66196C;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+.rules_lb .leaderBoardInfo_mine {
+  background-color: #F1EFF9;
 }
 
 .leaderBoardInfo__score {
-  margin: 0 20px 0 5px;
+  color: #646464;
+  font-size: 1.6rem;
+  font-family: "Inter", sans-serif;
+  font-weight: normal;
+  margin: 2px 0 0 0;
+}
+
+.leaderBoardInfo_big, .leaderBoardInfo_big .leaderBoardInfo__rankInner {
+  width: 87px;
+  border-radius: 100px;
 }
 
 .leaderBoardInfo__name {
@@ -315,6 +345,17 @@ html, body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: black;
+}
+
+.leaderBoardInfo__nameAndScore {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: start;
+  margin-left: 10px;
 }
 
 .rules {
@@ -1158,7 +1199,7 @@ html, body {
   }
 
   .rules_lb {
-    width: 650px;
+    width: 550px;
   }
 
   .rules__notification {
@@ -2429,14 +2470,14 @@ b {
   display: none;
 }
 
-.lbInGame .leaderBoardInfo_my {
+.lbInGame .leaderBoardInfo_mine {
   animation: myLb 1.5s;
   width: 62px;
   height: 62px;
   margin-top: 0;
 }
 
-.lbInGame .leaderBoardInfo_my .lbInGame__score {
+.lbInGame .leaderBoardInfo_mine .lbInGame__score {
   font-size: 15px;
 }
 
@@ -2477,12 +2518,12 @@ b {
     font-size: 15px;
   }
 
-  .lbInGame .leaderBoardInfo_my {
+  .lbInGame .leaderBoardInfo_mine {
     width: 80px;
     height: 80px;
   }
 
-  .lbInGame .leaderBoardInfo_my .lbInGame__score {
+  .lbInGame .leaderBoardInfo_mine .lbInGame__score {
     font-size: 18px;
   }
 }
@@ -2507,13 +2548,13 @@ b {
     font-size: 17px;
   }
 
-  .lbInGame .leaderBoardInfo_my {
+  .lbInGame .leaderBoardInfo_mine {
     width: 80px;
     height: 80px;
     margin-top: 20px;
   }
 
-  .lbInGame .leaderBoardInfo_my .lbInGame__score {
+  .lbInGame .leaderBoardInfo_mine .lbInGame__score {
     font-size: 19px;
   }
 }
@@ -2551,20 +2592,42 @@ b {
     margin-bottom: 25px;
   }
 
-  .leaderBoardInfo__playerInfo {
-    height: 50px;
-    font-size: 2rem;
-    border-radius: 25px;
+  .leaderBoardInfo__image {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
   }
 
-  .leaderBoardInfo__image {
-    width: 50px;
-    height: 50px;
-    flex: 0 0 50px;
+  .leaderBoardInfo__name {
+    font-size: 2rem;
+  }
+
+  .leaderBoardInfo__score {
+    font-size: 1.7rem;
   }
 
   .leaderBoardInfo__rank {
-    font-size: 2.4rem;
+    font-size: 2.5rem;
+  }
+
+  .leaderBoardInfo__rank {
+    width: 50px;
+    height: 50px;
+  }
+
+  .leaderBoardInfo__rankInner {
+    width: 42px;
+    height: 42px;
+  }
+
+  .leaderBoardInfo_1 .leaderBoardInfo__rankInner,
+.leaderBoardInfo_2 .leaderBoardInfo__rankInner,
+.leaderBoardInfo_3 .leaderBoardInfo__rankInner {
+    font-size: 2.7rem;
+  }
+
+  .leaderBoardInfo_big {
+    width: 100px;
   }
 }
 .pageNumInput {

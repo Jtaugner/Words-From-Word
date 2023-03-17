@@ -265,16 +265,29 @@
 						v-for="player in leaderBoard"
 						:class="[
 							'leaderBoardInfo_' + player.rank,
-							 playerRait && playerRait.rank === player.rank ? 'leaderBoardInfo_my' : '',
-							 player.rank === 20 ? 'lastRang' : '']"
+							 playerRait && playerRait.rank === player.rank ? 'leaderBoardInfo_mine' : '',
+							 player.rank === 20 ? 'lastRang' : ''
+							 ]"
 					>
-							<div class="leaderBoardInfo__rank">{{ player.rank }}</div>
 							<div class="leaderBoardInfo__playerInfo">
-								<div class="leaderBoardInfo__image"
-									 :style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat'}"
-									 :class="[player.player.getAvatarSrc('medium') ? '' : 'leaderBoardInfo__image_no']"></div>
-								<div class="leaderBoardInfo__name">{{ player.player.publicName ? player.player.publicName : 'Нет имени' }}</div>
-								<div class="leaderBoardInfo__score">{{ player.score }}</div>
+								<div class="leaderBoardInfo__firstBlock">
+									<div class="leaderBoardInfo__image"
+										 :style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat'}"
+										 :class="[player.player.getAvatarSrc('medium') ? '' : 'leaderBoardInfo__image_no']">
+									</div>
+									<div class="leaderBoardInfo__nameAndScore">
+										<div class="leaderBoardInfo__name">{{ player.player.publicName ? player.player.publicName : 'Нет имени' }}</div>
+										<div class="leaderBoardInfo__score">Звёзд: {{ player.score }}</div>
+									</div>
+								</div>
+								<div
+									class="leaderBoardInfo__rank"
+									:class="player.rank > 20 ? 'leaderBoardInfo_big' : ''"
+								>
+									<div class="leaderBoardInfo__rankInner">
+										{{player.rank}}
+									</div>
+								</div>
 							</div>
 
 
@@ -594,7 +607,7 @@
 								class="lbInGame__player"
 								v-for="player in lbInGame"
 								:class="[
-									playerRait && playerRait.player.uniqueID === player.player.uniqueID ? 'leaderBoardInfo_my' : ''
+									playerRait && playerRait.player.uniqueID === player.player.uniqueID ? 'leaderBoardInfo_mine' : ''
 								 ]"
 								:style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat, whitesmoke'}"
 							>
@@ -1309,6 +1322,7 @@ setTimeout(()=>{
 }, 30000);
 let showAdv, playerGame, payments, YSDK;
 
+params({'tryToOpen': 1});
 
 
 //Компрессор
@@ -2406,10 +2420,6 @@ function reachGoal(goal) {
 }
 /*Цели по времени*/
 try{
-	setTimeout(()=>{reachGoal('min5')}, 300000);
-	setTimeout(()=>{reachGoal('min10')}, 600000);
-	setTimeout(()=>{reachGoal('min20')}, 1200000);
-	setTimeout(()=>{reachGoal('min30')}, 1800000);
 	setTimeout(()=>{reachGoal('min40')}, 2400000);
 	setTimeout(()=>{reachGoal('min50')}, 3000000);
 }catch(e){}
@@ -2607,10 +2617,6 @@ function initPlayer(ysdk) {
 				}
 			}catch(e){
 				console.log(e);
-				try{
-					params({'cantGet-first': 1});
-					params({'cantGet-error': e.toString().slice(0,150)});
-				}catch(ignored){}
 			}
 
 			if(someTrue){
@@ -2625,7 +2631,6 @@ function initPlayer(ysdk) {
 				update();
 			}
 			try{
-				params({'getPlayer-first': 1});
 				params({'getPlayer-error': e.toString().slice(0,150)});
 			}catch(ignored){}
 			someTrue = true;
@@ -2641,7 +2646,7 @@ function initPlayer(ysdk) {
 					tips = 10;
 				}
 				if(dataObject.tips) russianTips = dataObject.tips;
-
+й
 
 			}else if (Number.isInteger(dataObject.tips)) {
 				if(dataObject.tips > tips){
@@ -2685,11 +2690,17 @@ function initPlayer(ysdk) {
 			if(someTrue){
 				update();
 			}
+			try{
+				params({'getStats-error': e.toString().slice(0,150)});
+			}catch(ignored){}
 			someTrue = true;
 		});
 	}).catch((e) => {
 		console.log(e);
 		doDeleteBlock = true;
+		try{
+			params({'player-error': e.toString().slice(0,150)});
+		}catch(ignored){}
 		update();
 	});
 	ysdk.getPayments({ signed: false }).then(_payments => {
@@ -2701,6 +2712,9 @@ function initPlayer(ysdk) {
 		});
 	}).catch(err => {
 		console.log(err);
+		try{
+			params({'getPayments-error': err.toString().slice(0,150)});
+		}catch(ignored){}
 	});
 }
 let TIPS = 0;
@@ -3094,6 +3108,7 @@ function deletePreDownload(){
 	if (document.querySelector(".pre-download2")) {
 		document.querySelector(".pre-download2").remove()
 	}
+	params({'gameOpened': 1});
 }
 
 const cloudPhrases = [
@@ -3327,7 +3342,7 @@ function goToUserInLb(){
 	setTimeout(()=>{
 		try{
 			addScrollingToDesktop(true);
-			let scrollEl = document.querySelector('.leaderBoardInfo_my');
+			let scrollEl = document.querySelector('.leaderBoardInfo_mine');
 			scrollEl.scrollIntoView({behavior: 'auto', block: "center", inline: "center"});
 		}catch(ignored){}
 	}, 200);
