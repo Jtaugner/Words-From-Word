@@ -223,6 +223,8 @@ html, body {
 
 .leaderBoardInfo__firstBlock {
   display: flex;
+  width: 70%;
+  max-width: 70%;
 }
 
 .leaderBoardInfo__playerInfo {
@@ -238,19 +240,23 @@ html, body {
   border-bottom: 1px solid #EFEFEF;
 }
 
+@media (orientation: portrait) {
+  .leaderBoardInfo__playerInfo {
+    width: 97%;
+  }
+}
 .leaderBoardInfo__player {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 66px;
+  height: 70px;
   margin-bottom: 10px;
 }
 
 .leaderBoardInfo__image {
   width: 50px;
   height: 50px;
-  margin-right: 8px;
-  border: 1.5px solid #B8B8B8;
+  border: 1px solid #B8B8B8;
   border-radius: 50%;
   background-size: cover !important;
   flex: 0 0 50px;
@@ -336,8 +342,12 @@ html, body {
 }
 
 .leaderBoardInfo_big, .leaderBoardInfo_big .leaderBoardInfo__rankInner {
-  width: 87px;
+  width: 67px;
   border-radius: 100px;
+}
+
+.leaderBoardInfo__rankInner_bigRank {
+  font-size: 1.45rem;
 }
 
 .leaderBoardInfo__name {
@@ -348,6 +358,7 @@ html, body {
   font-family: "Inter", sans-serif;
   font-weight: 600;
   color: black;
+  width: 100%;
 }
 
 .leaderBoardInfo__nameAndScore {
@@ -356,6 +367,8 @@ html, body {
   justify-content: space-between;
   align-items: start;
   margin-left: 10px;
+  flex: 1 1 50%;
+  width: 50%;
 }
 
 .rules {
@@ -2626,8 +2639,12 @@ b {
     font-size: 2.7rem;
   }
 
-  .leaderBoardInfo_big {
+  .leaderBoardInfo_big, .leaderBoardInfo_big .leaderBoardInfo__rankInner {
     width: 100px;
+  }
+
+  .leaderBoardInfo__rankInner_bigRank {
+    font-size: 1.65rem;
   }
 }
 .pageNumInput {
@@ -3056,6 +3073,8 @@ b {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
 }
 
 .noAdvert__advertCircle {

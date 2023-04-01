@@ -264,7 +264,7 @@
 						class="leaderBoardInfo__player"
 						v-for="player in leaderBoard"
 						:class="[
-							'leaderBoardInfo_' + player.rank,
+							player.rank < 21 ? 'leaderBoardInfo_' + player.rank : '',
 							 playerRait && playerRait.rank === player.rank ? 'leaderBoardInfo_mine' : '',
 							 player.rank === 20 ? 'lastRang' : ''
 							 ]"
@@ -284,7 +284,9 @@
 									class="leaderBoardInfo__rank"
 									:class="player.rank > 20 ? 'leaderBoardInfo_big' : ''"
 								>
-									<div class="leaderBoardInfo__rankInner">
+									<div class="leaderBoardInfo__rankInner"
+										 :class="player.rank > 99999 ? 'leaderBoardInfo__rankInner_bigRank' : ''"
+									>
 										{{player.rank}}
 									</div>
 								</div>
@@ -536,6 +538,7 @@
 
 
 				<div class="cloudHint"
+					 v-if="lvl === 0"
 					 :class="[
 						 selectMainWord ? 'cloudHint_wordSelected' : '',
 						 !cloudHint || showWordDesc ? 'cloudHint_notShowed': '']"
@@ -647,7 +650,7 @@
 			        <span v-show="isAdvShowed">Но в первый раз вы её получаете.</span>
 			      </div>
 
-			<div class="blackout cloudHintBackground" v-show="cloudHint" @click="closeHint()"></div>
+			<div class="blackout cloudHintBackground" v-if="cloudHint" @click="closeHint()"></div>
 
 
 
@@ -1323,6 +1326,7 @@ setTimeout(()=>{
 let showAdv, playerGame, payments, YSDK;
 
 params({'tryToOpen': 1});
+let firstTimeOpen = new Date();
 
 
 //Компрессор
@@ -1893,7 +1897,8 @@ let wordsForReplace = {
 	'пронякина': 'канонир',
 	'буратино': 'трибуна',
 	'корнилова': 'ковролин',
-	'оскопление': 'поколение'
+	'оскопление': 'поколение',
+	'богоматерь': 'теоброма'
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
@@ -2363,7 +2368,7 @@ if(window.YaGames){
 								advTime = true;
 								clearInterval(advInterval);
 								canShowAdv();
-							}, 180000);
+							}, 115000);
 
 
 							onCloseFunc();
@@ -2646,7 +2651,6 @@ function initPlayer(ysdk) {
 					tips = 10;
 				}
 				if(dataObject.tips) russianTips = dataObject.tips;
-й
 
 			}else if (Number.isInteger(dataObject.tips)) {
 				if(dataObject.tips > tips){
@@ -3109,6 +3113,14 @@ function deletePreDownload(){
 		document.querySelector(".pre-download2").remove()
 	}
 	params({'gameOpened': 1});
+	try{
+
+	}catch(e){
+		let secondTimeOpen = new Date();
+		let time = secondTimeOpen - firstTimeOpen;
+		params({'gameOpenedTime': time});
+	}
+
 }
 
 const cloudPhrases = [
@@ -4069,7 +4081,7 @@ export default {
 				params({'skipPayloadTutorial': 1});
 			}else{
 				params({'skipNewTutorial': 1});
-				let skipNewTutorial = true;
+				skipNewTutorial = true;
 			}
 			this.endTutorial();
 		},
@@ -4085,7 +4097,6 @@ export default {
 		},
 		startTutorial(){
 			console.log('Start tutorial');
-			params({'startNewTutorial': 1});
 			tutorialStep = 0;
 			this.canShowSkip = true;
 			this.isTutorial = true;
@@ -4737,6 +4748,7 @@ export default {
 		switchSoundsTutorial(){
 			this.isSounds = !this.isSounds;
 			setToStorage('sounds', this.isSounds);
+			params({'soundTutorial': this.isSounds});
 		},
 		switchSounds(e){
 			this.isSounds = e.target.checked;
