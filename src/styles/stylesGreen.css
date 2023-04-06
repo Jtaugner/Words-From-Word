@@ -1,0 +1,113 @@
+@charset "UTF-8";
+/*Фон Валентин*/
+#app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels {
+  background-image: url(../assets/valentines.png);
+}
+
+.chosenAppBg4 .svgIcon {
+  fill: #D15784;
+}
+.chosenAppBg4 .shop__cart__card .svgIcon {
+  fill: #D21AE5;
+}
+.chosenAppBg4 .shop__cart__card .shop__cart__name {
+  color: #D21AE5;
+}
+.chosenAppBg4 .shop__cart__buy-button {
+  background: linear-gradient(264.14deg, #C82BFF 9.7%, #E000BC 100.69%);
+  box-shadow: 0px 3px 0px #9900B1;
+}
+.chosenAppBg4 .levelsTop__allStars {
+  color: #D15784;
+}
+.chosenAppBg4 .newElement, .chosenAppBg4 .levels .menu-star {
+  background-color: #c74573;
+}
+.chosenAppBg4 .words__letters-block_done .words__letter, .chosenAppBg4 .action-block__letters .action-block__letter_selected {
+  background-color: #c74573;
+  color: white;
+}
+.chosenAppBg4 .menu__tip_count, .chosenAppBg4 .rules__goBg {
+  background-color: #c74573;
+}
+.chosenAppBg4 .rules__menu, .chosenAppBg4 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg4 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg4 .startCreateGame {
+  background-color: #D15784;
+}
+.chosenAppBg4 .shop, .chosenAppBg4 .rules, .chosenAppBg4 .leaderBoardInfo_my .leaderBoardInfo__image {
+  border-color: #D15784;
+}
+.chosenAppBg4 .shop .rules__menu, .chosenAppBg4 .settings__text {
+  color: #D15784;
+}
+.chosenAppBg4 ::-webkit-scrollbar-thumb {
+  background-color: #c74573;
+}
+.chosenAppBg4 .settings {
+  border-color: #D15784;
+}
+.chosenAppBg4 .checkbox:checked + label:after {
+  background: #c74573;
+}
+.chosenAppBg4 .checkbox:checked + label:before {
+  background-color: #fc6c9f;
+}
+.chosenAppBg4 .newWord .words__letter {
+  background-color: #f06a99;
+}
+.chosenAppBg4 .animWord .words__letter {
+  animation: 1s showNewWord8 forwards;
+}
+@keyframes showNewWord8 {
+  0% {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background-color: #f06a99;
+  }
+}
+.chosenAppBg4 .shop__cart__name {
+  color: #D15784;
+  border-color: #D15784;
+}
+.chosenAppBg4 .shop__cart__item {
+  border-color: #D15784;
+}
+.chosenAppBg4 .wordWas .words__letter {
+  background-color: #a32752;
+}
+.chosenAppBg4 .menu__hint {
+  background-color: rgba(199, 69, 115, 0.9);
+}
+.chosenAppBg4 .skipTutorial {
+  background-color: #c74573;
+}
+.chosenAppBg4 .cloudHint {
+  color: #c74573;
+}
+.chosenAppBg4 .cloudHint__mainText {
+  color: #c74573;
+}
+.chosenAppBg4 .leaderBoardInfo__player, .chosenAppBg4 .lbInGame__player, .chosenAppBg4 .lbInGame__score {
+  border-color: #c74573;
+}
+@media (orientation: portrait) {
+  .chosenAppBg4 .shop__cart__buy-button {
+    background-color: #D15784;
+  }
+}
+.chosenAppBg4 .action-block__letter {
+  color: #470f21;
+}
+@media (max-width: 1400px) {
+  .chosenAppBg4 .blur {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+@media (orientation: portrait) {
+  #app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels {
+    background-image: url(../assets/locations/valentines/map_port.png);
+  }
+}
+
+/*# sourceMappingURL=stylesGreen.css.map */

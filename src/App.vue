@@ -2493,6 +2493,13 @@ function initPlayer(ysdk) {
 			// 	let lastScore = getEventScore(newYearProgress);
 			// 	if(playerScore > lastScore) newYearProgress = dataObject.newYearProgress;
 			// }
+			if(allDoneWords && dataObject.allDoneWords){
+				params({'doneWordsAll': 1});
+			}else if(allDoneWords && !dataObject.allDoneWords){
+				params({'doneWordsLocal': 1});
+			}else if(!allDoneWords && dataObject.allDoneWords){
+				params({'doneWordsServer': 1});
+			}
 			if(notRussianGame){
 				allDoneWords = {};
 				PLAYESTATE = {allDoneWords: {}};
@@ -3114,12 +3121,10 @@ function deletePreDownload(){
 	}
 	params({'gameOpened': 1});
 	try{
-
-	}catch(e){
 		let secondTimeOpen = new Date();
 		let time = secondTimeOpen - firstTimeOpen;
 		params({'gameOpenedTime': time});
-	}
+	}catch(e){}
 
 }
 
