@@ -1,0 +1,304 @@
+.endGame__wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  animation: getEndGame 0.5s forwards;
+}
+
+@keyframes getEndGame {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.endGame {
+  position: relative;
+  height: 260px;
+  width: 300px;
+  background-color: white;
+  font-family: "Inter", sans-serif;
+  border-radius: 10px;
+}
+
+.endGame__header {
+  position: relative;
+  width: 300px;
+  height: 70px;
+  background: linear-gradient(264.14deg, #C82BFF 9.7%, #E000BC 100.69%);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: white;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 20px;
+  font-size: 1.4rem;
+  line-height: 1.4rem;
+  font-family: "Inter", sans-serif;
+}
+
+.endGame__header:before, .endGame__header:after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  bottom: -40px;
+  background: url(../assets/fastener.svg) center center no-repeat;
+  background-size: 100%;
+  width: 8px;
+  height: 52px;
+  z-index: 10;
+}
+
+.endGame__header:after {
+  left: auto;
+  right: 10px;
+}
+
+.endGame__icon {
+  position: absolute;
+  top: -25px;
+  right: 10px;
+  width: 80px;
+  height: 80px;
+  background: url(../assets/endIcons/ic1.png);
+  background-size: 100%;
+}
+
+.endGame__icon1 {
+  background: url("../assets/endIcons/ic1.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.endGame__icon2 {
+  background: url("../assets/endIcons/ic2.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.endGame__icon3 {
+  background: url("../assets/endIcons/ic3.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.endGame__icon4 {
+  background: url("../assets/endIcons/ic4.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.endGame__icon5 {
+  background: url("../assets/endIcons/ic5.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.endGame__icon6 {
+  background: url("../assets/endIcons/ic6.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.endGame__icon7 {
+  background: url("../assets/endIcons/ic7.png") center center no-repeat;
+  background-size: 100%;
+}
+
+.endGame__icon8 {
+  background: url("../assets/endIcons/ic8.png") center center no-repeat;
+  background-size: contain;
+}
+
+.endGame__goodGame {
+  font-size: 1.8rem;
+  line-height: 1.8rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.endGame__prize {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-top: 30px;
+  font-weight: 600;
+}
+
+.endGame__firstPrize {
+  fill: #C82BFF;
+}
+
+.endGame__secondPrize {
+  fill: #DF02C0;
+}
+
+.endGame__firstStop {
+  stop-color: #c82bff;
+}
+
+.endGame__secondStop {
+  stop-color: #e000bc;
+}
+
+.endGame__prizeMoney {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  margin: 20px auto 0 auto;
+  border-radius: 10px;
+  background-color: #F1F1F1;
+}
+
+.endGame__prizeMoney .svgIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  bottom: auto;
+  right: auto;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+}
+
+.endGame__moneyCount {
+  position: absolute;
+  top: 7px;
+  right: -45px;
+  width: 58px;
+  height: 29.5px;
+}
+
+.endGame__moneyCount__count {
+  color: white;
+  font-size: 1.7rem;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  transform: rotate(5deg);
+}
+
+.endGame__actions {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  left: 0;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.endGame__menu {
+  width: 40px;
+  height: 40px;
+  margin: 0 30px 0 0;
+  border: 2px solid #c82bff;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.endGame__nextLevel {
+  width: 130px;
+  height: 40px;
+  background: linear-gradient(264.14deg, #C82BFF 9.7%, #E000BC 100.69%);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  color: white;
+}
+
+@media (min-width: 600px) {
+  .endGame {
+    width: 500px;
+    height: 280px;
+  }
+
+  .endGame__header {
+    width: 500px;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+  }
+
+  .endGame__goodGame {
+    font-size: 2.1rem;
+    line-height: 2.1rem;
+  }
+
+  .endGame__prize {
+    font-size: 2.5rem;
+  }
+
+  .endGame__actions {
+    margin-bottom: 10px;
+  }
+
+  .endGame__menu {
+    width: 60px;
+    height: 60px;
+    background-size: 55%;
+    margin-right: 50px;
+  }
+
+  .endGame__nextLevel {
+    height: 60px;
+    width: 180px;
+    font-size: 2.2rem;
+  }
+
+  .endGame__icon {
+    width: 100px;
+    height: 100px;
+    top: -35px;
+    right: 15px;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .endGame {
+    height: 230px;
+  }
+
+  .endGame__header {
+    height: 60px;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+  }
+
+  .endGame__prize {
+    margin-top: 10px;
+  }
+
+  .endGame__goodGame {
+    font-size: 1.9rem;
+    line-height: 1.9rem;
+  }
+
+  .endGame__menu {
+    height: 45px;
+    width: 45px;
+  }
+
+  .endGame__nextLevel {
+    height: 45px;
+  }
+}
+.blurEndGame {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/*# sourceMappingURL=endGame.css.map */

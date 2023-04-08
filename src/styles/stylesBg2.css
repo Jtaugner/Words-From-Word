@@ -85,6 +85,24 @@
 .chosenAppBg2 .leaderBoardInfo__player {
   border-color: #192B6C;
 }
+.chosenAppBg2 .endGame__header, .chosenAppBg2 .endGame__nextLevel {
+  background: linear-gradient(264.82deg, #2E68FF 2.88%, #21CAFF 96.18%);
+}
+.chosenAppBg2 .endGame__firstPrize {
+  fill: #386cfe;
+}
+.chosenAppBg2 .endGame__secondPrize {
+  fill: #08D2F2;
+}
+.chosenAppBg2 .endGame__menu {
+  border-color: #02ddf0;
+}
+.chosenAppBg2 .endGame__firstStop {
+  stop-color: #4059ff;
+}
+.chosenAppBg2 .endGame__secondStop {
+  stop-color: #02ddf0;
+}
 @media (orientation: portrait) {
   .chosenAppBg2 .shop__cart__buy-button {
     background-color: #192B6C;

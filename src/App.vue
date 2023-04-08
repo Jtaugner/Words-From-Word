@@ -24,7 +24,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>
+<!--					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>-->
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -747,6 +747,42 @@
 					Выключите его, чтобы получать бесплатные подсказки.</p>
 			</div>
 
+			<div class="blurBackground blurEndGame" v-if="isEndGame" @click="toggleShowLocations"></div>
+
+			<div class="endGame__wrapper" v-if="isEndGame">
+				<div class="endGame__header">
+					<div class="endGame__icon" :class="endGameIcon" />
+					<p class="endGame__goodGame">{{goodGameText}}</p>
+					<p>Уровень {{lvl+1}} пройден!</p>
+				</div>
+				<div class="endGame">
+					<div class="endGame__prize">
+						Награда
+						<div class="endGame__prizeMoney shop__cart__card">
+							<svg class="svgIcon" fill="#66196C" width="63" height="96" viewBox="0 0 63 96" xmlns="http://www.w3.org/2000/svg"><path d="M26 92C26.4529 94.24 28.7176 96 31.5 96C34.2824 96 36.5471 94.24 37 92H26Z" /><path d="M22.424 84.6689L40.9868 84.6156C41.0429 84.6202 41.0989 84.6248 41.211 84.634C41.6684 84.5588 42.0929 84.1988 42.1343 83.6946C42.1758 83.1903 41.8718 82.7704 41.3768 82.6169C41.3208 82.6123 41.2647 82.6077 41.1527 82.5985L22.6458 82.6564C22.0855 82.6103 21.6005 83.0217 21.5544 83.582C21.5083 84.1423 21.8637 84.6228 22.424 84.6689Z" /><path d="M41.3567 87.5672C41.3012 87.5626 41.2456 87.558 41.1345 87.5489L22.7848 87.6197C22.2293 87.574 21.748 87.9857 21.7019 88.546C21.6559 89.1063 22.0634 89.5911 22.6189 89.6368L41.0242 89.5705C41.0798 89.5751 41.1353 89.5797 41.2464 89.5888C41.7001 89.5133 42.1212 89.153 42.1626 88.6488C42.2041 88.1445 41.8521 87.6643 41.3567 87.5672Z" /><path d="M40.8578 76H22.1422C20.9583 76 20 76.8947 20 78C20 79.1053 20.9583 80 22.1422 80H40.8578C42.0417 80 43 79.1053 43 78C43 76.8947 42.0417 76 40.8578 76Z" /><path d="M31.6684 0C31.6122 0 31.6122 0 31.5559 0C31.4997 0 31.4997 0 31.4434 0C14.0623 0 0 14.2308 0 31.82C0 44.1723 7.59367 53.5646 16.2561 61.5338C19.6873 64.7215 21.7123 69.2754 21.7123 74H31.3872C31.3872 74 31.4434 74 31.4997 74C31.5559 74 31.6122 74 31.6122 74H41.2871C41.2871 69.2185 43.312 64.6646 46.7432 61.5338C55.4057 53.5646 62.9993 44.2292 62.9993 31.82C63.1118 14.2877 49.0495 0 31.6684 0Z" /></svg>
+							<div class="endGame__moneyCount">
+								<svg width="58" height="30" viewBox="0 0 58 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path class="endGame__firstPrize" d="M55.4031 5.5088L3.46278 1.73132L9.15527e-05 21.8779L51.2479 29.4328L55.4031 5.5088Z" fill="#386CFE"/>
+									<path class="endGame__secondPrize" d="M58 3.77748L6.0597 0L2.59702 20.1465L53.8448 27.7015L58 3.77748Z" fill="#08D2F2"/>
+								</svg>
+
+
+								<div class="endGame__moneyCount__count">
+									+3
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="endGame__actions">
+						<div class="endGame__menu" @click="backMenu">
+							<svg width="20" class="svgIcon" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.28791 0.502466C9.29186 0.506065 9.2979 0.506065 9.30185 0.502466L9.68671 0.151754C9.90875 -0.0505844 10.2483 -0.0505847 10.4704 0.151753L19.6367 8.50472C20.1064 8.93273 20.1064 9.67189 19.6367 10.0999C19.3737 10.3395 19.0218 10.4262 18.6946 10.3598V19.0003C18.6946 20.1049 17.7992 21.0003 16.6946 21.0003H12.7269V15.4699C12.7269 14.0627 11.5862 12.9219 10.179 12.9219C8.77179 12.9219 7.63103 14.0627 7.63103 15.4699V21.0003H3.31438C2.20981 21.0003 1.31438 20.1049 1.31438 19.0003V10.4834C0.981525 10.5575 0.620611 10.4723 0.352259 10.2278C-0.11742 9.79975 -0.11742 9.06059 0.352259 8.63258L9.12742 0.636008L9.13552 0.625151L9.13746 0.626859L9.27396 0.502466C9.27792 0.498866 9.28396 0.498866 9.28791 0.502466Z" fill="url(#paint0_linear_15_650)"/><defs><linearGradient id="paint0_linear_15_650" x1="9.99448" y1="0" x2="9.99448" y2="21.0003" gradientUnits="userSpaceOnUse"><stop class="endGame__firstStop" stop-color="#1772AF"/><stop class="endGame__secondStop" offset="1" stop-color="#105A8C"/></linearGradient></defs></svg>
+						</div>
+						<div class="endGame__nextLevel" @click="nextLevel">Продолжить</div>
+					</div>
+				</div>
+			</div>
+
 
 
 		</div>
@@ -990,15 +1026,15 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Обновление' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Обновление!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Уважаемые игроки! Представляем вам обновлённый магазин!
-				<div class="rules__goBg" @click="goToShop">В магазин</div>
+				Представляем вам новый неповторимый зелёный фон!
+				<div class="rules__goBg" @click="goToChangeBg(true)">Попробовать</div>
 <!--				<div class="questionInput">-->
 <!--					<input type="radio" id="one" value="Знаю и меняю" v-model="selectedOption" />-->
 <!--					<label for="one">Да, знаю и меняю</label>-->
@@ -1243,6 +1279,8 @@ import './styles/stylesNewYear.scss';
 import './styles/stylesSpring.scss';
 import './styles/stylesCave.scss';
 import './styles/stylesValentines.scss';
+import './styles/stylesGreen.scss';
+import './styles/endGame.scss';
 
 import './styles/stylesLocations.scss';
 // import './styles/stylesDarkTheme.scss';
@@ -1725,7 +1763,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-36";
+const lastVersion = "ver-37";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1898,7 +1936,10 @@ let wordsForReplace = {
 	'буратино': 'трибуна',
 	'корнилова': 'ковролин',
 	'оскопление': 'поколение',
-	'богоматерь': 'теоброма'
+	'богоматерь': 'теоброма',
+	'напрокат': 'патронка',
+	'спидофобка': 'подсобка',
+
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
 	let keys = Object.keys(allDoneWords);
@@ -2282,6 +2323,10 @@ function startAdvInterval(){
 		}
 	}, 5000);
 }
+let testMobile = false;
+try{
+	testMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
+}catch(e){}
 if(window.YaGames){
 	window.YaGames.init({
 		adv: {
@@ -2368,7 +2413,7 @@ if(window.YaGames){
 								advTime = true;
 								clearInterval(advInterval);
 								canShowAdv();
-							}, 115000);
+							}, testMobile ? 180000 : 120000);
 
 
 							onCloseFunc();
@@ -3120,6 +3165,7 @@ function deletePreDownload(){
 		document.querySelector(".pre-download2").remove()
 	}
 	params({'gameOpened': 1});
+	params({'chosenBG': chosenBackground});
 	try{
 		let secondTimeOpen = new Date();
 		let time = secondTimeOpen - firstTimeOpen;
@@ -3434,6 +3480,7 @@ function copyToClipboard(str) {
 const proms = ["ATE63WM8","NT31XTXF","44SGBV2X","KGEV0X5Y","B5Z2HX95","3UWAHFUU","PYS6N4KU","P7Z8E93Y","9Z41K2ZE","FEKBGKB3","6E7PBMNA","C98DVGXH","DFDBB3XZ","PCEYUPEN","6SZW2BKF","CSDDUNMW","S136TG2R","ZF4U3V9V","EAUVA9RX","C2945Z6M","UM5UR75D","KS57D7DD","Z09T3VD2","T0XER5NG","MT247E84","GBNCA3G8","0GE9XVY9","9EA6PP5P","TF60SE8H","DEDPWS11","TE8HCYW7","A9R20GZB","8RY1XT40","VCD4NZPN","7MZ13DK4","4EXKKB2E","851GAG5X","EXGYCG21","MZ28AU0D","8FPNC6X9","U7FGFF50","DEAD4N3P","W7AAW146","ZK1M814H","7BZ8HXMU","KPTCK5NF","UMXRP80K","T839V0G7","ZA2W5EWT","UTZDSFZH","EG5UCTFT","XRYE0MTH","TRV54XVP","MSHFPBHZ","A50BA6RA","9F5RW9AS","FNCNN0F5","EMWWYMHH","E4NVRM5S","AVTUETHU","U80MV38W","2523K216","VEAZRBN5","96UFUV23","W9SA7M5N","G840M1VV","V2R1K3NC","6045G36Y","M27ZU62V","2WDUEEP7","8H8A1FSB","1ZXP3YPG","DU5MM0UY","CZ8MUG2E","U753164R","61D2STVU","0RVD63NM","KZ7250SG","7WVKNKES","YVYYTDKB","KR7YSNYN","FWKS23K7","XPEN2PP1","3PT6S18R","1973C6W8","982HCRHK","5UTMVCCC","RD9F4NKC","PRYMA7VG","841W7X9R","54MUWVPN","4TUWAGKT","H26Y1NKC","CWE00W9K","ZDGKXN3Z","2V1C2R5S","H25TH5BG","4B7X07CE","648G3C54","TZMEZR52","VF45N4E4","9S1GR7BN","7N3SC21E","TT49UP2M","KMET1KVS","R4MMY6VX","2XCVDAPT","9RUX4878","1FW9ASAA","E4B0DGG2","SMA7EPHD","ERDFM73W","KCMNXS2E","KD1VA6S6","K8F60N0D","9C0ZF3N3","N1A7SRHA","B7G1T4XV","Y3RXHGBN","7HD20S6M","K3MN3339","TF2ZK03R","3ZFMBTYV","2WP1V99E","UT5NPHF2","0F217KHZ","2MTREV3F","B77W9CPS","ZGXCXT04","C3VMH7UB","ABW0XY4R","ZAK3PS7B","MHYHW97G","TT2T58M7","WS6K5EAK","15AUMTVE","8D74NN97","7RTEV2TR","W8HTYCHC","A4FZD5ZM","AEVTE6RZ","8RG1P3ZA","W0NG5CHM","Y5A7NF6V","CHXDHT5B","5G8PE70R","C6NF9YNU","XYW54XU8","KRW5H7XD","1VPZMADS","5VZF12WY","NEAPN03B","KWAKPTNR","7N9UYP1E","XT0H3D8G","A246YB4G","8KKS6DB4","T2TH4W2Y","MYZA8E0P","PCUKNY8T","281YD745","16NS81CG","CPDM0N8B","TYW7WV2K","V371YUG8","5REUPY33","C3EY5AX5","P3D3YTDC","S4BFGYDB","246EMYDC","FV6S70YH","HYK7SU9V","8V2WM6HD","HFM18WVB","ZM9KYM11","EDUTYKPK","3K4UX3SB","H9773ETG","7W0EV03K","UABCSK5B","X3Z7PW5C","ZWSB7U7H","FUFN9KMG","XPNVUA0G","2N8HPMUG","NTPM1SGN","4X2W7XRK","10DTYWCV","K5TNPVGE","WVE2VGSC","A08Y1D1W","X55MCDUZ","EVF6BUTU","SN3HB5TD","MSMSTGME","ZA4GFUU2","C13HFV4G","267F6UWN","VAMPA7GR","WR6TSXDB","SN3NGHFA","VGFGBB05","S35SSB5X","9RW1M4RN","FKZ1PH2U","6FFGWH2V","GR6MRHGB","6SYUR2ZY","AVGSBCAV","YUUXY35F","W4MA19N7","MZPHMVAH","Z06SC5ZV","EASYMTMX","Z172W5ZY","ZBY5WY66","A3DFPK05","TU4SE0RK","ASUKD943","NMD80T1K","DXZ69MCZ","ZFFG8W7E","CN1UKXC2","T87PZ8K9","CZ7974CT","FH6UUCDE","YT5RAR75","8WGG1WK1","16UDRANX","ZBNP82NF","DV4VTA2E","BU873K6C","A6H7FPHW","R0MD05U6","B0SHGM8W","G22T84HT","DGF5DPW7","TMS3P4FD","71VMZUTN","NAVK5RCB","YNZ68AHK","PZ8XX9ZZ","GZ16EEMG","RKFAVD9B","G74BB4NV","1PMF24ZA","K7357RAA","G4RY209N","FE66UCBE","1BWYNNUK","WEH9DVRH","M48MERS5","KRK4VWRX","S26D8EE4","F3930U2M","KHS90F3F","BTDZBH1B","XRT9NC1W","RXH12NBG","X694H6BD","VKM764UC","K6RB3XUV","970ACKU5","M975S5N2","6BB9VK2G","9HZCHPGB","2MX3ZGZY","1S3R8EYP","MXBKN2CS","BTSPAS4D","5K2VTD4D","3U8DSPE1","VNK7G3US","A946N0ZE","0RCW4SEH","SXFH7ARG","HFDY0WFR","P7P0ZE67","MUZWY13B","WS8YACN3","0KRHWP6D","9PB9SVMG","G3VB09KK","V4ZT5MBE","068SU6XT","1WM8CUU1","B8TWGMXF","C2ZCN74D","HAGV1RSB","36ZH00ZT","DD726DF1","SVWY7CHW","CFV0XVXU","WSBFGGRF","2EE9BZR6","4XSVDBKD","2YYX0B1X","Z6SYWHDU","BAU5FAEU","41WVDEPB"];
 const mainUniq = ['TJgwFXC9SXvc50yCq60wLTPZTarJt+sv4EQbsvklCi0=', 'T7HKgy+MM2v3Mq/QlNV/eexk1t2rF5eH95WwBakhkz4=', '22Q/Ti+AwwqwDoeqcuBgh6k7I5p5JlQ4o0tA2RaQgeE=', 'Q9uFo/ZVB0/MVAfGeLihCwr6lRuG+ql/NL5LUA+QEaA=', 'jSmtoceGKNTqqSwYsyG1tndfZDolylcfDJAK0q6/8wo=', "nE3PFtmH3cU0QNdssumZBiQ2oOsiB71hun9Z9PWZ8cU="];
 let isTextTyping = false;
+let goodGames = ["ХОРОШАЯ РАБОТА!", "ОТЛИЧНАЯ ИГРА!", "ТЫ МОЛОДЕЦ!", "ВОСХИТИТЕЛЬНО!"]
 export default {
 	name: 'App',
 	components: {CrossVue, CrossComponent},
@@ -3545,7 +3592,10 @@ export default {
 			isPlayerAuth: isPlayerAuth,
 			selectedOption: 'None',
 			notShowAds: false,
-			endType: false
+			endType: false,
+			goodGameText: goodGames[Math.floor(Math.random() * goodGames.length)],
+			isEndGame: false,
+			endGameIcon: 'endGame__icon1'
 		}
 	},
 	computed:{
@@ -3623,9 +3673,15 @@ export default {
 				saveAllData(true);
 			}
 		},
+		getEndGame(){
+			this.isEndGame = true;
+			this.endGameIcon = 'endGame__icon' + (Math.floor(Math.random() * 8) + 1);
+			this.goodGameText = goodGames[Math.floor(Math.random() * goodGames.length)];
+		},
 		scamTest(){
 			try{
-				if(playerGame._personalInfo.uniqueID === "CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg="){
+				if(playerGame._personalInfo.uniqueID === "CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=" ||
+					playerGame._personalInfo.uniqueID === "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA="){
 					return true;
 				}
 			}catch(e){
@@ -4020,12 +4076,12 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 5) this.chosenBg = -4;
+			if(this.chosenBg === 6) this.chosenBg = -4;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -5) this.chosenBg = 4;
+			if(this.chosenBg === -5) this.chosenBg = 5;
 			this.testBg();
 		},
 		testBg(){
@@ -4045,7 +4101,7 @@ export default {
 			setToStorage('chosenBackground', this.chosenBgRight);
 			params({'changeBgCave': 1});
 		},
-		goToChangeBg(){
+		goToChangeBg(fromUpdate){
 			this.backMenu();
 			this.isSettings = true;
 			this.openNewBg = false;
@@ -4054,9 +4110,13 @@ export default {
 				bg = 2;
 			}else if(this.lvl === 24){
 				bg = 3;
+			}else if(fromUpdate){
+				params({'testGreenBg': 1});
+				bg = 5;
 			}
 			this.chosenBg = bg;
 			this.chosenBgRight = bg;
+			setToStorage('chosenBackground', this.chosenBgRight);
 			this.showLastLevelInfo = false;
 		},
 		findNotShowLetters(){
@@ -4502,9 +4562,7 @@ export default {
 				}
 				return;
 			}
-
-
-
+			this.isEndGame = false;
 			// if(window.innerWidth > window.innerHeight){
 			// 	params({'orientation': 'landscape'});
 			// }else{
@@ -4882,6 +4940,7 @@ export default {
 		backMenu(){
 			if(this.isTutorial) return;
 			this.isMyGame = false;
+			this.isEndGame = false;
 			if(this.isSounds){
 				clickSound.play();
 			}
@@ -5327,6 +5386,9 @@ export default {
 					if(this.isMyGame) return;
 					if(stars === 3){
 						this.tipCount += 3;
+						if(!this.isMyGame){
+							this.getEndGame()
+						}
 					}else if(stars === 2){
 						this.tipCount += 2;
 					} else{

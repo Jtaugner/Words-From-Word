@@ -89,6 +89,25 @@
     border-color: #192B6C;
   }
 
+  .endGame__header, .endGame__nextLevel{
+    background: linear-gradient(264.82deg, #2E68FF 2.88%, #21CAFF 96.18%);
+  }
+  .endGame__firstPrize{
+    fill: rgba(56, 108, 254, 1);
+  }
+  .endGame__secondPrize{
+    fill: #08D2F2;
+  }
+  .endGame__menu{
+    border-color: rgba(2, 221, 240, 1);
+  }
+  .endGame__firstStop{
+    stop-color: rgba(64, 89, 255, 1);
+  }
+  .endGame__secondStop{
+    stop-color: rgba(2, 221, 240, 1);
+  }
+
   @media (orientation: portrait){
     .shop__cart__buy-button{
       background-color: #192B6C;

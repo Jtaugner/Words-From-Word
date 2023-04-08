@@ -1,112 +1,130 @@
 @charset "UTF-8";
 /*Фон Валентин*/
-#app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels {
-  background-image: url(../assets/valentines.png);
+#app.chosenAppBg5, .chosenAppBg5 .game, .chosenAppBg5 .levels {
+  background-image: url(../assets/bgGreen/bgGreen.png);
 }
 
-.chosenAppBg4 .svgIcon {
-  fill: #D15784;
+.chosenAppBg5 .svgIcon {
+  fill: #0B7341;
 }
-.chosenAppBg4 .shop__cart__card .svgIcon {
-  fill: #D21AE5;
+.chosenAppBg5 .shop__cart__card .svgIcon {
+  fill: #16CA73;
 }
-.chosenAppBg4 .shop__cart__card .shop__cart__name {
-  color: #D21AE5;
+.chosenAppBg5 .shop__cart__card .shop__cart__name {
+  color: #16CA73;
 }
-.chosenAppBg4 .shop__cart__buy-button {
-  background: linear-gradient(264.14deg, #C82BFF 9.7%, #E000BC 100.69%);
-  box-shadow: 0px 3px 0px #9900B1;
+.chosenAppBg5 .shop__cart__buy-button {
+  background: linear-gradient(264.82deg, #10E0A2 2.88%, #1EB26B 96.18%);
+  box-shadow: 0px 3px 0px #267A42;
 }
-.chosenAppBg4 .levelsTop__allStars {
-  color: #D15784;
+.chosenAppBg5 .levelsTop__allStars {
+  color: #0B7341;
 }
-.chosenAppBg4 .newElement, .chosenAppBg4 .levels .menu-star {
-  background-color: #c74573;
+.chosenAppBg5 .newElement, .chosenAppBg5 .levels .menu-star {
+  background-color: #16CA73;
 }
-.chosenAppBg4 .words__letters-block_done .words__letter, .chosenAppBg4 .action-block__letters .action-block__letter_selected {
-  background-color: #c74573;
+.chosenAppBg5 .words__letters-block_done .words__letter, .chosenAppBg5 .action-block__letters .action-block__letter_selected {
+  background-color: #14A861;
   color: white;
 }
-.chosenAppBg4 .menu__tip_count, .chosenAppBg4 .rules__goBg {
-  background-color: #c74573;
+.chosenAppBg5 .menu__tip_count, .chosenAppBg5 .rules__goBg {
+  background-color: #0B7341;
 }
-.chosenAppBg4 .rules__menu, .chosenAppBg4 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg4 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg4 .startCreateGame {
-  background-color: #D15784;
+.chosenAppBg5 .rules__menu, .chosenAppBg5 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg5 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg5 .startCreateGame {
+  background-color: #0B7341;
 }
-.chosenAppBg4 .shop, .chosenAppBg4 .rules, .chosenAppBg4 .leaderBoardInfo_my .leaderBoardInfo__image {
-  border-color: #D15784;
+.chosenAppBg5 .shop, .chosenAppBg5 .rules, .chosenAppBg5 .leaderBoardInfo_my .leaderBoardInfo__image {
+  border-color: #0B7341;
 }
-.chosenAppBg4 .shop .rules__menu, .chosenAppBg4 .settings__text {
-  color: #D15784;
+.chosenAppBg5 .shop .rules__menu, .chosenAppBg5 .settings__text {
+  color: #0B7341;
 }
-.chosenAppBg4 ::-webkit-scrollbar-thumb {
-  background-color: #c74573;
+.chosenAppBg5 ::-webkit-scrollbar-thumb {
+  background-color: #16CA73;
 }
-.chosenAppBg4 .settings {
-  border-color: #D15784;
+.chosenAppBg5 .settings {
+  border-color: #0B7341;
 }
-.chosenAppBg4 .checkbox:checked + label:after {
-  background: #c74573;
+.chosenAppBg5 .checkbox:checked + label:after {
+  background: #179357;
 }
-.chosenAppBg4 .checkbox:checked + label:before {
-  background-color: #fc6c9f;
+.chosenAppBg5 .checkbox:checked + label:before {
+  background-color: #1bde80;
 }
-.chosenAppBg4 .newWord .words__letter {
-  background-color: #f06a99;
+.chosenAppBg5 .newWord .words__letter {
+  background-color: #006c37;
 }
-.chosenAppBg4 .animWord .words__letter {
-  animation: 1s showNewWord8 forwards;
+.chosenAppBg5 .animWord .words__letter {
+  animation: 1s showNewWord9 forwards;
 }
-@keyframes showNewWord8 {
+@keyframes showNewWord9 {
   0% {
     background-color: rgba(255, 255, 255, 0.85);
   }
   100% {
-    background-color: #f06a99;
+    background-color: #006c37;
   }
 }
-.chosenAppBg4 .shop__cart__name {
-  color: #D15784;
-  border-color: #D15784;
+.chosenAppBg5 .shop__cart__name {
+  color: #1bc481;
+  border-color: #0B7341;
 }
-.chosenAppBg4 .shop__cart__item {
-  border-color: #D15784;
+.chosenAppBg5 .shop__cart__item {
+  border-color: #0B7341;
 }
-.chosenAppBg4 .wordWas .words__letter {
-  background-color: #a32752;
+.chosenAppBg5 .wordWas .words__letter {
+  background-color: #054c2c;
 }
-.chosenAppBg4 .menu__hint {
-  background-color: rgba(199, 69, 115, 0.9);
+.chosenAppBg5 .menu__hint {
+  background-color: rgba(11, 115, 65, 0.9);
 }
-.chosenAppBg4 .skipTutorial {
-  background-color: #c74573;
+.chosenAppBg5 .skipTutorial {
+  background-color: #16CA73;
 }
-.chosenAppBg4 .cloudHint {
-  color: #c74573;
+.chosenAppBg5 .cloudHint {
+  color: #16CA73;
 }
-.chosenAppBg4 .cloudHint__mainText {
-  color: #c74573;
+.chosenAppBg5 .cloudHint__mainText {
+  color: #16CA73;
 }
-.chosenAppBg4 .leaderBoardInfo__player, .chosenAppBg4 .lbInGame__player, .chosenAppBg4 .lbInGame__score {
-  border-color: #c74573;
+.chosenAppBg5 .leaderBoardInfo__player, .chosenAppBg5 .lbInGame__player, .chosenAppBg5 .lbInGame__score {
+  border-color: #16CA73;
+}
+.chosenAppBg5 .endGame__header, .chosenAppBg5 .endGame__nextLevel {
+  background: linear-gradient(265.01deg, #00BB61 6.23%, #009821 97.6%);
+}
+.chosenAppBg5 .endGame__firstPrize {
+  fill: #01af4b;
+}
+.chosenAppBg5 .endGame__secondPrize {
+  fill: #16ca73;
+}
+.chosenAppBg5 .endGame__menu {
+  border-color: #009821;
+}
+.chosenAppBg5 .endGame__firstStop {
+  stop-color: #00bb61;
+}
+.chosenAppBg5 .endGame__secondStop {
+  stop-color: #009821;
 }
 @media (orientation: portrait) {
-  .chosenAppBg4 .shop__cart__buy-button {
-    background-color: #D15784;
+  .chosenAppBg5 .shop__cart__buy-button {
+    background-color: #0B7341;
   }
 }
-.chosenAppBg4 .action-block__letter {
-  color: #470f21;
+.chosenAppBg5 .action-block__letter {
+  color: #003118;
 }
 @media (max-width: 1400px) {
-  .chosenAppBg4 .blur {
+  .chosenAppBg5 .blur {
     background-color: rgba(0, 0, 0, 0.05);
   }
 }
 
 @media (orientation: portrait) {
-  #app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels {
-    background-image: url(../assets/locations/valentines/map_port.png);
+  #app.chosenAppBg5, .chosenAppBg5 .game, .chosenAppBg5 .levels {
+    background-image: url(../assets/bgGreen/bgVertical.png);
   }
 }
 

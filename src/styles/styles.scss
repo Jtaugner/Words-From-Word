@@ -772,7 +772,7 @@ html,body
 .menu__button-back:after, .menu__tip:after,
 .prev-location:after, .next-location:after, .switchSettings:after,
 .popUp__close:after, .switchShowLocation:after, .switchShop:after,
-.action-block__button-send:after{
+.action-block__button-send:after, .endGame__menu:after{
   position: absolute;
   content: '';
   top: -10px;
@@ -2010,7 +2010,9 @@ b{
 .chosenBg4{
   background-image: url(../assets/settings/bg4.png);
 }
-
+.chosenBg5{
+  background-image: url(../assets/settings/bg5.png);
+}
 .changeLeft, .changeRight{
   width: 20px;
   height: 39px;

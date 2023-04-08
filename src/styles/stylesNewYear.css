@@ -13,14 +13,14 @@
   fill: #C21332;
 }
 .chosenAppBg-2 .shop__cart__card .svgIcon {
-  fill: #4395F5;
+  fill: #E40000;
 }
 .chosenAppBg-2 .shop__cart__card .shop__cart__name {
-  color: #4395F5;
+  color: #E40000;
 }
 .chosenAppBg-2 .shop__cart__buy-button {
-  background: linear-gradient(264.82deg, #3A9DF8 2.88%, #33E0F8 96.18%);
-  box-shadow: 0px 3px 0px #237EE9;
+  background: linear-gradient(264.82deg, #F74A00 2.88%, #E40000 96.18%);
+  box-shadow: 0px 3px 0px #9a0000;
 }
 .chosenAppBg-2 .levelsTop__allStars, .chosenAppBg-2 .shop .rules__menu, .chosenAppBg-2 .settings__text {
   color: #C21332;
@@ -133,6 +133,24 @@
 .chosenAppBg-2 .done-word {
   color: black;
   text-shadow: 0 0 8px white;
+}
+.chosenAppBg-2 .endGame__header, .chosenAppBg-2 .endGame__nextLevel {
+  background: linear-gradient(265.81deg, #F74A00 3.02%, #E40000 100.69%);
+}
+.chosenAppBg-2 .endGame__firstPrize {
+  fill: #ff4d00;
+}
+.chosenAppBg-2 .endGame__secondPrize {
+  fill: red;
+}
+.chosenAppBg-2 .endGame__menu {
+  border-color: #e40000;
+}
+.chosenAppBg-2 .endGame__firstStop {
+  stop-color: #f64a00;
+}
+.chosenAppBg-2 .endGame__secondStop {
+  stop-color: #e40000;
 }
 @media (orientation: portrait) {
   .chosenAppBg-2 .shop__cart__buy-button {

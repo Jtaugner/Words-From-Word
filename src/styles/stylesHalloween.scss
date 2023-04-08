@@ -16,14 +16,14 @@
     fill: #103A4C;
   }
   .shop__cart__card .svgIcon{
-    fill: #4AD7AD;
+    fill: #3C9BA8;
   }
   .shop__cart__card .shop__cart__name{
-    color: #4AD7AD;
+    color: #3C9BA8;
   }
   .shop__cart__buy-button{
-    background: linear-gradient(264.82deg, #08F2C8 2.88%, #27D18A 96.18%);
-    box-shadow: 0px 3px 0px #0E9266;
+    background: linear-gradient(264.82deg, #3C9BA8 2.88%, #103A4D 96.18%);
+    box-shadow: 0px 3px 0px #103A4D;
   }
   .levelsTop__allStars{
     color: #103A4D;
@@ -94,6 +94,25 @@
   }
   .leaderBoardInfo__player, .lbInGame__player, .lbInGame__score{
     border-color: #3C9BA8;
+  }
+
+  .endGame__header, .endGame__nextLevel{
+    background: linear-gradient(264.82deg, #3C9BA8 2.88%, #103A4D 96.18%);
+  }
+  .endGame__firstPrize{
+    fill: #103A4D;
+  }
+  .endGame__secondPrize{
+    fill: #3C9BA8;
+  }
+  .endGame__menu{
+    border-color: #103A4D;
+  }
+  .endGame__firstStop{
+    stop-color: #3C9BA8;
+  }
+  .endGame__secondStop{
+    stop-color: #103A4D;
   }
   @media (orientation: portrait){
     .shop__cart__buy-button{

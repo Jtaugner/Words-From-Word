@@ -16,14 +16,14 @@
     fill: #C21332;
   }
   .shop__cart__card .svgIcon{
-    fill: #4395F5;
+    fill: #E40000;
   }
   .shop__cart__card .shop__cart__name{
-    color: #4395F5;
+    color: #E40000;
   }
   .shop__cart__buy-button{
-    background: linear-gradient(264.82deg, #3A9DF8 2.88%, #33E0F8 96.18%);
-    box-shadow: 0px 3px 0px #237EE9;
+    background: linear-gradient(264.82deg, #F74A00 2.88%, #E40000 96.18%);
+    box-shadow: 0px 3px 0px #9a0000;
   }
   .levelsTop__allStars, .shop .rules__menu, .settings__text{
     color: #C21332;
@@ -145,6 +145,25 @@
   .done-word{
     color: black;
     text-shadow: 0 0 8px white;
+  }
+
+  .endGame__header, .endGame__nextLevel{
+    background: linear-gradient(265.81deg, #F74A00 3.02%, #E40000 100.69%);
+  }
+  .endGame__firstPrize{
+    fill: rgba(255, 77, 0, 1);
+  }
+  .endGame__secondPrize{
+    fill: rgba(255, 0, 0, 1);
+  }
+  .endGame__menu{
+    border-color: rgba(228, 0, 0, 1)
+  }
+  .endGame__firstStop{
+    stop-color: rgba(246, 74, 0, 1);
+  }
+  .endGame__secondStop{
+    stop-color: rgba(228, 0, 0, 1)
   }
 
   @media (orientation: portrait){

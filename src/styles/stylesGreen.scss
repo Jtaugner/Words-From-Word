@@ -1,108 +1,126 @@
 
 /*Фон Валентин*/
 
-#app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels{
-  background-image: url(../assets/valentines.png);
+#app.chosenAppBg5, .chosenAppBg5 .game, .chosenAppBg5 .levels{
+  background-image: url(../assets/bgGreen/bgGreen.png);
 }
 
-.chosenAppBg4{
+.chosenAppBg5{
   .svgIcon{
-    fill: #D15784;
+    fill: #0B7341;
   }
   .shop__cart__card .svgIcon{
-    fill: #D21AE5;
+    fill: #16CA73;
   }
   .shop__cart__card .shop__cart__name{
-    color: #D21AE5;
+    color: #16CA73;
   }
   .shop__cart__buy-button{
-    background: linear-gradient(264.14deg, #C82BFF 9.7%, #E000BC 100.69%);
-    box-shadow: 0px 3px 0px #9900B1;
+    background: linear-gradient(264.82deg, #10E0A2 2.88%, #1EB26B 96.18%);
+    box-shadow: 0px 3px 0px #267A42;
   }
   .levelsTop__allStars{
-    color: #D15784;
+    color: #0B7341;
   }
   .newElement, .levels .menu-star{
-    background-color: #c74573;
+    background-color: #16CA73;
   }
   .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
-    background-color: #c74573;
+    background-color: #14A861;
     color: white;
   }
   .menu__tip_count, .rules__goBg{
-    background-color: #c74573;
+    background-color: #0B7341;
   }
   .rules__menu, .leaderBoardInfo_my .leaderBoardInfo__rank, .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .startCreateGame{
-    background-color: #D15784;
+    background-color: #0B7341;
   }
   .shop, .rules, .leaderBoardInfo_my .leaderBoardInfo__image{
-    border-color: #D15784;
+    border-color: #0B7341;
   }
   .shop .rules__menu, .settings__text{
-    color: #D15784;
+    color: #0B7341;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: #c74573;
+    background-color: #16CA73;
   }
   .settings{
-    border-color: #D15784;
+    border-color: #0B7341;
   }
   .checkbox:checked + label:after {
-    background: #c74573;
+    background: #179357;
   }
   .checkbox:checked + label:before {
-
-    background-color: #fc6c9f;
+    background-color: #1bde80;
   }
 
   .newWord .words__letter{
-    background-color: #f06a99;
+    background-color: #006c37;
   }
   .animWord .words__letter{
-    animation: 1s showNewWord8 forwards;
+    animation: 1s showNewWord9 forwards;
   }
   //Смена названия
-  @keyframes  showNewWord8{
+  @keyframes  showNewWord9{
     0%{background-color: rgba(255, 255, 255, 0.85);}
-    100%{background-color: #f06a99;}
+    100%{background-color: #006c37;}
   }
 
   //Магазин
   .shop__cart__name{
-    color:#D15784;
-    border-color: #D15784;
+    color:#1bc481;
+    border-color: #0B7341;
   }
   .shop__cart__item{
-    border-color: #D15784;
+    border-color: #0B7341;
   }
 
   .wordWas .words__letter{
-    background-color: #a32752;
+    background-color: #054c2c;
   }
 
   .menu__hint{
-    background-color: rgba(199, 69, 115, 0.9);
+    background-color: rgba(11, 115, 65, 0.9);
   }
   .skipTutorial{
-    background-color: #c74573;
+    background-color: #16CA73;
   }
   .cloudHint{
-    color: #c74573;
+    color: #16CA73;
   }
   .cloudHint__mainText{
-    color: #c74573;
+    color: #16CA73;
   }
   .leaderBoardInfo__player, .lbInGame__player, .lbInGame__score{
-    border-color: #c74573;
+    border-color: #16CA73;
+  }
+
+  .endGame__header, .endGame__nextLevel{
+    background: linear-gradient(265.01deg, #00BB61 6.23%, #009821 97.6%);
+  }
+  .endGame__firstPrize{
+    fill: rgba(1, 175, 75, 1);
+  }
+  .endGame__secondPrize{
+    fill: rgba(22, 202, 115, 1);
+  }
+  .endGame__menu{
+    border-color: rgba(0, 152, 33, 1);
+  }
+  .endGame__firstStop{
+    stop-color: rgba(0, 187, 97, 1);
+  }
+  .endGame__secondStop{
+    stop-color: rgba(0, 152, 33, 1);
   }
 
   @media (orientation: portrait){
     .shop__cart__buy-button{
-      background-color: #D15784;
+      background-color: #0B7341;
     }
   }
   .action-block__letter{
-    color: #470f21;
+    color: #003118;
   }
   @media (max-width: 1400px) {
     .blur{
@@ -111,7 +129,7 @@
   }
 }
 @media (orientation: portrait) {
-  #app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels{
-    background-image: url(../assets/locations/valentines/map_port.png);
+  #app.chosenAppBg5, .chosenAppBg5 .game, .chosenAppBg5 .levels{
+    background-image: url(../assets/bgGreen/bgVertical.png);
   }
 }
