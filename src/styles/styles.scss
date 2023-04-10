@@ -720,7 +720,7 @@ html,body
   cursor: pointer;
   outline: none;
 }
-.levelsTop .menuItem, .bottomMenu .menuItem{
+.levelsTop .menuItem{
   width: 50px;
   height: 50px;
 }
@@ -759,14 +759,22 @@ html,body
   background-size: 80%;
 }
 .menu__level, .menu__words-amount{
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   letter-spacing: 1px;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 .menu__words-amount{
+  font-size: 2rem;
   position: relative;
-  min-width: 60px;
+  width: 40px;
+  margin: 0 30px;
   text-align: center;
+}
+.words-amount__first, .words-amount__second{
+  line-height: 2.2rem;
+}
+.words-amount__first{
+  border-bottom: 1px solid white;
 }
 .menu__words-amount:after, .menu__button-next-level:after,
 .menu__button-back:after, .menu__tip:after,
@@ -825,7 +833,7 @@ html,body
   display: none !important;
 }
 .menu__button-next-level_active:active{
-  transform: scale(0.98);
+  transform: scale(0.96);
 }
 
 .menu__level .level_star{
@@ -1221,8 +1229,8 @@ html,body
 
   margin-left: 25px;
 
-  width: 40px;
-  height: 40px;
+  width: 43px;
+  height: 43px;
 
   background: url(../assets/sendWord.png) center center no-repeat, white;
   background-size: 70%;
@@ -1741,7 +1749,7 @@ b{
     height: 50px;
     width: 487px;
   }
-  .levelsTop .menuItem, .bottomMenu .menuItem {
+  .levelsTop .menuItem{
     width: 40px;
     height: 40px;
   }
@@ -2186,7 +2194,10 @@ b{
   .words{
     margin-top: 65px;
   }
-  .menu .menu__words-amount, .menu .menu__tip{
+  .action-block_landscapeDoneWord{
+    display: none;
+  }
+  .menu .menu__tip{
     display: none;
   }
   .action-block__letters{
@@ -2210,7 +2221,8 @@ b{
   .bottomMenu{
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 0 10px;
+    margin-top: 12px;
   }
   .bottomMenu .action-block__button-send{
     margin: 0;
@@ -2352,10 +2364,6 @@ b{
   }
 
 
-  .menu__words-amount .menu__hint{
-    bottom: auto;
-    top: -32px;
-  }
   .menu__button-next-level .menu__hint{
     left: 0;
   }
@@ -2585,9 +2593,6 @@ b{
   }
   .action-block{
     margin: 15px 0;
-  }
-  .bottomMenu{
-    margin-bottom: 10px;
   }
 }
 
@@ -3288,5 +3293,63 @@ b{
   }
   .shop__cart__last{
     margin: 0;
+  }
+}
+
+
+.nextAndPrevLevel{
+  display: flex;
+}
+.menu__button-prev-level{
+  margin-right: 20px;
+  transform: rotate(180deg);
+}
+.menu__button-prev-level:active{
+  transform: scale(0.96) rotate(180deg);
+}
+
+@media (min-width: 1000px){
+  .menu__button-prev-level{
+    margin-right: 40px;
+  }
+  .words-amount__first, .words-amount__second{
+    line-height: 2.8rem;
+  }
+  .menu__words-amount{
+    width: 50px;
+    margin: 0 55px;
+  }
+}
+.portraitButton{
+  display: none;
+}
+@media (orientation: portrait){
+  .portraitButton{
+    display: block;
+  }
+  .nextAndPrevLevel{
+    display: none;
+  }
+  .menu__words-amount, .menu__button-prev-level{
+    margin: 0;
+  }
+  .menu__tip_count{
+    right: auto;
+    left: 0;
+    width: 100%;
+    bottom: -8px;
+  }
+  .action-block__done-word{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .action-block_landscapeDoneWord{
+    display: none;
+  }
+  .menu__tip{
+    width: 43px;
+    height: 43px;
   }
 }

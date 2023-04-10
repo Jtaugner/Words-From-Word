@@ -426,11 +426,12 @@
 					class="menu__words-amount"
 					v-show="!verticalPayload"
 				>
-					{{doneWords.length}}/{{nowWords.length}}
+					<div class="words-amount__first">{{doneWords.length}}</div>
+					<div class="words-amount__second">{{nowWords.length}}</div>
 					<div class="menu__hint">{{notRussian ? 'Guessed' : 'Отгадано'}}</div>
 				</div>
 				<div class="menu__level">
-					{{notRussian ? 'Level' : 'Уровень'}} {{lvl+1}}
+					{{notRussian ? 'Lvl' : 'Ур.'}} {{lvl+1}}
 					<div class="menu__level_stars">
 						<div
 							class="level_star"
@@ -464,7 +465,36 @@
 
 					</div>
 				</div>
-				<div class="menu__button-next-level menuItem"
+				<div class="nextAndPrevLevel">
+					<div class="menu__button-next-level menuItem menu__button-prev-level"
+						 :class="[lvl === 0 ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
+						 @click="prevLevel()"
+						 v-show="!verticalPayload"
+					>
+						<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
+					</div>
+
+					<div class="menu__button-next-level menuItem"
+						 :class="[!testShowNextLevel() ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
+						 @click="nextLevel()"
+						 v-show="!verticalPayload"
+					>
+						<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
+
+
+						<div class="menu__hint" v-if="lvl < 4">{{notRussian ? 'Earn 1 star and get access to the next level' : 'Заработайте 1 звезду и получите доступ к следующему уровню'}}</div>
+					</div>
+				</div>
+
+				<div class="portraitButton menu__button-next-level menuItem menu__button-prev-level"
+					 :class="[lvl === 0 ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
+					 @click="prevLevel()"
+					 v-show="!verticalPayload"
+				>
+					<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
+				</div>
+
+				<div class="portraitButton menu__button-next-level menuItem"
 					 :class="[!testShowNextLevel() ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
 					 @click="nextLevel()"
 					 v-show="!verticalPayload"
@@ -474,6 +504,7 @@
 
 					<div class="menu__hint" v-if="lvl < 4">{{notRussian ? 'Earn 1 star and get access to the next level' : 'Заработайте 1 звезду и получите доступ к следующему уровню'}}</div>
 				</div>
+
 			</header>
 
 
@@ -510,11 +541,34 @@
 				</div>
 
 
+				<div class="bottomMenu">
 
+					<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
+						<svg class="svgIcon" width="15" height="23" viewBox="0 0 15 23" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M8.80952 22.0417C8.70168 22.5783 8.16247 23 7.5 23C6.83754 23 6.29832 22.5783 6.19048 22.0417H8.80952Z" /><path d="M9.66096 20.2853L5.24123 20.2725C5.22789 20.2736 5.21455 20.2747 5.18787 20.2769C5.07895 20.2589 4.97789 20.1726 4.96802 20.0518C4.95815 19.931 5.03051 19.8304 5.14838 19.7936C5.16172 19.7925 5.17507 19.7914 5.20175 19.7892L9.60813 19.8031C9.74154 19.7921 9.85703 19.8906 9.868 20.0249C9.87897 20.1591 9.79436 20.2742 9.66096 20.2853Z" /><path d="M5.15316 20.9796C5.16639 20.9785 5.17962 20.9774 5.20607 20.9753L9.57506 20.9922C9.70732 20.9813 9.82191 21.0799 9.83288 21.2142C9.84384 21.3484 9.74681 21.4645 9.61454 21.4755L5.23233 21.4596C5.2191 21.4607 5.20587 21.4618 5.17942 21.464C5.07141 21.4459 4.97115 21.3596 4.96128 21.2388C4.95141 21.118 5.03522 21.0029 5.15316 20.9796Z" /><path d="M5.27194 18.2083H9.72806C10.0099 18.2083 10.2381 18.4227 10.2381 18.6875C10.2381 18.9523 10.0099 19.1667 9.72806 19.1667H5.27194C4.99008 19.1667 4.76191 18.9523 4.76191 18.6875C4.76191 18.4227 4.99008 18.2083 5.27194 18.2083Z" /><path d="M7.4599 0C7.4733 0 7.4733 0 7.48669 0C7.50008 0 7.50008 0 7.51347 0C11.6518 0 15 3.40946 15 7.62354C15 10.5829 13.192 12.8332 11.1295 14.7425C10.3126 15.5062 9.83041 16.5972 9.83041 17.7292H7.52687C7.52687 17.7292 7.51347 17.7292 7.50008 17.7292C7.48669 17.7292 7.47329 17.7292 7.47329 17.7292H5.16975C5.16975 16.5836 4.68761 15.4926 3.87066 14.7425C1.80818 12.8332 0.000160217 10.5966 0.000160217 7.62354C-0.0266256 3.42309 3.32156 0 7.4599 0Z" /></svg>
+						<div class="advert" v-if="tipCount === 0 && advTimer <= 0"></div>
+						<div class="menu__tip_count" v-else>
+							<template v-if="advTimer > 0 && tipCount === 0">
+								{{advTimerTime}}
+							</template>
+							<template v-else>
+								{{lvl === 0 && !locationGame ? '∞' : tipCount}}
+							</template>
+
+						</div>
+					</div>
+
+
+					<div class="action-block__done-word" @dblclick="eraseWord">
+						<div class="done-word" :class="[isBadWord ? 'badWord' : '']" >{{wordFromLetter}}</div>
+					</div>
+
+					<button class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord"></button>
+
+				</div>
 
 
 				<div class="action-block">
-					<div class="action-block__done-word" @dblclick="eraseWord">
+					<div class="action-block_landscapeDoneWord action-block__done-word" @dblclick="eraseWord">
 						<div class="done-word" :class="[isBadWord ? 'badWord' : '']" >{{wordFromLetter}}</div>
 					</div>
 					<div class="action-block__letters">
@@ -576,32 +630,6 @@
 				</div>
 
 
-				<div class="bottomMenu">
-
-					<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
-						<svg class="svgIcon" width="15" height="23" viewBox="0 0 15 23" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M8.80952 22.0417C8.70168 22.5783 8.16247 23 7.5 23C6.83754 23 6.29832 22.5783 6.19048 22.0417H8.80952Z" /><path d="M9.66096 20.2853L5.24123 20.2725C5.22789 20.2736 5.21455 20.2747 5.18787 20.2769C5.07895 20.2589 4.97789 20.1726 4.96802 20.0518C4.95815 19.931 5.03051 19.8304 5.14838 19.7936C5.16172 19.7925 5.17507 19.7914 5.20175 19.7892L9.60813 19.8031C9.74154 19.7921 9.85703 19.8906 9.868 20.0249C9.87897 20.1591 9.79436 20.2742 9.66096 20.2853Z" /><path d="M5.15316 20.9796C5.16639 20.9785 5.17962 20.9774 5.20607 20.9753L9.57506 20.9922C9.70732 20.9813 9.82191 21.0799 9.83288 21.2142C9.84384 21.3484 9.74681 21.4645 9.61454 21.4755L5.23233 21.4596C5.2191 21.4607 5.20587 21.4618 5.17942 21.464C5.07141 21.4459 4.97115 21.3596 4.96128 21.2388C4.95141 21.118 5.03522 21.0029 5.15316 20.9796Z" /><path d="M5.27194 18.2083H9.72806C10.0099 18.2083 10.2381 18.4227 10.2381 18.6875C10.2381 18.9523 10.0099 19.1667 9.72806 19.1667H5.27194C4.99008 19.1667 4.76191 18.9523 4.76191 18.6875C4.76191 18.4227 4.99008 18.2083 5.27194 18.2083Z" /><path d="M7.4599 0C7.4733 0 7.4733 0 7.48669 0C7.50008 0 7.50008 0 7.51347 0C11.6518 0 15 3.40946 15 7.62354C15 10.5829 13.192 12.8332 11.1295 14.7425C10.3126 15.5062 9.83041 16.5972 9.83041 17.7292H7.52687C7.52687 17.7292 7.51347 17.7292 7.50008 17.7292C7.48669 17.7292 7.47329 17.7292 7.47329 17.7292H5.16975C5.16975 16.5836 4.68761 15.4926 3.87066 14.7425C1.80818 12.8332 0.000160217 10.5966 0.000160217 7.62354C-0.0266256 3.42309 3.32156 0 7.4599 0Z" /></svg>
-						<div class="advert" v-if="tipCount === 0 && advTimer <= 0"></div>
-						<div class="menu__tip_count" v-else>
-							<template v-if="advTimer > 0 && tipCount === 0">
-								{{advTimerTime}}
-							</template>
-							<template v-else>
-								{{lvl === 0 && !locationGame ? '∞' : tipCount}}
-							</template>
-
-						</div>
-					</div>
-
-
-
-					<div class="menu__words-amount">
-						{{doneWords.length}}/{{nowWords.length}}
-						<div class="menu__hint">{{notRussian ? 'Guessed' : 'Отгадано'}}</div>
-					</div>
-
-					<button class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord"></button>
-
-				</div>
 
 				<div class="bannerForVertical">
 					<div class="container-lbInGame" v-if="lbInGame">
@@ -2413,7 +2441,7 @@ if(window.YaGames){
 								advTime = true;
 								clearInterval(advInterval);
 								canShowAdv();
-							}, testMobile ? 180000 : 120000);
+							}, 120000);
 
 
 							onCloseFunc();
@@ -3169,7 +3197,9 @@ function deletePreDownload(){
 	try{
 		let secondTimeOpen = new Date();
 		let time = secondTimeOpen - firstTimeOpen;
+		let time2 = secondTimeOpen - openTime;
 		params({'gameOpenedTime': time});
+		params({'fullGameOpenedTime': time2});
 	}catch(e){}
 
 }
@@ -4885,6 +4915,14 @@ export default {
 			}
 			if(this.lvl < lastLevel) return true;
 			return this.lvl === lastLevel && this.stars[this.lvl] > 0;
+		},
+		prevLevel(){
+			if(this.lvl === 0) return;
+			if(this.locationGame){
+				this.getLocationLevel(this.lvl-1);
+			}else{
+				this.getLevel(this.lvl-1);
+			}
 		},
 		nextLevel(){
 			if(this.locationGame){
