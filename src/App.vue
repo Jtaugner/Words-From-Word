@@ -592,7 +592,7 @@
 
 
 				<div class="cloudHint"
-					 v-if="lvl === 0"
+					 v-if="cloudHint"
 					 :class="[
 						 selectMainWord ? 'cloudHint_wordSelected' : '',
 						 !cloudHint || showWordDesc ? 'cloudHint_notShowed': '']"
@@ -1967,6 +1967,7 @@ let wordsForReplace = {
 	'богоматерь': 'теоброма',
 	'напрокат': 'патронка',
 	'спидофобка': 'подсобка',
+	'гренландия': 'гардения'
 
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
@@ -2154,11 +2155,14 @@ function getSec(){
 	return date.getTime()
 }
 let recentEventState = JSON.stringify(newYearProgress);
+let saveTime = 0;
 function setState(isNow) {
 	const newData = JSON.stringify(PLAYESTATE);
 	const newData2 = JSON.stringify(newYearProgress);
 	if(recentState === newData && recentEventState === newData2 && !isNow) return;
-	// console.log('setState');
+	saveTime++;
+	if(saveTime === 5) saveTime = 0;
+	if(saveTime !== 0 && !isNow) return;
 	recentState = newData;
 
 	if (playerGame) {
@@ -2252,10 +2256,6 @@ function saveAllData(isNow){
 	setStats(isNow);
 }
 
-window.onblur = () => saveAllData();
-window.onunload = () => saveAllData();
-window.onunload = () => saveAllData();
-window.onpagehide = () => saveAllData();
 
 
 
@@ -3510,7 +3510,8 @@ function copyToClipboard(str) {
 const proms = ["ATE63WM8","NT31XTXF","44SGBV2X","KGEV0X5Y","B5Z2HX95","3UWAHFUU","PYS6N4KU","P7Z8E93Y","9Z41K2ZE","FEKBGKB3","6E7PBMNA","C98DVGXH","DFDBB3XZ","PCEYUPEN","6SZW2BKF","CSDDUNMW","S136TG2R","ZF4U3V9V","EAUVA9RX","C2945Z6M","UM5UR75D","KS57D7DD","Z09T3VD2","T0XER5NG","MT247E84","GBNCA3G8","0GE9XVY9","9EA6PP5P","TF60SE8H","DEDPWS11","TE8HCYW7","A9R20GZB","8RY1XT40","VCD4NZPN","7MZ13DK4","4EXKKB2E","851GAG5X","EXGYCG21","MZ28AU0D","8FPNC6X9","U7FGFF50","DEAD4N3P","W7AAW146","ZK1M814H","7BZ8HXMU","KPTCK5NF","UMXRP80K","T839V0G7","ZA2W5EWT","UTZDSFZH","EG5UCTFT","XRYE0MTH","TRV54XVP","MSHFPBHZ","A50BA6RA","9F5RW9AS","FNCNN0F5","EMWWYMHH","E4NVRM5S","AVTUETHU","U80MV38W","2523K216","VEAZRBN5","96UFUV23","W9SA7M5N","G840M1VV","V2R1K3NC","6045G36Y","M27ZU62V","2WDUEEP7","8H8A1FSB","1ZXP3YPG","DU5MM0UY","CZ8MUG2E","U753164R","61D2STVU","0RVD63NM","KZ7250SG","7WVKNKES","YVYYTDKB","KR7YSNYN","FWKS23K7","XPEN2PP1","3PT6S18R","1973C6W8","982HCRHK","5UTMVCCC","RD9F4NKC","PRYMA7VG","841W7X9R","54MUWVPN","4TUWAGKT","H26Y1NKC","CWE00W9K","ZDGKXN3Z","2V1C2R5S","H25TH5BG","4B7X07CE","648G3C54","TZMEZR52","VF45N4E4","9S1GR7BN","7N3SC21E","TT49UP2M","KMET1KVS","R4MMY6VX","2XCVDAPT","9RUX4878","1FW9ASAA","E4B0DGG2","SMA7EPHD","ERDFM73W","KCMNXS2E","KD1VA6S6","K8F60N0D","9C0ZF3N3","N1A7SRHA","B7G1T4XV","Y3RXHGBN","7HD20S6M","K3MN3339","TF2ZK03R","3ZFMBTYV","2WP1V99E","UT5NPHF2","0F217KHZ","2MTREV3F","B77W9CPS","ZGXCXT04","C3VMH7UB","ABW0XY4R","ZAK3PS7B","MHYHW97G","TT2T58M7","WS6K5EAK","15AUMTVE","8D74NN97","7RTEV2TR","W8HTYCHC","A4FZD5ZM","AEVTE6RZ","8RG1P3ZA","W0NG5CHM","Y5A7NF6V","CHXDHT5B","5G8PE70R","C6NF9YNU","XYW54XU8","KRW5H7XD","1VPZMADS","5VZF12WY","NEAPN03B","KWAKPTNR","7N9UYP1E","XT0H3D8G","A246YB4G","8KKS6DB4","T2TH4W2Y","MYZA8E0P","PCUKNY8T","281YD745","16NS81CG","CPDM0N8B","TYW7WV2K","V371YUG8","5REUPY33","C3EY5AX5","P3D3YTDC","S4BFGYDB","246EMYDC","FV6S70YH","HYK7SU9V","8V2WM6HD","HFM18WVB","ZM9KYM11","EDUTYKPK","3K4UX3SB","H9773ETG","7W0EV03K","UABCSK5B","X3Z7PW5C","ZWSB7U7H","FUFN9KMG","XPNVUA0G","2N8HPMUG","NTPM1SGN","4X2W7XRK","10DTYWCV","K5TNPVGE","WVE2VGSC","A08Y1D1W","X55MCDUZ","EVF6BUTU","SN3HB5TD","MSMSTGME","ZA4GFUU2","C13HFV4G","267F6UWN","VAMPA7GR","WR6TSXDB","SN3NGHFA","VGFGBB05","S35SSB5X","9RW1M4RN","FKZ1PH2U","6FFGWH2V","GR6MRHGB","6SYUR2ZY","AVGSBCAV","YUUXY35F","W4MA19N7","MZPHMVAH","Z06SC5ZV","EASYMTMX","Z172W5ZY","ZBY5WY66","A3DFPK05","TU4SE0RK","ASUKD943","NMD80T1K","DXZ69MCZ","ZFFG8W7E","CN1UKXC2","T87PZ8K9","CZ7974CT","FH6UUCDE","YT5RAR75","8WGG1WK1","16UDRANX","ZBNP82NF","DV4VTA2E","BU873K6C","A6H7FPHW","R0MD05U6","B0SHGM8W","G22T84HT","DGF5DPW7","TMS3P4FD","71VMZUTN","NAVK5RCB","YNZ68AHK","PZ8XX9ZZ","GZ16EEMG","RKFAVD9B","G74BB4NV","1PMF24ZA","K7357RAA","G4RY209N","FE66UCBE","1BWYNNUK","WEH9DVRH","M48MERS5","KRK4VWRX","S26D8EE4","F3930U2M","KHS90F3F","BTDZBH1B","XRT9NC1W","RXH12NBG","X694H6BD","VKM764UC","K6RB3XUV","970ACKU5","M975S5N2","6BB9VK2G","9HZCHPGB","2MX3ZGZY","1S3R8EYP","MXBKN2CS","BTSPAS4D","5K2VTD4D","3U8DSPE1","VNK7G3US","A946N0ZE","0RCW4SEH","SXFH7ARG","HFDY0WFR","P7P0ZE67","MUZWY13B","WS8YACN3","0KRHWP6D","9PB9SVMG","G3VB09KK","V4ZT5MBE","068SU6XT","1WM8CUU1","B8TWGMXF","C2ZCN74D","HAGV1RSB","36ZH00ZT","DD726DF1","SVWY7CHW","CFV0XVXU","WSBFGGRF","2EE9BZR6","4XSVDBKD","2YYX0B1X","Z6SYWHDU","BAU5FAEU","41WVDEPB"];
 const mainUniq = ['TJgwFXC9SXvc50yCq60wLTPZTarJt+sv4EQbsvklCi0=', 'T7HKgy+MM2v3Mq/QlNV/eexk1t2rF5eH95WwBakhkz4=', '22Q/Ti+AwwqwDoeqcuBgh6k7I5p5JlQ4o0tA2RaQgeE=', 'Q9uFo/ZVB0/MVAfGeLihCwr6lRuG+ql/NL5LUA+QEaA=', 'jSmtoceGKNTqqSwYsyG1tndfZDolylcfDJAK0q6/8wo=', "nE3PFtmH3cU0QNdssumZBiQ2oOsiB71hun9Z9PWZ8cU="];
 let isTextTyping = false;
-let goodGames = ["ХОРОШАЯ РАБОТА!", "ОТЛИЧНАЯ ИГРА!", "ТЫ МОЛОДЕЦ!", "ВОСХИТИТЕЛЬНО!"]
+let goodGames = ["ХОРОШАЯ РАБОТА!", "ОТЛИЧНАЯ ИГРА!", "ТЫ МОЛОДЕЦ!", "ВОСХИТИТЕЛЬНО!"];
+let firstGetBanner = false;
 export default {
 	name: 'App',
 	components: {CrossVue, CrossComponent},
@@ -4667,9 +4668,10 @@ export default {
 			}*/
 
 
-
-			this.getLBorBanner();
-
+			if(!firstGetBanner){
+				firstGetBanner = true;
+				this.getLBorBanner();
+			}
 		},
 		getLvl5Hint(){
 			if(notRussianGame || isLvlFiveHintDone) return;
@@ -5369,7 +5371,7 @@ export default {
 							this.howManyTips = this.locationAllStars / 2;
 							setToStorage('tips', this.tipCount);
 							PLAYERSTATS.tips = this.tipCount;
-							saveAllData(false);
+							saveAllData(true);
 						}
 					}
 				}else{
@@ -5415,6 +5417,7 @@ export default {
 					// 	params({[lvlParams]: stars});
 					// }
 					this.addPlayerToLB(true);
+					saveAllData(true);
 				}
 				if(this.isSounds){
 					starVolume.play();
