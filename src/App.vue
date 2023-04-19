@@ -2155,14 +2155,14 @@ function getSec(){
 	return date.getTime()
 }
 let recentEventState = JSON.stringify(newYearProgress);
-let saveTime = 0;
+// let saveTime = 0;
 function setState(isNow) {
 	const newData = JSON.stringify(PLAYESTATE);
 	const newData2 = JSON.stringify(newYearProgress);
 	if(recentState === newData && recentEventState === newData2 && !isNow) return;
-	saveTime++;
-	if(saveTime === 5) saveTime = 0;
-	if(saveTime !== 0 && !isNow) return;
+	// saveTime++;
+	// if(saveTime === 5) saveTime = 0;
+	// if(saveTime !== 0 && !isNow) return;
 	recentState = newData;
 
 	if (playerGame) {
@@ -2568,10 +2568,8 @@ function initPlayer(ysdk) {
 			// }
 			if(allDoneWords && dataObject.allDoneWords){
 				params({'doneWordsAll': 1});
-			}else if(allDoneWords && !dataObject.allDoneWords){
+			}else if(allDoneWords && !dataObject.allDoneWords && lastLevel > 0){
 				params({'doneWordsLocal': 1});
-			}else if(!allDoneWords && dataObject.allDoneWords){
-				params({'doneWordsServer': 1});
 			}
 			if(notRussianGame){
 				allDoneWords = {};
@@ -2622,13 +2620,13 @@ function initPlayer(ysdk) {
 
 
 
-
-				let localStars = getAllStars(fixDoneWords(allDoneWords));
+				let fixedDoneWords = fixDoneWords(allDoneWords);
+				let localStars = getAllStars(fixedDoneWords);
 				let serverStars = getAllStars(newData);
 				let localLevel = 0;
 				let serverLevel = 0;
 				try{
-					localLevel = setLastLevel(true, fixDoneWords(allDoneWords));
+					localLevel = setLastLevel(true, fixedDoneWords);
 					serverLevel = setLastLevel(true, newData);
 				}catch(e){
 					console.log(e);
@@ -2638,15 +2636,22 @@ function initPlayer(ysdk) {
 				if(localLevel >= serverLevel && localStars >= serverStars){
 					let isChange = localStars > serverStars;
 					try{
-						if(!isChange && localLevel === serverLevel){
-							let w = allWordsRU[localLevel];
-							let localWords = fixDoneWords(allDoneWords)[w].length;
-							let serverWords = newData[w].length;
-							if(localWords > serverWords){
+						if(!isChange){
+							if(localLevel === serverLevel){
+								let w = allWordsRU[localLevel];
+								let localWords = fixedDoneWords[w].length;
+								let serverWords = newData[w].length;
+								if(localWords > serverWords){
+									isChange = true;
+									params({'changeDataLocalEqual': 1});
+									console.log('LocalWords > ServerWords');
+								}
+							}else if(localLevel > serverLevel){
 								isChange = true;
-								console.log('LocalWords > ServerWords');
+								params({'changeDataLocalMore': 1});
 							}
 						}
+
 					}catch(er){}
 
 					if(isChange){
@@ -2783,7 +2788,7 @@ function initPlayer(ysdk) {
 		console.log(e);
 		doDeleteBlock = true;
 		try{
-			params({'player-error': e.toString().slice(0,150)});
+			params({'player-error': e.toString().slice(0,250)});
 		}catch(ignored){}
 		update();
 	});
@@ -3196,10 +3201,12 @@ function deletePreDownload(){
 	params({'chosenBG': chosenBackground});
 	try{
 		let secondTimeOpen = new Date();
-		let time = secondTimeOpen - firstTimeOpen;
-		let time2 = secondTimeOpen - openTime;
-		params({'gameOpenedTime': time});
-		params({'fullGameOpenedTime': time2});
+		let time = Math.floor((secondTimeOpen - firstTimeOpen)/1000);
+		let time2 = Math.floor((secondTimeOpen - openTime)/1000);
+		let time3 = Math.floor((secondTimeOpen - openTimeAfterSdk)/1000);
+		params({'newGameOpenedTime': time});
+		params({'newFullGameOpenedTime': time2});
+		params({'openedTimeAfterSdk': time3});
 	}catch(e){}
 
 }
@@ -3279,7 +3286,7 @@ function getVerticalBanner(){
 	console.log('tryGetVerticalBanner');
 	try{
 		isShowBanner = false;
-		if(window.innerHeight >= 600){
+		if(window.innerHeight >= 450){
 			console.log('getVerticalBanner');
 
 
@@ -4471,7 +4478,7 @@ export default {
 				});
 		},
 		getLeaderBoardInGame(){
-			if(window.innerHeight >= 600){
+			if(window.innerHeight >= 450){
 				this.getPlayerLB(true, this.eventLocation);
 			}
 		},
@@ -4648,7 +4655,7 @@ export default {
 
 			this.findNotShowLetters();
 
-			this.tryShowAdv();
+			// this.tryShowAdv();
 			if(this.doneWords.length === 0){
 				if(this.lvl === 3 || this.lvl === 7){
 					this.openLevelHint(this.lvl);
@@ -4672,6 +4679,8 @@ export default {
 				firstGetBanner = true;
 				this.getLBorBanner();
 			}
+
+			this.addPlayerToLB();
 		},
 		getLvl5Hint(){
 			if(notRussianGame || isLvlFiveHintDone) return;
@@ -5006,7 +5015,7 @@ export default {
 					this.locationGame = false;
 				}, 500);
 			}
-			this.tryShowAdv();
+			// this.tryShowAdv();
 
 
 		},
