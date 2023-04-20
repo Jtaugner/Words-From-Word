@@ -1858,11 +1858,10 @@ function setToStorage(name, val) {
 		if(name === 'allDoneWords'){
 			if(notRussianGame){
 				localStorage.setItem('allDoneWordsEN', val);
-				// localStorage.setItem('timeEN', getSec() );
-				return;
 			}else{
-				// localStorage.setItem('time', getSec() );
+				localStorage.setItem(name, JSON.stringify(compressData(val)));
 			}
+			return;
 		}else if(name === 'tips' && notRussianGame){
 			localStorage.setItem('tipsEN', val);
 			return;
@@ -2061,7 +2060,9 @@ function getEventScore(newYearProgress){
 }
 let thatTips = 15;
 if(allDoneWords){
-	allDoneWords = fixDoneWords(JSON.parse(allDoneWords));
+	allDoneWords = JSON.parse(allDoneWords);
+	if(allDoneWords.newCompress) allDoneWords = decompressData(allDoneWords);
+	allDoneWords = fixDoneWords(allDoneWords);
 	tips = Number(tips);
 	thatTips = tips;
 	if(!Number.isInteger(tips)) tips = 15;
@@ -2668,7 +2669,7 @@ function initPlayer(ysdk) {
 					PLAYESTATE.allDoneWords = newData;
 
 					recentState = JSON.stringify(PLAYESTATE);
-					setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
+					setToStorage('allDoneWords', allDoneWords);
 				}
 			}
 
@@ -4600,7 +4601,6 @@ export default {
 				}
 				return;
 			}
-			this.isEndGame = false;
 			// if(window.innerWidth > window.innerHeight){
 			// 	params({'orientation': 'landscape'});
 			// }else{
@@ -4706,6 +4706,7 @@ export default {
 			this.advShowNow = false;
 			this.levelsAnim = false;
 			this.wordSwing = '';
+			this.isEndGame = false;
 
 			if(!notSound){
 				this.isGameAdvShow = isGameAdvShow;
@@ -5254,7 +5255,7 @@ export default {
 						}
 
 					}else{
-						setToStorage('allDoneWords', JSON.stringify(replaceLevelsToOne(allDoneWords)));
+						setToStorage('allDoneWords', allDoneWords);
 						PLAYESTATE.allDoneWords = allDoneWords;
 					}
 
