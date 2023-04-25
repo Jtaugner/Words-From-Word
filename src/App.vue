@@ -4679,8 +4679,6 @@ export default {
 				firstGetBanner = true;
 				this.getLBorBanner();
 			}
-
-			this.addPlayerToLB();
 		},
 		getLvl5Hint(){
 			if(notRussianGame || isLvlFiveHintDone) return;
