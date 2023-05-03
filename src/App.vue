@@ -3208,6 +3208,7 @@ function deletePreDownload(){
 		params({'newGameOpenedTime': time});
 		params({'newFullGameOpenedTime': time2});
 		params({'openedTimeAfterSdk': time3});
+		YSDK.features.LoadingAPI?.ready();
 	}catch(e){}
 
 }
