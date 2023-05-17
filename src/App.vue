@@ -24,7 +24,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-<!--					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>-->
+					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -840,7 +840,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button" >
-<!--													<div class="shop__lastPrice">49</div>-->
+							<div class="shop__lastPrice">20</div>
 							{{getItemPrice(0)}}
 						</div>
 					</div>
@@ -858,7 +858,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-<!--													<div class="shop__lastPrice">99</div>-->
+							<div class="shop__lastPrice">89</div>
 							{{getItemPrice(1)}}
 						</div>
 					</div>
@@ -876,7 +876,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-<!--													<div class="shop__lastPrice">149</div>-->
+							<div class="shop__lastPrice">149</div>
 							{{getItemPrice(2)}}
 						</div>
 					</div>
@@ -892,7 +892,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-						<!--													<div class="shop__lastPrice">49</div>-->
+							<div class="shop__lastPrice">299</div>
 							{{getItemPrice(3)}}
 					</div>
 				</div>
@@ -913,7 +913,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-						<!--													<div class="shop__lastPrice">49</div>-->
+						<div class="shop__lastPrice">499</div>
 						{{getItemPrice(4)}}
 					</div>
 				</div>
@@ -1054,15 +1054,15 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Обновление!' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'День видеоигр' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				Представляем вам новый неповторимый зелёный фон!
-				<div class="rules__goBg" @click="goToChangeBg(true)">Попробовать</div>
+				На Яндекс.Играх - День видеоигр! Поэтому встречайте новую тематическую локацию, а также скидки в магазине!
+				<div class="rules__goBg" @click="goToGetLocations()">К локациям</div>
 <!--				<div class="questionInput">-->
 <!--					<input type="radio" id="one" value="Знаю и меняю" v-model="selectedOption" />-->
 <!--					<label for="one">Да, знаю и меняю</label>-->
@@ -1791,7 +1791,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-37";
+const lastVersion = "ver-38";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2705,6 +2705,21 @@ function initPlayer(ysdk) {
 						}
 
 					}
+					let lvl3 = pay.match(/zl\d+a\d+/);
+					if(lvl3) {
+						lvl3 = lvl3[0].replace('zl', '');
+						if(lvl3){
+							let level1 = Number(lvl3.slice(0, lvl3.indexOf('a')));
+							let level2 = Number(lvl3.slice(lvl3.indexOf('a')+1));
+							for (let i = level1; i < level2; i++) {
+								PLAYESTATE.allDoneWords[allWords[i]] = wordsFromWords[allWords[i]];
+							}
+							allDoneWords = PLAYESTATE.allDoneWords;
+							setState();
+							// params({'zlms': lvl2});
+						}
+
+					}
 				}
 			}catch(e){
 				console.log(e);
@@ -2824,7 +2839,8 @@ function consumePurchase(purchase) {
 		payments.consumePurchase(purchase.purchaseToken);
 	}
 }
-const itemsPrices = [20, 89, 149, 299, 499];
+//const itemsPrices = [20, 89, 149, 299, 499];
+const itemsPrices = [14, 59, 109, 209, 349];
 function buyTips(item) {
 	if(payments && playerGame){
 		let purchaseItem = 'cart_item' + item;
@@ -3262,7 +3278,8 @@ let translatedLocationsNames = {
 	house: 'Дом, милый дом',
 	farm: 'Моя деревня',
 	halloween: 'Хэллоуин',
-	valentines: 'День Валентина'
+	valentines: 'День Валентина',
+	games: 'День Видеоигр'
 }
 
 let defaultLocations = ['house'];
@@ -3591,7 +3608,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['valentines','halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['games', 'valentines','halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,

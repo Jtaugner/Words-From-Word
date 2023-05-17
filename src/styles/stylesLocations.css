@@ -865,9 +865,79 @@
   }
 }
 @media (orientation: portrait) {
-  .gameLocation-valentines, .gameLocation-valentines .valentinesProperty {
-    background: url(../assets/locations/valentines/map_port.png) center center no-repeat;
-    background-size: cover;
+  .gameLocationWrapper-valentines {
+    background: url(../assets/locations/valentines/map_port.png) center center no-repeat !important;
+    background-size: cover !important;
+  }
+}
+/*День валентина*/
+.gameLocationWrapper-games::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+.gameLocationWrapper-games::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.gamesLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/games/games.png);
+}
+
+.gamesLocation .popUp__locationName {
+  color: #9B2308;
+}
+
+.gameLocation-games {
+  background: url(../assets/locations/games/map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-games .svgIcon {
+  fill: #B4361A;
+}
+.gameLocation-games .levelsTop__allStars {
+  color: #9B2308;
+}
+.gameLocation-games .menu-star, .gameLocation-games .newElement {
+  background-color: #B4361A;
+}
+.gameLocation-games .gamesProperty {
+  background: url(../assets/locations/games/map.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-games {
+  background: url(../assets/locations/games/map.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+
+.location.gameLocation-games {
+  background: none;
+}
+
+.gameLocationWrapper-games .rules__menu {
+  background-color: #9B2308;
+}
+.gameLocationWrapper-games .rules .settings__text {
+  color: #9B2308;
+}
+.gameLocationWrapper-games .rules .svgIcon {
+  fill: #B4361A;
+}
+
+.gameLocation-games::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-games .location__lastLevel {
+    box-shadow: 0 0 25px 10px #FF5A36;
+  }
+}
+@media (orientation: portrait) {
+  .gameLocationWrapper-games {
+    background: url(../assets/locations/games/map_port.png) center center no-repeat !important;
+    background-size: cover !important;
   }
 }
 .locationOpened {

@@ -1406,23 +1406,20 @@ html,body
 
 
 .shop__lastPrice{
-  color: red;
+  color: white;
   position: relative;
-  margin-right: 5px;
+  margin-right: 3px;
+  opacity: 0.6;
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 2px;
+  text-decoration-line: line-through;
+  font-weight: 600;
 }
 .now-price{
   margin-right: 4px;
 }
-.shop__lastPrice:before{
-  content: "";
-  width: 0.8px;
-  height: 90%;
-  left: 40%;
-  top: 1px;
-  background-color: red;
-  position: absolute;
-  transform: rotate(120deg) translateX(-50%);
-}
+
 .adv-show{
   min-width: auto;
   width: 350px;
@@ -2855,18 +2852,18 @@ b{
     filter: blur(15px);
     background: linear-gradient(
                     to left,
-                    #ff5770,
-                    #e4428d,
-                    #c42da8,
-                    #9e16c3,
-                    #6501de,
-                    #9e16c3,
-                    #c42da8,
-                    #e4428d,
-                    #ff5770
+                    #B4361A,
+                    #FF5A36,
+                    #9B2308,
+                    #bd4025,
+                    #ff2d00,
+                    #bd4025,
+                    #9B2308,
+                    #FF5A36,
+                    #B4361A
     );
     background-size: 200% 200%;
-    animation: animateGlow 1.25s linear infinite;
+    animation: animateGlow 2s linear infinite;
   }
 }
 .eventIcon{
@@ -2876,7 +2873,7 @@ b{
 
   width: 100%;
   height: 100%;
-  background: url(../assets/heart.png) center center no-repeat;
+  background: url(../assets/iconGames.png) center center no-repeat;
   //border-radius: 50%;
   background-size: 100%;
 }
@@ -3235,6 +3232,11 @@ b{
 }
 
 @media (orientation: landscape) and (min-width: 1000px) {
+  .shop__lastPrice{
+    font-size: 1.85rem;
+    line-height: 1.85rem;
+    margin-top: 1px;
+  }
   .empty__item, .shop__cart__item{
     width: 162px;
     height: 255px;

@@ -58,8 +58,8 @@
 }
 
 @media (orientation: portrait) {
-  .gameLocation-valentines, .gameLocation-valentines .valentinesProperty{
-    background: url(../assets/locations/valentines/map_port.png) center center no-repeat;
-    background-size: cover;
+  .gameLocationWrapper-valentines{
+    background: url(../assets/locations/valentines/map_port.png) center center no-repeat !important;
+    background-size: cover !important;
   }
 }
