@@ -24,7 +24,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>
+<!--					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>-->
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -840,7 +840,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button" >
-							<div class="shop__lastPrice">20</div>
+<!--							<div class="shop__lastPrice">20</div>-->
 							{{getItemPrice(0)}}
 						</div>
 					</div>
@@ -858,7 +858,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-							<div class="shop__lastPrice">89</div>
+<!--							<div class="shop__lastPrice">89</div>-->
 							{{getItemPrice(1)}}
 						</div>
 					</div>
@@ -876,7 +876,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-							<div class="shop__lastPrice">149</div>
+<!--							<div class="shop__lastPrice">149</div>-->
 							{{getItemPrice(2)}}
 						</div>
 					</div>
@@ -892,7 +892,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-							<div class="shop__lastPrice">299</div>
+<!--							<div class="shop__lastPrice">299</div>-->
 							{{getItemPrice(3)}}
 					</div>
 				</div>
@@ -913,7 +913,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-						<div class="shop__lastPrice">499</div>
+<!--						<div class="shop__lastPrice">499</div>-->
 						{{getItemPrice(4)}}
 					</div>
 				</div>
@@ -2840,7 +2840,8 @@ function consumePurchase(purchase) {
 	}
 }
 //const itemsPrices = [20, 89, 149, 299, 499];
-const itemsPrices = [14, 59, 109, 209, 349];
+//const itemsPrices = [14, 59, 109, 209, 349]];
+const itemsPrices = [20, 89, 149, 299, 499];
 function buyTips(item) {
 	if(payments && playerGame){
 		let purchaseItem = 'cart_item' + item;
@@ -3163,7 +3164,8 @@ let dictWordsToReplace = {
 	'тенета': 'тенёта',
 	'затес': 'затёс',
 	'елка': 'ёлка',
-	'валер': 'валёр'
+	'валер': 'валёр',
+	'саек': 'саёк'
 }
 
 
