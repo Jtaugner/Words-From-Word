@@ -12,6 +12,7 @@
 			 @canShowAdv="setCanShowAdv()"
 			 @buyTips="addBuyTips()"
 			 @disableAds="disableAds()"
+			 @changeOrientation="changeOrientation()"
 			 v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
 
 			<div class="snowAnimation"></div>
@@ -1288,6 +1289,24 @@
 
 		</div>
 
+		<div class="rules-blackout" v-if="crosspromo" @click="toggleCrossPromo"></div>
+
+		<div class="rules crossPromoRules" v-if="crosspromo">
+			<cross-vue @click.native="toggleCrossPromo()" ></cross-vue>
+			<h2 class="rules__menu">
+				Новая игра!
+			</h2>
+			<div class="crossPromoImg" />
+			<a href="https://yandex.ru/games/app/127821?utm_campaign=slova_cross"
+			   class="crossPromo__play rules__goBg"
+			   target="_blank"
+				@click="clickPromo"
+			>
+				Играть
+			</a>
+
+		</div>
+
 		<div class="infoAboutCopy">Скопировано</div>
 
 
@@ -1887,6 +1906,7 @@ let chosenBackground = getFromStorage('chosenBackground');
 let portraitAdviceAmount = getFromStorage('portraitAdviceAmount');
 let isLvlFiveHintDone = getFromStorage('isLvlFiveHintDone');
 let savedMyGame = getFromStorage('savedMyGame');
+let crossPromoShows = getFromStorage('crossPromoShows');
 let infoAboutMyGame = getFromStorage('infoAboutMyGame');
 let infoAboutClosedEvent = !!getFromStorage('infoAboutClosedEvent2');
 let infoAboutEvent = !!getFromStorage('infoAboutEvent');
@@ -1903,6 +1923,11 @@ if(infoAboutMyGame){
 	if(!Number.isInteger(infoAboutMyGame)) infoAboutMyGame = 0;
 }else{
 	infoAboutMyGame = 0;
+}
+if(crossPromoShows){
+	crossPromoShows = Number(crossPromoShows);
+}else{
+	crossPromoShows = 0;
 }
 if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
@@ -1935,7 +1960,16 @@ let loc = 0;
 let allStars = [];
 let isRules = false;
 let lvlsOnPage = 18;
+if(window.innerHeight > window.innerWidth){
+	lvlsOnPage = 20;
+}
 let allLocations = Math.floor(allWords.length / lvlsOnPage);
+window.addEventListener("resize", function() {
+	if (document.querySelector('.levels')) {
+		document.querySelector('.levels').dispatchEvent(new CustomEvent("changeOrientation"));
+	}
+
+}, false);
 let lastLevel = 0;
 let wordsForReplace = {
 	'ассиметрия': 'асимметрия',
@@ -3143,6 +3177,9 @@ let dictWordsToReplace = {
 	'осел': 'осёл',
 	'орел': 'орёл',
 	'клев': 'клёв',
+	'расклев': 'расклёв',
+	'поденка': 'подёнка',
+	'недопек': 'недопёк',
 	'шепот': 'шёпот',
 	'котел': 'котёл',
 	'отек': 'отёк',
@@ -3654,7 +3691,8 @@ export default {
 			endType: false,
 			goodGameText: goodGames[Math.floor(Math.random() * goodGames.length)],
 			isEndGame: false,
-			endGameIcon: 'endGame__icon1'
+			endGameIcon: 'endGame__icon1',
+			crosspromo: false
 		}
 	},
 	computed:{
@@ -3702,6 +3740,28 @@ export default {
 		},
 	},
 	methods:{
+		changeOrientation(){
+			console.log('change: ', window.innerWidth, window.innerHeight)
+			if(window.innerHeight > window.innerWidth){
+				lvlsOnPage = 20;
+				allLocations = Math.floor(allWords.length / lvlsOnPage);
+				this.lvlsOnPage = lvlsOnPage;
+				this.allLocations = allLocations;
+				this.location = Math.floor(lastLevel / lvlsOnPage);
+			}else{
+				lvlsOnPage = 18;
+				allLocations = Math.floor(allWords.length / lvlsOnPage);
+				this.lvlsOnPage = lvlsOnPage;
+				this.allLocations = allLocations;
+				this.location = Math.floor(lastLevel / lvlsOnPage);
+			}
+		},
+		clickPromo(){
+			params({'crossPromo': 1});
+		},
+		toggleCrossPromo(){
+			this.crosspromo = !this.crosspromo;
+		},
 		sendSelectedData(){
 			params({'questionBackground': this.selectedOption});
 			this.showLastLevelInfo = false;
@@ -4971,7 +5031,22 @@ export default {
 					return;
 				}
 				this.getLevel(this.lvl+1);
+				// this.crossPromoShow();
 			}
+		},
+		crossPromoShow(){
+			// && window.innerWidth > window.innerHeight
+			// && window.innerWidth > 800 && window.innerHeight > 650
+			// if(crossPromoShows < 3 && window.innerHeight > window.innerWidth){
+			// 	if(this.lvl >= 10){
+			// 		params({'showCrossPromo': 1});
+			// 		this.crosspromo = true;
+			// 		crossPromoShows++;
+			// 		setToStorage('crossPromoShows', crossPromoShows);
+			// 		crossPromoShows = 5;
+			// 	}
+			// }
+
 		},
 		prevLocation(){
 			if(this.location > 0){

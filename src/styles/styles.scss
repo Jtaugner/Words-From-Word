@@ -2398,6 +2398,10 @@ b{
     height: 46px;
     font-size: 2.7rem;
   }
+  .level .newElement{
+    top: -6px;
+    right: -6px;
+  }
   .level__big{
     font-size: 2rem;
   }
@@ -3353,5 +3357,94 @@ b{
   .menu__tip{
     width: 43px;
     height: 43px;
+  }
+}
+
+//.crossPromoRules{
+//  width: auto !important;
+//  max-width: none !important;
+//}
+//.crossPromoImg{
+//  max-width: 720px;
+//  max-height: 405px;
+//  width: 95vw;
+//  height: 50.25vw;
+//  background: url("../assets/crosspromo.png") center center no-repeat;
+//  background-size: 100%;
+//  margin: 0 auto;
+//  border-radius: 10px;
+//}
+//
+//.crossPromo__play{
+//  text-transform: uppercase;
+//  font-family: Inter, sans-serif;
+//  font-size: 3rem;
+//  padding: 5px 10px;
+//  width: 245px;
+//  margin: 30px auto 10px auto;
+//
+//}
+//
+//@media (orientation: landscape) {
+//  .crossPromoRules{
+//    display: none;
+//  }
+//}
+
+@media (orientation: portrait){
+  .levels-wrapper {
+    width: 100%;
+    justify-content: center;
+    height: auto;
+    margin-top: 20px;
+    max-width: 420px;
+  }
+  .level {
+    margin: 0 10px 22px 10px !important;
+  }
+}
+@media (orientation: landscape) and (max-height: 320px){
+  .levelsTop{
+    height: 40px;
+  }
+  .levelsTop__allStars{
+    height: 30px;
+  }
+  .next-location, .prev-location{
+    width: 30px;
+    height: 30px;
+  }
+  .levels__loc{
+    width: 28px;
+    height: 28px;
+  }
+  .level{
+    width: 45px;
+    height: 45px;
+  }
+  .level .newElement{
+    right: -5px;
+    top: -5px;
+  }
+  .bottomHorizontalMenu{
+    height: 34px;
+  }
+  .menuItem{
+    width: 37px;
+    height: 37px;
+  }
+  .popUp__location{
+    height: 200px !important;
+    max-height: 60% !important;
+  }
+  .popUp__locationPicture{
+    height: 150px !important;
+    max-height: 80% !important;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 285px){
+  .level {
+    margin: 0 6px 22px 6px !important;
   }
 }
