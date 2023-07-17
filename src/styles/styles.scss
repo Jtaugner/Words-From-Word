@@ -426,13 +426,21 @@ html,body
 
 }
 #app, .game, .levels{
-  background: url(../assets/bg-new.png) 50% no-repeat;
   background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
 }
 @media (min-width: 1800px) {
   #app, .game, .levels{
-    background: url(../assets/bg-new-big.png) 50% no-repeat;
     background-size: cover;
+  }
+}
+#app.chosenAppBg0, .chosenAppBg0 .game, .chosenAppBg0 .levels{
+  background-image: url(../assets/bg-new.png);
+}
+@media (min-width: 1800px) {
+  #app.chosenAppBg0, .chosenAppBg0 .game, .chosenAppBg0 .levels{
+    background-image: url(../assets/bg-new-big.png);
   }
 }
 #app, .game, .property, .levels, .levels__property{
