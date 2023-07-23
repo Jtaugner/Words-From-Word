@@ -3800,7 +3800,8 @@ export default {
 		scamTest(){
 			try{
 				if(playerGame._personalInfo.uniqueID === "CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=" ||
-					playerGame._personalInfo.uniqueID === "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA="){
+					playerGame._personalInfo.uniqueID === "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=" ||
+					playerGame._personalInfo.uniqueID === "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU="){
 					return true;
 				}
 			}catch(e){
