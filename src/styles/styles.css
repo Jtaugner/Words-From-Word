@@ -1652,8 +1652,9 @@ html, body {
   font-size: 2rem;
   display: flex;
   flex-flow: column nowrap;
-  min-height: 300px;
+  min-height: auto !important;
   padding-bottom: 15px;
+  max-height: 85%;
 }
 
 @media (max-height: 350px) {
