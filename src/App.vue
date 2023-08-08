@@ -3924,7 +3924,7 @@ export default {
 				this.isCreateGameWindow = false;
 				this.closeAllBeforeStartLevel(false);
 				this.gameWord = this.gameWord.toLowerCase();
-				this.lvl = 9998;
+				this.lvl = 99998;
 				this.word = this.gameWord;
 				this.doneWords = [];
 				if(isContinue){
