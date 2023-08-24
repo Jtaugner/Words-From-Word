@@ -2815,7 +2815,7 @@ b {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(../assets/iconGames.png) center center no-repeat;
+  background: url(../assets/sq.png) center center no-repeat;
   background-size: 100%;
 }
 
@@ -3015,7 +3015,7 @@ b {
 }
 
 .eventRules .rules__goBg {
-  background-color: #c05251 !important;
+  width: 300px;
 }
 
 .levelClosedText h2, .levelClosedText p {
@@ -3039,7 +3039,7 @@ b {
   margin: 10px 0;
 }
 
-.promoCode, .mailPrize {
+.promoCode, .mailPrize, .updateText {
   user-select: text;
 }
 
@@ -3423,6 +3423,13 @@ b {
   .level {
     margin: 0 6px 22px 6px !important;
   }
+}
+.plusLink {
+  color: #3f68f9;
+}
+
+.button__promoCode {
+  margin: 10px auto !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

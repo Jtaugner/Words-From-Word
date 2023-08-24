@@ -533,6 +533,7 @@
 
 .smallText {
   font-size: 1.2rem;
+  margin-top: 10px;
 }
 
 .infoAboutCopy {
@@ -551,7 +552,8 @@
   z-index: 1000;
 }
 
-.eventRules .rules__goBg, .eventLocationText .rules__goBg,
+/*.eventRules .rules__goBg,*/
+.eventLocationText .rules__goBg,
 .gameLocationWrapper-event .rules__goBg {
   background-color: #F54A5E !important;
 }

@@ -25,7 +25,8 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-<!--					<div class="eventIcon-wrapper" @click="goToGetLocations" v-if="!notRussian"><div class="eventIcon"></div></div>-->
+					<div class="eventIcon-wrapper" @click="getInfoAboutNewGame()"  v-if="!notRussian"><div class="eventIcon"></div></div>
+					<!--@click="goToGetLocations"-->
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -1055,15 +1056,23 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'День видеоигр' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Разработка игры' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
 			<template v-else-if="wasUpdate">
-				На Яндекс.Играх - День видеоигр! Поэтому встречайте новую тематическую локацию, а также скидки в магазине!
-				<div class="rules__goBg" @click="goToGetLocations()">К локациям</div>
+				<div class="updateText">
+					Уважаемые игроки! Если вы желаете принять участие в разработке новой игры-викторины и придумывать вопросы на различные темы, пожалуйста, напишите нам на почту
+					<a href="mailto:jaugr-games@yandex.ru">jaugr-games@yandex.ru</a>
+				</div>
+
+
+				<a href="mailto:jaugr-games@yandex.ru">
+					<div class="rules__goBg">Написать</div>
+				</a>
+
 <!--				<div class="questionInput">-->
 <!--					<input type="radio" id="one" value="Знаю и меняю" v-model="selectedOption" />-->
 <!--					<label for="one">Да, знаю и меняю</label>-->
@@ -1181,7 +1190,7 @@
 		<div class="rules eventRules" v-if="isEventResult">
 			<cross-vue @click.native="toggleIsEventResult()" ></cross-vue>
 			<h2 class="rules__menu">
-				{{notShowResult ? 'Призы' : 'Результаты'}}
+				{{notShowResult ? 'Призы' : 'Ура!'}}
 			</h2>
 			<div class="levelClosedText">
 				<template v-if="notShowResult">
@@ -1201,15 +1210,16 @@
 
 					<template v-if="eventResult >= 1 && eventResult <= 3">
 						<h2>Поздравляем!</h2>
-						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> в Новогоднем турнире!</p>
-						<div>Ваш приз: 🏆 {{getPrize()}} 🏆</div>
+						<p>Вы выиграли промокод на <a href="https://plus.yandex.ru/" target="_blank" class="plusLink">Яндекс Плюс</a> на 60 дней!</p>
+<!--						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> в Новогоднем турнире!</p>-->
+<!--						<div>Ваш приз: 🏆 {{getPrize()}} 🏆</div>-->
 					</template>
-					<template v-if="eventResult === 4">
-						<h2>Спасибо за участие!</h2>
-						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> в Новогоднем турнире</p>
-						<div class="eventDivWithMargins">К сожалению, вы не заняли одно из призовых мест.</div>
-						<div class="eventDivWithMargins">Но без подарков не останетесь, ведь 25 дополнительных подсказок уже на вашем счету!</div>
-					</template>
+<!--					<template v-if="eventResult === 4">-->
+<!--						<h2>Спасибо за участие!</h2>-->
+<!--						<p>Вы заняли <span class="prizeText">{{playerInfo.rank}} место</span> в Новогоднем турнире</p>-->
+<!--						<div class="eventDivWithMargins">К сожалению, вы не заняли одно из призовых мест.</div>-->
+<!--						<div class="eventDivWithMargins">Но без подарков не останетесь, ведь 25 дополнительных подсказок уже на вашем счету!</div>-->
+<!--					</template>-->
 
 <!--					<template v-if="eventResult === 1">-->
 <!--						<div class="eventReceive">Для его получения вам необходимо</div>-->
@@ -1224,28 +1234,31 @@
 <!--					</template>-->
 					<template v-if="eventResult === 1 || eventResult === 2">
 						<div class="eventReceive promoCode">Ваш промокод: {{getPromoCode()}}</div>
-						<span v-if="eventResult === 2">А дополнительные 50 подсказок уже на вашем счету!</span>
+<!--						<span v-if="eventResult === 1">А дополнительные 20 подсказок уже на вашем счету!</span>-->
 					</template>
 <!--					<template v-if="eventResult === 3">-->
 <!--						<div class="eventDivWithMargins">Яны автоматически зачислятся на ваш баланс Яндекс.Игр через некоторое время.</div>-->
 <!--						<div class="eventDivWithMargins">А дополнительные 50 подсказок уже на вашем счету!</div>-->
 <!--					</template>-->
 					<template v-if="eventResult === 1 || eventResult === 2">
-						<div class="rules__goBg rules__copyPromo" @click="copyPromoCode()">{{buttonPromoText}}</div>
-						<a
-							href="https://market.yandex.ru/?utm_source=partner_network&utm_medium=link&utm_campaign=2728755&clid=2728755&pp=900&mclid=1003&distr_type=7"
-							target="_blank"
-						>
-						<div class="rules__goBg">В магазин</div>
-						</a>
+						<div class="rules__goBg button__promoCode" @click="copyPromoCode()">{{buttonPromoText}}</div>
+<!--						<a-->
+<!--							href="https://market.yandex.ru/?utm_source=partner_network&utm_medium=link&utm_campaign=2728755&clid=2728755&pp=900&mclid=1003&distr_type=7"-->
+<!--							target="_blank"-->
+<!--						>-->
+<!--						<div class="rules__goBg">В магазин</div>-->
+<!--						</a>-->
 					</template>
 
 
 					<template v-if="eventResult === 1 || eventResult === 3">
 						<p class="uniqueID">{{playerInfo.player.uniqueID}}</p>
-						<span :class="eventResult === 3 ? 'linkStation' : ''">
-							Для получения приза "Яндекс Станция Лайт" напишите на почту:
-						<a href="mailto:yndx-games-prizes@yandex.ru">yndx-games-prizes@yandex.ru</a> и приложите к письму скриншот поздравления из игры
+<!--						<span :class="eventResult === 3 ? 'linkStation' : ''">-->
+<!--							Для получения приза "Яндекс Станция Лайт" напишите на почту:-->
+<!--						<a href="mailto:yndx-games-prizes@yandex.ru">yndx-games-prizes@yandex.ru</a> и приложите к письму скриншот поздравления из игры-->
+<!--						</span>-->
+						<span>Для активации перейдите на сайт <a href="https://plus.yandex.ru/" target="_blank" class="plusLink">https://plus.yandex.ru/</a>
+							и активируйте промокод
 						</span>
 
 					</template>
@@ -1255,10 +1268,10 @@
 
 					<template v-if="eventResult === 1 || eventResult === 2">
 						<div class="smallText">
-							* распространяется  на все товары, кроме товаров Dyson (Дайсон), на один заказ пользователя (без ограничения по устройствам)
+							Условия подписки: <a href="ya.cc/plus_conditions" target="_blank" class="plusLink">ya.cc/plus_conditions</a>. 60 дней подписки Яндекс Плюс бесплатно, далее автопродление — 299 руб./мес. Активировать до 30.09.2023. Требуется указание данных банковской карты. Предложение только для пользователей, не имеющих активную Подписку Яндекс Плюс (или иную, ее включающую).
 						</div>
 						<div class="smallText">
-							** активируйте промокод до 29 января 2023 года
+							1 пользователь может активировать промокод только 1 раз. С использованием одной платежной карты (вне зависимости от числа пользователей, ее использующих) можно активировать не более 3 промокодов на бесплатную подписку совокупно по всем акциям. В случае наличия в действиях пользователя на сервисах ООО «ЯНДЕКС» и его аффилированных лиц признаков злоупотребления правами и возможностями активация промокода может быть недоступна.
 						</div>
 					</template>
 
@@ -1810,7 +1823,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-38";
+const lastVersion = "ver-39";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2000,7 +2013,8 @@ let wordsForReplace = {
 	'богоматерь': 'теоброма',
 	'напрокат': 'патронка',
 	'спидофобка': 'подсобка',
-	'гренландия': 'гардения'
+	'гренландия': 'гардения',
+	'морфинист': 'трином'
 
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
@@ -3756,6 +3770,10 @@ export default {
 				this.location = Math.floor(lastLevel / lvlsOnPage);
 			}
 		},
+		getPromoResult(){
+			this.eventResult = 1;
+			this.isEventResult = true;
+		},
 		clickPromo(){
 			params({'crossPromo': 1});
 		},
@@ -4220,6 +4238,10 @@ export default {
 			this.chosenBgRight = this.chosenBg;
 			setToStorage('chosenBackground', this.chosenBgRight);
 			params({'changeBgCave': 1});
+		},
+		getInfoAboutNewGame(){
+			this.wasUpdate = true;
+			this.showLastLevelInfo = true;
 		},
 		goToChangeBg(fromUpdate){
 			this.backMenu();
@@ -5580,8 +5602,9 @@ export default {
 				}
 				this.tryOpenPayloadLevel();
 			}
-			document.addEventListener('keydown', this.pressKey)
+			document.addEventListener('keydown', this.pressKey);
 			console.log('Вызов баннера при заходе');
+			// this.getPromoResult();
 			// getBanner();
 			addSwipeTo(this.nextLocation, this.prevLocation, true);
 			addSwipeTo(this.eraseWord, this.eraseWord, false);
