@@ -1065,13 +1065,11 @@
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
 					Уважаемые игроки! Если вы желаете принять участие в разработке новой игры-викторины и придумывать вопросы на различные темы, пожалуйста, напишите нам на почту
-					<a href="mailto:jaugr-games@yandex.ru">jaugr-games@yandex.ru</a>
+					jaugr-games@yandex.ru
 				</div>
 
 
-				<a href="mailto:jaugr-games@yandex.ru">
-					<div class="rules__goBg">Написать</div>
-				</a>
+				<div class="rules__goBg" @click="copyPost()">Скопировать</div>
 
 <!--				<div class="questionInput">-->
 <!--					<input type="radio" id="one" value="Знаю и меняю" v-model="selectedOption" />-->
@@ -3906,6 +3904,9 @@ export default {
 		copyPromoCode(){
 			copyToClipboard(this.getPromoCode());
 			this.buttonPromoText = 'Скопировано';
+		},
+		copyPost(){
+			copyToClipboard('jaugr-games@yandex.ru');
 		},
 		toggleInfoAboutClosedEvent(){
 		this.isInfoAboutClosedEvent = !this.isInfoAboutClosedEvent;
