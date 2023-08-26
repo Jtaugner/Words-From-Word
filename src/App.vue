@@ -2871,6 +2871,7 @@ function initPlayer(ysdk) {
 let TIPS = 0;
 let allTips = [10,50,100,250, 500];
 function consumePurchase(purchase) {
+	console.log('purch: ', purchase);
 	if (purchase.productID === 'cart_item2') TIPS = allTips[0];
 	if (purchase.productID === 'cart_item3') TIPS = allTips[1];
 	if (purchase.productID === 'cart_item4') TIPS = allTips[2];
@@ -4903,6 +4904,7 @@ export default {
 			this.chosenBg = this.chosenBgRight;
 		},
 		addBuyTips(){
+			console.log('addBuyTips');
 			this.tipCount += TIPS;
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;

@@ -3432,4 +3432,76 @@ b {
   margin: 10px auto !important;
 }
 
+@media (orientation: landscape) and (max-height: 280px) {
+  .levelsTop__allStars {
+    height: 20px;
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+  }
+
+  .levelsTop {
+    height: 35px;
+  }
+
+  .level {
+    width: 35px;
+    height: 35px;
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .level__big {
+    font-size: 1.65rem;
+  }
+
+  .levels-wrapper_bigLevels .level__big {
+    font-size: 1.35rem;
+  }
+
+  .level .menu__level_stars {
+    bottom: -8px;
+  }
+
+  .level_star {
+    width: 5px;
+    height: 5px;
+  }
+
+  .sideHorizontalMenu .menuItem {
+    width: 27px;
+    height: 27px;
+  }
+
+  .eventIcon-wrapper {
+    width: 30px;
+    height: 30px;
+  }
+
+  .rules {
+    max-height: 80%;
+    height: 220px;
+  }
+
+  .word-definition {
+    height: 90%;
+    overflow-y: auto;
+  }
+
+  .popUp__header {
+    margin: 0 !important;
+  }
+
+  .empty__item, .shop__cart__item, .popUp__location {
+    height: 150px !important;
+  }
+
+  .popUp__locationPicture {
+    height: 115px !important;
+  }
+
+  .popUp__locationName {
+    height: 30px !important;
+  }
+}
+
 /*# sourceMappingURL=styles.css.map */
