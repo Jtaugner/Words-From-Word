@@ -2035,6 +2035,12 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 		let words = allDoneWords[keys[i]] || allDoneWords[k];
 
 
+
+		if((k === 'трином' || k === 'морфинист') && allDoneWords[allWords[1078]] && (allDoneWords[allWords[1078]] === 1 || allDoneWords[allWords[1078]].length > 0) ){
+			words = 1;
+		}
+
+
 		if(words === undefined){
 			delete  allDoneWords[keys[i]];
 		}else if(words === 1){
