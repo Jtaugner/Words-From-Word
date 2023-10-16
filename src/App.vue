@@ -25,7 +25,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-					<div class="eventIcon-wrapper" @click="getInfoAboutNewGame()"  v-if="!notRussian"><div class="eventIcon"></div></div>
+<!--					<div class="eventIcon-wrapper" @click="getInfoAboutNewGame()"  v-if="!notRussian"><div class="eventIcon"></div></div>-->
 					<!--@click="goToGetLocations"-->
 					<div
 						class="levelsTop__allStars"
@@ -417,6 +417,7 @@
 			<div class="blur"></div>
 
 			<header class="menu" :class="[isTutorial ? 'tutorialMenu' : '', verticalPayload ? 'menu_verticalPayload': '']">
+				<div class="timeToShowNextAdv" v-show="isShowTimeToShowNextAdv">Реклама начнётся через {{timeToShowNextAdv}}...</div>
 				<button
 					class="menu__button-back menuItem"
 					@click="backMenu"
@@ -2524,9 +2525,10 @@ function globalTryShowAdv(onCloseFunc){
 	if(showAdv && advTime){
 		advTime = false;
 		canShowAdv();
-		setTimeout(()=>{
-			showAdv(onCloseFunc);
-		}, 1000)
+		showAdv(onCloseFunc);
+		// setTimeout(()=>{
+		// 	showAdv(onCloseFunc);
+		// }, 1000)
 		return true;
 	}
 	return false;
@@ -3711,7 +3713,9 @@ export default {
 			goodGameText: goodGames[Math.floor(Math.random() * goodGames.length)],
 			isEndGame: false,
 			endGameIcon: 'endGame__icon1',
-			crosspromo: false
+			crosspromo: false,
+			timeToShowNextAdv: 3,
+			isShowTimeToShowNextAdv: false
 		}
 	},
 	computed:{
@@ -5281,9 +5285,23 @@ export default {
 			}
 		},
 		tryShowAdv(){
-			if(this.verticalPayload || this.notShowAds) return;
+			if(this.verticalPayload || this.notShowAds || this.isShowTimeToShowNextAdv) return;
 			if(!this.isTutorial && this.lvl > 1 && this.advTimer <= 0){
-				globalTryShowAdv(this.startRewardedTimer);
+				if(showAdv && advTime){
+					this.timeToShowNextAdv = 3;
+					this.isShowTimeToShowNextAdv = true;
+					let interval;
+					interval = setInterval(()=>{
+						this.timeToShowNextAdv = this.timeToShowNextAdv - 1;
+						if(this.timeToShowNextAdv <= 0){
+							globalTryShowAdv(this.startRewardedTimer);
+							this.isShowTimeToShowNextAdv = false;
+							clearInterval(interval);
+						}
+					}, 1000);
+
+				}
+
 			}
 		},
 		getVerticalBanner(){

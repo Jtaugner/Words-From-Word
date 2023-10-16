@@ -3523,3 +3523,25 @@ b{
     height: 30px !important;
   }
 }
+.timeToShowNextAdv{
+  position: absolute;
+  bottom: -42px;
+  left: 50%;
+  transform: translateX(-50%);
+
+
+  width: 250px;
+  height: 35px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: white;
+  color: black;
+  font-size: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid black;
+
+  box-shadow: 0 0 3px 2px rgba(0,0,0,0.4);
+}

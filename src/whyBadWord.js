@@ -102,6 +102,7 @@ const whyWords = {
     'кеды': getDescSingularNumber('кеды', "кед"),
     'руины': getDescSingularNumber('руины', "руина"),
     'потуги': getDescSingularNumber('потуги', "потуга"),
+    'чуни': getDescSingularNumber('чуни', "чуня"),
     'сутенер': getDescNotAdded('сутенер'),
     'оргия': getDescNotAdded('оргия'),
     'натурал': getDescNotAdded('натурал'),
