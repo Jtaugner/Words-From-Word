@@ -1,0 +1,443 @@
+@charset "UTF-8";
+/*Фон Валентин*/
+#app.chosenAppBg6, .chosenAppBg6 .game, .chosenAppBg6 .levels {
+  background-image: url(../assets/bgNew2024/bgNew2024horizont.png);
+}
+
+.chosenAppBg6 .levels, .chosenAppBg6 .levelsTop__allStars {
+  font-family: LobsterTwo, Inter, sans-serif;
+}
+.chosenAppBg6 .svgIcon {
+  fill: #902c15;
+}
+.chosenAppBg6 .sideHorizontalMenu .svgIcon {
+  fill: #FFF4EF;
+}
+.chosenAppBg6 .shop__cart__card .svgIcon {
+  fill: #902C15;
+}
+.chosenAppBg6 .level {
+  border: 2px solid #902c15;
+  box-shadow: 0 0 0 2px #FFF4EF;
+  color: #902c15;
+  border-radius: 50%;
+  margin-bottom: 27px !important;
+}
+.chosenAppBg6 .levels__loc {
+  color: #902c15;
+}
+.chosenAppBg6 .shop__cart__card .shop__cart__name {
+  color: #902C15;
+}
+.chosenAppBg6 .shop__cart__buy-button {
+  background: linear-gradient(264.82deg, #902C15 2.88%, #B34C2B 96.18%);
+  box-shadow: 0px 3px 0px #661C06;
+}
+.chosenAppBg6 .levelsTop__allStars {
+  color: #902c15;
+  background: none;
+  box-shadow: none;
+  align-items: flex-start;
+  padding-top: 8px;
+}
+.chosenAppBg6 .levelsTop {
+  padding-top: 0;
+  align-items: flex-start;
+  background: url(../assets/bgNew2024/allStars.png) top center no-repeat;
+  background-size: 100%;
+  width: 251.9px;
+  height: 58.3px;
+}
+.chosenAppBg6 .level_star {
+  border-radius: 0;
+  width: 17px;
+  height: 17px;
+  margin-right: 5px;
+}
+.chosenAppBg6 .level_star {
+  background: #D9D9D9;
+  background-size: 100%;
+  border-radius: 50%;
+}
+.chosenAppBg6 .menu-star {
+  background: none;
+}
+.chosenAppBg6 .levels__stars {
+  bottom: -23px;
+  width: 130%;
+  left: -15%;
+}
+.chosenAppBg6 .level_close {
+  opacity: 0.8;
+  color: #B07566;
+  border-color: #B07566;
+}
+.chosenAppBg6 .newElement {
+  background-color: #902c15;
+}
+.chosenAppBg6 .sideHorizontalMenu {
+  background: url(../assets/bgNew2024/menu.png) center center no-repeat;
+  background-size: contain;
+  border-radius: 0;
+}
+.chosenAppBg6 .switchShop {
+  background: url(../assets/bgNew2024/moneyBackground.png) center center no-repeat;
+}
+.chosenAppBg6 .switchSettings {
+  background: url(../assets/bgNew2024/settingsBackground.png) center center no-repeat;
+}
+.chosenAppBg6 .switchShowLocation {
+  background: url(../assets/bgNew2024/locationBackground.png) center center no-repeat;
+}
+.chosenAppBg6 .createLevel {
+  background: url(../assets/bgNew2024/myLevelBackground.png) center center no-repeat;
+}
+.chosenAppBg6 .leaderBoard {
+  background: url(../assets/bgNew2024/leaderboardBackground.png) center center no-repeat;
+}
+.chosenAppBg6 .leaderboardStarIcon {
+  fill: #902c15 !important;
+}
+.chosenAppBg6 .sideHorizontalMenu .menuItem {
+  background-size: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  width: 44px;
+  height: 44px;
+}
+@media (min-width: 1000px) {
+  .chosenAppBg6 .sideHorizontalMenu .menuItem, .chosenAppBg6 .bottomMenu .menuItem {
+    width: 70px;
+    height: 70px;
+  }
+}
+.chosenAppBg6 .words__letters-block_done .words__letter, .chosenAppBg6 .action-block__letters .action-block__letter_selected {
+  color: white;
+  border: 1px solid #FFF4EF;
+  box-shadow: 0 0 0 1px #B34C2B;
+  background-color: #B34C2B;
+}
+.chosenAppBg6 .action-block__letters .action-block__letter_selected {
+  box-shadow: 0 0 0 2px #B34C2B;
+}
+.chosenAppBg6 .words__letters-block .words__letter {
+  margin-right: 2px;
+}
+.chosenAppBg6 .menu__tip_count, .chosenAppBg6 .rules__goBg {
+  background-color: #902c15;
+}
+.chosenAppBg6 .rules__menu, .chosenAppBg6 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg6 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg6 .startCreateGame {
+  background-color: #902c15;
+}
+.chosenAppBg6 .shop, .chosenAppBg6 .rules, .chosenAppBg6 .leaderBoardInfo_my .leaderBoardInfo__image {
+  border-color: #902c15;
+}
+.chosenAppBg6 .shop .rules__menu, .chosenAppBg6 .settings__text {
+  color: #902c15;
+}
+.chosenAppBg6 ::-webkit-scrollbar-thumb {
+  background-color: #B34C2B;
+}
+.chosenAppBg6 .settings {
+  background-color: #FFF4EF;
+  border-color: #902c15;
+}
+.chosenAppBg6 .checkbox:checked + label:after {
+  background: #902c15;
+}
+.chosenAppBg6 .checkbox:checked + label:before {
+  background-color: #f56f53;
+}
+.chosenAppBg6 .newWord .words__letter {
+  background-color: #e5730a;
+}
+.chosenAppBg6 .animWord .words__letter {
+  animation: 1s showNewWord10 forwards;
+}
+@keyframes showNewWord10 {
+  0% {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background-color: #e5730a;
+  }
+}
+.chosenAppBg6 .shop__cart__name {
+  color: #902c15;
+  border-color: #902c15;
+}
+.chosenAppBg6 .shop__cart__item {
+  border-color: #902c15;
+}
+.chosenAppBg6 .wordWas .words__letter {
+  background-color: #521205;
+}
+.chosenAppBg6 .menu__hint {
+  background-color: rgba(144, 44, 21, 0.9);
+}
+.chosenAppBg6 .skipTutorial {
+  background-color: #902c15;
+}
+.chosenAppBg6 .cloudHint {
+  color: #c04c34;
+}
+.chosenAppBg6 .cloudHint__mainText {
+  color: #902c15;
+}
+.chosenAppBg6 .leaderBoardInfo__player, .chosenAppBg6 .lbInGame__player, .chosenAppBg6 .lbInGame__score {
+  border-color: #902c15;
+}
+.chosenAppBg6 .endGame__header, .chosenAppBg6 .endGame__nextLevel {
+  background: linear-gradient(91deg, #902C15 -0.39%, #B34C2B 27.98%, #A94120 80.51%, #902C15 100.47%);
+}
+.chosenAppBg6 .endGame__firstPrize {
+  fill: #B34C2B;
+}
+.chosenAppBg6 .endGame__secondPrize {
+  fill: #902C15;
+}
+.chosenAppBg6 .endGame__menu {
+  border-color: #902c15;
+}
+.chosenAppBg6 .endGame__firstStop {
+  stop-color: #B34C2B;
+}
+.chosenAppBg6 .endGame__secondStop {
+  stop-color: #902C15;
+}
+@media (orientation: portrait) {
+  .chosenAppBg6 .shop__cart__buy-button {
+    background-color: #902c15;
+  }
+}
+.chosenAppBg6 .action-block__letter {
+  color: #521205;
+}
+@media (max-width: 1400px) {
+  .chosenAppBg6 .blur {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+@media (orientation: portrait), (min-width: 1000px) and (min-height: 650px) {
+  .chosenAppBg6 .sideHorizontalMenu {
+    background: url(../assets/bgNew2024/menu-horizont.png) center center no-repeat;
+    background-size: contain;
+    border-radius: 0;
+  }
+}
+@media (min-width: 1000px) and (min-height: 650px) {
+  .chosenAppBg6 .sideHorizontalMenu {
+    height: 135px;
+    width: 600px;
+  }
+}
+.chosenAppBg6 .done-word {
+  background-color: #FFF4EF;
+  padding: 5px 18px;
+  border-radius: 10px;
+  border: 1px solid #902c15;
+  color: #902c15;
+  box-shadow: 0 0 0 1px #FFF4EF;
+  text-shadow: none;
+  font-size: 2rem;
+  line-height: 2rem;
+}
+.chosenAppBg6 .done-word_null {
+  padding: 0;
+  width: 0;
+  height: 0;
+  border: none;
+  box-shadow: none;
+}
+.chosenAppBg6 .action-block_landscapeDoneWord {
+  min-height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media (min-width: 1000px) {
+  .chosenAppBg6 .action-block__done-word {
+    margin-bottom: 10px;
+  }
+  .chosenAppBg6 .action-block__done-word .done-word {
+    font-size: 2.8rem;
+    line-height: 2.8rem;
+  }
+}
+.chosenAppBg6 .switchSoundsTutorial svg, .chosenAppBg6 .switchSoundsTutorial rect {
+  fill: #902c15 !important;
+}
+.chosenAppBg6 .switchSoundsTutorial path {
+  stroke: #902c15 !important;
+}
+.chosenAppBg6 .cloudHint::after {
+  background: url(../assets/bgNew2024/newYearSquirrel.png) center center no-repeat;
+  background-size: 100%;
+  transform: translateY(-50%);
+  left: -104px;
+  top: 43%;
+}
+@media (min-width: 1000px) {
+  .chosenAppBg6 .cloudHint::after {
+    left: -186px;
+    top: 41%;
+  }
+  .chosenAppBg6 .bottomHorizontalMenu {
+    height: 80px;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+  }
+}
+.chosenAppBg6 .bg-star1 {
+  background: url(../assets/bgNew2024/css_sprites.png) -2px -2px;
+}
+.chosenAppBg6 .bg-star2 {
+  background: url(../assets/bgNew2024/css_sprites.png) -66px -2px;
+}
+.chosenAppBg6 .bg-star4 {
+  background: url(../assets/bgNew2024/css_sprites.png) -2px -66px;
+}
+.chosenAppBg6 .bg-star3 {
+  background: url(../assets/bgNew2024/css_sprites.png) -66px -66px;
+}
+.chosenAppBg6 .bg-star5 {
+  background: url(../assets/bgNew2024/css_sprites.png) -130px -2px;
+}
+.chosenAppBg6 .bg-star6 {
+  background: url(../assets/bgNew2024/css_sprites.png) -130px -66px;
+}
+.chosenAppBg6 .bg-star8 {
+  background: url(../assets/bgNew2024/css_sprites.png) -2px -130px;
+}
+.chosenAppBg6 .bg-star7 {
+  background: url(../assets/bgNew2024/css_sprites.png) -66px -130px;
+}
+.chosenAppBg6 .bg-star9 {
+  background: url(../assets/bgNew2024/css_sprites.png) -130px -130px;
+}
+.chosenAppBg6 .bg-star10 {
+  background: url(../assets/bgNew2024/css_sprites.png) -194px -2px;
+}
+.chosenAppBg6 .bg-star11 {
+  background: url(../assets/bgNew2024/css_sprites.png) -194px -66px;
+}
+.chosenAppBg6 .bg-star14 {
+  background: url(../assets/bgNew2024/css_sprites.png) -194px -130px;
+}
+.chosenAppBg6 .bg-star13 {
+  background: url(../assets/bgNew2024/css_sprites.png) -2px -194px;
+}
+.chosenAppBg6 .bg-star12 {
+  background: url(../assets/bgNew2024/css_sprites.png) -66px -194px;
+}
+.chosenAppBg6 .bg-star18 {
+  background: url(../assets/bgNew2024/css_sprites.png) -130px -194px;
+}
+.chosenAppBg6 .bg-star21 {
+  background: url(../assets/bgNew2024/css_sprites.png) -194px -194px;
+}
+.chosenAppBg6 .bg-star22 {
+  background: url(../assets/bgNew2024/css_sprites.png) -258px -2px;
+}
+.chosenAppBg6 .bg-star20 {
+  background: url(../assets/bgNew2024/css_sprites.png) -258px -66px;
+}
+.chosenAppBg6 .bg-star15 {
+  background: url(../assets/bgNew2024/css_sprites.png) -258px -130px;
+}
+.chosenAppBg6 .bg-star16 {
+  background: url(../assets/bgNew2024/css_sprites.png) -258px -194px;
+}
+.chosenAppBg6 .bg-star17 {
+  background: url(../assets/bgNew2024/css_sprites.png) -2px -258px;
+}
+.chosenAppBg6 .bg-star24 {
+  background: url(../assets/bgNew2024/css_sprites.png) -66px -258px;
+}
+.chosenAppBg6 .bg-star25 {
+  background: url(../assets/bgNew2024/css_sprites.png) -130px -258px;
+}
+.chosenAppBg6 .bg-star19 {
+  background: url(../assets/bgNew2024/css_sprites.png) -194px -258px;
+}
+.chosenAppBg6 .bg-star23 {
+  background: url(../assets/bgNew2024/css_sprites.png) -258px -258px;
+}
+.chosenAppBg6 .bg-star {
+  width: 60px;
+  height: 60px;
+  transform: scale(0.28333333);
+  transform-origin: top left;
+}
+.chosenAppBg6 .bg-star_main-wrapper {
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: 2px;
+}
+.chosenAppBg6 .bg-star_main {
+  transform: scale(0.33333) !important;
+  transform-origin: top left !important;
+}
+@media (min-width: 1000px) {
+  .chosenAppBg6 .levelsTop {
+    width: 393px;
+    height: 91px;
+  }
+  .chosenAppBg6 .levelsTop__allStars {
+    padding-top: 13px;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+  }
+  .chosenAppBg6 .levels .level_star, .chosenAppBg6 .levels .menu-star, .chosenAppBg6 .menu__level .level_star {
+    width: 25px;
+    height: 25px;
+  }
+  .chosenAppBg6 .levels__stars {
+    bottom: -34px;
+  }
+  .chosenAppBg6 .level {
+    margin-bottom: 40px !important;
+  }
+  .chosenAppBg6 .menu__level .levels__stars {
+    bottom: -23px;
+  }
+  .chosenAppBg6 .levels .bg-star, .chosenAppBg6 .menu__level .bg-star {
+    transform: scale(0.4166666667);
+    transform-origin: top left;
+  }
+  .chosenAppBg6 .bg-star_main-wrapper {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .chosenAppBg6 .bg-star_main {
+    transform: scale(0.5) !important;
+    transform-origin: top left !important;
+  }
+}
+@media (orientation: portrait) and (max-height: 600px) {
+  .chosenAppBg6 .levels .level_star, .chosenAppBg6 .levels .menu-star {
+    width: 13px;
+    height: 13px;
+  }
+  .chosenAppBg6 .levels .bg-star {
+    transform: scale(0.2166666667);
+    transform-origin: top left;
+  }
+  .chosenAppBg6 .levels__stars {
+    bottom: -19px;
+  }
+  .chosenAppBg6 .level {
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (orientation: portrait) {
+  #app.chosenAppBg6, .chosenAppBg6 .game, .chosenAppBg6 .levels {
+    background-image: url(../assets/bgNew2024/bgNew2024.png);
+  }
+}
+
+/*# sourceMappingURL=stylesNewYear2024.css.map */

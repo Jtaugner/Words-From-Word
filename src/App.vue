@@ -1,7 +1,7 @@
 <template>
 	<div id="app"
 		 :class="[
-			 'chosenAppBg' + chosenBgRight,
+			 showGameLocation ? '' : 'chosenAppBg' + chosenBgRight,
 		  showGameLocation ? 'locationOpened' : '',
 		   'gameLocationWrapper-' + locationClassID
 		   ]"
@@ -13,7 +13,9 @@
 			 @buyTips="addBuyTips()"
 			 @disableAds="disableAds()"
 			 @changeOrientation="changeOrientation()"
+			 @switchOnMusic="switchOnMusic()"
 			 v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
+			<div class="blur" v-if="chosenBgRight === 6"></div>
 
 			<div class="snowAnimation"></div>
 
@@ -25,7 +27,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-<!--					<div class="eventIcon-wrapper" @click="getInfoAboutNewGame()"  v-if="!notRussian"><div class="eventIcon"></div></div>-->
+					<div class="eventIcon-wrapper" @click="getInfoAboutNewUpdate()"  v-if="!notRussian && chosenBgRight !== 6 "><div class="eventIcon"></div></div>
 					<!--@click="goToGetLocations"-->
 					<div
 						class="levelsTop__allStars"
@@ -33,7 +35,11 @@
 						@click="toggleShowInfoAboutStars"
 					>
 						{{allStars}}/{{ (location+1)*(lvlsOnPage*3)}}
-						<svg class="svgIcon" width="18" height="17" viewBox="0 0 18 17" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M8.52447 0.463525C8.67415 0.00287008 9.32585 0.00287008 9.47553 0.463525L11.1329 5.56434C11.1998 5.77035 11.3918 5.90983 11.6084 5.90983H16.9717C17.4561 5.90983 17.6575 6.52964 17.2656 6.81434L12.9266 9.96681C12.7514 10.0941 12.678 10.3198 12.745 10.5258L14.4023 15.6266C14.552 16.0873 14.0248 16.4704 13.6329 16.1857L9.29389 13.0332C9.11865 12.9059 8.88135 12.9059 8.70611 13.0332L4.3671 16.1857C3.97524 16.4704 3.448 16.0873 3.59768 15.6266L5.25503 10.5258C5.32197 10.3198 5.24864 10.0941 5.07339 9.96681L0.734384 6.81434C0.342527 6.52964 0.543915 5.90983 1.02828 5.90983H6.39159C6.6082 5.90983 6.80018 5.77035 6.86712 5.56434L8.52447 0.463525Z"/></svg>
+						<div class="bg-star_main-wrapper" v-if="chosenBgRight === 6">
+							<div  class="bg-star bg-star_main" :class="'bg-star' + randomStars[60]"></div>
+						</div>
+
+						<svg v-else class="svgIcon" width="18" height="17" viewBox="0 0 18 17" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M8.52447 0.463525C8.67415 0.00287008 9.32585 0.00287008 9.47553 0.463525L11.1329 5.56434C11.1998 5.77035 11.3918 5.90983 11.6084 5.90983H16.9717C17.4561 5.90983 17.6575 6.52964 17.2656 6.81434L12.9266 9.96681C12.7514 10.0941 12.678 10.3198 12.745 10.5258L14.4023 15.6266C14.552 16.0873 14.0248 16.4704 13.6329 16.1857L9.29389 13.0332C9.11865 12.9059 8.88135 12.9059 8.70611 13.0332L4.3671 16.1857C3.97524 16.4704 3.448 16.0873 3.59768 15.6266L5.25503 10.5258C5.32197 10.3198 5.24864 10.0941 5.07339 9.96681L0.734384 6.81434C0.342527 6.52964 0.543915 5.90983 1.02828 5.90983H6.39159C6.6082 5.90983 6.80018 5.77035 6.86712 5.56434L8.52447 0.463525Z"/></svg>
 
 						<!--					<div class="menu-star"></div>-->
 					</div>
@@ -54,9 +60,15 @@
 
 						<div :class="getLevelByLevelAndLocation(level) > 99 ? 'level__big' : ''">
 							{{getLevelByLevelAndLocation(level)}}</div>
-						<div class="menu__level_stars">
+						<div class="menu__level_stars levels__stars">
 							<div class="level_star" v-for="star in 3" :key="star"
-								 :class="star <= stars[getLevelByLevelAndLocation(level)-1] ? 'menu-star' : ''"></div>
+								 :class="[
+									 star <= stars[getLevelByLevelAndLocation(level)-1] ? 'menu-star ' : '',
+
+									 ]">
+								<div class="bg-star" v-if="star <= stars[getLevelByLevelAndLocation(level)-1]"
+								:class="'bg-star' + randomStars[((level-1)*3) + star - 1]"></div>
+							</div>
 						</div>
 						<div class="newElement"><div class="newElement__circle"></div></div>
 					</div>
@@ -104,7 +116,7 @@
 				</div>
 
 				<div class="leaderBoard menuItem" @click="toggleLeaderBoard()" v-if="!notRussian">
-					<svg class="svgIcon" width="22" height="18" viewBox="0 0 22 18" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M5.80626 0.657311C5.80626 0.294288 6.10055 0 6.46357 0H14.601C14.964 0 15.2583 0.294288 15.2583 0.657311V16.7614C15.2583 17.1245 14.964 17.4188 14.601 17.4188H6.46357C6.10055 17.4188 5.80626 17.1245 5.80626 16.7614V0.657311Z"/><path d="M16.8786 9.70424C16.8786 9.34122 17.1729 9.04693 17.5359 9.04693H20.9473C21.3104 9.04693 21.6047 9.34122 21.6047 9.70424V16.7614C21.6047 17.1244 21.3104 17.4187 20.9473 17.4187H17.5359C17.1729 17.4187 16.8786 17.1244 16.8786 16.7614V9.70424Z"/><path d="M0 5.38332C0 5.0203 0.294288 4.72601 0.657311 4.72601H3.52859C3.89161 4.72601 4.1859 5.0203 4.1859 5.38332V16.7614C4.1859 17.1245 3.89161 17.4187 3.52859 17.4187H0.657312C0.294289 17.4187 0 17.1245 0 16.7614V5.38332Z"/><path d="M10.7837 1.77475L11.3749 3.59415H13.2879L11.7403 4.71861L12.3314 6.53801L10.7837 5.41356L9.23605 6.53801L9.82721 4.71861L8.27954 3.59415H10.1926L10.7837 1.77475Z" fill="white"/></svg>
+					<svg class="svgIcon" width="22" height="18" viewBox="0 0 22 18" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M5.80626 0.657311C5.80626 0.294288 6.10055 0 6.46357 0H14.601C14.964 0 15.2583 0.294288 15.2583 0.657311V16.7614C15.2583 17.1245 14.964 17.4188 14.601 17.4188H6.46357C6.10055 17.4188 5.80626 17.1245 5.80626 16.7614V0.657311Z"/><path d="M16.8786 9.70424C16.8786 9.34122 17.1729 9.04693 17.5359 9.04693H20.9473C21.3104 9.04693 21.6047 9.34122 21.6047 9.70424V16.7614C21.6047 17.1244 21.3104 17.4187 20.9473 17.4187H17.5359C17.1729 17.4187 16.8786 17.1244 16.8786 16.7614V9.70424Z"/><path d="M0 5.38332C0 5.0203 0.294288 4.72601 0.657311 4.72601H3.52859C3.89161 4.72601 4.1859 5.0203 4.1859 5.38332V16.7614C4.1859 17.1245 3.89161 17.4187 3.52859 17.4187H0.657312C0.294289 17.4187 0 17.1245 0 16.7614V5.38332Z"/><path class="leaderboardStarIcon" d="M10.7837 1.77475L11.3749 3.59415H13.2879L11.7403 4.71861L12.3314 6.53801L10.7837 5.41356L9.23605 6.53801L9.82721 4.71861L8.27954 3.59415H10.1926L10.7837 1.77475Z" fill="white"/></svg>
 				</div>
 			</div>
 
@@ -373,7 +385,9 @@
 					<div class="menu__level_stars">
 
 						<div class="level_star" v-for="star in 3" :key="star"
-							 :class="star <= locationStars[level-1] ? 'menu-star' : ''"></div>
+							 :class="[
+								 star <= locationStars[level-1] ? 'menu-star' : ''
+								 ]"></div>
 					</div>
 				</div>
 
@@ -417,7 +431,11 @@
 			<div class="blur"></div>
 
 			<header class="menu" :class="[isTutorial ? 'tutorialMenu' : '', verticalPayload ? 'menu_verticalPayload': '']">
-				<div class="timeToShowNextAdv" v-show="isShowTimeToShowNextAdv">Реклама начнётся через {{timeToShowNextAdv}}...</div>
+				<div class="timeToShowNextAdv" v-show="isShowTimeToShowNextAdv">
+					<svg class="noAdvert__advert" width="36" height="34" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.133268 7.31339C0.0458686 7.33307 -0.0127351 7.42047 0.00237327 7.50861L1.042 13.5734C1.0571 13.6616 1.1402 13.7171 1.2276 13.6974L2.59532 13.3894V33.8381C2.59532 33.9275 2.66795 34 2.75755 34H35.8378C35.9274 34 36 33.9275 36 33.8381V11.1405C36 11.0511 35.9274 10.9786 35.8378 10.9786H13.302L33.6892 6.38798C33.7766 6.3683 33.8352 6.2809 33.8201 6.19276L32.7805 0.127919C32.7653 0.0397812 32.6822 -0.0157149 32.5948 0.00396503L0.133268 7.31339ZM15.144 26.46L24.6242 22.6755L15.144 18.891V26.46Z" fill="url(#paint0_linear_48_33541)"/><defs><linearGradient id="paint0_linear_48_33541" x1="36" y1="-3" x2="3" y2="34" gradientUnits="userSpaceOnUse"><stop/><stop offset="0.994865" stop-color="#5E5E5E"/></linearGradient></defs></svg>
+					<div class="timeToShowNextAdv__time">{{timeToShowNextAdv}}</div>
+
+				</div>
 				<button
 					class="menu__button-back menuItem"
 					@click="backMenu"
@@ -445,7 +463,7 @@
                       			 getStar === star ? 'getStar' : ''
                       			 ]"
 						>
-
+							<div v-if="star <= levelStars" class="bg-star" :class="'bg-star' + randomLevelStars[star-1]"></div>
 						</div>
 					</div>
 					<div class="menu__hint">{{moreGuessedWords}}</div>
@@ -562,7 +580,7 @@
 
 
 					<div class="action-block__done-word" @dblclick="eraseWord">
-						<div class="done-word" :class="[isBadWord ? 'badWord' : '']" >{{wordFromLetter}}</div>
+						<div class="done-word" :class="[isBadWord ? 'badWord' : '', wordFromLetter.length === 0 ? 'done-word_null' : '']" >{{wordFromLetter}}</div>
 					</div>
 
 					<button class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord"></button>
@@ -572,7 +590,7 @@
 
 				<div class="action-block">
 					<div class="action-block_landscapeDoneWord action-block__done-word" @dblclick="eraseWord">
-						<div class="done-word" :class="[isBadWord ? 'badWord' : '']" >{{wordFromLetter}}</div>
+						<div class="done-word" :class="[isBadWord ? 'badWord' : '', wordFromLetter.length === 0 ? 'done-word_null' : '']" >{{wordFromLetter}}</div>
 					</div>
 					<div class="action-block__letters">
 						<div class="action-block__letter"
@@ -843,7 +861,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button" >
-<!--							<div class="shop__lastPrice">20</div>-->
+							<div class="shop__lastPrice">20</div>
 							{{getItemPrice(0)}}
 						</div>
 					</div>
@@ -861,7 +879,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-<!--							<div class="shop__lastPrice">89</div>-->
+							<div class="shop__lastPrice">89</div>
 							{{getItemPrice(1)}}
 						</div>
 					</div>
@@ -879,7 +897,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-<!--							<div class="shop__lastPrice">149</div>-->
+							<div class="shop__lastPrice">149</div>
 							{{getItemPrice(2)}}
 						</div>
 					</div>
@@ -895,7 +913,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-<!--							<div class="shop__lastPrice">299</div>-->
+							<div class="shop__lastPrice">299</div>
 							{{getItemPrice(3)}}
 					</div>
 				</div>
@@ -916,7 +934,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-<!--						<div class="shop__lastPrice">499</div>-->
+						<div class="shop__lastPrice">499</div>
 						{{getItemPrice(4)}}
 					</div>
 				</div>
@@ -974,6 +992,19 @@
 					<label
 						for="musicCheckbox">
 						{{notRussian ? 'Sounds' : 'Звуки'}}
+					</label>
+				</li>
+				<li>
+					<input type="checkbox"
+						   @change="switchMusic"
+						   v-model="isMusic"
+						   id="music2Checkbox"
+						   class="checkbox"
+
+					/>
+					<label
+						for="music2Checkbox">
+						{{notRussian ? 'Music' : 'Музыка'}}
 					</label>
 				</li>
 				<li>
@@ -1057,7 +1088,7 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Разработка игры' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Новый год!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
@@ -1065,12 +1096,12 @@
 			</template>
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
-					Уважаемые игроки! Если вы желаете принять участие в разработке новой игры-викторины и придумывать вопросы на различные темы, пожалуйста, напишите нам на почту
-					jaugr-games@yandex.ru
+					Дорогие игроки! Предлагаем вам окунуться в атмосферу Нового года, применив новое оформление и включив музыку!
+					<div class="rules__goBg" @click="goChangeBgFromUpdate">Попробовать!</div>
 				</div>
 
 
-				<div class="rules__goBg" @click="copyPost()">Скопировать</div>
+<!--				<div class="rules__goBg" @click="copyPost()">Скопировать</div>-->
 
 <!--				<div class="questionInput">-->
 <!--					<input type="radio" id="one" value="Знаю и меняю" v-model="selectedOption" />-->
@@ -1339,6 +1370,7 @@ import './styles/stylesSpring.scss';
 import './styles/stylesCave.scss';
 import './styles/stylesValentines.scss';
 import './styles/stylesGreen.scss';
+import './styles/stylesNewYear2024.scss';
 import './styles/endGame.scss';
 
 import './styles/stylesLocations.scss';
@@ -1822,7 +1854,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-39";
+const lastVersion = "ver-40";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -1880,8 +1912,7 @@ function getFromStorage(name) {
 	try {
 		let val = localStorage.getItem(name);
 		if (val) return val;
-	} catch (e) {
-	}
+	} catch (e) {}
 }
 
 function setToStorage(name, val) {
@@ -1910,6 +1941,7 @@ let allDoneWords = getFromStorage('allDoneWords');
 let locationDoneWords = getFromStorage('locationDoneWords');
 let tips = getFromStorage('tips');
 let sounds = getFromStorage('sounds');
+let isMusic = getFromStorage('isMusic');
 let isLastSounds = getFromStorage('lastSounds');
 let isAdvShowed = getFromStorage('isAdvShowed');
 let isGameAdvShow = getFromStorage('isGameAdvShow');
@@ -1943,10 +1975,11 @@ if(crossPromoShows){
 }
 if(chosenBackground){
 	chosenBackground = Number(chosenBackground);
+	params({'newChosenBG': chosenBackground});
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = -3;
-	setToStorage('chosenBackground', '-3');
+	chosenBackground = 6;
+	setToStorage('chosenBackground', chosenBackground);
 	// deleteBlockBg = true;
 }
 try{
@@ -2120,6 +2153,9 @@ if(allDoneWords){
 	thatTips = tips;
 	if(!Number.isInteger(tips)) tips = 15;
 	sounds = sounds === 'true';
+	isMusic = isMusic === 'true';
+	params({'isSounds': sounds});
+	params({'isMusic': isMusic});
 	isLastSounds = isLastSounds === 'true';
 	setLoc();
 	isGameAdvShow = !isGameAdvShow;
@@ -2133,7 +2169,9 @@ if(allDoneWords){
 	tips = 10;
 	isRules = true;
 	sounds = true;
-
+	isMusic = true;
+	setToStorage('sounds', 'true');
+	setToStorage('isMusic', 'true');
 	allWords.forEach((key => {
 		allDoneWords[key] = [];
 	}));
@@ -2394,7 +2432,7 @@ let playerPlayedAlready = false;
 let isPhone = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 let advTimeout = 0;
 let advInterval = 0;
-let timeToShowAdv = 200;
+let timeToShowAdv = 20;
 
 function startAdvInterval(){
 	advInterval = setInterval(()=>{
@@ -2475,8 +2513,14 @@ if(window.YaGames){
 			console.log('showAdv');
 			ysdk.adv.showFullscreenAdv({
 				callbacks: {
+					onOpen: function(){
+						switchOffMainMusic();
+						musicStoppedByAdv = true;
+					},
 					onClose: function(wasShow) {
 						console.log('close adv');
+						switchOnMainMusic();
+						musicStoppedByAdv = false;
 						if(!wasShow){
 							advTime = true;
 						}else{
@@ -2488,7 +2532,6 @@ if(window.YaGames){
 							clearTimeout(advTimeout);
 							clearInterval(advInterval);
 
-							timeToShowAdv = 130;
 							startAdvInterval();
 
 							advTimeout = setTimeout(()=>{
@@ -2586,6 +2629,7 @@ function getAmountLocationWords(locationWords){
 	}
 	return wordsAmount;
 }
+let musicStoppedByAdv = false;
 function initPlayer(ysdk) {
 	console.log(ysdk);
 	ysdk.getPlayer().then(_player => {
@@ -3031,7 +3075,8 @@ const NewAudioContext = (function() {
      */
 	var WebAudioAPISound = function (url, options) {
 		this.settings = {
-			loop: false
+			loop: false,
+			volume: 0.3
 		};
 
 		for(var i in options){
@@ -3039,12 +3084,13 @@ const NewAudioContext = (function() {
 				this.settings[i] = options[i];
 			}
 		}
-
-		this.url = url + '.mp3';
-		this.volume = 1;
+		this.url = url;
+		this.volume = 0.3;
 		window.webAudioAPISoundManager = window.webAudioAPISoundManager || new WebAudioAPISoundManager(window.audioContext);
 		this.manager = window.webAudioAPISoundManager;
 		this.manager.addSound(this.url);
+		console.log('aaaa');
+		console.log(this.manager);
 		// this.buffer = this.manager.bufferList[this.url];
 	};
 
@@ -3064,7 +3110,9 @@ const NewAudioContext = (function() {
 					this.manager.playingSounds[this.url] = [];
 				}
 				this.manager.playingSounds[this.url].push(source);
+				return true;
 			}
+			return false;
 		},
 		stop: function () {
 			this.manager.stopSoundWithUrl(this.url);
@@ -3094,16 +3142,52 @@ const NewAudioContext = (function() {
 	return WebAudioAPISound;
 })();
 
-let wrongWordSound = new NewAudioContext('wrong-word');
-let wrongWordSound2 = new NewAudioContext('wrong-word2');
-let wordWasSound = new NewAudioContext('word-was');
-let doneWordSound = new NewAudioContext('done-word');
-let doneWordSound2 = new NewAudioContext('done-word2');
-let starVolume = new NewAudioContext('star');
+let wrongWordSound = new NewAudioContext('word-was3.mp3');
+wrongWordSound.setVolume(10);
+let wrongWordSound2 = new NewAudioContext('wrong-word2.mp3');
+let wordWasSound = new NewAudioContext('word-was.mp3');
+wordWasSound.setVolume(20);
+let doneWordSound = new NewAudioContext('done-word.mp3');
+let doneWordSound2 = new NewAudioContext('done-word2.mp3');
+let starVolume = new NewAudioContext('star.mp3');
 // let newLevel = new NewAudioContext('new-level');
-let clickSound = new NewAudioContext('click');
-let clickSound2 = new NewAudioContext('click2');
+let clickSound = new NewAudioContext('click.mp3');
+let clickSound2 = new NewAudioContext('click2.mp3');
+let musicSound = new NewAudioContext('music.mp3', {loop: true});
+musicSound.setVolume(10);
 // let exitLevelSound = new NewAudioContext('exitLevel');
+function switchOnMainMusic(){
+	try{
+		window.audioContext.resume();
+	}catch(e){}
+}
+function switchOffMainMusic(){
+	try{
+		window.audioContext.suspend();
+	}catch(e){}
+}
+window.addEventListener("visibilitychange", () => {
+	try{
+		if (document.visibilityState === "visible" && !musicStoppedByAdv) {
+			switchOnMainMusic()
+		}else{
+			switchOffMainMusic();
+		}
+	}catch(e){console.log(e)}
+
+});
+let musicStarted = false;
+window.onclick = function(){
+	if(!musicStarted && isMusic){
+		musicStarted = musicSound.play();
+		if(musicStarted){
+			if (document.querySelector('.levels')) {
+				document.querySelector('.levels').dispatchEvent(new CustomEvent("switchOnMusic"));
+			}
+		}
+
+	}
+}
 
 const lettersMap = {
 	'q' : 'й', 'w' : 'ц', 'e' : 'у', 'r' : 'к', 't' : 'е', 'y' : 'н', 'u' : 'г', 'i' : 'ш', 'o' : 'щ', 'p' : 'з', '[' : 'х', ']' : 'ъ', 'a' : 'ф', 's' : 'ы', 'd' : 'в', 'f' : 'а', 'g' : 'п', 'h' : 'р', 'j' : 'о', 'k' : 'л', 'l' : 'д', ';' : 'ж', '\'' : 'э', 'z' : 'я', 'x' : 'ч', 'c' : 'с', 'v' : 'м', 'b' : 'и', 'n' : 'т', 'm' : 'ь', ',' : 'б', '.' : 'ю','Q' : 'Й', 'W' : 'Ц', 'E' : 'У', 'R' : 'К', 'T' : 'Е', 'Y' : 'Н', 'U' : 'Г', 'I' : 'Ш', 'O' : 'Щ', 'P' : 'З', 'A' : 'Ф', 'S' : 'Ы', 'D' : 'В', 'F' : 'А', 'G' : 'П', 'H' : 'Р', 'J' : 'О', 'K' : 'Л', 'L' : 'Д', 'Z' : '?', 'X' : 'ч', 'C' : 'С', 'V' : 'М', 'B' : 'И', 'N' : 'Т', 'M' : 'Ь'
@@ -3275,7 +3359,6 @@ function deletePreDownload(){
 		document.querySelector(".pre-download2").remove()
 	}
 	params({'gameOpened': 1});
-	params({'chosenBG': chosenBackground});
 	try{
 		let secondTimeOpen = new Date();
 		let time = Math.floor((secondTimeOpen - firstTimeOpen)/1000);
@@ -3598,6 +3681,9 @@ const mainUniq = ['TJgwFXC9SXvc50yCq60wLTPZTarJt+sv4EQbsvklCi0=', 'T7HKgy+MM2v3M
 let isTextTyping = false;
 let goodGames = ["ХОРОШАЯ РАБОТА!", "ОТЛИЧНАЯ ИГРА!", "ТЫ МОЛОДЕЦ!", "ВОСХИТИТЕЛЬНО!"];
 let firstGetBanner = false;
+function getOneRandStart(){
+	return Math.floor(Math.random()*25)+1;
+}
 export default {
 	name: 'App',
 	components: {CrossVue, CrossComponent},
@@ -3715,7 +3801,10 @@ export default {
 			endGameIcon: 'endGame__icon1',
 			crosspromo: false,
 			timeToShowNextAdv: 3,
-			isShowTimeToShowNextAdv: false
+			isShowTimeToShowNextAdv: false,
+			randomStars: [],
+			randomLevelStars: [],
+			isMusic: false
 		}
 	},
 	computed:{
@@ -3763,6 +3852,24 @@ export default {
 		},
 	},
 	methods:{
+		switchOnMusic(){
+			this.isMusic = true;
+		},
+		getRandomStars(isLevel){
+			let randStars = [getOneRandStart()];
+			let max = 61;
+			if(isLevel) max = 3;
+			for(let i = 1; i < max; i++){
+				randStars[i] = getOneRandStart();
+				if(randStars[i] === randStars[i-1]) i--;
+			}
+			if(isLevel){
+				this.randomLevelStars = randStars;
+			}else{
+				this.randomStars = randStars;
+			}
+
+		},
 		changeOrientation(){
 			console.log('change: ', window.innerWidth, window.innerHeight)
 			if(window.innerHeight > window.innerWidth){
@@ -4013,7 +4120,7 @@ export default {
 		},
 		startRewardedTimer(){
 			if(this.tipCount > 0) return;
-			this.advTimer = 65;
+			this.advTimer = 20;
 			if(timeToShowAdv < this.advTimer) this.advTimer = timeToShowAdv;
 			let timer;
 			timer = setInterval(()=>{
@@ -4226,12 +4333,12 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 6) this.chosenBg = -4;
+			if(this.chosenBg === 7) this.chosenBg = -4;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -5) this.chosenBg = 5;
+			if(this.chosenBg === -5) this.chosenBg = 6;
 			this.testBg();
 		},
 		testBg(){
@@ -4246,12 +4353,13 @@ export default {
 		},
 		goChangeBgFromUpdate(){
 			this.goToChangeBg();
-			this.chosenBg = -4;
+			this.chosenBg = 6;
 			this.chosenBgRight = this.chosenBg;
+			this.tryChangeMusic();
 			setToStorage('chosenBackground', this.chosenBgRight);
-			params({'changeBgCave': 1});
+			params({'changeBgNew2024': 1});
 		},
-		getInfoAboutNewGame(){
+		getInfoAboutNewUpdate(){
 			this.wasUpdate = true;
 			this.showLastLevelInfo = true;
 		},
@@ -4259,18 +4367,18 @@ export default {
 			this.backMenu();
 			this.isSettings = true;
 			this.openNewBg = false;
-			let bg = 1;
-			if(this.lvl === 14){
-				bg = 2;
-			}else if(this.lvl === 24){
-				bg = 3;
-			}else if(fromUpdate){
-				params({'testGreenBg': 1});
-				bg = 5;
-			}
-			this.chosenBg = bg;
-			this.chosenBgRight = bg;
-			setToStorage('chosenBackground', this.chosenBgRight);
+			// let bg = 1;
+			// if(this.lvl === 14){
+			// 	bg = 2;
+			// }else if(this.lvl === 24){
+			// 	bg = 3;
+			// }else if(fromUpdate){
+			// 	params({'testGreenBg': 1});
+			// 	bg = 5;
+			// }
+			// this.chosenBg = bg;
+			// this.chosenBgRight = bg;
+			// setToStorage('chosenBackground', this.chosenBgRight);
 			this.showLastLevelInfo = false;
 		},
 		findNotShowLetters(){
@@ -4716,6 +4824,7 @@ export default {
 				}
 				return;
 			}
+			this.getRandomStars(true);
 			// if(window.innerWidth > window.innerHeight){
 			// 	params({'orientation': 'landscape'});
 			// }else{
@@ -4966,8 +5075,27 @@ export default {
 		},
 		switchSoundsTutorial(){
 			this.isSounds = !this.isSounds;
+			this.switchMusic({target: {checked: this.isSounds}});
 			setToStorage('sounds', this.isSounds);
 			params({'soundTutorial': this.isSounds});
+		},
+		tryChangeMusic(){
+			if(!this.isMusic){
+				this.isMusic = true;
+				musicSound.play();
+				setToStorage('isMusic', this.isSounds);
+			}
+		},
+		switchMusic(e){
+			this.isMusic = e.target.checked;
+
+			if(this.isMusic){
+				musicSound.play();
+			}else{
+				console.log('music');
+				musicSound.stop();
+			}
+			setToStorage('isMusic', this.isSounds);
 		},
 		switchSounds(e){
 			this.isSounds = e.target.checked;
@@ -5087,6 +5215,7 @@ export default {
 		prevLocation(){
 			if(this.location > 0){
 				this.location--;
+				this.getRandomStars();
 				this.clickSound();
 			}
 		},
@@ -5094,6 +5223,7 @@ export default {
 			if(!this.showNextLoc) return;
 			if(this.location < this.allLocations-1){
 				this.location++;
+				this.getRandomStars();
 				this.clickSound();
 			}
 		},
@@ -5120,6 +5250,7 @@ export default {
 			if(this.isTutorial) return;
 			this.isMyGame = false;
 			this.isEndGame = false;
+			this.getRandomStars();
 			if(this.isSounds){
 				clickSound.play();
 			}
@@ -5168,17 +5299,34 @@ export default {
 				try{
 					let that = this;
 
-					let advNotShow = true;
-
-					setTimeout(()=>{
-						advNotShow = false;
-					}, 2500);
+					// let advNotShow = true;
+					//
+					// setTimeout(()=>{
+					// 	advNotShow = false;
+					// }, 2500);
 
 					function getRewardedVideo(){
 						YSDK.adv.showRewardedVideo({
 							callbacks: {
+								onOpen: function(){
+									switchOffMainMusic();
+									musicStoppedByAdv = true;
+								},
+								onClose: function(){
+									console.log('sss');
+									switchOnMainMusic();
+									musicStoppedByAdv = false;
+								},
 								onRewarded: () => {
-									// params({'isRewardedVideo': 1});
+									params({'rewardedVideo': 1});
+									console.log('close adv reward');
+									startAdvTime = true;
+
+									clearTimeout(advTimeout);
+									clearInterval(advInterval);
+									timeToShowAdv = 20;
+									startAdvInterval();
+									that.startRewardedTimer();
 									that.addTip(true);
 								},
 								onError: () => {
@@ -5187,49 +5335,50 @@ export default {
 							}
 						})
 					}
+					getRewardedVideo();
 
-					YSDK.adv.showFullscreenAdv({
-						callbacks: {
-							onClose: function(wasShow) {
-								console.log('close adv reward');
-								advTime = false;
-								startAdvTime = true;
-
-								clearTimeout(advTimeout);
-								clearInterval(advInterval);
-								if(wasShow){
-									timeToShowAdv = 65;
-									startAdvInterval();
-									advTimeout = setTimeout(()=>{
-										advTime = true;
-									}, 65000);
-								}else{
-									getRewardedVideo();
-									return;
-								}
-								if(advNotShow){
-									that.showAdvTip = true;
-									if(!isAdvShowed){
-										that.isAdvShowed = true;
-										setToStorage('isAdvShowed', 'true');
-										isAdvShowed = true;
-									}else{
-										that.startRewardedTimer();
-										// params({'rewardedAdvDontWork': 1});
-										return;
-									}
-
-								}
-								// params({'rewardedAdv': 1});
-								that.addTip();
-							},
-							onError: function (e){
-								getRewardedVideo();
-								console.log('error adv')
-								console.log(e);
-							}
-						}
-					});
+					// YSDK.adv.showFullscreenAdv({
+					// 	callbacks: {
+					// 		onClose: function(wasShow) {
+					// 			console.log('close adv reward');
+					// 			advTime = false;
+					// 			startAdvTime = true;
+					//
+					// 			clearTimeout(advTimeout);
+					// 			clearInterval(advInterval);
+					// 			if(wasShow){
+					// 				timeToShowAdv = 65;
+					// 				startAdvInterval();
+					// 				advTimeout = setTimeout(()=>{
+					// 					advTime = true;
+					// 				}, 65000);
+					// 			}else{
+					// 				getRewardedVideo();
+					// 				return;
+					// 			}
+					// 			if(advNotShow){
+					// 				that.showAdvTip = true;
+					// 				if(!isAdvShowed){
+					// 					that.isAdvShowed = true;
+					// 					setToStorage('isAdvShowed', 'true');
+					// 					isAdvShowed = true;
+					// 				}else{
+					// 					that.startRewardedTimer();
+					// 					// params({'rewardedAdvDontWork': 1});
+					// 					return;
+					// 				}
+					//
+					// 			}
+					// 			// params({'rewardedAdv': 1});
+					// 			that.addTip();
+					// 		},
+					// 		onError: function (e){
+					// 			getRewardedVideo();
+					// 			console.log('error adv')
+					// 			console.log(e);
+					// 		}
+					// 	}
+					// });
 
 
 
@@ -5629,6 +5778,7 @@ export default {
 				}
 				this.tryOpenPayloadLevel();
 			}
+			this.getRandomStars();
 			document.addEventListener('keydown', this.pressKey);
 			console.log('Вызов баннера при заходе');
 			// this.getPromoResult();

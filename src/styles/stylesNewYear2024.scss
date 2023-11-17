@@ -1,0 +1,572 @@
+/*Фон Валентин*/
+$mainColor: rgba(144, 44, 21, 1);
+
+#app.chosenAppBg6, .chosenAppBg6 .game, .chosenAppBg6 .levels {
+  background-image: url(../assets/bgNew2024/bgNew2024horizont.png);
+}
+
+.chosenAppBg6 {
+  .levels, .levelsTop__allStars {
+    font-family: LobsterTwo, Inter, sans-serif;
+  }
+
+  .svgIcon {
+    fill: $mainColor;
+  }
+
+  .sideHorizontalMenu .svgIcon {
+    fill: #FFF4EF;
+  }
+
+  .shop__cart__card .svgIcon {
+    fill: #902C15;
+  }
+
+  .level {
+    border: 2px solid $mainColor;
+    box-shadow: 0 0 0 2px #FFF4EF;
+    color: $mainColor;
+    border-radius: 50%;
+    margin-bottom: 27px !important;
+  }
+
+  .levels__loc {
+    color: $mainColor;
+  }
+
+  .shop__cart__card .shop__cart__name {
+    color: #902C15;
+  }
+
+  .shop__cart__buy-button {
+    background: linear-gradient(264.82deg, #902C15 2.88%, #B34C2B 96.18%);
+    box-shadow: 0px 3px 0px #661C06;
+  }
+
+  .levelsTop__allStars {
+    color: $mainColor;
+    background: none;
+    box-shadow: none;
+    align-items: flex-start;
+    padding-top: 8px;
+  }
+
+  .levelsTop {
+    padding-top: 0;
+    align-items: flex-start;
+    background: url(../assets/bgNew2024/allStars.png) top center no-repeat;
+    background-size: 100%;
+
+    width: 251.9px;
+    height: 58.3px;
+  }
+  .level_star {
+
+    //background-size: 100% !important;
+    border-radius: 0;
+    //width: 42px;
+    //height: 42px;
+    width: 17px;
+    height: 17px;
+    margin-right: 5px;
+  }
+  .level_star{
+    background: #D9D9D9;
+    background-size: 100%;
+    border-radius: 50%;
+  }
+  .menu-star{
+    background: none;
+  }
+
+  .levels__stars {
+    bottom: -23px;
+    width: 130%;
+    left: -15%;
+  }
+
+
+
+  .level_close {
+    opacity: 0.8;
+    color: #B07566;
+    border-color: #B07566;
+  }
+
+  .newElement {
+    background-color: $mainColor;
+  }
+
+  .sideHorizontalMenu {
+    background: url(../assets/bgNew2024/menu.png) center center no-repeat;
+    background-size: contain;
+    border-radius: 0;
+  }
+
+  .switchShop {
+    background: url(../assets/bgNew2024/moneyBackground.png) center center no-repeat;
+  }
+
+  .switchSettings {
+    background: url(../assets/bgNew2024/settingsBackground.png) center center no-repeat;
+  }
+
+  .switchShowLocation {
+    background: url(../assets/bgNew2024/locationBackground.png) center center no-repeat;
+  }
+
+  .createLevel {
+    background: url(../assets/bgNew2024/myLevelBackground.png) center center no-repeat;
+  }
+
+  .leaderBoard {
+    background: url(../assets/bgNew2024/leaderboardBackground.png) center center no-repeat;
+  }
+
+  .leaderboardStarIcon {
+    fill: $mainColor !important;;
+  }
+
+  .sideHorizontalMenu .menuItem {
+    background-size: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    width: 44px;
+    height: 44px;
+  }
+
+  @media (min-width: 1000px) {
+    .sideHorizontalMenu .menuItem, .bottomMenu .menuItem {
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+  .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected {
+    color: white;
+    border: 1px solid #FFF4EF;
+    box-shadow: 0 0 0 1px #B34C2B;
+    background-color: #B34C2B;
+  }
+
+  .action-block__letters .action-block__letter_selected {
+    box-shadow: 0 0 0 2px #B34C2B;
+  }
+
+  .words__letters-block .words__letter {
+    margin-right: 2px;
+  }
+
+  .menu__tip_count, .rules__goBg {
+    background-color: $mainColor;
+  }
+
+  .rules__menu, .leaderBoardInfo_my .leaderBoardInfo__rank, .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .startCreateGame {
+    background-color: $mainColor;
+  }
+
+  .shop, .rules, .leaderBoardInfo_my .leaderBoardInfo__image {
+    border-color: $mainColor;
+  }
+
+  .shop .rules__menu, .settings__text {
+    color: $mainColor;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #B34C2B;
+  }
+
+  .settings {
+    background-color: #FFF4EF;
+    border-color: $mainColor;
+  }
+
+  .checkbox:checked + label:after {
+    background: $mainColor;
+  }
+
+  .checkbox:checked + label:before {
+    background-color: rgb(245, 111, 83);
+  }
+
+  .newWord .words__letter {
+    background-color: #e5730a;
+  }
+
+  .animWord .words__letter {
+    animation: 1s showNewWord10 forwards;
+  }
+
+  //Смена названия
+  @keyframes showNewWord10 {
+    0% {
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+    100% {
+      background-color: #e5730a;
+    }
+  }
+
+  //Магазин
+  .shop__cart__name {
+    color: $mainColor;
+    border-color: $mainColor;
+  }
+
+  .shop__cart__item {
+    border-color: $mainColor;
+  }
+
+  .wordWas .words__letter {
+    background-color: #521205;
+  }
+
+  .menu__hint {
+    background-color: rgba(144, 44, 21, 0.9);
+  }
+
+  .skipTutorial {
+    background-color: $mainColor;
+  }
+
+  .cloudHint {
+    color: #c04c34;
+  }
+
+  .cloudHint__mainText {
+    color: $mainColor;
+  }
+
+  .leaderBoardInfo__player, .lbInGame__player, .lbInGame__score {
+    border-color: $mainColor;
+  }
+
+  .endGame__header, .endGame__nextLevel {
+    background: linear-gradient(91deg, #902C15 -0.39%, #B34C2B 27.98%, #A94120 80.51%, #902C15 100.47%);
+  }
+
+  .endGame__firstPrize {
+    fill: #B34C2B;
+  }
+
+  .endGame__secondPrize {
+    fill: #902C15;
+  }
+
+  .endGame__menu {
+    border-color: $mainColor;
+  }
+
+  .endGame__firstStop {
+    stop-color: #B34C2B;
+  }
+
+  .endGame__secondStop {
+    stop-color: #902C15;
+  }
+
+  @media (orientation: portrait) {
+    .shop__cart__buy-button {
+      background-color: $mainColor;
+    }
+  }
+
+  .action-block__letter {
+    color: #521205;
+  }
+
+  @media (max-width: 1400px) {
+    .blur {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+  @media (orientation: portrait), (min-width: 1000px) and (min-height: 650px) {
+    .sideHorizontalMenu {
+      background: url(../assets/bgNew2024/menu-horizont.png) center center no-repeat;
+      background-size: contain;
+      border-radius: 0;
+    }
+  }
+  @media (min-width: 1000px) and (min-height: 650px) {
+    .sideHorizontalMenu {
+      height: 135px;
+      width: 600px;
+    }
+  }
+
+  .done-word {
+    background-color: #FFF4EF;
+    padding: 5px 18px;
+    border-radius: 10px;
+    border: 1px solid #902c15;
+    color: #902c15;
+    box-shadow: 0 0 0 1px #FFF4EF;
+    text-shadow: none;
+    font-size: 2rem;
+    line-height: 2rem;
+  }
+
+  .done-word_null {
+    padding: 0;
+    width: 0;
+    height: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .action-block_landscapeDoneWord {
+    min-height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (min-width: 1000px) {
+    .action-block__done-word {
+      margin-bottom: 10px;
+    }
+    .action-block__done-word .done-word {
+      font-size: 2.8rem;
+      line-height: 2.8rem;
+    }
+
+  }
+
+  //Туториал
+  .switchSoundsTutorial svg, .switchSoundsTutorial rect {
+    fill: $mainColor !important;
+  }
+
+  .switchSoundsTutorial path {
+    stroke: $mainColor !important;
+  }
+
+  .cloudHint::after {
+    background: url(../assets/bgNew2024/newYearSquirrel.png) center center no-repeat;
+    background-size: 100%;
+    transform: translateY(-50%);
+    left: -104px;
+    top: 43%;
+  }
+
+  @media (min-width: 1000px) {
+    .cloudHint::after {
+      left: -186px;
+      top: 41%;
+    }
+    .bottomHorizontalMenu {
+      height: 80px;
+      width: 600px;
+      left: 50%;
+      transform: translateX(-50%);
+      justify-content: space-between;
+    }
+  }
+
+  .bg-star1 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -2px -2px;
+  }
+
+  .bg-star2 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -66px -2px;
+  }
+
+  .bg-star4 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -2px -66px;
+  }
+
+  .bg-star3 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -66px -66px;
+  }
+
+  .bg-star5 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -130px -2px;
+  }
+
+  .bg-star6 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -130px -66px;
+  }
+
+  .bg-star8 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -2px -130px;
+  }
+
+  .bg-star7 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -66px -130px;
+  }
+
+  .bg-star9 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -130px -130px;
+  }
+
+  .bg-star10 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -194px -2px;
+  }
+
+  .bg-star11 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -194px -66px;
+  }
+
+  .bg-star14 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -194px -130px;
+  }
+
+  .bg-star13 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -2px -194px;
+  }
+
+  .bg-star12 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -66px -194px;
+  }
+
+  .bg-star18 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -130px -194px;
+  }
+
+  .bg-star21 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -194px -194px;
+  }
+
+  .bg-star22 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -258px -2px;
+  }
+
+  .bg-star20 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -258px -66px;
+  }
+
+  .bg-star15 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -258px -130px;
+  }
+
+  .bg-star16 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -258px -194px;
+  }
+
+  .bg-star17 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -2px -258px;
+  }
+
+  .bg-star24 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -66px -258px;
+  }
+
+  .bg-star25 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -130px -258px;
+  }
+
+  .bg-star19 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -194px -258px;
+  }
+
+  .bg-star23 {
+
+    background: url(../assets/bgNew2024/css_sprites.png) -258px -258px;
+  }
+  .bg-star{
+    width: 60px;
+    height: 60px;
+    transform: scale(0.28333333);
+    transform-origin: top left;
+  }
+  .bg-star_main-wrapper{
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 2px;
+  }
+  .bg-star_main{
+    transform: scale(0.33333) !important;
+    transform-origin: top left !important;
+  }
+
+  @media (min-width: 1000px) {
+    .levelsTop {
+      width: 393px;
+      height: 91px;
+    }
+    .levelsTop__allStars {
+      padding-top: 13px;
+      height: auto;
+      align-items: center;
+      justify-content: center;
+    }
+    .levels .level_star, .levels .menu-star, .menu__level .level_star {
+      width: 25px;
+      height: 25px;
+    }
+    .levels__stars {
+      bottom: -34px;
+    }
+    .level {
+      margin-bottom: 40px !important;
+    }
+    .menu__level .levels__stars {
+      bottom: -23px;
+    }
+    .levels .bg-star, .menu__level .bg-star{
+      transform: scale(0.416666666666667);
+      transform-origin: top left;
+    }
+    .bg-star_main-wrapper{
+      width: 30px !important;
+      height: 30px !important;
+    }
+    .bg-star_main{
+      transform: scale(0.5) !important;
+      transform-origin: top left !important;
+    }
+
+  }
+
+  @media (orientation: portrait) and (max-height: 600px){
+    .levels .level_star,  .levels .menu-star{
+      width: 13px;
+      height: 13px;
+    }
+   .levels .bg-star{
+     transform: scale(0.216666666666667);
+     transform-origin: top left;
+   }
+    .levels__stars{
+      bottom: -19px;
+    }
+    .level{
+      margin-bottom: 20px !important;
+    }
+  }
+
+}
+
+@media (orientation: portrait) {
+  #app.chosenAppBg6, .chosenAppBg6 .game, .chosenAppBg6 .levels {
+    background-image: url(../assets/bgNew2024/bgNew2024.png);
+  }
+}
+
+
+

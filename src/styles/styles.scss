@@ -69,6 +69,12 @@
   font-weight: 600;
   font-style: normal;
 }
+@font-face {
+  font-family: 'LobsterTwo';
+  src: url('../assets/bgNew2024/LobsterTwo-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 html,body
 {
   width:100%;
@@ -861,7 +867,7 @@ html,body
   margin-right: 4px;
 }
 .menu__level_stars .level_star:last-child{
-  margin-right: 0;
+  margin-right: 0 !important;
 }
 .menu__level .level_star{
   background: url(../assets/empty-star.png) center center no-repeat;
@@ -2027,6 +2033,9 @@ b{
 .chosenBg5{
   background-image: url(../assets/settings/bg5.png);
 }
+.chosenBg6{
+  background-image: url(../assets/settings/bg6.png);
+}
 .changeLeft, .changeRight{
   width: 20px;
   height: 39px;
@@ -2841,8 +2850,8 @@ b{
   //top: 10px;
   transform: translateY(-50%);
 
-  width: 45px;
-  height: 45px;
+  width: 55px;
+  height: 55px;
   //background: url(../assets/eventIcon.png) center center no-repeat, rgba(255, 255, 255, 0.9);
   border-radius: 50%;
   background-size: 29%;
@@ -2865,18 +2874,18 @@ b{
     filter: blur(15px);
     background: linear-gradient(
                     to left,
-                    #B4361A,
-                    #FF5A36,
-                    #9B2308,
-                    #bd4025,
-                    #ff2d00,
-                    #bd4025,
-                    #9B2308,
-                    #FF5A36,
-                    #B4361A
+                    #1C43EA,
+                    #848FF6,
+                    #A7C6F9,
+                    #BBE1FB,
+                    #6E42F5,
+                    #5489F6,
+                    #3758F4,
+                    #7064F5,
+                    #8BB8F8
     );
     background-size: 200% 200%;
-    animation: animateGlow 2s linear infinite;
+    animation: animateGlow 3s linear infinite;
   }
 }
 .eventIcon{
@@ -2886,7 +2895,7 @@ b{
 
   width: 100%;
   height: 100%;
-  background: url(../assets/sq.png) center center no-repeat;
+  background: url(../assets/bgNew2024/newYearIcon.png) center center no-repeat;
   //border-radius: 50%;
   background-size: 100%;
 }
@@ -2951,11 +2960,16 @@ b{
     margin: 0;
   }
 }
-
+.updateText{
+  font-size: 2.1rem;
+}
 @media (min-width: 1000px){
   .eventIcon-wrapper{
-    width: 75px;
-    height: 75px;
+    width: 85px;
+    height: 85px;
+  }
+  .updateText{
+    font-size: 2.3rem;
   }
 }
 @media (orientation: portrait){
@@ -3362,7 +3376,7 @@ b{
     align-items: center;
   }
   .action-block_landscapeDoneWord{
-    display: none;
+    display: none !important;
   }
   .menu__tip{
     width: 43px;
@@ -3525,23 +3539,61 @@ b{
 }
 .timeToShowNextAdv{
   position: absolute;
-  bottom: -42px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: -47px;
+  left: 6px;
 
 
-  width: 250px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   background-color: white;
-  color: black;
-  font-size: 1.5rem;
-  border-radius: 10px;
+
   border: 1px solid black;
 
-  box-shadow: 0 0 3px 2px rgba(0,0,0,0.4);
+  //box-shadow: 0 0 3px 2px rgba(0,0,0,0.4);
+}
+.timeToShowNextAdv__time{
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+
+  color: black;
+  font-size: 1.3rem;
+  line-height: 1.3rem;
+
+  background-color: white;
+
+  border: 1px solid black;
+  border-radius: 50%;
+
+}
+
+@media (min-width: 1000px){
+  .timeToShowNextAdv{
+    bottom: -57px;
+    left: 8px;
+
+
+    width: 55px;
+    height: 55px;
+  }
+  .timeToShowNextAdv__time{
+    width: 25px;
+    height: 25px;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
 }
