@@ -1726,10 +1726,43 @@ function decompressDataObj(compressedWords){
 
 	return data;
 }
+function compressDoneLevels(levels){
+	let newLevels = [];
+	let stringStart = false;
+	levels.forEach((level, index) => {
+		if(level+1 === levels[index+1]){
+			if(stringStart === false){
+				stringStart = level;
+			}
+		}else{
+			if(stringStart !== false){
+				newLevels.push(stringStart + '-' + level);
+				stringStart = false;
+			}else{
+				newLevels.push(level);
+			}
+		}
+	})
+	return newLevels;
+}
+function decompressDoneLevels(levels){
+	let newLevels = [];
+	levels.forEach((level)=>{
+		if(Number.isInteger(level)){
+			newLevels.push(level);
+		}else{
+			let startAndEnd = level.split('-');
+			for(let i = Number(startAndEnd[0]); i <= Number(startAndEnd[1]); i++){
+				newLevels.push(i);
+			}
+		}
+	})
+	return newLevels
+}
 
 function compressData(data, isLocationData){
 	//Если заполнены все слова, уровень - 1
-	if(data === null || data === undefined) return;
+	if(data === null || data === undefined) return {};
 
 	let newData =  replaceLevelsToOne(data, isLocationData);
 	if(!isLocationData){
@@ -1749,6 +1782,7 @@ function decompressData(data, isEnglishVersion){
 
 
 	if(newData.doneLevels !== undefined){
+		newData.doneLevels = decompressDoneLevels(newData.doneLevels);
 		if(isEnglishVersion){
 			if(newData.newCompress){
 				newData = englishNewDecompress(newData);
@@ -1781,7 +1815,7 @@ function newCompress(compressedWords){
 		if(el === 'doneLevels') return;
 		data[el] = findMaxInArr(compressedWords[el]);
 	});
-	data.doneLevels = compressedWords.doneLevels;
+	data.doneLevels = compressDoneLevels(compressedWords.doneLevels);
 	data.newCompress = true;
 	data.notStringed = true;
 	return data;
@@ -1978,7 +2012,7 @@ if(chosenBackground){
 	params({'newChosenBG': chosenBackground});
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = 6;
+	chosenBackground = -3;
 	setToStorage('chosenBackground', chosenBackground);
 	// deleteBlockBg = true;
 }
@@ -2169,9 +2203,9 @@ if(allDoneWords){
 	tips = 10;
 	isRules = true;
 	sounds = true;
-	isMusic = true;
-	setToStorage('sounds', 'true');
-	setToStorage('isMusic', 'true');
+	isMusic = false;
+	setToStorage('sounds', sounds);
+	setToStorage('isMusic', isMusic);
 	allWords.forEach((key => {
 		allDoneWords[key] = [];
 	}));
@@ -3106,15 +3140,14 @@ const NewAudioContext = (function() {
 				source.loop = this.settings.loop;
 				source.start(0);
 
-				if(!this.manager.playingSounds.hasOwnProperty(this.url)) {
-					this.manager.playingSounds[this.url] = [];
-				}
+				this.manager.playingSounds[this.url] = [];
 				this.manager.playingSounds[this.url].push(source);
 				return true;
 			}
 			return false;
 		},
 		stop: function () {
+			console.log('stopSound');
 			this.manager.stopSoundWithUrl(this.url);
 		},
 		getVolume: function () {
@@ -5190,7 +5223,7 @@ export default {
 					this.getLocationLevel(this.lvl+1);
 				}
 			}else if(this.testShowNextLevel()){
-				if(this.lvl+1 === allWords.length){
+				if((this.lvl+1 === allWords.length) || (notRussianGame && this.lvl+1 === allWordsEN.length)){
 					this.showLastLevelInfo = true;
 					return;
 				}
