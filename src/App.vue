@@ -861,7 +861,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button" >
-							<div class="shop__lastPrice">20</div>
+<!--							<div class="shop__lastPrice">20</div>-->
 							{{getItemPrice(0)}}
 						</div>
 					</div>
@@ -879,7 +879,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-							<div class="shop__lastPrice">89</div>
+<!--							<div class="shop__lastPrice">89</div>-->
 							{{getItemPrice(1)}}
 						</div>
 					</div>
@@ -897,7 +897,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-							<div class="shop__lastPrice">149</div>
+<!--							<div class="shop__lastPrice">149</div>-->
 							{{getItemPrice(2)}}
 						</div>
 					</div>
@@ -913,7 +913,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-							<div class="shop__lastPrice">299</div>
+<!--							<div class="shop__lastPrice">299</div>-->
 							{{getItemPrice(3)}}
 					</div>
 				</div>
@@ -928,13 +928,13 @@
 
 						</div>
 						<div class="shop__cart__name shop__name_advert">
-							<p class="shop__tipsCount shop__tipsCount_advert">500 {{notRussian ? 'hints' : 'подсказок'}}</p>
-							+ отключение рекламы
+							<p class="shop__tipsCount shop__tipsCount_advert">{{notRussian ? 'No adverts' : 'Отключение рекламы'}}</p>
+<!--							+ отключение рекламы-->
 
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-						<div class="shop__lastPrice">499</div>
+<!--						<div class="shop__lastPrice">499</div>-->
 						{{getItemPrice(4)}}
 					</div>
 				</div>
@@ -955,7 +955,7 @@
 			<h2 class="rules__menu">
 				{{notRussian ? 'Successful purchase' : 'Покупка совершена'}}
 			</h2>
-			{{notRussian ? 'Hints are credited to your account. Thank you for your purchase! Have a good game!' : 'Вы успешно купили подсказки, они уже зачислены на ваш счёт! Большое спасибо за покупку и удачной Вам игры!'}}
+			{{notRussian ? 'Thank you for your purchase! Have a good game!' : 'Вы успешно совершили оплату, покупка уже зачислена на ваш аккаунт! Большое спасибо и удачной Вам игры!'}}
 		</div>
 
 
@@ -2973,8 +2973,8 @@ function consumePurchase(purchase) {
 	}
 }
 //const itemsPrices = [20, 89, 149, 299, 499];
-//const itemsPrices = [14, 59, 109, 209, 349]];
-const itemsPrices = [20, 89, 149, 299, 499];
+//const itemsPrices = [14, 59, 109, 209, 249]];
+const itemsPrices = [20, 89, 149, 299, 349];
 function buyTips(item) {
 	if(payments && playerGame){
 		let purchaseItem = 'cart_item' + item;
@@ -2984,13 +2984,13 @@ function buyTips(item) {
 				if(item === 3) TIPS = allTips[1];
 				if(item === 4) TIPS = allTips[2];
 				if(item === 5) TIPS = allTips[3];
-				if(item === 6) TIPS = allTips[4];
-				let it = 'newBuy-' + item;
-				params({[it]: 1});
-				document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
-				document.querySelector('.levels').dispatchEvent(new CustomEvent("disableAds"));
+				// if(item === 6) TIPS = allTips[4];
+				params({'buyItem': item});
 				if(item !== 6){
+					document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 					payments.consumePurchase(purchase.purchaseToken);
+				}else{
+					document.querySelector('.levels').dispatchEvent(new CustomEvent("disableAds"));
 				}
 
 
@@ -5125,10 +5125,9 @@ export default {
 			if(this.isMusic){
 				musicSound.play();
 			}else{
-				console.log('music');
 				musicSound.stop();
 			}
-			setToStorage('isMusic', this.isSounds);
+			setToStorage('isMusic', this.isMusic);
 		},
 		switchSounds(e){
 			this.isSounds = e.target.checked;
