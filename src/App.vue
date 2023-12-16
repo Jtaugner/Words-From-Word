@@ -2984,13 +2984,12 @@ function buyTips(item) {
 				if(item === 3) TIPS = allTips[1];
 				if(item === 4) TIPS = allTips[2];
 				if(item === 5) TIPS = allTips[3];
-				// if(item === 6) TIPS = allTips[4];
+				if(item === 6) TIPS = 0;
 				params({'buyItem': item});
+				document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
+				document.querySelector('.levels').dispatchEvent(new CustomEvent("disableAds"));
 				if(item !== 6){
-					document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 					payments.consumePurchase(purchase.purchaseToken);
-				}else{
-					document.querySelector('.levels').dispatchEvent(new CustomEvent("disableAds"));
 				}
 
 
