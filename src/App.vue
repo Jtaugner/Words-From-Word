@@ -27,7 +27,7 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-					<div class="eventIcon-wrapper" @click="getInfoAboutNewUpdate()"  v-if="!notRussian && chosenBgRight !== 6 "><div class="eventIcon"></div></div>
+<!--					<div class="eventIcon-wrapper" @click="getInfoAboutNewUpdate()"  v-if="!notRussian && chosenBgRight !== 6 "><div class="eventIcon"></div></div>-->
 					<!--@click="goToGetLocations"-->
 					<div
 						class="levelsTop__allStars"
@@ -429,13 +429,14 @@
 
 		<div class="game" v-show="content">
 			<div class="blur"></div>
+			<div class="blackoutShowNextAdv" v-show="isShowTimeToShowNextAdv"></div>
+			<div class="timeToShowNextAdv" v-show="isShowTimeToShowNextAdv">
+				<svg class="noAdvert__advert" width="36" height="34" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.133268 7.31339C0.0458686 7.33307 -0.0127351 7.42047 0.00237327 7.50861L1.042 13.5734C1.0571 13.6616 1.1402 13.7171 1.2276 13.6974L2.59532 13.3894V33.8381C2.59532 33.9275 2.66795 34 2.75755 34H35.8378C35.9274 34 36 33.9275 36 33.8381V11.1405C36 11.0511 35.9274 10.9786 35.8378 10.9786H13.302L33.6892 6.38798C33.7766 6.3683 33.8352 6.2809 33.8201 6.19276L32.7805 0.127919C32.7653 0.0397812 32.6822 -0.0157149 32.5948 0.00396503L0.133268 7.31339ZM15.144 26.46L24.6242 22.6755L15.144 18.891V26.46Z" fill="url(#paint0_linear_48_33541)"/><defs><linearGradient id="paint0_linear_48_33541" x1="36" y1="-3" x2="3" y2="34" gradientUnits="userSpaceOnUse"><stop/><stop offset="0.994865" stop-color="#5E5E5E"/></linearGradient></defs></svg>
+				<div class="timeToShowNextAdv__time">{{timeToShowNextAdv}}</div>
+			</div>
 
 			<header class="menu" :class="[isTutorial ? 'tutorialMenu' : '', verticalPayload ? 'menu_verticalPayload': '']">
-				<div class="timeToShowNextAdv" v-show="isShowTimeToShowNextAdv">
-					<svg class="noAdvert__advert" width="36" height="34" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.133268 7.31339C0.0458686 7.33307 -0.0127351 7.42047 0.00237327 7.50861L1.042 13.5734C1.0571 13.6616 1.1402 13.7171 1.2276 13.6974L2.59532 13.3894V33.8381C2.59532 33.9275 2.66795 34 2.75755 34H35.8378C35.9274 34 36 33.9275 36 33.8381V11.1405C36 11.0511 35.9274 10.9786 35.8378 10.9786H13.302L33.6892 6.38798C33.7766 6.3683 33.8352 6.2809 33.8201 6.19276L32.7805 0.127919C32.7653 0.0397812 32.6822 -0.0157149 32.5948 0.00396503L0.133268 7.31339ZM15.144 26.46L24.6242 22.6755L15.144 18.891V26.46Z" fill="url(#paint0_linear_48_33541)"/><defs><linearGradient id="paint0_linear_48_33541" x1="36" y1="-3" x2="3" y2="34" gradientUnits="userSpaceOnUse"><stop/><stop offset="0.994865" stop-color="#5E5E5E"/></linearGradient></defs></svg>
-					<div class="timeToShowNextAdv__time">{{timeToShowNextAdv}}</div>
 
-				</div>
 				<button
 					class="menu__button-back menuItem"
 					@click="backMenu"
@@ -1088,7 +1089,7 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Новый год!' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Новая локация!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
@@ -1096,8 +1097,8 @@
 			</template>
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
-					Дорогие игроки! Предлагаем вам окунуться в атмосферу Нового года, применив новое оформление и включив музыку!
-					<div class="rules__goBg" @click="goChangeBgFromUpdate">Попробовать!</div>
+					Уважаемые игроки! Предлагаем вам опробовать новую локацию - "Знаменитые писатели!
+					<div class="rules__goBg" @click="goToGetLocations">К локациям</div>
 				</div>
 
 
@@ -1888,7 +1889,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-40";
+const lastVersion = "ver-41";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2080,7 +2081,8 @@ let wordsForReplace = {
 	'напрокат': 'патронка',
 	'спидофобка': 'подсобка',
 	'гренландия': 'гардения',
-	'морфинист': 'трином'
+	'морфинист': 'трином',
+	'кокаинист': 'скотник'
 
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
@@ -2614,6 +2616,22 @@ function update() {
 	if (document.querySelector('.levels')) {
 		document.querySelector('.levels').dispatchEvent(new CustomEvent("updateAll"));
 	}
+	try{
+		YSDK.getPayments({ signed: false }).then(_payments => {
+			_payments.getCatalog().then(catalog => paymentCatalog = catalog );
+			// Покупки доступны.
+			payments = _payments;
+			payments.getPurchases().then(purchases => {
+				purchases.forEach(consumePurchase);
+			});
+		}).catch(err => {
+			console.log(err);
+			try{
+				params({'getPayments-error': err.toString().slice(0,150)});
+			}catch(ignored){}
+		});
+	}catch(e){}
+
 
 }
 function canShowAdv() {
@@ -2939,19 +2957,6 @@ function initPlayer(ysdk) {
 			params({'player-error': e.toString().slice(0,250)});
 		}catch(ignored){}
 		update();
-	});
-	ysdk.getPayments({ signed: false }).then(_payments => {
-		_payments.getCatalog().then(catalog => paymentCatalog = catalog );
-		// Покупки доступны.
-		payments = _payments;
-		payments.getPurchases().then(purchases => {
-			purchases.forEach(consumePurchase);
-		});
-	}).catch(err => {
-		console.log(err);
-		try{
-			params({'getPayments-error': err.toString().slice(0,150)});
-		}catch(ignored){}
 	});
 }
 let TIPS = 0;
@@ -3454,10 +3459,11 @@ let translatedLocationsNames = {
 	farm: 'Моя деревня',
 	halloween: 'Хэллоуин',
 	valentines: 'День Валентина',
-	games: 'День Видеоигр'
+	games: 'День Видеоигр',
+	writers: 'Знаменитые писатели'
 }
 
-let defaultLocations = ['house'];
+let defaultLocations = ['house', 'writers'];
 
 // function getBanner(){
 // 	try{
@@ -3786,7 +3792,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['games', 'valentines','halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['writers', 'games', 'valentines','halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -5262,7 +5268,7 @@ export default {
 			// if(this.animWordStart !== '') return;
 			ev.stopPropagation();
 			ev.preventDefault();
-			if(this.notShowLetters.includes(this.letters[index])) return;
+			if(this.notShowLetters.includes(this.letters[index]) || this.isShowTimeToShowNextAdv) return;
 			this.clickSound();
 			if(this.isTutorial){
 				this.nextStep();

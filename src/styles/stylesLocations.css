@@ -680,6 +680,10 @@
   color: #C05252;
 }
 
+.writersLocation .popUp__locationName {
+  color: #7251a3;
+}
+
 /*Волшебство сказок*/
 .gameLocationWrapper-farm::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
   background-color: #009C63;
@@ -1019,7 +1023,7 @@
 
 .popUp__locationPicture {
   position: relative;
-  background: url(../assets/locations/closedLocation.png) center center no-repeat;
+  background: url(../assets/locations/default/house.png) center center no-repeat;
   background-size: 100%;
   width: 100%;
   height: 184px;
