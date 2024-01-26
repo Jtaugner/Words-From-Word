@@ -29,6 +29,7 @@
 				<div class="levelsTop">
 <!--					<div class="eventIcon-wrapper" @click="getInfoAboutNewUpdate()"  v-if="!notRussian && chosenBgRight !== 6 "><div class="eventIcon"></div></div>-->
 					<!--@click="goToGetLocations"-->
+					<div class="openBgChanger" @click="toggleBgChanger"></div>
 					<div
 						class="levelsTop__allStars"
 						:class="[notRussian ? 'levelsTop__allStars_withoutLB' : '']"
@@ -169,6 +170,26 @@
 				'Complete the level' + closedLevel + ' by at least one star to unlock the level ' + (closedLevel+1) + '. Good luck!' :
 				'Пройдите уровень ' + closedLevel + ' хотя бы на одну звезду, чтобы открыть уровень ' + (closedLevel+1) + '. Удачной игры!'
 				}}
+			</div>
+
+		</div>
+
+		<div class="rules-blackout" v-if="showBgChanger" @click="toggleBgChanger"></div>
+
+		<div class="rules bgChanger" v-if="showBgChanger">
+			<cross-vue @click.native="toggleBgChanger()" ></cross-vue>
+			<h2 class="rules__menu">
+				{{notRussian ? 'Change design' : 'Смена оформления'}}
+			</h2>
+
+			<div class="changeDesign">
+				<div class="changeLeft" @click="changeBgLeft"></div>
+
+				<div class="chosenBg" :class="'chosenBg' + chosenBg">
+					<div class="closedBg" v-if="cantShowBg">Фон откроется на {{bgLvlsOpen[chosenBg-1]+1}} уровне</div>
+				</div>
+
+				<div class="changeRight" @click="changeBgRight"></div>
 			</div>
 
 		</div>
@@ -584,7 +605,25 @@
 						<div class="done-word" :class="[isBadWord ? 'badWord' : '', wordFromLetter.length === 0 ? 'done-word_null' : '']" >{{wordFromLetter}}</div>
 					</div>
 
-					<button class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord"></button>
+					<div class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord">
+						<svg xmlns="http://www.w3.org/2000/svg" class="sendButtonIcon"
+							 width="819.000000pt" height="786.000000pt" viewBox="0 0 819.000000 786.000000">
+
+							<g transform="translate(0.000000,786.000000) scale(0.100000,-0.100000)"
+							   fill="#000000" stroke="none">
+								<path d="M7870 7854 c-49 -10 -154 -46 -199 -69 -51 -25 -228 -150 -361 -254
+-1174 -915 -2920 -2984 -4618 -5475 -41 -59 -75 -106 -77 -104 -1 1 -191 316
+-420 698 -434 722 -881 1461 -1018 1685 -90 146 -159 220 -257 278 -57 33 -72
+37 -131 37 -260 0 -525 -187 -677 -478 -74 -144 -104 -246 -106 -362 l-1 -95
+983 -1750 c871 -1551 989 -1756 1035 -1800 174 -166 478 -207 844 -115 63 16
+139 40 171 55 139 64 372 247 479 377 55 66 111 177 685 1358 680 1399 793
+1611 1261 2360 168 270 303 469 500 740 592 814 1640 2082 2067 2500 113 111
+160 183 160 247 0 60 -39 112 -109 148 -34 17 -160 28 -211 19z"/>
+							</g>
+						</svg>
+
+
+					</div>
 
 				</div>
 
@@ -608,7 +647,23 @@
 							<div class="action-block__letter action-block__letter_notSelected" v-show="notShowLetters.includes(letter)"></div>
 							{{letter}}
 						</div>
-						<button class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord"></button>
+						<div class="action-block__button-send" :class="[selectSend ? 'tutorialSelected' : '']" @click="sendWord">
+							<svg xmlns="http://www.w3.org/2000/svg" class="sendButtonIcon"
+								 width="819.000000pt" height="786.000000pt" viewBox="0 0 819.000000 786.000000">
+
+								<g transform="translate(0.000000,786.000000) scale(0.100000,-0.100000)"
+								   fill="#000000" stroke="none">
+									<path d="M7870 7854 c-49 -10 -154 -46 -199 -69 -51 -25 -228 -150 -361 -254
+-1174 -915 -2920 -2984 -4618 -5475 -41 -59 -75 -106 -77 -104 -1 1 -191 316
+-420 698 -434 722 -881 1461 -1018 1685 -90 146 -159 220 -257 278 -57 33 -72
+37 -131 37 -260 0 -525 -187 -677 -478 -74 -144 -104 -246 -106 -362 l-1 -95
+983 -1750 c871 -1551 989 -1756 1035 -1800 174 -166 478 -207 844 -115 63 16
+139 40 171 55 139 64 372 247 479 377 55 66 111 177 685 1358 680 1399 793
+1611 1261 2360 168 270 303 469 500 740 592 814 1640 2082 2067 2500 113 111
+160 183 160 247 0 60 -39 112 -109 148 -34 17 -160 28 -211 19z"/>
+								</g>
+							</svg>
+						</div>
 					</div>
 				</div>
 
@@ -2082,7 +2137,8 @@ let wordsForReplace = {
 	'спидофобка': 'подсобка',
 	'гренландия': 'гардения',
 	'морфинист': 'трином',
-	'кокаинист': 'скотник'
+	'кокаинист': 'скотник',
+	'наркомафия': 'марафон'
 
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
@@ -2483,13 +2539,14 @@ let testMobile = false;
 try{
 	testMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
 }catch(e){}
+let advErrorsTimes = 0;
 if(window.YaGames){
 	window.YaGames.init({
 		adv: {
 			onAdvClose: wasShown => {
-				if(!wasShown) {
-					advTime = true;
-				}
+				// if(!wasShown) {
+				// 	advTime = true;
+				// }
 
 				canShowAdv();
 			}
@@ -2558,7 +2615,7 @@ if(window.YaGames){
 						switchOnMainMusic();
 						musicStoppedByAdv = false;
 						if(!wasShow){
-							advTime = true;
+							advTime = advErrorsTimes <= 3;
 						}else{
 							// if(isPhone){
 							// 	params({'showMobileAdv': 1});
@@ -2583,7 +2640,9 @@ if(window.YaGames){
 						canShowAdv();
 					},
 					onError: function (e){
-						advTime = true;
+						advErrorsTimes++
+
+						advTime = advErrorsTimes <= 3;
 						canShowAdv();
 						console.log('error adv')
 						console.log(e);
@@ -3842,7 +3901,8 @@ export default {
 			isShowTimeToShowNextAdv: false,
 			randomStars: [],
 			randomLevelStars: [],
-			isMusic: false
+			isMusic: false,
+			showBgChanger: false
 		}
 	},
 	computed:{
@@ -3890,6 +3950,10 @@ export default {
 		},
 	},
 	methods:{
+		toggleBgChanger(){
+			this.chosenBg = this.chosenBgRight;
+			this.showBgChanger = !this.showBgChanger;
+		},
 		switchOnMusic(){
 			this.isMusic = true;
 		},

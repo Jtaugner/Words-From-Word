@@ -92,7 +92,7 @@ html, body {
   font-family: Ubuntu-Light, sans-serif;
 }
 
-.svgIcon {
+.svgIcon, .sendButtonIcon {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -100,6 +100,11 @@ html, body {
   width: 55%;
   height: 55%;
   fill: #66196C;
+}
+
+.sendButtonIcon {
+  width: 65%;
+  height: 65%;
 }
 
 .menu__button-back .svgIcon, .menu__tip .svgIcon {
@@ -744,7 +749,8 @@ html, body {
 .menu__button-back:after, .menu__tip:after,
 .prev-location:after, .next-location:after, .switchSettings:after,
 .popUp__close:after, .switchShowLocation:after, .switchShop:after,
-.action-block__button-send:after, .endGame__menu:after {
+.action-block__button-send:after, .endGame__menu:after,
+.openBgChanger:after, .bgChanger .changeLeft:after, .bgChanger .changeRight:after {
   position: absolute;
   content: "";
   top: -10px;
@@ -1189,8 +1195,7 @@ html, body {
   margin-left: 25px;
   width: 43px;
   height: 43px;
-  background: url(../assets/sendWord.png) center center no-repeat, white;
-  background-size: 70%;
+  background-color: white;
   border-radius: 15%;
   cursor: pointer;
   outline: none;
@@ -2242,7 +2247,7 @@ b {
   .levelsTop {
     width: 100%;
     height: 60px;
-    padding: 8px 8px 0 8px;
+    margin: 8px 0;
   }
 
   .levelsTop .switchShowLocation, .levelsTop .leaderBoard {
@@ -3562,6 +3567,48 @@ b {
   background-color: white;
   border: 1px solid black;
   border-radius: 50%;
+}
+
+.openBgChanger {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  background: url(../assets/bgChanger.png) center center no-repeat;
+  background-size: 100%;
+  cursor: pointer;
+}
+
+.chosenAppBg6 .openBgChanger {
+  right: -50px;
+}
+
+.bgChanger .changeLeft, .bgChanger .changeRight {
+  position: relative;
+  width: 25px;
+  height: 48.75px;
+}
+.bgChanger .changeDesign {
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.bgChanger .chosenBg {
+  width: 277.5px;
+  height: 156px;
+  margin: 0 10px;
+}
+
+@media (min-width: 1000px) {
+  .openBgChanger {
+    width: 70px;
+    height: 70px;
+  }
+
+  .chosenAppBg6 .openBgChanger {
+    right: -80px;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */
