@@ -2,6 +2,8 @@ const { promises: fsp } = require('fs');
 
 var fs = require('fs');
 var path = require('path');
+var archiver = require('archiver');
+
 
 
 let notIncludesFiles = ['.DS_Store', 'manifest-icon.png', 'yandex-manifest.json', 'precache-manifest', 'asset-manifest', 'sw.js', 'service-worker.js'];
@@ -104,3 +106,25 @@ console.log('sw version:', version);
 
 fsp.writeFile(path.join(__dirname, 'dist/sw.js'), contentSW);
 fsp.writeFile(path.join(__dirname, 'dist/yandex-manifest.json'), contentManifest);
+
+var output = fs.createWriteStream(path.join(__dirname, 'archiveBuild/archive.zip'));
+var archive = archiver('zip');
+
+output.on('close', function () {
+    console.log(archive.pointer() + ' total bytes');
+    console.log('archiver has been finalized and the output file descriptor has closed.');
+});
+
+archive.on('error', function(err){
+    throw err;
+});
+
+archive.pipe(output);
+
+// append files from a sub-directory, putting its contents at the root of archive
+archive.directory(path.join(__dirname, 'dist/'), false);
+
+// // append files from a sub-directory and naming it `new-subdir` within the archive
+// archive.directory('subdir/', 'new-subdir');
+
+archive.finalize();

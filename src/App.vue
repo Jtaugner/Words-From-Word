@@ -14,6 +14,7 @@
 			 @disableAds="disableAds()"
 			 @changeOrientation="changeOrientation()"
 			 @switchOnMusic="switchOnMusic()"
+			 @switchPause="switchPause()"
 			 v-show="levels" :class="[levelsAnim ? 'levelsAnim' : '']">
 			<div class="blur" v-if="chosenBgRight === 6"></div>
 
@@ -27,7 +28,12 @@
 
 			<div class="levels__property">
 				<div class="levelsTop">
-<!--					<div class="eventIcon-wrapper" @click="getInfoAboutNewUpdate()"  v-if="!notRussian && chosenBgRight !== 6 "><div class="eventIcon"></div></div>-->
+					<div class="eventIcon-wrapper" @click="openGameWindowForTwo()"  v-if="!notRussian">
+<!--						<div class="eventIcon"></div>-->
+						<div class="menuItem eventIconItem">
+							<svg class="svgIcon" width="27" height="18" viewBox="0 0 27 18" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.0051 0.976039C4.77498 1.07044 4.27056 1.36699 4.09383 1.79801C4.05718 1.88739 3.95745 2.15148 3.81734 2.53971C3.88292 2.50457 3.94214 2.4768 3.9907 2.45689C4.75968 2.11454 6.5378 1.42983 7.4985 1.42983C8.50045 1.42983 9.16141 2.34832 9.65116 3.02889C9.74839 3.164 9.83887 3.28974 9.92393 3.39705C10.3348 3.91532 10.98 4.08175 11.2512 4.10018C12.4916 4.10808 15.0845 4.08912 15.5332 3.95007C15.7842 3.87233 16.1489 3.44206 16.5631 2.95344C17.0749 2.34971 17.6622 1.65689 18.2036 1.42983C19.1143 1.04792 21.2131 1.9906 22.0752 2.37904C21.9832 2.14717 21.9024 1.95187 21.8361 1.79801C21.7509 1.61612 21.4564 1.19707 20.9593 0.976039C20.9178 0.957577 20.8699 0.93597 20.8163 0.911827C20.0684 0.574651 18.2235 -0.257093 17.4247 0.0780877C16.9515 0.276602 16.4383 0.882331 15.9911 1.41017C15.6292 1.83737 15.3105 2.21355 15.0912 2.28152C14.6991 2.40309 12.4334 2.41967 11.3495 2.41276C11.1125 2.39664 10.5487 2.25113 10.1897 1.79801C10.1154 1.70419 10.0363 1.59426 9.95134 1.47613C9.52339 0.881111 8.94583 0.0780877 8.0703 0.0780877C7.23082 0.0780877 5.67705 0.676722 5.0051 0.976039Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M3.9908 2.4567C3.72745 2.56468 3.15019 2.90387 2.94794 3.39686C2.69512 4.01309 -0.180638 11.8898 0.00897234 14.3627C0.198583 16.8355 2.2843 18.1628 3.13755 17.7204C3.9908 17.2779 4.79664 16.6538 7.27738 13.7701C7.82251 13.5252 8.31234 13.4304 8.87327 13.4304H17.5717C17.9456 13.4225 18.8263 13.5489 19.3572 14.1178C19.4691 14.2377 19.6321 14.429 19.8311 14.6624C20.8118 15.813 22.6671 17.9896 23.5997 17.7204C23.6435 17.7077 23.689 17.695 23.7357 17.6819C24.8853 17.3597 26.8401 16.8118 25.8987 11.5659C24.9949 7.84323 23.7577 4.56876 23.2521 3.39686C23.1546 3.18881 22.8176 2.70952 22.2487 2.4567C22.2012 2.43559 22.1464 2.41087 22.0851 2.38326C21.2292 1.9976 19.1179 1.04628 18.2037 1.42965C17.6623 1.6567 17.075 2.34952 16.5632 2.95325C16.149 3.44187 15.7843 3.87214 15.5333 3.94989C15.0846 4.08893 12.4917 4.10789 11.2513 4.09999C10.9801 4.08156 10.3349 3.91513 9.92403 3.39686C9.83897 3.28955 9.74849 3.16381 9.65126 3.0287C9.1615 2.34813 8.50055 1.42965 7.49859 1.42965C6.5379 1.42965 4.75977 2.11435 3.9908 2.4567ZM21.0305 3.86888C21.0305 4.25239 20.7196 4.56329 20.3361 4.56329C19.9526 4.56329 19.6417 4.25239 19.6417 3.86888C19.6417 3.48538 19.9526 3.17448 20.3361 3.17448C20.7196 3.17448 21.0305 3.48538 21.0305 3.86888ZM6.00001 8.00016C7.10458 8.00016 8.00001 7.10473 8.00001 6.00016C8.00001 4.89559 7.10458 4.00016 6.00001 4.00016C4.89544 4.00016 4.00001 4.89559 4.00001 6.00016C4.00001 7.10473 4.89544 8.00016 6.00001 8.00016ZM16.8211 12.2143C18.2043 12.2143 19.3256 11.093 19.3256 9.70983C19.3256 8.32667 18.2043 7.20539 16.8211 7.20539C15.4379 7.20539 14.3167 8.32667 14.3167 9.70983C14.3167 11.093 15.4379 12.2143 16.8211 12.2143ZM20.3361 7.19207C20.7196 7.19207 21.0305 6.88117 21.0305 6.49767C21.0305 6.11416 20.7196 5.80326 20.3361 5.80326C19.9526 5.80326 19.6417 6.11416 19.6417 6.49767C19.6417 6.88117 19.9526 7.19207 20.3361 7.19207ZM22.4689 5.13345C22.4689 5.50326 22.1691 5.80305 21.7993 5.80305C21.4295 5.80305 21.1297 5.50326 21.1297 5.13345C21.1297 4.76364 21.4295 4.46384 21.7993 4.46384C22.1691 4.46384 22.4689 4.76364 22.4689 5.13345ZM18.9721 5.80305C19.3419 5.80305 19.6417 5.50326 19.6417 5.13345C19.6417 4.76364 19.3419 4.46384 18.9721 4.46384C18.6023 4.46384 18.3025 4.76364 18.3025 5.13345C18.3025 5.50326 18.6023 5.80305 18.9721 5.80305ZM11.5673 9.73327C11.5673 10.9288 10.5982 11.898 9.40261 11.898C8.20707 11.898 7.23789 10.9288 7.23789 9.73327C7.23789 8.53772 8.20707 7.56855 9.40261 7.56855C10.5982 7.56855 11.5673 8.53772 11.5673 9.73327Z"/></svg>
+						</div>
+					</div>
 					<!--@click="goToGetLocations"-->
 					<div class="openBgChanger" @click="toggleBgChanger"></div>
 					<div
@@ -259,19 +265,52 @@
 		<div class="rules createGameRules" v-if="isCreateGameWindow">
 			<cross-vue @click.native="toggleIsCreateGameWindow()" ></cross-vue>
 			<h2 class="rules__menu">
-				Создание уровня
+				{{gameWindowForTwo ? 'Друг против друга' : 'Создание уровня'}}
 			</h2>
-			<div class="gameWordMistake">
-				<span v-show="gameWordMistake">Пожалуйста, введите слово от 4 до 12 букв в русской раскладке</span>
+			<div class="createGame-wrapper">
+				<template v-if="gameWindowForTwo">
+					<div class="gameForTwo__miniHeader">
+						Длина слова
+					</div>
+					<div class="form-select">
+						<select v-model="gameSelectedSize">
+							<option v-for="option in sizeOptions" :value="option.value">
+								{{ option.text }}
+							</option>
+						</select>
+					</div>
+					<div class="gameForTwo__miniHeader">
+						Время на ход
+					</div>
+					<div class="form-select">
+						<select v-model="gameSelectedTime">
+							<option v-for="option in timeOptions" :value="option.value">
+								{{ option.text }}
+							</option>
+						</select>
+					</div>
+				</template>
+				<div class="gameWordMistake" v-show="gameWordMistake">
+					<span >Пожалуйста, введите слово от 5 до 12 букв в русской раскладке</span>
+				</div>
+				<div class="levelInput-wrapper">
+					<input
+						class="createLevelInput"
+						v-model="gameWord"
+						type="text"
+						placeholder="Введите своё слово"
+					/>
+					<div class="levelInput__icon" @click="getRandomWord">
+						<svg class="svgIcon" width="21" height="21" viewBox="0 0 21 21" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M1.76337 14.8255L12.9366 3.70016C13.1735 3.46428 13.5575 3.46428 13.7944 3.70016L17.2839 7.1747C17.5208 7.41058 17.5208 7.79302 17.2839 8.0289L6.11073 19.1542C5.87384 19.3901 5.48976 19.3901 5.25286 19.1542L1.76337 15.6797C1.52648 15.4438 1.52648 15.0614 1.76337 14.8255Z"/><path d="M4.52596 19.6385L1.29214 16.4185C1.05791 16.1853 0.656847 16.316 0.606478 16.642L0.00483613 20.5359C-0.0372803 20.8085 0.202055 21.0416 0.474818 20.9937L4.31028 20.3198C4.63248 20.2631 4.75731 19.8688 4.52596 19.6385Z"/><path d="M16.4751 0.176764L14.2999 2.34262C14.0631 2.5785 14.0631 2.96094 14.2999 3.19682L17.7894 6.67136C18.0263 6.90724 18.4104 6.90724 18.6473 6.67136L20.8225 4.50551C21.0594 4.26963 21.0591 3.88689 20.8222 3.65101L17.3333 0.177057C17.0964 -0.0588234 16.712 -0.0591169 16.4751 0.176764Z"/></svg>
+					</div>
+				</div>
+				<div class="createGame__action">
+					<div class="startCreateGame startCreateGame_continue" @click="startCreateGame(true)"
+						 v-show="gameWindowForTwo ? gameForTwoState : savedMyGame">Продолжить</div>
+					<div class="startCreateGame" @click="startCreateGame(false)">Создать игру</div>
+				</div>
+
 			</div>
-			<input
-				class="createLevelInput"
-				v-model="gameWord"
-				type="text"
-				placeholder="Введите своё слово"
-			/>
-			<div class="startCreateGame" @click="startCreateGame(false)">Создать игру</div>
-			<div class="startCreateGame" @click="startCreateGame(true)" v-show="savedMyGame">Продолжить</div>
 
 		</div>
 
@@ -282,7 +321,9 @@
 			<h2 class="rules__menu">
 				Описание
 			</h2>
-			<p>Здесь Вы можете создать свой уровень из любого слова, которое придумаете.
+			<p v-if="isInfoAboutGameForTwo">Создайте уровень из любого слова и соревнуйтесь друг с другом на время!
+				Игра заканчивается, если вы отгадали все слова или один из игроков пропустил ход два раза. Удачной игры!</p>
+			<p v-else>Здесь Вы можете создать свой уровень из любого слова, которое придумаете.
 				Вы можете тратить подсказки, но не будете зарабатывать их за получение звёзд. Удачной игры!</p>
 		</div>
 
@@ -343,6 +384,22 @@
 
 		</div>
 
+
+		<div class="blurBackground gamePaused__blurBackground" v-if="gamePaused" @click="toggleGamePause"></div>
+		<div class="gamePaused" v-if="gamePaused" @click="toggleGamePause">
+			<div :class="gameForTwoState.firstPlayerMove ? '' : 'gameForTwo__player2'">
+				<div class="gameForTwo__icon"></div>
+			</div>
+			<div class="gamePaused__move" v-show="isGameTimeout">
+				Время вышло!
+			</div>
+			<div class="gamePaused__move">
+				Ход игрока #{{gameForTwoState.firstPlayerMove ? 1 : 2}}
+			</div>
+			<div class="gamePaused__continue">
+				Нажмите на экран, чтобы продолжить
+			</div>
+		</div>
 
 
 		<!--Блок с локацией-->
@@ -465,51 +522,105 @@
 				>
 					<svg class="svgIcon" width="21" height="21" viewBox="0 0 21 21" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.6255 0.700921C9.6294 0.704508 9.6354 0.704507 9.6393 0.700921L10.0169 0.353633C10.2342 0.153729 10.5685 0.153729 10.7858 0.353633L19.786 8.63225C20.2443 9.05379 20.2443 9.77702 19.786 10.1986C19.5266 10.4372 19.1783 10.5238 18.8543 10.4584V19C18.8543 20.1046 17.9589 21 16.8543 21H13V15.5C13 14.1193 11.8807 13 10.5 13C9.11927 13 7.99999 14.1193 7.99999 15.5V21H3.80269C2.69812 21 1.80269 20.1046 1.80269 19V10.5808C1.47324 10.6538 1.11605 10.5686 0.851402 10.3251C0.39312 9.9036 0.39312 9.18037 0.851402 8.75883L9.46756 0.833511L9.4759 0.82223L9.4779 0.824005L9.61171 0.700921C9.61561 0.697335 9.6216 0.697335 9.6255 0.700921Z"/></svg>
 				</button>
-				<div
-					class="menu__words-amount"
-					v-show="!verticalPayload"
-				>
-					<div class="words-amount__first">{{doneWords.length}}</div>
-					<div class="words-amount__second">{{nowWords.length}}</div>
-					<div class="menu__hint">{{notRussian ? 'Guessed' : 'Отгадано'}}</div>
-				</div>
-				<div class="menu__level">
-					{{notRussian ? 'Lvl' : 'Ур.'}} {{lvl+1}}
-					<div class="menu__level_stars">
-						<div
-							class="level_star"
-							v-for="star in 3"
-							:key="star"
-							:class="[
+				<template v-if="isGameForTwo">
+					<div class="gameForTwo">
+						<div class="gameForTwo__player1"  :class="!gameForTwoState.firstPlayerMove ? 'gameForTwo__gray' : ''">
+							<div class="gameForTwo__icon">
+								<div class="gameForTwo__stars">
+									<div class="level_star level_full-star"></div>
+									{{gameForTwoState.firstPlayer.words.reduce((acc, c)=>acc+c.length, 0)}}
+								</div>
+							</div>
+						</div>
+						<div class="gameForTwo__time">
+							{{gameTimerInText}}
+							<div class="gameForTwo__move">
+								Ход игрока #{{gameForTwoState.firstPlayerMove ? 1 : 2}}
+							</div>
+						</div>
+						<div class="gameForTwo__player2" :class="gameForTwoState.firstPlayerMove ? 'gameForTwo__gray' : ''">
+							<div class="gameForTwo__icon">
+								<div class="gameForTwo__stars">
+									<div class="level_star level_full-star"></div>
+									{{gameForTwoState.secondPlayer.words.reduce((acc, c)=>acc+c.length, 0)}}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div
+						class="menuItem gameForTwo__pause"
+						@click="toggleGamePause"
+					>
+						<svg class="svgIcon" width="12" height="16" viewBox="0 0 12 16" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><rect width="4" height="16" rx="1"/><rect x="8" width="4" height="16" rx="1"/></svg>
+					</div>
+				</template>
+				<template v-else>
+					<div
+						class="menu__words-amount"
+						v-show="!verticalPayload"
+					>
+						<div class="words-amount__first">{{doneWords.length}}</div>
+						<div class="words-amount__second">{{nowWords.length}}</div>
+						<div class="menu__hint">{{notRussian ? 'Guessed' : 'Отгадано'}}</div>
+					</div>
+					<div class="menu__level">
+						{{notRussian ? 'Lvl' : 'Ур.'}} {{lvl+1}}
+						<div class="menu__level_stars">
+							<div
+								class="level_star"
+								v-for="star in 3"
+								:key="star"
+								:class="[
 								 star <= levelStars ? 'level_full-star' : '',
                       			 getStar === star ? 'getStar' : ''
                       			 ]"
-						>
-							<div v-if="star <= levelStars" class="bg-star" :class="'bg-star' + randomLevelStars[star-1]"></div>
+							>
+								<div v-if="star <= levelStars" class="bg-star" :class="'bg-star' + randomLevelStars[star-1]"></div>
+							</div>
+						</div>
+						<div class="menu__hint">{{moreGuessedWords}}</div>
+					</div>
+					<div
+						class="menu__tip menuItem"
+						@click="getTip()"
+						:class="[selectTip ? 'tutorialSelected' : '']"
+					>
+						<svg class="svgIcon" width="15" height="23" viewBox="0 0 15 23" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M8.80952 22.0417C8.70168 22.5783 8.16247 23 7.5 23C6.83754 23 6.29832 22.5783 6.19048 22.0417H8.80952Z" /><path d="M9.66096 20.2853L5.24123 20.2725C5.22789 20.2736 5.21455 20.2747 5.18787 20.2769C5.07895 20.2589 4.97789 20.1726 4.96802 20.0518C4.95815 19.931 5.03051 19.8304 5.14838 19.7936C5.16172 19.7925 5.17507 19.7914 5.20175 19.7892L9.60813 19.8031C9.74154 19.7921 9.85703 19.8906 9.868 20.0249C9.87897 20.1591 9.79436 20.2742 9.66096 20.2853Z" /><path d="M5.15316 20.9796C5.16639 20.9785 5.17962 20.9774 5.20607 20.9753L9.57506 20.9922C9.70732 20.9813 9.82191 21.0799 9.83288 21.2142C9.84384 21.3484 9.74681 21.4645 9.61454 21.4755L5.23233 21.4596C5.2191 21.4607 5.20587 21.4618 5.17942 21.464C5.07141 21.4459 4.97115 21.3596 4.96128 21.2388C4.95141 21.118 5.03522 21.0029 5.15316 20.9796Z" /><path d="M5.27194 18.2083H9.72806C10.0099 18.2083 10.2381 18.4227 10.2381 18.6875C10.2381 18.9523 10.0099 19.1667 9.72806 19.1667H5.27194C4.99008 19.1667 4.76191 18.9523 4.76191 18.6875C4.76191 18.4227 4.99008 18.2083 5.27194 18.2083Z" /><path d="M7.4599 0C7.4733 0 7.4733 0 7.48669 0C7.50008 0 7.50008 0 7.51347 0C11.6518 0 15 3.40946 15 7.62354C15 10.5829 13.192 12.8332 11.1295 14.7425C10.3126 15.5062 9.83041 16.5972 9.83041 17.7292H7.52687C7.52687 17.7292 7.51347 17.7292 7.50008 17.7292C7.48669 17.7292 7.47329 17.7292 7.47329 17.7292H5.16975C5.16975 16.5836 4.68761 15.4926 3.87066 14.7425C1.80818 12.8332 0.000160217 10.5966 0.000160217 7.62354C-0.0266256 3.42309 3.32156 0 7.4599 0Z" /></svg>
+
+						<div class="advert" v-if="tipCount === 0 && advTimer <= 0"></div>
+						<div class="menu__tip_count" v-else>
+							<template v-if="advTimer > 0 && tipCount === 0">
+								{{advTimerTime}}
+							</template>
+							<template v-else>
+								{{lvl === 0 && !locationGame ? '∞' : tipCount}}
+							</template>
+
 						</div>
 					</div>
-					<div class="menu__hint">{{moreGuessedWords}}</div>
-				</div>
-				<div
-					class="menu__tip menuItem"
-					@click="getTip()"
-					:class="[selectTip ? 'tutorialSelected' : '']"
-				>
-					<svg class="svgIcon" width="15" height="23" viewBox="0 0 15 23" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M8.80952 22.0417C8.70168 22.5783 8.16247 23 7.5 23C6.83754 23 6.29832 22.5783 6.19048 22.0417H8.80952Z" /><path d="M9.66096 20.2853L5.24123 20.2725C5.22789 20.2736 5.21455 20.2747 5.18787 20.2769C5.07895 20.2589 4.97789 20.1726 4.96802 20.0518C4.95815 19.931 5.03051 19.8304 5.14838 19.7936C5.16172 19.7925 5.17507 19.7914 5.20175 19.7892L9.60813 19.8031C9.74154 19.7921 9.85703 19.8906 9.868 20.0249C9.87897 20.1591 9.79436 20.2742 9.66096 20.2853Z" /><path d="M5.15316 20.9796C5.16639 20.9785 5.17962 20.9774 5.20607 20.9753L9.57506 20.9922C9.70732 20.9813 9.82191 21.0799 9.83288 21.2142C9.84384 21.3484 9.74681 21.4645 9.61454 21.4755L5.23233 21.4596C5.2191 21.4607 5.20587 21.4618 5.17942 21.464C5.07141 21.4459 4.97115 21.3596 4.96128 21.2388C4.95141 21.118 5.03522 21.0029 5.15316 20.9796Z" /><path d="M5.27194 18.2083H9.72806C10.0099 18.2083 10.2381 18.4227 10.2381 18.6875C10.2381 18.9523 10.0099 19.1667 9.72806 19.1667H5.27194C4.99008 19.1667 4.76191 18.9523 4.76191 18.6875C4.76191 18.4227 4.99008 18.2083 5.27194 18.2083Z" /><path d="M7.4599 0C7.4733 0 7.4733 0 7.48669 0C7.50008 0 7.50008 0 7.51347 0C11.6518 0 15 3.40946 15 7.62354C15 10.5829 13.192 12.8332 11.1295 14.7425C10.3126 15.5062 9.83041 16.5972 9.83041 17.7292H7.52687C7.52687 17.7292 7.51347 17.7292 7.50008 17.7292C7.48669 17.7292 7.47329 17.7292 7.47329 17.7292H5.16975C5.16975 16.5836 4.68761 15.4926 3.87066 14.7425C1.80818 12.8332 0.000160217 10.5966 0.000160217 7.62354C-0.0266256 3.42309 3.32156 0 7.4599 0Z" /></svg>
+					<div class="nextAndPrevLevel">
+						<div class="menu__button-next-level menuItem menu__button-prev-level"
+							 :class="[lvl === 0 ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
+							 @click="prevLevel()"
+							 v-show="!verticalPayload"
+						>
+							<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
+						</div>
 
-					<div class="advert" v-if="tipCount === 0 && advTimer <= 0"></div>
-					<div class="menu__tip_count" v-else>
-						<template v-if="advTimer > 0 && tipCount === 0">
-							{{advTimerTime}}
-						</template>
-						<template v-else>
-							{{lvl === 0 && !locationGame ? '∞' : tipCount}}
-						</template>
+						<div class="menu__button-next-level menuItem"
+							 :class="[!testShowNextLevel() ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
+							 @click="nextLevel()"
+							 v-show="!verticalPayload"
+						>
+							<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
 
+
+							<div class="menu__hint" v-if="lvl < 4">{{notRussian ? 'Earn 1 star and get access to the next level' : 'Заработайте 1 звезду и получите доступ к следующему уровню'}}</div>
+						</div>
 					</div>
-				</div>
-				<div class="nextAndPrevLevel">
-					<div class="menu__button-next-level menuItem menu__button-prev-level"
+
+					<div class="portraitButton menu__button-next-level menuItem menu__button-prev-level"
 						 :class="[lvl === 0 ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
 						 @click="prevLevel()"
 						 v-show="!verticalPayload"
@@ -517,7 +628,7 @@
 						<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
 					</div>
 
-					<div class="menu__button-next-level menuItem"
+					<div class="portraitButton menu__button-next-level menuItem"
 						 :class="[!testShowNextLevel() ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
 						 @click="nextLevel()"
 						 v-show="!verticalPayload"
@@ -527,26 +638,8 @@
 
 						<div class="menu__hint" v-if="lvl < 4">{{notRussian ? 'Earn 1 star and get access to the next level' : 'Заработайте 1 звезду и получите доступ к следующему уровню'}}</div>
 					</div>
-				</div>
+				</template>
 
-				<div class="portraitButton menu__button-next-level menuItem menu__button-prev-level"
-					 :class="[lvl === 0 ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
-					 @click="prevLevel()"
-					 v-show="!verticalPayload"
-				>
-					<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
-				</div>
-
-				<div class="portraitButton menu__button-next-level menuItem"
-					 :class="[!testShowNextLevel() ? 'menu__button-next-level_notActive' : 'menu__button-next-level_active']"
-					 @click="nextLevel()"
-					 v-show="!verticalPayload"
-				>
-					<svg class="svgIcon" width="13" height="22" viewBox="0 0 13 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.58569 0.58569C-0.195229 1.36661 -0.19523 2.63273 0.585689 3.41365L7.73631 10.5643L0.634992 17.6656C-0.145916 18.4465 -0.145916 19.7126 0.634992 20.4935C1.4159 21.2744 2.682 21.2744 3.46291 20.4935L11.9696 11.9868C12.7507 11.2057 12.7507 9.93941 11.9696 9.15836L11.4339 8.62262C11.3887 8.56636 11.3399 8.51197 11.2877 8.45975L3.41365 0.585689C2.63273 -0.19523 1.36661 -0.19523 0.58569 0.58569Z"/></svg>
-
-
-					<div class="menu__hint" v-if="lvl < 4">{{notRussian ? 'Earn 1 star and get access to the next level' : 'Заработайте 1 звезду и получите доступ к следующему уровню'}}</div>
-				</div>
 
 			</header>
 
@@ -586,7 +679,7 @@
 
 				<div class="bottomMenu">
 
-					<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '']">
+					<div class="menu__tip menuItem" @click="getTip()" :class="[selectTip ? 'tutorialSelected' : '', isGameForTwo ? 'zeroOpacity' : '']">
 						<svg class="svgIcon" width="15" height="23" viewBox="0 0 15 23" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M8.80952 22.0417C8.70168 22.5783 8.16247 23 7.5 23C6.83754 23 6.29832 22.5783 6.19048 22.0417H8.80952Z" /><path d="M9.66096 20.2853L5.24123 20.2725C5.22789 20.2736 5.21455 20.2747 5.18787 20.2769C5.07895 20.2589 4.97789 20.1726 4.96802 20.0518C4.95815 19.931 5.03051 19.8304 5.14838 19.7936C5.16172 19.7925 5.17507 19.7914 5.20175 19.7892L9.60813 19.8031C9.74154 19.7921 9.85703 19.8906 9.868 20.0249C9.87897 20.1591 9.79436 20.2742 9.66096 20.2853Z" /><path d="M5.15316 20.9796C5.16639 20.9785 5.17962 20.9774 5.20607 20.9753L9.57506 20.9922C9.70732 20.9813 9.82191 21.0799 9.83288 21.2142C9.84384 21.3484 9.74681 21.4645 9.61454 21.4755L5.23233 21.4596C5.2191 21.4607 5.20587 21.4618 5.17942 21.464C5.07141 21.4459 4.97115 21.3596 4.96128 21.2388C4.95141 21.118 5.03522 21.0029 5.15316 20.9796Z" /><path d="M5.27194 18.2083H9.72806C10.0099 18.2083 10.2381 18.4227 10.2381 18.6875C10.2381 18.9523 10.0099 19.1667 9.72806 19.1667H5.27194C4.99008 19.1667 4.76191 18.9523 4.76191 18.6875C4.76191 18.4227 4.99008 18.2083 5.27194 18.2083Z" /><path d="M7.4599 0C7.4733 0 7.4733 0 7.48669 0C7.50008 0 7.50008 0 7.51347 0C11.6518 0 15 3.40946 15 7.62354C15 10.5829 13.192 12.8332 11.1295 14.7425C10.3126 15.5062 9.83041 16.5972 9.83041 17.7292H7.52687C7.52687 17.7292 7.51347 17.7292 7.50008 17.7292C7.48669 17.7292 7.47329 17.7292 7.47329 17.7292H5.16975C5.16975 16.5836 4.68761 15.4926 3.87066 14.7425C1.80818 12.8332 0.000160217 10.5966 0.000160217 7.62354C-0.0266256 3.42309 3.32156 0 7.4599 0Z" /></svg>
 						<div class="advert" v-if="tipCount === 0 && advTimer <= 0"></div>
 						<div class="menu__tip_count" v-else>
@@ -854,36 +947,82 @@
 
 			<div class="blurBackground blurEndGame" v-if="isEndGame" @click="toggleShowLocations"></div>
 
-			<div class="endGame__wrapper" v-if="isEndGame">
+			<div class="endGame__wrapper" v-if="isEndGame"  :class="isGameForTwo ? 'endGame_gameForTwo' : ''">
 				<div class="endGame__header">
 					<div class="endGame__icon" :class="endGameIcon" />
-					<p class="endGame__goodGame">{{goodGameText}}</p>
-					<p>Уровень {{lvl+1}} пройден!</p>
+					<p class="endGame__goodGame">
+						<template v-if="isGameForTwo">
+							{{gameForTwoResultText}}
+						</template>
+						<template v-else>
+							{{goodGameText}}
+						</template>
+					</p>
+					<p v-show="!isGameForTwo">
+							Уровень {{lvl+1}} пройден!
+					</p>
 				</div>
-				<div class="endGame">
-					<div class="endGame__prize">
-						Награда
-						<div class="endGame__prizeMoney shop__cart__card">
-							<svg class="svgIcon" fill="#66196C" width="63" height="96" viewBox="0 0 63 96" xmlns="http://www.w3.org/2000/svg"><path d="M26 92C26.4529 94.24 28.7176 96 31.5 96C34.2824 96 36.5471 94.24 37 92H26Z" /><path d="M22.424 84.6689L40.9868 84.6156C41.0429 84.6202 41.0989 84.6248 41.211 84.634C41.6684 84.5588 42.0929 84.1988 42.1343 83.6946C42.1758 83.1903 41.8718 82.7704 41.3768 82.6169C41.3208 82.6123 41.2647 82.6077 41.1527 82.5985L22.6458 82.6564C22.0855 82.6103 21.6005 83.0217 21.5544 83.582C21.5083 84.1423 21.8637 84.6228 22.424 84.6689Z" /><path d="M41.3567 87.5672C41.3012 87.5626 41.2456 87.558 41.1345 87.5489L22.7848 87.6197C22.2293 87.574 21.748 87.9857 21.7019 88.546C21.6559 89.1063 22.0634 89.5911 22.6189 89.6368L41.0242 89.5705C41.0798 89.5751 41.1353 89.5797 41.2464 89.5888C41.7001 89.5133 42.1212 89.153 42.1626 88.6488C42.2041 88.1445 41.8521 87.6643 41.3567 87.5672Z" /><path d="M40.8578 76H22.1422C20.9583 76 20 76.8947 20 78C20 79.1053 20.9583 80 22.1422 80H40.8578C42.0417 80 43 79.1053 43 78C43 76.8947 42.0417 76 40.8578 76Z" /><path d="M31.6684 0C31.6122 0 31.6122 0 31.5559 0C31.4997 0 31.4997 0 31.4434 0C14.0623 0 0 14.2308 0 31.82C0 44.1723 7.59367 53.5646 16.2561 61.5338C19.6873 64.7215 21.7123 69.2754 21.7123 74H31.3872C31.3872 74 31.4434 74 31.4997 74C31.5559 74 31.6122 74 31.6122 74H41.2871C41.2871 69.2185 43.312 64.6646 46.7432 61.5338C55.4057 53.5646 62.9993 44.2292 62.9993 31.82C63.1118 14.2877 49.0495 0 31.6684 0Z" /></svg>
-							<div class="endGame__moneyCount">
-								<svg width="58" height="30" viewBox="0 0 58 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path class="endGame__firstPrize" d="M55.4031 5.5088L3.46278 1.73132L9.15527e-05 21.8779L51.2479 29.4328L55.4031 5.5088Z" fill="#386CFE"/>
-									<path class="endGame__secondPrize" d="M58 3.77748L6.0597 0L2.59702 20.1465L53.8448 27.7015L58 3.77748Z" fill="#08D2F2"/>
-								</svg>
-
-
-								<div class="endGame__moneyCount__count">
-									+3
+				<div class="endGame" >
+					<div class="endGame__prize"  :class="isGameForTwo ? 'endGame__players' : ''">
+						<template v-if="isGameForTwo">
+							<div class="endGame__playerOne">
+								<div class="endGame__playerName">
+									Игрок #1
+									<div class="gameForTwo__icon"></div>
+								</div>
+								<div class="endGame__player-words">
+									<div v-for="word in gameForTwoState.firstPlayer.words">
+										{{word}} +{{word.length}}
+									</div>
+								</div>
+								<div class="endGame__player-score">
+									Очки: {{gameForTwoState.firstPlayer.words.reduce((acc, c)=>acc+c.length, 0)}}
 								</div>
 							</div>
-						</div>
+							<div class="endGame__playerTwo">
+								<div class="endGame__playerName">
+									<div class="gameForTwo__icon"></div>
+									Игрок #2
+								</div>
+								<div class="endGame__player-words">
+									<div v-for="word in gameForTwoState.secondPlayer.words">
+										{{word.length}}+ {{word}}
+									</div>
+								</div>
+								<div class="endGame__player-score">
+									Очки: {{gameForTwoState.secondPlayer.words.reduce((acc, c)=>acc+c.length, 0)}}
+								</div>
+
+							</div>
+						</template>
+						<template v-else>
+							Награда
+							<div class="endGame__prizeMoney shop__cart__card">
+								<svg class="svgIcon" fill="#66196C" width="63" height="96" viewBox="0 0 63 96" xmlns="http://www.w3.org/2000/svg"><path d="M26 92C26.4529 94.24 28.7176 96 31.5 96C34.2824 96 36.5471 94.24 37 92H26Z" /><path d="M22.424 84.6689L40.9868 84.6156C41.0429 84.6202 41.0989 84.6248 41.211 84.634C41.6684 84.5588 42.0929 84.1988 42.1343 83.6946C42.1758 83.1903 41.8718 82.7704 41.3768 82.6169C41.3208 82.6123 41.2647 82.6077 41.1527 82.5985L22.6458 82.6564C22.0855 82.6103 21.6005 83.0217 21.5544 83.582C21.5083 84.1423 21.8637 84.6228 22.424 84.6689Z" /><path d="M41.3567 87.5672C41.3012 87.5626 41.2456 87.558 41.1345 87.5489L22.7848 87.6197C22.2293 87.574 21.748 87.9857 21.7019 88.546C21.6559 89.1063 22.0634 89.5911 22.6189 89.6368L41.0242 89.5705C41.0798 89.5751 41.1353 89.5797 41.2464 89.5888C41.7001 89.5133 42.1212 89.153 42.1626 88.6488C42.2041 88.1445 41.8521 87.6643 41.3567 87.5672Z" /><path d="M40.8578 76H22.1422C20.9583 76 20 76.8947 20 78C20 79.1053 20.9583 80 22.1422 80H40.8578C42.0417 80 43 79.1053 43 78C43 76.8947 42.0417 76 40.8578 76Z" /><path d="M31.6684 0C31.6122 0 31.6122 0 31.5559 0C31.4997 0 31.4997 0 31.4434 0C14.0623 0 0 14.2308 0 31.82C0 44.1723 7.59367 53.5646 16.2561 61.5338C19.6873 64.7215 21.7123 69.2754 21.7123 74H31.3872C31.3872 74 31.4434 74 31.4997 74C31.5559 74 31.6122 74 31.6122 74H41.2871C41.2871 69.2185 43.312 64.6646 46.7432 61.5338C55.4057 53.5646 62.9993 44.2292 62.9993 31.82C63.1118 14.2877 49.0495 0 31.6684 0Z" /></svg>
+								<div class="endGame__moneyCount">
+									<svg width="58" height="30" viewBox="0 0 58 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path class="endGame__firstPrize" d="M55.4031 5.5088L3.46278 1.73132L9.15527e-05 21.8779L51.2479 29.4328L55.4031 5.5088Z" fill="#386CFE"/>
+										<path class="endGame__secondPrize" d="M58 3.77748L6.0597 0L2.59702 20.1465L53.8448 27.7015L58 3.77748Z" fill="#08D2F2"/>
+									</svg>
+
+
+									<div class="endGame__moneyCount__count">
+										+3
+									</div>
+								</div>
+							</div>
+						</template>
+
 					</div>
 
-					<div class="endGame__actions">
+					<div class="endGame__actions" v-show="!isGameForTwo">
 						<div class="endGame__menu" @click="backMenu">
 							<svg width="20" class="svgIcon" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.28791 0.502466C9.29186 0.506065 9.2979 0.506065 9.30185 0.502466L9.68671 0.151754C9.90875 -0.0505844 10.2483 -0.0505847 10.4704 0.151753L19.6367 8.50472C20.1064 8.93273 20.1064 9.67189 19.6367 10.0999C19.3737 10.3395 19.0218 10.4262 18.6946 10.3598V19.0003C18.6946 20.1049 17.7992 21.0003 16.6946 21.0003H12.7269V15.4699C12.7269 14.0627 11.5862 12.9219 10.179 12.9219C8.77179 12.9219 7.63103 14.0627 7.63103 15.4699V21.0003H3.31438C2.20981 21.0003 1.31438 20.1049 1.31438 19.0003V10.4834C0.981525 10.5575 0.620611 10.4723 0.352259 10.2278C-0.11742 9.79975 -0.11742 9.06059 0.352259 8.63258L9.12742 0.636008L9.13552 0.625151L9.13746 0.626859L9.27396 0.502466C9.27792 0.498866 9.28396 0.498866 9.28791 0.502466Z" fill="url(#paint0_linear_15_650)"/><defs><linearGradient id="paint0_linear_15_650" x1="9.99448" y1="0" x2="9.99448" y2="21.0003" gradientUnits="userSpaceOnUse"><stop class="endGame__firstStop" stop-color="#1772AF"/><stop class="endGame__secondStop" offset="1" stop-color="#105A8C"/></linearGradient></defs></svg>
 						</div>
-						<div class="endGame__nextLevel" @click="nextLevel">Продолжить</div>
+						<div class="endGame__nextLevel"  @click="nextLevel">Продолжить</div>
+					</div>
+					<div class="endGame__actions"  v-show="isGameForTwo">
+						<div class="endGame__nextLevel" @click="backMenu(true, true)">Продолжить</div>
 					</div>
 				</div>
 			</div>
@@ -1144,7 +1283,7 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Новая локация!' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Один на один!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
@@ -1152,8 +1291,8 @@
 			</template>
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
-					Уважаемые игроки! Предлагаем вам опробовать новую локацию - "Знаменитые писатели!
-					<div class="rules__goBg" @click="goToGetLocations">К локациям</div>
+					Дорогие игроки! Предлагаем вам попробовать новый режим "Один на один"! Для этого нажмите на значок геймпада в меню :)
+					<div class="rules__goBg" @click="openGameWindowForTwo">Попробовать!</div>
 				</div>
 
 
@@ -1680,51 +1819,6 @@ function replaceLevelsToOne(data, isLocationLevels){
 	});
 	return newData;
 }
-// function compressLevelsToString(doneLevels){
-// 	try{
-// 		let firstElem = doneLevels[0];
-// 		let lastElem = firstElem;
-// 		let newArr = [];
-// 		for(let i = 1; i < doneLevels.length+1; i++){
-// 			let level = doneLevels[i];
-// 			if(lastElem+1 === level){
-// 				lastElem = level;
-// 			}else{
-// 				if(firstElem === lastElem){
-// 					newArr.push(firstElem);
-// 				}else{
-// 					newArr.push(firstElem+'-'+lastElem);
-// 				}
-// 				firstElem = level;
-// 				lastElem = level;
-// 			}
-// 		}
-// 		return newArr;
-// 	}catch(e){
-// 		console.log(e);
-// 		return doneLevels;
-// 	}
-// }
-// function decompressStringToLevels(doneLevels){
-// 	try{
-// 		let newArr = []
-// 		for(let i = 0; i < doneLevels.length; i++){
-// 			let num = doneLevels[i];
-// 			if(Number.isInteger(num)){
-// 				newArr.push(num);
-// 			}else{
-// 				let firstAndLastItem = num.split('-');
-// 				for(let i = Number(firstAndLastItem[0]); i < Number(firstAndLastItem[1])+1; i++){
-// 					newArr.push(i);
-// 				}
-// 			}
-// 		}
-// 		return newArr;
-// 	}catch(e){
-// 		console.log(e);
-// 		return doneLevels;
-// 	}
-// }
 function compressDataObj(wordsFromWords){
 	try{
 		const newData = {};
@@ -1871,6 +1965,7 @@ function newCompress(compressedWords){
 		if(el === 'doneLevels') return;
 		data[el] = findMaxInArr(compressedWords[el]);
 	});
+	compressedWords.doneLevels.sort((a,b)=> a-b);
 	data.doneLevels = compressDoneLevels(compressedWords.doneLevels);
 	data.newCompress = true;
 	data.notStringed = true;
@@ -1944,7 +2039,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-41";
+const lastVersion = "ver-43";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2040,8 +2135,10 @@ let chosenBackground = getFromStorage('chosenBackground');
 let portraitAdviceAmount = getFromStorage('portraitAdviceAmount');
 let isLvlFiveHintDone = getFromStorage('isLvlFiveHintDone');
 let savedMyGame = getFromStorage('savedMyGame');
+let savedGameForTwo = getFromStorage('savedForTwo');
 let crossPromoShows = getFromStorage('crossPromoShows');
 let infoAboutMyGame = getFromStorage('infoAboutMyGame');
+let infoAboutGameForTwo = getFromStorage('infoAboutGameForTwo');
 let infoAboutClosedEvent = !!getFromStorage('infoAboutClosedEvent2');
 let infoAboutEvent = !!getFromStorage('infoAboutEvent');
 let gotEventBfGift = !!getFromStorage('gotEventBfGift');
@@ -2052,11 +2149,24 @@ if(savedMyGame){
 		savedMyGame = false;
 	}
 }
+if(savedGameForTwo){
+	try{
+		savedGameForTwo = JSON.parse(savedGameForTwo);
+	}catch(e){
+		savedGameForTwo = false;
+	}
+}
 if(infoAboutMyGame){
 	infoAboutMyGame = Number(infoAboutMyGame);
 	if(!Number.isInteger(infoAboutMyGame)) infoAboutMyGame = 0;
 }else{
 	infoAboutMyGame = 0;
+}
+if(infoAboutGameForTwo){
+	infoAboutGameForTwo = Number(infoAboutGameForTwo);
+	if(!Number.isInteger(infoAboutGameForTwo)) infoAboutGameForTwo = 0;
+}else{
+	infoAboutGameForTwo = 0;
 }
 if(crossPromoShows){
 	crossPromoShows = Number(crossPromoShows);
@@ -2068,7 +2178,7 @@ if(chosenBackground){
 	params({'newChosenBG': chosenBackground});
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = -3;
+	chosenBackground = 5;
 	setToStorage('chosenBackground', chosenBackground);
 	// deleteBlockBg = true;
 }
@@ -2138,7 +2248,9 @@ let wordsForReplace = {
 	'гренландия': 'гардения',
 	'морфинист': 'трином',
 	'кокаинист': 'скотник',
-	'наркомафия': 'марафон'
+	'наркомафия': 'марафон',
+	'рейхсканцлер' : 'канцлер',
+	'концлагерь' : 'нагорье'
 
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
@@ -3186,8 +3298,6 @@ const NewAudioContext = (function() {
 		window.webAudioAPISoundManager = window.webAudioAPISoundManager || new WebAudioAPISoundManager(window.audioContext);
 		this.manager = window.webAudioAPISoundManager;
 		this.manager.addSound(this.url);
-		console.log('aaaa');
-		console.log(this.manager);
 		// this.buffer = this.manager.bufferList[this.url];
 	};
 
@@ -3268,6 +3378,9 @@ window.addEventListener("visibilitychange", () => {
 			switchOnMainMusic()
 		}else{
 			switchOffMainMusic();
+		}
+		if (document.querySelector('.levels')) {
+			document.querySelector('.levels').dispatchEvent(new CustomEvent("switchPause"));
 		}
 	}catch(e){console.log(e)}
 
@@ -3781,6 +3894,9 @@ let firstGetBanner = false;
 function getOneRandStart(){
 	return Math.floor(Math.random()*25)+1;
 }
+
+let gameTimers = [10, 15, 30, 45, 60, 90, 120, 180]
+
 export default {
 	name: 'App',
 	components: {CrossVue, CrossComponent},
@@ -3873,6 +3989,7 @@ export default {
 			savedMyGame: savedMyGame,
 			levelStars: 0,
 			isInfoAboutCreateGame: false,
+			isInfoAboutGameForTwo: false,
 			howManyTips: 10,
 			eventLocation: false,
 			eventLocationWordsAMount: 500,
@@ -3902,10 +4019,47 @@ export default {
 			randomStars: [],
 			randomLevelStars: [],
 			isMusic: false,
-			showBgChanger: false
+			showBgChanger: false,
+			gameWindowForTwo: false,
+			isGameForTwo: false,
+			gameSelectedTime: 2,
+			timeOptions: [
+				{ text: '00:10', value: 0 },
+				{ text: '00:15', value: 1 },
+				{ text: '00:30', value: 2 },
+				{ text: '00:45', value: 3 },
+				{ text: '01:00', value: 4 },
+				{ text: '01:30', value: 5 },
+				{ text: '02:00', value: 6 },
+				{ text: '03:00', value: 7 },
+			],
+			gameSelectedSize: 8,
+			sizeOptions: [
+				{ text: '5 букв', value: 5 },
+				{ text: '6 букв', value: 6 },
+				{ text: '7 букв', value: 7 },
+				{ text: '8 букв', value: 8 },
+				{ text: '9 букв', value: 9 },
+				{ text: '10 букв', value: 10 },
+				{ text: '11 букв', value: 11 },
+				{ text: '12 букв', value: 12 },
+			],
+			gameForTwoState: savedGameForTwo,
+			gameTimer: 180,
+			gamePaused: false,
+			sendWordForbidden: false,
+			isGameTimeout: false,
+			gameForTwoResult: 0
 		}
 	},
 	computed:{
+		gameForTwoResultText(){
+			if(this.gameForTwoResult === 0) return 'Игрок #1 победил!'
+			if(this.gameForTwoResult === 1) return 'Игрок #2 победил!'
+			if(this.gameForTwoResult === 2) return 'Ура! Ничья!'
+			if(this.gameForTwoResult === 3) return 'Игрок #1 выбыл!'
+			return 'Игрок #2 выбыл!'
+		},
 		allStars(){
 			return this.stars.reduce((acc, el)=> acc+ el, 0);
 		},
@@ -3948,8 +4102,44 @@ export default {
 			if(defaultLocations.includes(this.gameLocation)) return 'default';
 			return this.gameLocation;
 		},
+		gameTimerInText(){
+			let mins = Math.floor(this.gameTimer / 60);
+			let seconds = this.gameTimer - mins * 60;
+			if(seconds < 10) seconds = '0' + seconds;
+			return '0' + mins + ':' + seconds;
+		}
 	},
 	methods:{
+		switchPause(){
+			if(this.isGameForTwo){
+				this.gamePaused = true;
+			}
+		},
+		toggleGamePause(){
+			if(!this.isGameForTwo){
+				this.gamePaused = false;
+				return;
+			}
+			this.isGameTimeout = false;
+			this.gamePaused = !this.gamePaused;
+			if(!this.gamePaused){
+				this.setTimerGameForTwo();
+			}
+		},
+		getRandomWord(){
+			let w;
+			w = wordsList[Math.floor(Math.random() * wordsList.length)];
+			if(this.gameWindowForTwo){
+				while(w.length !== this.gameSelectedSize){
+					w = wordsList[Math.floor(Math.random() * wordsList.length)];
+				}
+			}
+			this.gameWord = w;
+		},
+		openGameWindowForTwo(){
+			this.showLastLevelInfo = false;
+			this.toggleIsCreateGameWindow(true);
+		},
 		toggleBgChanger(){
 			this.chosenBg = this.chosenBgRight;
 			this.showBgChanger = !this.showBgChanger;
@@ -4037,7 +4227,9 @@ export default {
 			try{
 				if(playerGame._personalInfo.uniqueID === "CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=" ||
 					playerGame._personalInfo.uniqueID === "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=" ||
-					playerGame._personalInfo.uniqueID === "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU="){
+					playerGame._personalInfo.uniqueID === "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU=" ||
+					playerGame._personalInfo.uniqueID === "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4="
+				  ){
 					return true;
 				}
 			}catch(e){
@@ -4150,13 +4342,102 @@ export default {
 		toggleIsInfoAboutCreateGame(){
 			this.isInfoAboutCreateGame = !this.isInfoAboutCreateGame;
 		},
+		startTimerGameForTwo(){
+			this.gameTimer = gameTimers[this.gameSelectedTime];
+		},
+		setTimerGameForTwo(){
+			let interval = 1000; // ms
+			let expected = Date.now() + interval;
+			let step;
+			step = () => {
+				if(!this.isGameForTwo || this.gamePaused || this.sendWordForbidden) return;
+				let dt = Date.now() - expected;
+				this.gameTimer -= 1;
+				if(this.gameTimer <= 0){
+					this.isGameTimeout = true;
+					if(this.gameForTwoState.firstPlayerMove){
+						this.gameForTwoState.firstPlayer.missedMoves++;
+					}else{
+						this.gameForTwoState.secondPlayer.missedMoves++;
+					}
+					this.nextTurnGameForTwo();
+					this.testForEndGameForTwo();
+
+					return;
+				}
+				expected += interval;
+				setTimeout(step, Math.max(0, interval - dt));
+			}
+			setTimeout(step, interval);
+		},
+		nextTurnGameForTwo(){
+			this.gameForTwoState.firstPlayerMove = !this.gameForTwoState.firstPlayerMove;
+			this.gamePaused = true;
+			this.startTimerGameForTwo();
+		},
+		testForEndGameForTwo(){
+			if(this.gameForTwoState.firstPlayer.missedMoves > 1
+				|| this.gameForTwoState.secondPlayer.missedMoves > 1 ||
+				this.doneWords.length >= this.nowWords.length){
+				this.endGameForTwo();
+			}
+		},
+		endGameForTwo(){
+			this.gamePaused = false;
+			let score1 = this.gameForTwoState.firstPlayer.words.reduce((acc, c)=>acc+c.length, 0);
+			let score2 = this.gameForTwoState.secondPlayer.words.reduce((acc, c)=>acc+c.length, 0);
+			if(score1 > score2){
+				this.gameForTwoResult = 0;
+			}else if(score1 < score2){
+				this.gameForTwoResult = 1;
+			}else{
+				this.gameForTwoResult = 2;
+			}
+			if(this.gameForTwoState.firstPlayer.missedMoves > 1){
+				this.gameForTwoResult = 3;
+			}else if(this.gameForTwoState.secondPlayer.missedMoves > 1){
+				this.gameForTwoResult = 4;
+			}
+
+			params({'endGameForTwo': 1});
+
+			this.getEndGame();
+		},
+		createGameForTwo(isContinue){
+			this.isGameForTwo = true;
+			this.isGameTimeout = false;
+			if(!isContinue){
+				this.gameForTwoState = {
+					word: this.gameWord,
+					doneWords: this.doneWords,
+					firstPlayer: {
+						words: [],
+						missedMoves: 0
+					},
+					secondPlayer: {
+						words: [],
+						missedMoves: 0
+					},
+					firstPlayerMove: true,
+					gameSelectedTime: this.gameSelectedTime
+				}
+			}else{
+				this.gameSelectedTime = this.gameForTwoState.gameSelectedTime;
+			}
+			this.startTimerGameForTwo();
+			this.gamePaused = true;
+			params({'startGameForTwo': 1});
+		},
 		startCreateGame(isContinue){
 			if(isContinue){
-				this.gameWord = this.savedMyGame.word;
+				if(this.gameWindowForTwo){
+					this.gameWord = this.gameForTwoState.word;
+				}else{
+					this.gameWord = this.savedMyGame.word;
+				}
 			}
-			console.log(isContinue);
 			if(/^[а-яёА-ЯЁ]+$/.test(this.gameWord)
-				&& this.gameWord.length > 3 && this.gameWord.length < 13){
+				&& this.gameWord.length > 4 && this.gameWord.length < 13){
 				this.gameWord = this.gameWord.replace(/ё/g, 'е');
 				this.gameWordMistake = false;
 				this.isMyGame = true;
@@ -4167,7 +4448,11 @@ export default {
 				this.word = this.gameWord;
 				this.doneWords = [];
 				if(isContinue){
-					this.doneWords = this.savedMyGame.words;
+					if(this.gameWindowForTwo){
+						this.doneWords = this.gameForTwoState.doneWords;
+					}else{
+						this.doneWords = this.savedMyGame.words;
+					}
 				}
 
 				this.letters = this.word.split('');
@@ -4179,23 +4464,41 @@ export default {
 				});
 				this.levelStars = testStar(this.doneWords.length, this.nowWords.length);
 				this.findNotShowLetters();
-				this.getVerticalBanner();
+				// this.getVerticalBanner();
+				//Включаем игру на двоих
+				if(this.gameWindowForTwo){
+					this.createGameForTwo(isContinue);
+				}
 				this.gameWord = '';
-				// params({'createGameLevel': 1});
+
 			}else{
 				this.gameWordMistake = true;
 			}
 		},
-		toggleIsCreateGameWindow(){
+		toggleIsCreateGameWindow(isGameForTwo){
 			this.isCreateGameWindow = !this.isCreateGameWindow;
 			if(this.isCreateGameWindow){
+				this.gameWindowForTwo = !!isGameForTwo;
+				if(isGameForTwo){
+					this.getRandomWord()
+				}
 				this.gameWordMistake = false;
-				if(infoAboutMyGame < 2){
+				if(this.gameWindowForTwo){
+					if(infoAboutGameForTwo < 2){
+						this.isInfoAboutGameForTwo = true;
+						this.isInfoAboutCreateGame = true;
+						setToStorage('infoAboutGameForTwo', infoAboutGameForTwo + 1);
+						infoAboutGameForTwo = 2;
+					}
+				}else if(infoAboutMyGame < 2){
+					this.isInfoAboutGameForTwo = false;
 					this.isInfoAboutCreateGame = true;
 					setToStorage('infoAboutMyGame', infoAboutMyGame + 1);
 					infoAboutMyGame = 2;
 				}
 
+			}else{
+				this.gameWindowForTwo = false;
 			}
 		},
 		startPayloadTutorial(){
@@ -5013,6 +5316,7 @@ export default {
 			this.cloudsPhrase = lvl5Phrase;
 			this.tipCount += 10;
 			setToStorage('tips', this.tipCount);
+			isLvlFiveHintDone = true;
 			PLAYERSTATS.tips = this.tipCount;
 		},
 		getLBorBanner(){
@@ -5232,7 +5536,7 @@ export default {
 			}
 		},
 		pressKey(e){
-			if(!this.content) return;
+			if(!this.content || this.gamePaused || this.isEndGame) return;
 			let letter = e.key;
 			if(letter === 'Backspace'){
 				if(this.isTutorial) return;
@@ -5347,8 +5651,12 @@ export default {
 				this.wordFromLetter += this.letters[index];
 			}
 		},
-		backMenu(){
+		backMenu(noNeedEvent, isFromGameForTwo){
 			if(this.isTutorial) return;
+			if(isFromGameForTwo){
+				this.gameForTwoState = false;
+			}
+			this.isGameForTwo = false;
 			this.isMyGame = false;
 			this.isEndGame = false;
 			this.getRandomStars();
@@ -5395,7 +5703,7 @@ export default {
 				this.toggleIsInfoAboutTips();
 				return;
 			}
-			if(this.animWordStart !== '' || (this.tipCount < 1 && this.advTimer > 0)) return;
+			if(this.animWordStart !== '' || (this.tipCount < 1 && this.advTimer > 0) || this.isGameForTwo) return;
 			if(this.tipCount < 1){
 				try{
 					let that = this;
@@ -5535,7 +5843,7 @@ export default {
 			}
 		},
 		tryShowAdv(){
-			if(this.verticalPayload || this.notShowAds || this.isShowTimeToShowNextAdv) return;
+			if(this.verticalPayload || this.notShowAds || this.isShowTimeToShowNextAdv || this.isGameForTwo) return;
 			if(!this.isTutorial && this.lvl > 1 && this.advTimer <= 0){
 				if(showAdv && advTime){
 					this.timeToShowNextAdv = 3;
@@ -5562,7 +5870,7 @@ export default {
 			// }
 		},
 		sendWord(){
-			if(this.wordFromLetter.length === 0 || this.isBadWord) return;
+			if(this.wordFromLetter.length === 0 || this.isBadWord || this.sendWordForbidden) return;
 
 			this.getVerticalBanner();
 
@@ -5620,7 +5928,22 @@ export default {
 					this.addWord(wordFromLetter);
 					this.animWord = wordFromLetter;
 					this.newWord = wordFromLetter;
-					if(this.isMyGame){
+					if(this.isGameForTwo){
+						if(this.gameForTwoState.firstPlayerMove){
+							this.gameForTwoState.firstPlayer.words.push(wordFromLetter);
+						}else{
+							this.gameForTwoState.secondPlayer.words.push(wordFromLetter);
+						}
+						this.sendWordForbidden = true;
+						setTimeout(()=>{
+							this.nextTurnGameForTwo();
+							this.sendWordForbidden = false;
+							this.wordFromLetter = '';
+							this.selectedLetters = [];
+							this.testForEndGameForTwo();
+							setToStorage('savedForTwo', JSON.stringify(this.gameForTwoState));
+						}, 1100)
+					}else if(this.isMyGame){
 						let obj = {word: this.word, words: this.doneWords.slice()};
 						console.log(obj);
 						setToStorage('savedMyGame', JSON.stringify(obj));

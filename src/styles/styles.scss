@@ -174,6 +174,7 @@ html,body
   z-index: 9;
 
   cursor: pointer;
+  background-color: rgba(0,0,0,0.25);
 }
 .blackout{
   position: absolute;
@@ -799,7 +800,8 @@ html,body
 .prev-location:after, .next-location:after, .switchSettings:after,
 .popUp__close:after, .switchShowLocation:after, .switchShop:after,
 .action-block__button-send:after, .endGame__menu:after,
-.openBgChanger:after, .bgChanger .changeLeft:after, .bgChanger .changeRight:after{
+.openBgChanger:after, .bgChanger .changeLeft:after, .bgChanger .changeRight:after,
+.gameForTwo__pause:after{
   position: absolute;
   content: '';
   top: -10px;
@@ -889,7 +891,7 @@ html,body
 .menu__level .level_full-star.getStar{
   animation: showFullStar 1.1s forwards;
 }
-.menu__level .level_full-star{
+.menu__level .level_full-star, .gameForTwo__icon .gameForTwo__stars .level_full-star{
   background: url(../assets/menu-star.png) center center no-repeat;
   background-size: 100%;
 }
@@ -2759,32 +2761,56 @@ b{
   .menu_verticalPayload{
     justify-content: center;
   }
-  
+
 }
 
 //Создание своего уровня
 .createGameRules{
   width: 500px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: column nowrap;
+  //display: flex;
+  //justify-content: center;
+  //align-items: center;
+  //flex-flow: column nowrap;
 
   padding-bottom: 20px;
 }
+.levelInput-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.createGame-wrapper{
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 5px;
+}
 .createLevelInput, .startCreateGame{
-  width: 300px;
+  display: block;
+  width: 220px;
   height: 50px;
 
   text-align: center;
 
-  background-color: #eaeaea;
   border: none;
-  border-radius: 40px;
+  border-radius: 10px;
   color: #000000;
 
   font-size: 2rem;
+}
+.createLevelInput{
+  border: 1px solid #cbcbcb;
+}
+.levelInput__icon{
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  position: relative;
+  border-radius: 50%;
+  border: 1px solid #cbcbcb;
+
+  cursor: pointer;
 }
 .createLevelInput::placeholder{
   color: #aaaaaa;
@@ -2799,7 +2825,7 @@ b{
   justify-content: center;
   align-items: center;
 
-  margin-top: 20px;
+  margin: 20px auto 0 auto;
   font-size: 2.3rem;
 
   cursor: pointer;
@@ -3617,6 +3643,9 @@ b{
 .chosenAppBg6 .openBgChanger{
   right: -50px;
 }
+.chosenAppBg6 .eventIcon-wrapper{
+  left: -50px;
+}
 .bgChanger{
   .changeLeft, .changeRight {
     position: relative;
@@ -3642,4 +3671,377 @@ b{
   .chosenAppBg6 .openBgChanger{
     right: -80px;
   }
+  .chosenAppBg6 .eventIcon-wrapper{
+    left: -80px;
+  }
+}
+
+//Игра на двоих
+.gameForTwo__miniHeader{
+  text-align: left;
+}
+.gameForTwo__miniHeader, .form-select{
+  margin: 0 auto 5px auto;
+  font-size: 2rem;
+}
+.createLevelInput{
+  margin-left: 60px;
+}
+.form-select {
+  overflow: hidden;
+
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.form-select, .createLevelInput{
+  background-color: #F0F0F0;
+  border: none;
+  width: 100%;
+  padding: 5px;
+}
+.createLevelInput{
+  flex: 1 1 100px;
+  margin: 0;
+  height: 60px;
+}
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #F0F0F0;
+  background-image: url(../assets/select-arrow.png);
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 2rem auto;
+  display: block;
+  width: 100%;
+  outline: none;
+  color: black;
+  cursor: pointer;
+  z-index: 2;
+  border: none;
+  padding: 10px 10px 10px 5px;
+
+
+  &[multiple=multiple] {
+    height: auto;
+    border: 1px solid #cbcbcb;
+    border-radius: 3px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(0, 0, 0, 0.07);
+
+
+    &:hover {
+      border-color: #cccccc;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  option[disabled] {
+    color: #eeeeee;
+    text-shadow: none;
+    border: none;
+  }
+}
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #888888;
+}
+
+select::-ms-expand {
+  display: none;
+}
+.gameForTwo{
+  display: flex;
+}
+.gameForTwo__icon{
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: 1px solid white;
+  border-radius: 50%;
+  background: url(../assets/gameForTwo/player1.svg) center center no-repeat, #8FF076;
+  background-size: 70%;
+}
+
+.gameForTwo__player2 .gameForTwo__icon, .endGame__playerTwo .gameForTwo__icon{
+  background: url(../assets/gameForTwo/player2.svg) center center no-repeat, #FFA270;
+  background-size: 50%;
+}
+.gameForTwo__stars{
+  position: absolute;
+  top: 105%;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1.5rem;
+}
+.gameForTwo__stars .level_star{
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+.gameForTwo__time{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 2.4rem;
+  margin: 0 70px;
+  width: 100px;
+}
+.gameForTwo__move{
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 1.3rem;
+  width: 200%;
+  text-align: center;
+}
+.gameForTwo__gray{
+  filter: grayscale(1);
+}
+
+@media (orientation: landscape) and (max-height: 320px){
+  .openBgChanger{
+    width: 35px;
+    height: 35px;
+  }
+  .gameForTwo__time{
+    font-size: 2.2rem;
+  }
+  .gameForTwo__icon{
+    width: 37px;
+    height: 37px;
+  }
+  .gameForTwo__stars{
+    font-size: 1.3rem;
+  }
+  .gameForTwo__stars .level_star{
+    width: 13px;
+    height: 13px;
+  }
+}
+@media (min-width: 1000px){
+  .gameForTwo__time{
+    font-size: 2.8rem;
+  }
+  .gameForTwo__move{
+    font-size: 2rem;
+  }
+  .gameForTwo__icon{
+    width: 60px;
+    height: 60px;
+  }
+  .gameForTwo__stars{
+    font-size: 2.4rem;
+  }
+  .gameForTwo__stars .level_star{
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (orientation: portrait){
+  .gameForTwo__time{
+    margin: 0 20px;
+  }
+}
+
+.gamePaused{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
+  .gameForTwo__icon{
+    width: 150px;
+    height: 150px;
+  }
+  .gamePaused__move, .gamePaused__continue{
+    font-size: 3rem;
+    color: white;
+    margin-top: 15px;
+    text-align: center;
+  }
+  .gamePaused__continue{
+    font-size: 2rem;
+    margin-top: 10px;
+  }
+
+  cursor: pointer;
+}
+.gamePaused__blurBackground{
+  background-color: rgba(0,0,0,0.25);
+}
+.eventIconItem{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+@media (min-width: 1000px){
+  .gameForTwo__pause{
+    width: 60px;
+    height: 60px;
+  }
+  .eventIconItem{
+    width: 70px !important;
+    height: 70px !important;
+  }
+  .gamePaused{
+    .gameForTwo__icon{
+      width: 200px;
+      height: 200px;
+    }
+    .gamePaused__move, .gamePaused__continue{
+      font-size: 3.5rem;
+      margin-top: 25px;
+    }
+    .gamePaused__continue{
+      font-size: 2.5rem;
+      margin-top: 15px;
+    }
+  }
+}
+.endGame__player-words, .endGame_gameForTwo .endGame__header, .endGame__playerName,
+.endGame__nextLevel{
+  font-family: 'Roboto', sans-serif ;
+  font-weight: normal;
+}
+.endGame_gameForTwo .endGame, .endGame_gameForTwo .endGame__header{
+  width: 500px !important;
+  max-width: 90% !important;
+}
+.endGame_gameForTwo .endGame__header .endGame__goodGame{
+  font-size: 2.2rem;
+  line-height: 2.2rem;
+  margin: 0;
+}
+
+.endGame_gameForTwo .endGame{
+  height: 400px !important;
+  max-height: 70% !important;
+  display: flex;
+  flex-flow: column nowrap;
+}
+.endGame_gameForTwo .endGame__actions{
+  position: static;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.endGame__playerName{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+
+  font-size: 2rem;
+}
+.endGame__players{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: flex-start;
+
+  flex: 1 1 auto;
+
+
+  margin-top: 30px !important;
+}
+.endGame__playerOne{
+  border-right: 1px solid #D0D0D0;
+}
+.endGame__playerOne, .endGame__playerTwo{
+  width: 50%;
+  height: 100%;
+
+  display: flex;
+  flex-flow: column nowrap;
+}
+.endGame__player-words{
+  padding-left: 10px;
+  text-align: left;
+  font-size: 1.6rem;
+  color: #7E7E7E;
+
+  width: 96%;
+
+  overflow-y: auto;
+  flex: 1 1 100px;
+}
+
+.endGame__playerTwo .endGame__player-words{
+  direction: rtl;
+  margin-left: 4%;
+}
+
+.endGame__player-score {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  padding-left: 10px;
+  text-align: left;
+  margin-top: 5px;
+}
+.endGame__playerTwo .endGame__player-words, .endGame__playerTwo .endGame__player-score{
+  text-align: right;
+  padding: 0 10px 0 0;
+}
+
+@media (min-width: 1000px){
+  .endGame_gameForTwo .endGame, .endGame_gameForTwo .endGame__header{
+    width: 600px !important;
+  }
+  .endGame_gameForTwo .endGame{
+    height: 500px !important;
+  }
+  .endGame_gameForTwo .endGame__header .endGame__goodGame{
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+  }
+  .endGame__playerName{
+    font-size: 2.3rem;
+  }
+  .endGame__player-words{
+    font-size: 1.8rem;
+  }
+  .endGame__player-score{
+    font-size: 2.2rem;
+  }
+  .endGame__actions{
+      margin: 20px 0;
+  }
+  .endGame_gameForTwo .endGame__actions{
+    margin: 20px 0;
+  }
+}
+.startCreateGame{
+  margin: 0;
+  max-width: 45%;
+}
+.createGame__action{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+.zeroOpacity{
+  opacity: 0;
+}
+.startCreateGame_continue{
+  background-color: #be610d !important;
 }
