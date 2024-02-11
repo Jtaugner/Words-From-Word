@@ -192,7 +192,14 @@
 				<div class="changeLeft" @click="changeBgLeft"></div>
 
 				<div class="chosenBg" :class="'chosenBg' + chosenBg">
-					<div class="closedBg" v-if="cantShowBg">Фон откроется на {{bgLvlsOpen[chosenBg-1]+1}} уровне</div>
+					<div class="closedBg" v-if="cantShowBg">
+						{{notRussian?
+						'The background will open at level ' + (bgLvlsOpen[chosenBg-1]+1)
+						:
+						'Фон откроется на ' + (bgLvlsOpen[chosenBg-1]+1) +' уровне'
+						}}
+
+					</div>
 				</div>
 
 				<div class="changeRight" @click="changeBgRight"></div>
@@ -239,7 +246,12 @@
 				/>
 			</template>
 			<template v-else>
-				Позже вы сможете перемещаться по страницам, используя это окно
+				{{
+					notRussian ?
+						'Later you will be able to navigate through the pages using this window' :
+						'Позже вы сможете перемещаться по страницам, используя это окно'
+				}}
+
 			</template>
 		</div>
 
@@ -1112,7 +1124,7 @@
 							{{getItemPrice(3)}}
 					</div>
 				</div>
-				<div class="shop__cart__item shop__cart__last" @click="buyTip(6)">
+				<div class="shop__cart__item shop__cart__last" @click="buyTip(6)" v-show="!notShowAds">
 					<div class="shop__cart__card">
 						<div class="shop__cart__item_5">
 							<div class="noAdvert">
@@ -2417,22 +2429,7 @@ let navigatorBrowser = (function(){
 })();
 
 
-function switchToEnglishVersion(){
-	wordsFromWords = wordsFromWordsEN;
-	allWords = allWordsEN;
-	notRussianGame = true;
-	sounds = sounds === 'true';
-	let allDoneWordsEN = getFromStorage('allDoneWordsEN');
-	let tipsEN = getFromStorage('tipsEN');
-	if(allDoneWordsEN){
-		allDoneWords = fixDoneWords(JSON.parse(allDoneWordsEN));
-		tipsEN = Number(tipsEN);
-		if(tipsEN) tips = tipsEN;
-		isRules = false;
 
-		setLoc();
-	}
-}
 
 
 let recentState = JSON.stringify(PLAYESTATE);
@@ -3215,7 +3212,7 @@ function howManyWordsToStar(doneWordsLength, allWordsLength) {
 	for(let i = 0; i < allPercents.length; i++){
 		if(doneWordsLength < allPercents[i]){
 			let amount = allPercents[i] - doneWordsLength;
-			return amount + ' ' + getRightWord(amount);
+			return [amount, getRightWord(amount)];
 		}
 	}
 }
@@ -3600,6 +3597,27 @@ let infoAboutLocation = 'В игре есть <br><span class="cloudHint__mainTe
 let infoAboutEndFirstLevel = 'Вы получили <span class="cloudHint__mainText">первую звезду</span> и теперь можете перейти на следующий уровень!';
 
 let lvl5Phrase = 'Этот уровень особенно сложен, дарим вам <span class="cloudHint__mainText">10 дополнительных подсказок</span>. Удачной игры!';
+
+
+function switchToEnglishVersion(){
+	wordsFromWords = wordsFromWordsEN;
+	allWords = allWordsEN;
+	notRussianGame = true;
+	sounds = sounds === 'true';
+	let allDoneWordsEN = getFromStorage('allDoneWordsEN');
+	let tipsEN = getFromStorage('tipsEN');
+
+	infoAboutEndFirstLevel = 'You have received <span class="cloudHint__mainText">the first star</span> and now you can go to the next level!';
+	if(allDoneWordsEN){
+		allDoneWords = fixDoneWords(JSON.parse(allDoneWordsEN));
+		tipsEN = Number(tipsEN);
+		if(tipsEN) tips = tipsEN;
+		isRules = false;
+
+		setLoc();
+	}
+}
+
 
 let cloudPayloadPhrases = [
 	'Добро пожаловать в игру <span class="cloudHint__mainText">"Слова из слова"</span>! Составляйте слова, чтобы проходить уровни.',
@@ -4073,9 +4091,12 @@ export default {
 			return this.chosenBg > 0 && this.isCloseLevelShow(bgLvlsOpen[this.chosenBg-1]+1);
 		},
 		moreGuessedWords(){
-			if(this.doneWords.length >= this.nowWords.length) return 'Уровень пройден!';
+			if(this.doneWords.length >= this.nowWords.length) {
+				return this.notRussian ? 'Level completed!' : 'Уровень пройден!';
+			}
 			let wordsAmount = howManyWordsToStar(this.doneWords.length, this.nowWords.length);
-			return 'До следующей звезды осталось ' + wordsAmount;
+			if(this.notRussian) return 'There are ' + wordsAmount[0] + ' words left until the next star';
+			return 'До следующей звезды осталось ' + wordsAmount[0] + ' ' + wordsAmount[1];
 		},
 		lastLocationLevel(){
 			for(let i = 0; i < this.locationStars.length; i++){
