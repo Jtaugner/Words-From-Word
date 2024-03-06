@@ -519,8 +519,8 @@
 
 		<div class="game" v-show="content">
 			<div class="blur"></div>
-			<div class="blackoutShowNextAdv" v-show="isShowTimeToShowNextAdv"></div>
-			<div class="timeToShowNextAdv" v-show="isShowTimeToShowNextAdv">
+			<div class="blackoutShowNextAdv" v-show="isShowTimeToShowNextAdv && !notShowAdvPause"></div>
+			<div class="timeToShowNextAdv" v-show="isShowTimeToShowNextAdv" :class="notShowAdvPause ? 'timeToShowNextAdv_noPause' : ''">
 				<svg class="noAdvert__advert" width="36" height="34" viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.133268 7.31339C0.0458686 7.33307 -0.0127351 7.42047 0.00237327 7.50861L1.042 13.5734C1.0571 13.6616 1.1402 13.7171 1.2276 13.6974L2.59532 13.3894V33.8381C2.59532 33.9275 2.66795 34 2.75755 34H35.8378C35.9274 34 36 33.9275 36 33.8381V11.1405C36 11.0511 35.9274 10.9786 35.8378 10.9786H13.302L33.6892 6.38798C33.7766 6.3683 33.8352 6.2809 33.8201 6.19276L32.7805 0.127919C32.7653 0.0397812 32.6822 -0.0157149 32.5948 0.00396503L0.133268 7.31339ZM15.144 26.46L24.6242 22.6755L15.144 18.891V26.46Z" fill="url(#paint0_linear_48_33541)"/><defs><linearGradient id="paint0_linear_48_33541" x1="36" y1="-3" x2="3" y2="34" gradientUnits="userSpaceOnUse"><stop/><stop offset="0.994865" stop-color="#5E5E5E"/></linearGradient></defs></svg>
 				<div class="timeToShowNextAdv__time">{{timeToShowNextAdv}}</div>
 			</div>
@@ -2649,6 +2649,7 @@ try{
 	testMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
 }catch(e){}
 let advErrorsTimes = 0;
+let ysdkFlags;
 if(window.YaGames){
 	window.YaGames.init({
 		adv: {
@@ -2662,6 +2663,11 @@ if(window.YaGames){
 		}
 	}).then(ysdk => {
 		YSDK = ysdk;
+		ysdk.getFlags().then(flags => {
+			console.log('Флаги')
+			console.log(flags);
+			ysdkFlags = flags;
+		});
 		try{
 			console.log("LANG: ", ysdk.environment.i18n.lang);
 			notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
@@ -3513,7 +3519,8 @@ let dictWordsToReplace = {
 	'затес': 'затёс',
 	'елка': 'ёлка',
 	'валер': 'валёр',
-	'саек': 'саёк'
+	'саек': 'саёк',
+	'помет': 'помёт'
 }
 
 
@@ -4034,6 +4041,7 @@ export default {
 			crosspromo: false,
 			timeToShowNextAdv: 3,
 			isShowTimeToShowNextAdv: false,
+			notShowAdvPause: false,
 			randomStars: [],
 			randomLevelStars: [],
 			isMusic: false,
@@ -4249,7 +4257,8 @@ export default {
 				if(playerGame._personalInfo.uniqueID === "CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=" ||
 					playerGame._personalInfo.uniqueID === "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=" ||
 					playerGame._personalInfo.uniqueID === "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU=" ||
-					playerGame._personalInfo.uniqueID === "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4="
+					playerGame._personalInfo.uniqueID === "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4=" ||
+					playerGame._personalInfo.uniqueID === "oSuq1pgZxAgmIAqESjPn7XuUltVk1o4b7yUxxkGf+2E="
 				  ){
 					return true;
 				}
@@ -5043,7 +5052,9 @@ export default {
 											lb.setLeaderboardScore('event', eventScore);
 										}
 									}else{
-										if(that.allStars > player.score && !that.scamTest()){
+										if(that.allStars > player.score
+											&& that.allStars <= allWords.length*3
+											&& !that.scamTest()){
 											lb.setLeaderboardScore('lvl', that.allStars);
 										}
 									}
@@ -5079,7 +5090,9 @@ export default {
 						else {
 							let stars = that.allStars;
 							if(that.scamTest()) stars = 0;
-							lb.setLeaderboardScore('lvl', stars);
+							if(stars <= allWords.length*3){
+								lb.setLeaderboardScore('lvl', stars);
+							}
 						}
 						if(fromTestStars){
 							this.getLeaderBoardInGame();
@@ -5558,6 +5571,7 @@ export default {
 		},
 		pressKey(e){
 			if(!this.content || this.gamePaused || this.isEndGame) return;
+			if(this.isShowTimeToShowNextAdv && !this.notShowAdvPause) return;
 			let letter = e.key;
 			if(letter === 'Backspace'){
 				if(this.isTutorial) return;
@@ -5657,7 +5671,7 @@ export default {
 			// if(this.animWordStart !== '') return;
 			ev.stopPropagation();
 			ev.preventDefault();
-			if(this.notShowLetters.includes(this.letters[index]) || this.isShowTimeToShowNextAdv) return;
+			if(this.notShowLetters.includes(this.letters[index])) return;
 			this.clickSound();
 			if(this.isTutorial){
 				this.nextStep();
@@ -5867,6 +5881,16 @@ export default {
 			if(this.verticalPayload || this.notShowAds || this.isShowTimeToShowNextAdv || this.isGameForTwo) return;
 			if(!this.isTutorial && this.lvl > 1 && this.advTimer <= 0){
 				if(showAdv && advTime){
+					if(ysdkFlags){
+						if(ysdkFlags.testAdv === 'noPause'){
+							this.notShowAdvPause = true;
+						}else if(ysdkFlags.testAdv === 'noTimer'){
+							globalTryShowAdv(this.startRewardedTimer);
+							return;
+						}else if(ysdkFlags.testAdv === 'noAdv'){
+							return;
+						}
+					}
 					this.timeToShowNextAdv = 3;
 					this.isShowTimeToShowNextAdv = true;
 					let interval;

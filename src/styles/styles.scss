@@ -4045,3 +4045,20 @@ select::-ms-expand {
 .startCreateGame_continue{
   background-color: #be610d !important;
 }
+
+.timeToShowNextAdv_noPause{
+  top: 10% !important;
+  transform: translateX(-50%) !important;
+}
+@media (max-width: 1000px){
+  .timeToShowNextAdv_noPause{
+    width: 60px !important;
+    height: 60px !important;
+  }
+  .timeToShowNextAdv_noPause .timeToShowNextAdv__time{
+    width: 25px !important;
+    height: 25px !important;
+    font-size: 1.4rem !important;
+    line-height: 1.4rem !important;
+  }
+}
