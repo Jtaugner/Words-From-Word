@@ -5881,27 +5881,28 @@ export default {
 			if(this.verticalPayload || this.notShowAds || this.isShowTimeToShowNextAdv || this.isGameForTwo) return;
 			if(!this.isTutorial && this.lvl > 1 && this.advTimer <= 0){
 				if(showAdv && advTime){
-					if(ysdkFlags){
-						if(ysdkFlags.testAdv === 'noPause'){
-							this.notShowAdvPause = true;
-						}else if(ysdkFlags.testAdv === 'noTimer'){
-							globalTryShowAdv(this.startRewardedTimer);
-							return;
-						}else if(ysdkFlags.testAdv === 'noAdv'){
-							return;
-						}
-					}
-					this.timeToShowNextAdv = 3;
-					this.isShowTimeToShowNextAdv = true;
-					let interval;
-					interval = setInterval(()=>{
-						this.timeToShowNextAdv = this.timeToShowNextAdv - 1;
-						if(this.timeToShowNextAdv <= 0){
-							globalTryShowAdv(this.startRewardedTimer);
-							this.isShowTimeToShowNextAdv = false;
-							clearInterval(interval);
-						}
-					}, 1000);
+					globalTryShowAdv(this.startRewardedTimer);
+					// if(ysdkFlags){
+					// 	if(ysdkFlags.testAdv === 'noPause'){
+					// 		this.notShowAdvPause = true;
+					// 	}else if(ysdkFlags.testAdv === 'noTimer'){
+					// 		globalTryShowAdv(this.startRewardedTimer);
+					// 		return;
+					// 	}else if(ysdkFlags.testAdv === 'noAdv'){
+					// 		return;
+					// 	}
+					// }
+					// this.timeToShowNextAdv = 3;
+					// this.isShowTimeToShowNextAdv = true;
+					// let interval;
+					// interval = setInterval(()=>{
+					// 	this.timeToShowNextAdv = this.timeToShowNextAdv - 1;
+					// 	if(this.timeToShowNextAdv <= 0){
+					// 		globalTryShowAdv(this.startRewardedTimer);
+					// 		this.isShowTimeToShowNextAdv = false;
+					// 		clearInterval(interval);
+					// 	}
+					// }, 1000);
 
 				}
 
