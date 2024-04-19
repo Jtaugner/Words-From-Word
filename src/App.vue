@@ -2746,7 +2746,7 @@ if(window.YaGames){
 								advTime = true;
 								clearInterval(advInterval);
 								canShowAdv();
-							}, 120000);
+							}, 100000);
 
 
 							onCloseFunc();
@@ -4258,6 +4258,7 @@ export default {
 					playerGame._personalInfo.uniqueID === "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=" ||
 					playerGame._personalInfo.uniqueID === "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU=" ||
 					playerGame._personalInfo.uniqueID === "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4=" ||
+					playerGame._personalInfo.uniqueID === "7LQfUSbZYLQ0fqg1s8hIKAA7hMnwEv7I2RGiPqtrUh8=" ||
 					playerGame._personalInfo.uniqueID === "oSuq1pgZxAgmIAqESjPn7XuUltVk1o4b7yUxxkGf+2E="
 				  ){
 					return true;
