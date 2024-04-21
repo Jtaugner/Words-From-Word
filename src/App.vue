@@ -1248,7 +1248,7 @@
 						   class="settings__text"
 						   @click="()=>{sendParams({'vk': 1})}"
 						>
-							Группа ВКонтакте
+							Наша группа
 						</a>
 					</li>
 
