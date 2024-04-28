@@ -792,7 +792,7 @@
 					</p>
 					<p v-else v-html="cloudsPhrase"></p>
 				</div>
-				<div class="skipTutorial" v-show="cloudHint && !showWordDesc && canShowSkip" @click="skipTutorial">Пропустить</div>
+				<div class="skipTutorial" v-show="cloudHint && !showWordDesc && canShowSkip" @click="skipTutorial">{{notRussian ? 'Skip' : 'Пропустить'}}</div>
 				<div v-show="cloudHint && !showWordDesc && canShowSkip" @click="switchSoundsTutorial"
 					 class="switchSoundsTutorial menuItem">
 
@@ -874,7 +874,7 @@
 				<div class="word-definition">
 					{{notRussian ? 'Definition - loading...' : 'Определение слова - загрузка...'}}
 				</div>
-				<iframe src="https://ru.m.wiktionary.org/wiki/" id="definitionIframe" v-show="!notRussian"></iframe>
+				<iframe src="" id="definitionIframe"></iframe>
 
 			</div>
 
@@ -2117,7 +2117,7 @@ function setToStorage(name, val) {
 	try {
 		if(name === 'allDoneWords'){
 			if(notRussianGame){
-				localStorage.setItem('allDoneWordsEN', val);
+				localStorage.setItem('allDoneWordsEN', JSON.stringify(val));
 			}else{
 				localStorage.setItem(name, JSON.stringify(compressData(val)));
 			}
@@ -2674,7 +2674,6 @@ if(window.YaGames){
 			notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
 			if(notRussianGame){
 				console.log('EN');
-				isRules = false;
 				lastLevel = 0;
 				params({'eng': 1});
 				switchToEnglishVersion();
@@ -3392,6 +3391,7 @@ window.addEventListener("visibilitychange", () => {
 let musicStarted = false;
 window.onclick = function(){
 	if(!musicStarted && isMusic){
+		console.log('nusic');
 		musicStarted = musicSound.play();
 		if(musicStarted){
 			if (document.querySelector('.levels')) {
@@ -3527,7 +3527,7 @@ let dictWordsToReplace = {
 
 function getWordDesc(word) {
 	console.log('getWordDesc --- ', word);
-	if(notRussianGame) return getEngDesc(word);
+	// if(notRussianGame) return getEngDesc(word);
 	try{
 		let defIframe = document.getElementById('definitionIframe');
 		if(dictionary[word]){
@@ -3540,11 +3540,17 @@ function getWordDesc(word) {
 
 		defIframe.classList.remove('closedIframe');
 		let wordDefinition = document.querySelector('.word-definition')
-		wordDefinition.innerHTML = 'Определение слова - загрузка...';
+
 		defIframe.onload = function (){
 			wordDefinition.innerHTML = '';
 		}
-		defIframe.src = 'https://ru.m.wiktionary.org/wiki/' + word + '#Значение';
+		if(notRussianGame){
+			wordDefinition.innerHTML = 'Definition - loading...';
+			defIframe.src = 'https://en.m.wiktionary.org/wiki/' + word + '#Noun';
+		}else{
+			wordDefinition.innerHTML = 'Определение слова - загрузка...';
+			defIframe.src = 'https://ru.m.wiktionary.org/wiki/' + word + '#Значение';
+		}
 	}catch(e){
 		console.log(e);
 	}
@@ -3586,7 +3592,7 @@ function deletePreDownload(){
 
 }
 
-const cloudPhrases = [
+let cloudPhrases = [
 	'Добро пожаловать в игру <span class="cloudHint__mainText">"Слова из слова"</span>! Составляйте слова, чтобы проходить уровни.',
 	'Нажимайте на <span class="cloudHint__mainText">буквы снизу</span>, чтобы составить слово!',
 	'Нажмите на <span class="cloudHint__mainText">галочку</span>, чтобы отправить слово!',
@@ -3611,11 +3617,22 @@ function switchToEnglishVersion(){
 	wordsFromWords = wordsFromWordsEN;
 	allWords = allWordsEN;
 	notRussianGame = true;
-	sounds = sounds === 'true';
 	let allDoneWordsEN = getFromStorage('allDoneWordsEN');
 	let tipsEN = getFromStorage('tipsEN');
 
 	infoAboutEndFirstLevel = 'You have received <span class="cloudHint__mainText">the first star</span> and now you can go to the next level!';
+	cloudPhrases = [
+		'Welcome to the game <span class="cloudHint__mainText">"Words from Words"</span>! Compose words to complete the levels.',
+		'Click on the <span class="cloudHint__mainText">letters at the bottom</span> to compose a word!',
+		'Click on the <span class="cloudHint__mainText">checkmark</span> to send the word!',
+		'Congratulations! Your <span class="cloudHint__mainText">first word</span> is already at the level. Let\'s try again!',
+		'The game accepts only <span class="cloudHint__mainText">common singular nouns</span>. Let\'s introduce another word!',
+		'Click on a word to find out its <span class="cloudHint__mainText">meaning</span>.',
+		'If you run out of ideas, use the <span class="cloudHint__mainText">hint</span>. On the first level the hints are endless.',
+		'To move to the next level earn at least 1 <span class="cloudHint__mainText">star</span>.',
+		'Congratulations! You <span class="cloudHint__mainText">have successfully</span> completed your training. We wish you good luck in completing the game!',
+	];
+
 	if(allDoneWordsEN){
 		allDoneWords = fixDoneWords(JSON.parse(allDoneWordsEN));
 		tipsEN = Number(tipsEN);
@@ -4862,6 +4879,7 @@ export default {
 		startTutorial(){
 			console.log('Start tutorial');
 			tutorialStep = 0;
+			this.cloudsPhrase = cloudPhrases[0];
 			this.canShowSkip = true;
 			this.isTutorial = true;
 			this.cloudHint = true;
@@ -4922,11 +4940,14 @@ export default {
 				// this.cloudsPhrase = cloudPhrases[1];
 				this.setCloudsPhrase(cloudPhrases[1])
 				this.tutorialSelected = 0;
+				if(notRussianGame) this.tutorialSelected = 5;
 			} else if(tutorialStep === 5){
 				this.tutorialSelected = 2;
+				if(notRussianGame) this.tutorialSelected = 0;
 				this.cloudsPhrase = cloudPhrases[1];
 			} else if(tutorialStep === 10){
 				this.tutorialSelected = 1;
+				if(notRussianGame) this.tutorialSelected = 2;
 				this.cloudsPhrase = cloudPhrases[1];
 			}else if(tutorialStep === 17){
 				this.setCloudsPhrase(cloudPhrases[8])
@@ -4956,16 +4977,26 @@ export default {
 
 			if(tutorialStep >=1 && tutorialStep <= 3){
 				this.tutorialSelected = 2 + tutorialStep;
+				if(notRussianGame){
+					this.tutorialSelected = 1 + tutorialStep;
+				}
 			}else if(tutorialStep === 6){
 				this.tutorialSelected = 1;
 			}else if(tutorialStep === 7){
 				this.tutorialSelected = 4;
+				if(notRussianGame) this.tutorialSelected = 2;
 			}else if(tutorialStep === 8 || tutorialStep === 13){
 				this.tutorialSelected = 5;
+				if(notRussianGame) {
+					this.tutorialSelected = 3;
+					if(tutorialStep === 13) this.tutorialSelected = 1;
+				}
 			} else if(tutorialStep === 11){
 				this.tutorialSelected = 2;
+				if(notRussianGame) this.tutorialSelected = 4;
 			}else if(tutorialStep === 12){
 				this.tutorialSelected = 3;
+				if(notRussianGame) this.tutorialSelected = 6;
 			}else if(tutorialStep === 4 || tutorialStep === 9 || tutorialStep === 14){
 				this.tutorialSelected = -1;
 				this.selectSend = true;
@@ -5210,7 +5241,7 @@ export default {
 			this.isSounds = sounds;
 			deletePreDownload();
 			this.getPlayerLB();
-			if(isRules && !notRussianGame && isShowTutorial && !payloadLevel && lastLevel === 0){
+			if(isRules && isShowTutorial && !payloadLevel && lastLevel === 0){
 				this.openLastLevel();
 				this.startTutorial();
 			}else{
@@ -5517,7 +5548,7 @@ export default {
 		},
 		switchSoundsTutorial(){
 			this.isSounds = !this.isSounds;
-			this.switchMusic({target: {checked: this.isSounds}});
+			this.switchMusic({target: {checked: false}});
 			setToStorage('sounds', this.isSounds);
 			params({'soundTutorial': this.isSounds});
 		},
@@ -5937,10 +5968,13 @@ export default {
 							if(tutorialStep === 5){
 								this.setCloudsPhrase(cloudPhrases[3]);
 							}else if(tutorialStep === 10){
+								console.log(cloudPhrases[4]);
 								this.setCloudsPhrase(cloudPhrases[4]);
 							}else if(tutorialStep === 15){
 								this.setCloudsPhrase(cloudPhrases[5]);
 								this.selectMainWord = 'илот';
+								if(notRussianGame) this.selectMainWord = 'apex';
+
 
 								setTimeout(()=>{
 									try{

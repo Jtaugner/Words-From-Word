@@ -73,7 +73,7 @@
 
 
 
-        let doNewWords = false;
+        let doNewWords = true;
 
         shuffle(words);
 
@@ -91,13 +91,9 @@
                         }
                     }
                     if (
-                        (newWords.length < 22 && newArr.length > 15 && newArr.length < 40) ||
-                        (newWords.length < 43 && newArr.length > 40 && newArr.length < 70) ||
-                        (newWords.length < 64 && newArr.length > 60 && newArr.length < 100) ||
-                        (newWords.length < 100 && newArr.length > 70 && newArr.length < 120) ||
-                        (newWords.length >= 100 && newArr.length > 70 && newArr.length < 150)
+                        newArr.length > 40 && newArr.length < 150
                     ) {
-                        // console.log(bigWord, newArr.length);
+                        console.log(bigWord, newArr.length);
                         newWords.push(bigWord);
                     }
                 }
