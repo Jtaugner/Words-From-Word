@@ -771,11 +771,15 @@ html,body
   height: 15px;
 }
 .advert{
-  width: 15px;
+  width: 35px;
   height: 15px;
+  right: -20px;
+  justify-content: flex-end;
+  color: black;
+  font-size: 1rem;
 
-  background: url("../assets/advert.png") center center no-repeat white;
-  background-size: 80%;
+  background: url("../assets/advert.png") 18% center no-repeat white;
+  background-size: 40%;
 }
 .menu__level, .menu__words-amount{
   font-size: 1.8rem;
@@ -1310,7 +1314,10 @@ html,body
   }
 
   .advert {
-    width: 20px;
+    width: 40px;
+    right: -20px;
+    font-size: 1.2rem;
+
     height: 20px;
   }
 
@@ -1389,12 +1396,16 @@ html,body
     width: 60px;
     height: 60px;
   }
-  .menu__tip_count{
+  .menu__tip_count, .advert{
     font-size: 1.7rem;
     line-height: 1.7rem;
     width: 50px;
     right: -30px;
     height: 20px;
+  }
+  .advert{
+    font-size: 1.6rem;
+    background-size: 36%;
   }
   .cart__item_tip{
     font-size: 1.3rem;
@@ -3395,11 +3406,15 @@ b{
   .menu__words-amount, .menu__button-prev-level{
     margin: 0;
   }
-  .menu__tip_count{
+  .menu__tip_count, .advert{
     right: auto;
     left: 0;
     width: 100%;
     bottom: -8px;
+  }
+  .advert{
+    background-size: 32%;
+    font-size: 1.15rem;
   }
   .action-block__done-word{
     height: 100%;
