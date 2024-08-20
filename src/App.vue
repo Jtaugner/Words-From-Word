@@ -3521,7 +3521,8 @@ let dictWordsToReplace = {
 	'елка': 'ёлка',
 	'валер': 'валёр',
 	'саек': 'саёк',
-	'помет': 'помёт'
+	'помет': 'помёт',
+	'огневка': 'огнёвка'
 }
 
 
@@ -3939,6 +3940,8 @@ function getOneRandStart(){
 }
 
 let gameTimers = [10, 15, 30, 45, 60, 90, 120, 180]
+const scamPlayers = ["CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=", "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=", "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU=", "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4=", "7LQfUSbZYLQ0fqg1s8hIKAA7hMnwEv7I2RGiPqtrUh8=", "oSuq1pgZxAgmIAqESjPn7XuUltVk1o4b7yUxxkGf+2E=", "x0+igey20wXshdwdDQCwW4DveAVwGvmzB9r0+GfPIZk=", "XUDWsVlVCCS6YrlA+EmbbPebuw7IXp1WlLsuZ+EXpaY=",
+	"lRMomuvFGZ6I11rL92MOTrYRDSFFxL9ic0WVNRonUN8="]
 
 export default {
 	name: 'App',
@@ -4210,7 +4213,6 @@ export default {
 
 		},
 		changeOrientation(){
-			console.log('change: ', window.innerWidth, window.innerHeight)
 			if(window.innerHeight > window.innerWidth){
 				lvlsOnPage = 20;
 				allLocations = Math.floor(allWords.length / lvlsOnPage);
@@ -4272,14 +4274,7 @@ export default {
 		},
 		scamTest(){
 			try{
-				if(playerGame._personalInfo.uniqueID === "CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=" ||
-					playerGame._personalInfo.uniqueID === "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=" ||
-					playerGame._personalInfo.uniqueID === "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU=" ||
-					playerGame._personalInfo.uniqueID === "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4=" ||
-					playerGame._personalInfo.uniqueID === "7LQfUSbZYLQ0fqg1s8hIKAA7hMnwEv7I2RGiPqtrUh8=" ||
-					playerGame._personalInfo.uniqueID === "oSuq1pgZxAgmIAqESjPn7XuUltVk1o4b7yUxxkGf+2E=" ||
-					playerGame._personalInfo.uniqueID === "x0+igey20wXshdwdDQCwW4DveAVwGvmzB9r0+GfPIZk="
-				  ){
+				if(scamPlayers.includes(playerGame._personalInfo.uniqueID)){
 					return true;
 				}
 			}catch(e){

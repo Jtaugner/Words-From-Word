@@ -4067,5 +4067,22 @@ select::-ms-expand {
     line-height: 1.4rem !important;
   }
 }
+@media (max-height: 300px) {
+  .createGameRules {
+    padding: 15px 5px 5px 5px;
+    max-width: 90%;
+  }
+
+  .startCreateGame {
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+  }
+
+  .createGameRules .rules__menu {
+    width: 200px;
+    font-size: 2rem;
+    line-height: 2rem;
+  }
+}
 
 /*# sourceMappingURL=styles.css.map */
