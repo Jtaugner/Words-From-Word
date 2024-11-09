@@ -1296,7 +1296,7 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Один на один!' : 'Дорогой игрок!'}}
+				{{locationGame ? 'Ура!' : wasUpdate ? 'Новая локация' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
@@ -1304,8 +1304,8 @@
 			</template>
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
-					Дорогие игроки! Предлагаем вам попробовать новый режим "Один на один"! Для этого нажмите на значок геймпада в меню :)
-					<div class="rules__goBg" @click="openGameWindowForTwo">Попробовать!</div>
+					Попробуйте новую локацию - "Медицина"!
+					<div class="rules__goBg" @click="goToGetLocations">К локациям!</div>
 				</div>
 
 
@@ -2052,7 +2052,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-43";
+const lastVersion = "ver-44";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2191,7 +2191,7 @@ if(chosenBackground){
 	params({'newChosenBG': chosenBackground});
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = 5;
+	chosenBackground = 6;
 	setToStorage('chosenBackground', chosenBackground);
 	// deleteBlockBg = true;
 }
@@ -2390,6 +2390,7 @@ if(allDoneWords){
 	isRules = true;
 	sounds = true;
 	isMusic = false;
+	if(chosenBackground === 6) isMusic = true;
 	setToStorage('sounds', sounds);
 	setToStorage('isMusic', isMusic);
 	allWords.forEach((key => {
@@ -3365,8 +3366,13 @@ let starVolume = new NewAudioContext('star.mp3');
 // let newLevel = new NewAudioContext('new-level');
 let clickSound = new NewAudioContext('click.mp3');
 let clickSound2 = new NewAudioContext('click2.mp3');
-let musicSound = new NewAudioContext('music.mp3', {loop: true});
-musicSound.setVolume(10);
+let musicSound;
+function switchOnNewYearMusic(){
+	if(!musicSound){
+		musicSound = new NewAudioContext('music.mp3', {loop: true});
+		musicSound.setVolume(10);
+	}
+}
 // let exitLevelSound = new NewAudioContext('exitLevel');
 function switchOnMainMusic(){
 	try{
@@ -3394,7 +3400,8 @@ window.addEventListener("visibilitychange", () => {
 let musicStarted = false;
 window.onclick = function(){
 	if(!musicStarted && isMusic){
-		console.log('nusic');
+		console.log('on click')
+		switchOnNewYearMusic();
 		musicStarted = musicSound.play();
 		if(musicStarted){
 			if (document.querySelector('.levels')) {
@@ -3679,10 +3686,11 @@ let translatedLocationsNames = {
 	halloween: 'Хэллоуин',
 	valentines: 'День Валентина',
 	games: 'День Видеоигр',
-	writers: 'Знаменитые писатели'
+	writers: 'Знаменитые писатели',
+	medicine: 'Медицина'
 }
 
-let defaultLocations = ['house', 'writers'];
+let defaultLocations = ['house', 'writers', 'medicine'];
 
 // function getBanner(){
 // 	try{
@@ -4016,7 +4024,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['writers', 'games', 'valentines','halloween', 'farm', 'house', 'cinema', 'birds', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
 			showInfoAboutPortrait: false,
@@ -5562,6 +5570,7 @@ export default {
 			this.isMusic = e.target.checked;
 
 			if(this.isMusic){
+				switchOnNewYearMusic();
 				musicSound.play();
 			}else{
 				musicSound.stop();

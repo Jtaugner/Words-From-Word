@@ -684,6 +684,10 @@
   color: #7251a3;
 }
 
+.medicineLocation .popUp__locationName {
+  color: #c1002f;
+}
+
 /*Волшебство сказок*/
 .gameLocationWrapper-farm::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
   background-color: #009C63;
