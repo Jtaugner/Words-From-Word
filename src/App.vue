@@ -1292,11 +1292,11 @@
 			</ul>
 		</div>
 
-		<div class="rules-blackout main-blackout" v-if="showLastLevelInfo && !notRussian" @click="toggleShowLastLevelInfo()"></div>
-		<div class="rules rules__notification" v-if="showLastLevelInfo && !notRussian">
+		<div class="rules-blackout main-blackout" v-if="showLastLevelInfo" @click="toggleShowLastLevelInfo()"></div>
+		<div class="rules rules__notification" v-if="showLastLevelInfo">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{locationGame ? 'Ура!' : wasUpdate ? 'Новая локация' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Новый год' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
@@ -1304,8 +1304,14 @@
 			</template>
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
-					Попробуйте новую локацию - "Медицина"!
-					<div class="rules__goBg" @click="goToGetLocations">К локациям!</div>
+					<template v-if="notRussian">
+						Dear players! We have done a big update: we've redesigned the dictionary and levels in the game. Therefore the progress of all players will be changed. Thanks for understanding. Good luck!
+					</template>
+
+					<template v-else>
+						Дорогие игроки! В предверии Нового года напоминаем вам, что вы можете поставить в игре новогодний фон и включить новогоднюю музыку в настройках :)
+						<div class="rules__goBg" @click="goToChangeBg">Сменить</div>
+					</template>
 				</div>
 
 
@@ -1328,16 +1334,19 @@
 <!--				<div class="rules__goBg" @click="sendSelectedData">Отправить</div>-->
 			</template>
 			<template v-else>
-				Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
-				Вы можете пройти все старые уровни на 3 звезды (если ещё не прошли) или же подождать, когда выйдут новые уровни. Про обновления вы можете узнать в
-				<a href="https://vk.com/jaugr"
-				   target="_blank"
-				   rel="noopener noreferrer"
-				   class="settings__text"
-				   @click="()=>{sendParams({'vk-lastLevel': 1})}"
-				>
-					группе ВКонтакте
-				</a>.
+				<template v-if="notRussian"> Congratulations! You have passed all the levels of the game! But do not despair, new ones will definitely appear soon. We add new levels every month.</template>
+				<template v-else>
+					Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
+					Вы можете пройти все старые уровни на 3 звезды (если ещё не прошли) или же подождать, когда выйдут новые уровни. Про обновления вы можете узнать в
+					<a href="https://vk.com/jaugr"
+					   target="_blank"
+					   rel="noopener noreferrer"
+					   class="settings__text"
+					   @click="()=>{sendParams({'vk-lastLevel': 1})}"
+					>
+						группе ВКонтакте
+					</a>.
+				</template>
 			</template>
 
 		</div>
@@ -2052,7 +2061,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-44";
+const lastVersion = "ver-45";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
