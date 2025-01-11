@@ -2759,7 +2759,7 @@ if(window.YaGames){
 								advTime = true;
 								clearInterval(advInterval);
 								canShowAdv();
-							}, 100000);
+							}, 90000);
 
 
 							onCloseFunc();
