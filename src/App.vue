@@ -1020,7 +1020,7 @@
 
 
 									<div class="endGame__moneyCount__count">
-										+3
+										{{notRussian ? '+1' : '+2'}}
 									</div>
 								</div>
 							</div>
@@ -6251,12 +6251,13 @@ export default {
 					this.getStar = -1;
 					if(this.isMyGame) return;
 					if(stars === 3){
-						this.tipCount += 3;
+						if(this.notRussian) this.tipCount++;
+						else this.tipCount += 2;
 						if(!this.isMyGame){
 							this.getEndGame()
 						}
 					}else if(stars === 2){
-						this.tipCount += 2;
+						this.tipCount++;
 					} else{
 						this.tipCount++;
 					}
