@@ -2677,6 +2677,7 @@ if(window.YaGames){
 		}
 	}).then(ysdk => {
 		YSDK = ysdk;
+		console.log('time: ', new Date() - openTime);
 		ysdk.getFlags().then(flags => {
 			console.log('Флаги')
 			console.log(flags);
@@ -2685,6 +2686,7 @@ if(window.YaGames){
 		try{
 			console.log("LANG: ", ysdk.environment.i18n.lang);
 			notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
+			switchOnLoading(notRussianGame);
 			if(notRussianGame){
 				console.log('EN');
 				lastLevel = 0;
@@ -3594,9 +3596,6 @@ if(iOS){
 function deletePreDownload(){
 	if (document.querySelector(".pre-download")) {
 		document.querySelector(".pre-download").remove()
-	}
-	if (document.querySelector(".pre-download2")) {
-		document.querySelector(".pre-download2").remove()
 	}
 	params({'gameOpened': 1});
 	try{

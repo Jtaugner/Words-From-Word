@@ -124,7 +124,7 @@
   <body>
 
   <div class="pre-download">
-    <div class="pre-download__words">
+    <div class="pre-download__words notShow">
       <div class="pre-download__words__word">
         <div class="pre-download__words__letter">С</div>
         <div class="pre-download__words__letter">Л</div>
@@ -145,10 +145,8 @@
       </div>
       <div class="load">Загрузка...</div>
     </div>
-  </div>
 
-  <div class="pre-download2 notShow">
-      <div class="pre-download__words">
+      <div class="pre-download__words pre-download__words2 notShow">
           <div class="pre-download__words__word">
               <div class="pre-download__words__letter">W</div>
               <div class="pre-download__words__letter">O</div>
@@ -174,21 +172,15 @@
   </div>
 
   <script>
-      try{
-          function switchOnEnPreDownload(){
-              document.querySelector('.pre-download').remove();
-              document.querySelector('.pre-download2').classList.remove('notShow')
-          }
-          if(document.location.href.includes('.com')){
-              switchOnEnPreDownload();
+      function switchOnLoading(isEng){
+          if(isEng){
+              document.querySelector('.pre-download__words2').classList.remove('notShow')
           }else{
-              const ss = new URLSearchParams(window.location.search);
-              let lvl = ss.get('lang');
-              if(lvl === 'en'){
-                  switchOnEnPreDownload();
-              }
+              document.querySelector('.pre-download__words').classList.remove('notShow')
+
           }
-      }catch(e){}
+
+      }
   </script>
 
 
