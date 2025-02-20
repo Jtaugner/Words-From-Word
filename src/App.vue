@@ -2275,7 +2275,17 @@ let wordsForReplace = {
 	'концлагерь' : 'нагорье',
 	'украинизация': 'рязанка',
 	'украинизм': 'карниз',
-	'выработки': 'выборка'
+	'выработки': 'выборка',
+	'правовeдение': 'опадение',
+	'александрова': 'расклад',
+	'кондратьевна': 'редька',
+	'митрофанушка': 'матушка',
+	'интерпол': 'понтер',
+	'чередниченко': 'очернение',
+	'чехословакия': 'лосиха',
+	'онанирование': 'нирвана',
+	'рукоблудие': 'ледоруб',
+	'скотоложство': 'восток'
 
 };
 function fixDoneWords(allDoneWords, isLocationWords) {
@@ -2591,6 +2601,7 @@ function getAllStars(allDoneWords){
 			allStars += testStar(allDoneWords[key].length, wordsFromWords[key].length);
 		}
 	}));
+	console.log('all stars', allStars);
 	return allStars;
 }
 function getLocationStars(currentLocation){
