@@ -1253,39 +1253,25 @@
 						</a>
 					</li>
 
-<!--					<li class='our-games'>-->
-<!--						Наши игры-->
-<!--					</li>-->
+					<li class='our-games'>
+						Наши игры
+					</li>
 
-<!--					<li @click="()=>{sendParams({'crs': 1})}">-->
-<!--						<a href="https://yandex.ru/games/play/100008"-->
-<!--						   target="_blank"-->
-<!--						   rel="noopener noreferrer"-->
-<!--						>-->
-<!--							<div class="my-game crs">-->
-<!--							</div>-->
-<!--						</a>-->
-<!--					</li>-->
-
-<!--					<li @click="()=>{sendParams({'stm': 1})}">-->
-<!--						<a href="https://yandex.ru/games/play/98125"-->
-<!--						   target="_blank"-->
-<!--						   rel="noopener noreferrer"-->
-<!--						>-->
-<!--							<div class="my-game stm">-->
-<!--							</div>-->
-<!--						</a>-->
-<!--					</li>-->
-
-<!--					<li @click="()=>{sendParams({'wfl': 1})}">-->
-<!--						<a href="https://yandex.ru/games/play/99196"-->
-<!--						   target="_blank"-->
-<!--						   rel="noopener noreferrer"-->
-<!--						>-->
-<!--							<div class="my-game wfl">-->
-<!--							</div>-->
-<!--						</a>-->
-<!--					</li>-->
+					<li v-for="obj in allGamesInfo" @click="()=>{sendParams({'crs': 1})}">
+						<a :href="obj.url"
+						   target="_blank"
+						   rel="noopener noreferrer"
+						>
+							<div
+								class="my-game"
+								:style="{
+                                       background: 'url('+obj.coverURL+') center center no-repeat',
+									   backgroundSize: '100%'
+									}"
+							>
+							</div>
+						</a>
+					</li>
 				</template>
 
 
@@ -1296,7 +1282,7 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Новый год' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Благодарность' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
@@ -1309,8 +1295,7 @@
 					</template>
 
 					<template v-else>
-						Дорогие игроки! В предверии Нового года напоминаем вам, что вы можете поставить в игре новогодний фон и включить новогоднюю музыку в настройках :)
-						<div class="rules__goBg" @click="goToChangeBg">Сменить</div>
+						Дорогие игроки! Хотим сказать вам спасибо, что играете в нашу игру :)
 					</template>
 				</div>
 
@@ -2061,7 +2046,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-45";
+const lastVersion = "ver-46";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2675,6 +2660,35 @@ try{
 }catch(e){}
 let advErrorsTimes = 0;
 let ysdkFlags;
+let allGamesInfo = []
+
+function getAllGames(){
+	console.log('all games');
+	const games = [100008,99049,99196,98125,100325];
+	games.forEach(id => {
+		getGameObj(id);
+	})
+}
+
+function getGameObj(id){
+	try{
+		YSDK.features.GamesAPI.getGameByID(id).then(({isAvailable, game}) => {
+			console.log('game', id, isAvailable);
+			if (isAvailable) {
+				allGamesInfo.push(game);
+			} else {
+				return undefined
+			}
+		}).catch(err => {
+			console.log(err);
+			return undefined
+		})
+	}catch(e){
+		console.log('eerr');
+		return undefined
+	}
+
+}
 if(window.YaGames){
 	window.YaGames.init({
 		adv: {
@@ -2688,6 +2702,7 @@ if(window.YaGames){
 		}
 	}).then(ysdk => {
 		YSDK = ysdk;
+		getAllGames();
 		console.log('time: ', new Date() - openTime);
 		ysdk.getFlags().then(flags => {
 			console.log('Флаги')
@@ -4126,7 +4141,8 @@ export default {
 			gamePaused: false,
 			sendWordForbidden: false,
 			isGameTimeout: false,
-			gameForTwoResult: 0
+			gameForTwoResult: 0,
+			allGamesInfo: []
 		}
 	},
 	computed:{
@@ -4845,7 +4861,7 @@ export default {
 		},
 		goToChangeBg(fromUpdate){
 			this.backMenu();
-			this.isSettings = true;
+			this.toggleSettings();
 			this.openNewBg = false;
 			// let bg = 1;
 			// if(this.lvl === 14){
@@ -5517,7 +5533,7 @@ export default {
 		toggleSettings(){
 			this.isSettings = !this.isSettings;
 			if(this.isSettings){
-				params({'getSettings': 1});
+				this.allGamesInfo = allGamesInfo;
 			}
 			this.chosenBg = this.chosenBgRight;
 		},
@@ -6267,7 +6283,12 @@ export default {
 							this.getEndGame()
 						}
 					}else if(stars === 2){
-						this.tipCount++;
+						//Для малышей больше подсказок
+						if(this.lvl < 20){
+							this.tipCount += 2;
+						}else{
+							this.tipCount++;
+						}
 					} else{
 						this.tipCount++;
 					}
