@@ -1541,8 +1541,21 @@
 			<h2 class="rules__menu">
 				Новая игра!
 			</h2>
-			<div class="crossPromoImg" />
-			<a href="https://yandex.ru/games/app/127821?utm_campaign=slova_cross"
+			<a :href="crossPromoObj.url"
+			   target="_blank"
+			   rel="noopener noreferrer"
+			   class="crossPromoWrapper"
+			>
+				<div
+					class="my-game crossPromoImg"
+					:style="{
+                                       background: 'url('+crossPromoObj.coverURL+') center center no-repeat',
+									   backgroundSize: '100%'
+									}"
+				>
+				</div>
+			</a>
+			<a :href="crossPromoObj.url"
 			   class="crossPromo__play rules__goBg"
 			   target="_blank"
 				@click="clickPromo"
@@ -1606,6 +1619,15 @@ function getNewWordsFromWords(){
 	return wfww;
 }
 let wordsFromWordsRU = getNewWordsFromWords();
+document.oncontextmenu = function(e){
+	stopEvent(e);
+}
+function stopEvent(event){
+	if(event.preventDefault !== undefined)
+		event.preventDefault();
+	if(event.stopPropagation !== undefined)
+		event.stopPropagation();
+}
 //
 // let allCount = 0;
 // locationWords.event.forEach(w => {
@@ -2143,7 +2165,7 @@ let portraitAdviceAmount = getFromStorage('portraitAdviceAmount');
 let isLvlFiveHintDone = getFromStorage('isLvlFiveHintDone');
 let savedMyGame = getFromStorage('savedMyGame');
 let savedGameForTwo = getFromStorage('savedForTwo');
-let crossPromoShows = getFromStorage('crossPromoShows');
+let crossPromoShows = getFromStorage('crossPromoRebusShows');
 let infoAboutMyGame = getFromStorage('infoAboutMyGame');
 let infoAboutGameForTwo = getFromStorage('infoAboutGameForTwo');
 let infoAboutClosedEvent = !!getFromStorage('infoAboutClosedEvent2');
@@ -2661,10 +2683,10 @@ try{
 let advErrorsTimes = 0;
 let ysdkFlags;
 let allGamesInfo = []
-
+let crossPromoObj;
 function getAllGames(){
 	console.log('all games');
-	const games = [100008,99049,99196,98125,100325];
+	const games = [100008,99049,99196,294197,313411];
 	games.forEach(id => {
 		getGameObj(id);
 	})
@@ -2676,6 +2698,7 @@ function getGameObj(id){
 			console.log('game', id, isAvailable);
 			if (isAvailable) {
 				allGamesInfo.push(game);
+				if(id === 294197) crossPromoObj = game;
 			} else {
 				return undefined
 			}
@@ -4142,7 +4165,8 @@ export default {
 			sendWordForbidden: false,
 			isGameTimeout: false,
 			gameForTwoResult: 0,
-			allGamesInfo: []
+			allGamesInfo: [],
+			crossPromoObj: undefined
 		}
 	},
 	computed:{
@@ -5711,21 +5735,20 @@ export default {
 					return;
 				}
 				this.getLevel(this.lvl+1);
-				// this.crossPromoShow();
+				this.crossPromoShow();
 			}
 		},
 		crossPromoShow(){
-			// && window.innerWidth > window.innerHeight
-			// && window.innerWidth > 800 && window.innerHeight > 650
-			// if(crossPromoShows < 3 && window.innerHeight > window.innerWidth){
-			// 	if(this.lvl >= 10){
-			// 		params({'showCrossPromo': 1});
-			// 		this.crosspromo = true;
-			// 		crossPromoShows++;
-			// 		setToStorage('crossPromoShows', crossPromoShows);
-			// 		crossPromoShows = 5;
-			// 	}
-			// }
+			if(crossPromoShows < 3){
+				if(crossPromoObj) this.crossPromoObj = crossPromoObj;
+				if(this.lvl >= 10 && this.crossPromoObj){
+					params({'crossPromoRebusShows': 1});
+					this.crosspromo = true;
+					crossPromoShows++;
+					setToStorage('crossPromoRebusShows', crossPromoShows);
+					crossPromoShows = 5;
+				}
+			}
 
 		},
 		prevLocation(){

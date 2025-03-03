@@ -1648,6 +1648,17 @@ html, body {
     height: 70px;
   }
 }
+.crossPromoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.crossPromoImg {
+  width: 300px;
+  height: 180px;
+}
+
 .levels__loc {
   width: 32px;
   height: 32px;
@@ -3422,6 +3433,15 @@ b {
     height: 43px;
   }
 }
+.popUp__location {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.popUp__locationName {
+  flex: 1 1 auto;
+}
+
 @media (orientation: portrait) {
   .levels-wrapper {
     width: 100%;
