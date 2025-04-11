@@ -874,7 +874,7 @@
 				<div class="word-definition">
 					{{notRussian ? 'Definition - loading...' : 'Определение слова - загрузка...'}}
 				</div>
-				<iframe src="" id="definitionIframe"></iframe>
+				<iframe src="" id="definitionIframe" sandbox></iframe>
 
 			</div>
 
@@ -2207,7 +2207,7 @@ if(chosenBackground){
 	params({'newChosenBG': chosenBackground});
 	// importBg(chosenBackground, true);
 }else{
-	chosenBackground = 6;
+	chosenBackground = -3;
 	setToStorage('chosenBackground', chosenBackground);
 	// deleteBlockBg = true;
 }
@@ -3596,36 +3596,35 @@ let dictWordsToReplace = {
 }
 
 
-function getWordDesc(word) {
-	console.log('getWordDesc --- ', word);
-	// if(notRussianGame) return getEngDesc(word);
-	try{
-		let defIframe = document.getElementById('definitionIframe');
-		if(dictionary[word]){
-			addHTMLToDesc(dictionaryRU[word]);
-			defIframe.classList.add('closedIframe');
-			return;
-		}
+	function getWordDesc(word) {
+		console.log('getWordDesc --- ', word);
+		// if(notRussianGame) return getEngDesc(word);
+		try{
+			let defIframe = document.getElementById('definitionIframe');
+			if(dictionary[word]){
+				addHTMLToDesc(dictionaryRU[word]);
+				defIframe.classList.add('closedIframe');
+				return;
+			}
 
-		if(dictWordsToReplace[word]) word = dictWordsToReplace[word];
+			if(dictWordsToReplace[word]) word = dictWordsToReplace[word];
 
-		defIframe.classList.remove('closedIframe');
-		let wordDefinition = document.querySelector('.word-definition')
-
-		defIframe.onload = function (){
-			wordDefinition.innerHTML = '';
+			defIframe.classList.remove('closedIframe');
+			let wordDefinition = document.querySelector('.word-definition')
+			defIframe.onload = function (e){
+				wordDefinition.innerHTML = '';
+			}
+			if(notRussianGame){
+				wordDefinition.innerHTML = 'Definition - loading...';
+				defIframe.src = 'https://en.wiktionary.org/wiki/' + word + '#Noun';
+			}else{
+				wordDefinition.innerHTML = 'Определение слова - загрузка...';
+				defIframe.src = 'https://ru.wiktionary.org/wiki/' + word + '#Значение';
+			}
+		}catch(e){
+			console.log(e);
 		}
-		if(notRussianGame){
-			wordDefinition.innerHTML = 'Definition - loading...';
-			defIframe.src = 'https://en.m.wiktionary.org/wiki/' + word + '#Noun';
-		}else{
-			wordDefinition.innerHTML = 'Определение слова - загрузка...';
-			defIframe.src = 'https://ru.m.wiktionary.org/wiki/' + word + '#Значение';
-		}
-	}catch(e){
-		console.log(e);
 	}
-}
 
 function params(data) {
 	try{
