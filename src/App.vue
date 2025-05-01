@@ -1032,7 +1032,7 @@
 						<div class="endGame__menu" @click="backMenu">
 							<svg width="20" class="svgIcon" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.28791 0.502466C9.29186 0.506065 9.2979 0.506065 9.30185 0.502466L9.68671 0.151754C9.90875 -0.0505844 10.2483 -0.0505847 10.4704 0.151753L19.6367 8.50472C20.1064 8.93273 20.1064 9.67189 19.6367 10.0999C19.3737 10.3395 19.0218 10.4262 18.6946 10.3598V19.0003C18.6946 20.1049 17.7992 21.0003 16.6946 21.0003H12.7269V15.4699C12.7269 14.0627 11.5862 12.9219 10.179 12.9219C8.77179 12.9219 7.63103 14.0627 7.63103 15.4699V21.0003H3.31438C2.20981 21.0003 1.31438 20.1049 1.31438 19.0003V10.4834C0.981525 10.5575 0.620611 10.4723 0.352259 10.2278C-0.11742 9.79975 -0.11742 9.06059 0.352259 8.63258L9.12742 0.636008L9.13552 0.625151L9.13746 0.626859L9.27396 0.502466C9.27792 0.498866 9.28396 0.498866 9.28791 0.502466Z" fill="url(#paint0_linear_15_650)"/><defs><linearGradient id="paint0_linear_15_650" x1="9.99448" y1="0" x2="9.99448" y2="21.0003" gradientUnits="userSpaceOnUse"><stop class="endGame__firstStop" stop-color="#1772AF"/><stop class="endGame__secondStop" offset="1" stop-color="#105A8C"/></linearGradient></defs></svg>
 						</div>
-						<div class="endGame__nextLevel"  @click="nextLevel">{{notRussian ? 'Continue' : 'Продолжить'}}</div>
+						<div class="endGame__nextLevel"  @click="nextLevel(true)">{{notRussian ? 'Continue' : 'Продолжить'}}</div>
 					</div>
 					<div class="endGame__actions"  v-show="isGameForTwo">
 						<div class="endGame__nextLevel" @click="backMenu(true, true)">Продолжить</div>
@@ -1603,6 +1603,20 @@ import CrossComponent from './cross';
 import CrossVue from "@/cross";
 
 
+function decodeDelta(deltas) {
+	const arr = [deltas[0]];
+	for (let i = 1; i < deltas.length; i++) {
+		arr.push(arr[i-1] + deltas[i]);
+	}
+	return arr;
+}
+function decodeNewWordsFromWords(){
+	let a = new Date();
+	Object.keys(newWordsFromWords).forEach(key => {
+		newWordsFromWords[key] =  decodeDelta(newWordsFromWords[key]);
+	})
+}
+decodeNewWordsFromWords();
 function getNewWordsFromWords(){
 	let wfww = {};
 	Object.keys(newWordsFromWords).forEach((word) => {
@@ -5717,7 +5731,7 @@ export default {
 				this.getLevel(this.lvl-1);
 			}
 		},
-		nextLevel(){
+		nextLevel(isFromContinue){
 			if(this.locationGame){
 				if(this.eventLocation){
 					if(this.lvl === (locationWords.event.length - 1)) return;
@@ -5735,6 +5749,9 @@ export default {
 				}
 				this.getLevel(this.lvl+1);
 				this.crossPromoShow();
+			}
+			if(isFromContinue){
+				this.isEndGame = false;
 			}
 		},
 		crossPromoShow(){
