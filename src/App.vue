@@ -2324,6 +2324,8 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 				k = 'своенравие';
 			}else if(k === 'минотавр' && i > 5000){
 				k = 'порядовка';
+			}else if(k === 'кондратьевна' && i > 5000){
+				k = 'адвокат';
 			}
 		}
 		let words = allDoneWords[keys[i]] || allDoneWords[k];
