@@ -52,10 +52,14 @@
 					</div>
 				</div>
 
-				<div class="levels-wrapper" :class="{'levels-wrapper_bigLevels': location*lvlsOnPage >= 1000}">
+				<div class="levels-wrapper" :class="{
+					'levels-wrapper_bigLevels': location*lvlsOnPage >= 1000,
+					'levels-wrapper_veryBigLevels': location*lvlsOnPage >= 10000
+				}">
 					<div
 						class="level"
 						v-for="level in lvlsOnPage"
+						v-if="canShowLevel(getLevelByLevelAndLocation(level)-1)"
 						:key="getLevelByLevelAndLocation(level)"
 						@click="getLevel(getLevelByLevelAndLocation(level)-1, false, true)"
 						:class="{'level-done': isLevelDone(getLevelByLevelAndLocation(level)),
@@ -4245,6 +4249,10 @@ export default {
 		}
 	},
 	methods:{
+		canShowLevel(level){
+			return !!allWords[level];
+
+		},
 		switchPause(){
 			if(this.isGameForTwo){
 				this.gamePaused = true;

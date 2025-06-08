@@ -1815,12 +1815,18 @@ b{
 .levels-wrapper_bigLevels .level__big{
   font-size: 1.8rem;
 }
+.levels-wrapper_veryBigLevels .level__big{
+  font-size: 1.5rem;
+}
 @media (min-width: 1000px) {
   .level__big{
     font-size: 3.5rem;
   }
   .levels-wrapper_bigLevels .level__big{
     font-size: 3.4rem;
+  }
+  .levels-wrapper_veryBigLevels .level__big{
+    font-size: 3.1rem;
   }
 }
 .authText{
@@ -2453,6 +2459,9 @@ b{
   .levels-wrapper_bigLevels .level__big{
     font-size: 1.8rem;
   }
+  .levels-wrapper_veryBigLevels .level__big{
+    font-size: 1.5rem;
+  }
   .level .menu__level_stars{
     bottom: -12px;
   }
@@ -2488,6 +2497,9 @@ b{
   }
   .levels-wrapper_bigLevels .level__big{
     font-size: 2.2rem;
+  }
+  .levels-wrapper_veryBigLevels .level__big{
+    font-size: 1.9rem;
   }
   .level .menu__level_stars{
     bottom: -15px;
@@ -3561,6 +3573,9 @@ b{
   }
   .levels-wrapper_bigLevels .level__big {
     font-size: 1.35rem;
+  }
+  .levels-wrapper_veryBigLevels .level__big{
+    font-size: 1rem;
   }
   .level .menu__level_stars{
     bottom: -8px;
