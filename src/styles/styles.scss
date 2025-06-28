@@ -4121,3 +4121,20 @@ select::-ms-expand {
     line-height: 2rem;
   }
 }
+
+.crossPromoText{
+  font-size: 1.7rem;
+}
+.crossPromoText_bold{
+  font-weight: bold;
+}
+@media (max-height: 400px){
+  .crossPromoImg{
+    height: 150px;
+  }
+}
+@media (max-height: 350px){
+  .crossPromoImg{
+    height: 130px;
+  }
+}

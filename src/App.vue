@@ -1545,6 +1545,10 @@
 			<h2 class="rules__menu">
 				Новая игра!
 			</h2>
+			<p class="crossPromoText">
+				Открывайте буквы и расшифровывайте фразы в нашей новой игре -
+				<span class="crossPromoText_bold">Криптограмма</span>
+			</p>
 			<a :href="crossPromoObj.url"
 			   target="_blank"
 			   rel="noopener noreferrer"
@@ -2169,6 +2173,7 @@ let notRussianGame = false;
 let PLAYESTATE = {};
 let PLAYERSTATS = {};
 let doDeleteBlock;
+let crossPromoName = 'crossPromoCrypto';
 let allDoneWords = getFromStorage('allDoneWords');
 let locationDoneWords = getFromStorage('locationDoneWords');
 let tips = getFromStorage('tips');
@@ -2183,7 +2188,7 @@ let portraitAdviceAmount = getFromStorage('portraitAdviceAmount');
 let isLvlFiveHintDone = getFromStorage('isLvlFiveHintDone');
 let savedMyGame = getFromStorage('savedMyGame');
 let savedGameForTwo = getFromStorage('savedForTwo');
-let crossPromoShows = getFromStorage('crossPromoRebusShows');
+let crossPromoShows = getFromStorage(crossPromoName);
 let infoAboutMyGame = getFromStorage('infoAboutMyGame');
 let infoAboutGameForTwo = getFromStorage('infoAboutGameForTwo');
 let infoAboutClosedEvent = !!getFromStorage('infoAboutClosedEvent2');
@@ -2706,7 +2711,7 @@ let allGamesInfo = []
 let crossPromoObj;
 function getAllGames(){
 	console.log('all games');
-	const games = [100008,99049,99196,294197,313411];
+	const games = [435796,100008,99049,99196,294197,313411];
 	games.forEach(id => {
 		getGameObj(id);
 	})
@@ -2718,7 +2723,7 @@ function getGameObj(id){
 			console.log('game', id, isAvailable);
 			if (isAvailable) {
 				allGamesInfo.push(game);
-				if(id === 294197) crossPromoObj = game;
+				if(id === 435796) crossPromoObj = game;
 			} else {
 				return undefined
 			}
@@ -5768,10 +5773,10 @@ export default {
 			if(crossPromoShows < 3){
 				if(crossPromoObj) this.crossPromoObj = crossPromoObj;
 				if(this.lvl >= 10 && this.crossPromoObj){
-					params({'crossPromoRebusShows': 1});
+					params({crossPromoName: 1});
 					this.crosspromo = true;
 					crossPromoShows++;
-					setToStorage('crossPromoRebusShows', crossPromoShows);
+					setToStorage(crossPromoName, crossPromoShows);
 					crossPromoShows = 5;
 				}
 			}
