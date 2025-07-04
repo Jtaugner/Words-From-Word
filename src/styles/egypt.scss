@@ -1,0 +1,138 @@
+/*День валентина*/
+.gameLocationWrapper-egypt::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #714f17;
+}
+.gameLocationWrapper-egypt::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+.egyptLocation .popUp__locationPicture{
+  background-image: url(../assets/locations/egypt/egypt.png);
+}
+.egyptLocation .popUp__locationName{
+  color: #e3a845;
+}
+.egyptLocation .popUp__location__open{
+  background: linear-gradient(265.01deg, #ffbb00 6.23%, #ffa200 97.6%);
+  -webkit-box-shadow: 0 3px 0 #d35e00;
+  box-shadow: 0 3px 0 #d35e00;
+}
+.gameLocation-egypt{
+  .svgIcon{
+    fill: #d78d0a;
+  }
+  background: url(../assets/locations/egypt/map.png) center center no-repeat;
+  background-size: cover;
+  .levelsTop__allStars{
+    color: #8b6013;
+  }
+  .menu-star, .newElement{
+    background-color: #f50000;
+  }
+  .gamesProperty{
+    background: url(../assets/locations/egypt/map.png) center center no-repeat;
+    background-size: cover;
+  }
+}
+.gameLocationWrapper-egypt{
+  background: url(../assets/locations/egypt/map.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+.location.gameLocation-egypt{
+  background: none;
+}
+.gameLocationWrapper-egypt{
+  .rules__menu{
+    background-color: #9B2308;
+  }
+  .rules .settings__text{
+    color: #9B2308;
+  }
+  .rules .svgIcon{
+    fill: #9c6100;
+  }
+}
+.gameLocation-egypt::-webkit-scrollbar-thumb {
+  //border-radius: 0;
+  background-color: #F0B44F;
+}
+@media (min-width: 1000px) {
+  .gameLocation-egypt .location__lastLevel{
+    box-shadow: 0 0 25px 10px #FF5A36;
+  }
+}
+
+@media (orientation: portrait) {
+  .gameLocationWrapper-egypt{
+    background: url(../assets/locations/egypt/map_port.png) center center no-repeat !important;
+    background-size: cover !important;
+  }
+}
+
+
+.game_locationDesign_egypt{
+  background-image: url(../assets/locations/egypt/map.png) !important;
+  .svgIcon{
+    fill: #ff911e !important;
+  }
+  .levelsTop__allStars{
+    color: #4E2406;
+  }
+  .menu__tip_count, .rules__goBg{
+    background-color: #ce6a02;
+  }
+  .menu__hint {
+    background-color: rgba(192, 81, 0, 0.9);
+  }
+  .action-block__letter{
+    color: #513500;
+  }
+  .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
+    background-color: #ff911e;
+  }
+  .rules__menu{
+    background-color: #6E3208;
+  }
+  .shop, .rules, .leaderBoardInfo_my .leaderBoardInfo__image{
+    border-color: #6E3208;
+  }
+  .shop .rules__menu, .settings__text{
+    color: #6d3208;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #ff911e;
+  }
+  .newWord .words__letter{
+    background-color: #F6765A;
+  }
+  .animWord .words__letter{
+    animation: 1s showNewWordE forwards;
+  }
+  @keyframes  showNewWordE{
+    0%{background-color: rgba(255, 255, 255, 0.85);}
+    100%{background-color: #F6765A;
+    }
+  }
+  .endGame__header{
+    background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+  }
+  .endGame__firstPrize{
+    fill: #FF8762;
+  }
+  .endGame__secondPrize{
+    fill: #FF2001;
+  }
+  .endGame__menu{
+    border-color: rgba(255, 31, 0, 1);
+  }
+  .endGame__firstStop{
+    stop-color: rgba(255, 136, 98, 1);
+  }
+  .endGame__secondStop{
+    stop-color: rgba(255, 31, 0, 1);
+  }
+  .endGame__nextLevel{
+    background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+  }
+
+}

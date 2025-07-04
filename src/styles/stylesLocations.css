@@ -950,6 +950,151 @@
     background-size: cover !important;
   }
 }
+/*День валентина*/
+.gameLocationWrapper-egypt::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #714f17;
+}
+
+.gameLocationWrapper-egypt::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.egyptLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/egypt/egypt.png);
+}
+
+.egyptLocation .popUp__locationName {
+  color: #e3a845;
+}
+
+.egyptLocation .popUp__location__open {
+  background: linear-gradient(265.01deg, #ffbb00 6.23%, #ffa200 97.6%);
+  -webkit-box-shadow: 0 3px 0 #d35e00;
+  box-shadow: 0 3px 0 #d35e00;
+}
+
+.gameLocation-egypt {
+  background: url(../assets/locations/egypt/map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-egypt .svgIcon {
+  fill: #d78d0a;
+}
+.gameLocation-egypt .levelsTop__allStars {
+  color: #8b6013;
+}
+.gameLocation-egypt .menu-star, .gameLocation-egypt .newElement {
+  background-color: #f50000;
+}
+.gameLocation-egypt .gamesProperty {
+  background: url(../assets/locations/egypt/map.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-egypt {
+  background: url(../assets/locations/egypt/map.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+
+.location.gameLocation-egypt {
+  background: none;
+}
+
+.gameLocationWrapper-egypt .rules__menu {
+  background-color: #9B2308;
+}
+.gameLocationWrapper-egypt .rules .settings__text {
+  color: #9B2308;
+}
+.gameLocationWrapper-egypt .rules .svgIcon {
+  fill: #9c6100;
+}
+
+.gameLocation-egypt::-webkit-scrollbar-thumb {
+  background-color: #F0B44F;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-egypt .location__lastLevel {
+    box-shadow: 0 0 25px 10px #FF5A36;
+  }
+}
+@media (orientation: portrait) {
+  .gameLocationWrapper-egypt {
+    background: url(../assets/locations/egypt/map_port.png) center center no-repeat !important;
+    background-size: cover !important;
+  }
+}
+.game_locationDesign_egypt {
+  background-image: url(../assets/locations/egypt/map.png) !important;
+}
+.game_locationDesign_egypt .svgIcon {
+  fill: #ff911e !important;
+}
+.game_locationDesign_egypt .levelsTop__allStars {
+  color: #4E2406;
+}
+.game_locationDesign_egypt .menu__tip_count, .game_locationDesign_egypt .rules__goBg {
+  background-color: #ce6a02;
+}
+.game_locationDesign_egypt .menu__hint {
+  background-color: rgba(192, 81, 0, 0.9);
+}
+.game_locationDesign_egypt .action-block__letter {
+  color: #513500;
+}
+.game_locationDesign_egypt .words__letters-block_done .words__letter, .game_locationDesign_egypt .action-block__letters .action-block__letter_selected {
+  background-color: #ff911e;
+}
+.game_locationDesign_egypt .rules__menu {
+  background-color: #6E3208;
+}
+.game_locationDesign_egypt .shop, .game_locationDesign_egypt .rules, .game_locationDesign_egypt .leaderBoardInfo_my .leaderBoardInfo__image {
+  border-color: #6E3208;
+}
+.game_locationDesign_egypt .shop .rules__menu, .game_locationDesign_egypt .settings__text {
+  color: #6d3208;
+}
+.game_locationDesign_egypt ::-webkit-scrollbar-thumb {
+  background-color: #ff911e;
+}
+.game_locationDesign_egypt .newWord .words__letter {
+  background-color: #F6765A;
+}
+.game_locationDesign_egypt .animWord .words__letter {
+  animation: 1s showNewWordE forwards;
+}
+@keyframes showNewWordE {
+  0% {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background-color: #F6765A;
+  }
+}
+.game_locationDesign_egypt .endGame__header {
+  background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+}
+.game_locationDesign_egypt .endGame__firstPrize {
+  fill: #FF8762;
+}
+.game_locationDesign_egypt .endGame__secondPrize {
+  fill: #FF2001;
+}
+.game_locationDesign_egypt .endGame__menu {
+  border-color: #ff1f00;
+}
+.game_locationDesign_egypt .endGame__firstStop {
+  stop-color: #ff8862;
+}
+.game_locationDesign_egypt .endGame__secondStop {
+  stop-color: #ff1f00;
+}
+.game_locationDesign_egypt .endGame__nextLevel {
+  background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+}
+
 .locationOpened {
   overflow: auto !important;
 }

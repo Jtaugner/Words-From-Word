@@ -479,6 +479,18 @@ html, body {
   animation: getLevels 0.4s ease-in forwards;
 }
 
+.gameAnim {
+  animation: closeLevels 0.4s ease-in forwards;
+}
+
+@keyframes closeLevels {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 @keyframes getLevels {
   0% {
     opacity: 0;
@@ -4140,6 +4152,35 @@ select::-ms-expand {
 @media (max-height: 350px) {
   .crossPromoImg {
     height: 130px;
+  }
+}
+.popUp__locationPicture__blackout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.popUp__location__open {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 130px;
+  font-size: 1.4rem;
+}
+
+.popUp__location__open:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+@media (min-width: 1000px) {
+  .popUp__location__open {
+    width: 200px;
+    font-size: 2.1rem;
   }
 }
 
