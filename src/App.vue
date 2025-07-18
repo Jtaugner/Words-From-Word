@@ -1708,7 +1708,16 @@ let deleteBlockBg = true;
 var wordsFromWords = wordsFromWordsRU,
 	allWords = allWordsRU,
 	dictionary = dictionaryRU;
-
+let repeatedWordSign = '1';
+let repeatedWords = {};
+allWords.forEach((word, index) => {
+	if(word.indexOf(repeatedWordSign) !== -1){
+		let fixedWord = fixWordToNormal(word);
+		repeatedWords[allWords.indexOf(fixedWord)] = index;
+	}
+})
+console.log('repeatedWords');
+console.log(repeatedWords);
 let advTime = false;
 let startAdvTime = false;
 setTimeout(()=>{
@@ -1870,6 +1879,11 @@ var LZString = function () {
 	return i
 }();
 
+function chooseRightWordFromWords(word){
+	let fixedWord = fixWordToNormal(word);
+	return wordsFromWords[fixedWord];
+}
+
 function replaceLevelsToOne(data, isLocationLevels){
 	let keys = Object.keys(data);
 	const newData = {};
@@ -1877,7 +1891,7 @@ function replaceLevelsToOne(data, isLocationLevels){
 		try{
 			let len;
 			if(isLocationLevels) len = locationWords.wordsFromWords[key].length;
-			else len = wordsFromWords[key].length;
+			else len = chooseRightWordFromWords(key).length;
 			if(data[key].length === len){
 				newData[key] = 1;
 			}else{
@@ -1991,6 +2005,13 @@ function compressData(data, isLocationData){
 	// console.log(newData);
 	// return LZString.compressToUTF16(JSON.stringify(newData));
 }
+function findMax(arr){
+	if(arr.length === 0) return 0;
+	const max = arr.reduce((acc, val) => {
+		return val > acc ? val : acc;
+	}, arr[0]);
+	return max;
+}
 function decompressData(data, isEnglishVersion){
 	let newData = data;
 	if(typeof newData === "string"){
@@ -2001,6 +2022,7 @@ function decompressData(data, isEnglishVersion){
 
 	if(newData.doneLevels !== undefined){
 		newData.doneLevels = decompressDoneLevels(newData.doneLevels);
+		let maxLevel = findMax(newData.doneLevels);
 		if(isEnglishVersion){
 			if(newData.newCompress){
 				newData = englishNewDecompress(newData);
@@ -2008,7 +2030,7 @@ function decompressData(data, isEnglishVersion){
 			newData = decompressDataObj(newData);
 		}else{
 			if(newData.newCompress){
-				newData = newDecompress(newData);
+				newData = newDecompress(newData, maxLevel);
 			}else{
 				newData = decompressDataObj(newData);
 			}
@@ -2039,23 +2061,18 @@ function newCompress(compressedWords){
 	data.notStringed = true;
 	return data;
 }
-
-//Вибрация
-//
-// function vibratePhone(){
-// 	try{
-// 		if (window.navigator && window.navigator.vibrate) {
-// 			window.navigator.vibrate(500);
-// 		}
-// 	}catch(e){
-// 		console.log('Вибрация не поддерживается');
-// 		console.log(e);
-// 	}
-// }
-
-function newDecompress(compressedWords){
+function newDecompress(compressedWords, maxLevel){
 	let t1 = new Date();
 	let doneWords = {};
+
+	Object.keys(compressedWords).forEach(el => {
+		if(el === 'doneLevels' || el === 'notStringed' || el === 'newCompress') return;
+		let lastLevel = compressedWords[el];
+		if(lastLevel > maxLevel) maxLevel = lastLevel;
+	});
+
+	console.log('maxlevel', maxLevel);
+
 	Object.keys(compressedWords).forEach(el => {
 		if(el === 'doneLevels' || el === 'notStringed' || el === 'newCompress') return;
 		if(newWordsFromWords[el]){
@@ -2063,7 +2080,23 @@ function newDecompress(compressedWords){
 			for(let i = 0; i < newWordsFromWords[el].length; i++){
 				let lvl = newWordsFromWords[el][i];
 				if(lvl > lastLevel) break;
+
+
+				let repeatedLevel = repeatedWords[lvl];
+				if(repeatedLevel && repeatedLevel <= maxLevel){
+					if(!compressedWords.doneLevels.includes(repeatedLevel)){
+						let repeatedLevelWord = allWords[repeatedLevel];
+						if(doneWords[repeatedLevelWord]){
+							doneWords[repeatedLevelWord].push(el)
+						}else{
+							doneWords[repeatedLevelWord] = [el];
+						}
+					}
+
+				}
+
 				if(compressedWords.doneLevels.includes(lvl)) continue;
+
 				let lvlWord = allWords[lvl];
 				if(doneWords[lvlWord]){
 					doneWords[lvlWord].push(el)
@@ -2375,7 +2408,7 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 
 
 			}else{
-				allDoneWords[k] = wordsFromWords[k];
+				allDoneWords[k] = chooseRightWordFromWords(k);
 			}
 
 		 	if(wordsForReplace[keys[i]]){
@@ -2389,7 +2422,7 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 			delete allDoneWords[keys[i]];
 
 			if(words.length > 0){
-				let allWords = wordsFromWords[k];
+				let allWords = chooseRightWordFromWords(k);
 				if(isLocationWords){
 					allWords = locationWords.wordsFromWords[k];
 				}
@@ -2436,7 +2469,9 @@ let thatTips = 15;
 if(allDoneWords){
 	allDoneWords = JSON.parse(allDoneWords);
 	if(allDoneWords.newCompress) allDoneWords = decompressData(allDoneWords);
+	console.log('true', allDoneWords['милость1']);
 	allDoneWords = fixDoneWords(allDoneWords);
+	console.log('true2', allDoneWords['милость1']);
 	tips = Number(tips);
 	thatTips = tips;
 	if(!Number.isInteger(tips)) tips = 15;
@@ -2647,7 +2682,7 @@ function getAllStars(allDoneWords){
 	let allStars = 0;
 	allWords.forEach((key => {
 		if(allDoneWords[key]){
-			allStars += testStar(allDoneWords[key].length, wordsFromWords[key].length);
+			allStars += testStar(allDoneWords[key].length, chooseRightWordFromWords(key).length);
 		}
 	}));
 	console.log('all stars', allStars);
@@ -2681,7 +2716,7 @@ function setLoc() {
 	allWords.forEach((key => {
 		try{
 			if(allDoneWords[key]){
-				allStars.push(testStar(allDoneWords[key].length, wordsFromWords[key].length))
+				allStars.push(testStar(allDoneWords[key].length, chooseRightWordFromWords(key).length))
 			}else{
 				allDoneWords[key] = [];
 				allStars.push(0);
@@ -3126,7 +3161,7 @@ function initPlayer(ysdk) {
 						if(lvl2){
 							let newObj = {};
 							for (let i = 0; i < lvl2; i++) {
-								newObj[allWords[i]] = wordsFromWords[allWords[i]];
+								newObj[allWords[i]] = chooseRightWordFromWords(allWords[i]);
 							}
 							PLAYESTATE.allDoneWords = newObj;
 							allDoneWords = newObj;
@@ -3142,7 +3177,7 @@ function initPlayer(ysdk) {
 							let level1 = Number(lvl3.slice(0, lvl3.indexOf('a')));
 							let level2 = Number(lvl3.slice(lvl3.indexOf('a')+1));
 							for (let i = level1; i < level2; i++) {
-								PLAYESTATE.allDoneWords[allWords[i]] = wordsFromWords[allWords[i]];
+								PLAYESTATE.allDoneWords[allWords[i]] = chooseRightWordFromWords(allWords[i]);
 							}
 							allDoneWords = PLAYESTATE.allDoneWords;
 							setState();
@@ -4064,6 +4099,10 @@ let gameTimers = [10, 15, 30, 45, 60, 90, 120, 180]
 const scamPlayers = ["CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=", "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=", "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU=", "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4=", "7LQfUSbZYLQ0fqg1s8hIKAA7hMnwEv7I2RGiPqtrUh8=", "oSuq1pgZxAgmIAqESjPn7XuUltVk1o4b7yUxxkGf+2E=", "x0+igey20wXshdwdDQCwW4DveAVwGvmzB9r0+GfPIZk=", "XUDWsVlVCCS6YrlA+EmbbPebuw7IXp1WlLsuZ+EXpaY=",
 	"lRMomuvFGZ6I11rL92MOTrYRDSFFxL9ic0WVNRonUN8="]
 
+function fixWordToNormal(word){
+	return word.replace(repeatedWordSign, '');
+}
+
 export default {
 	name: 'App',
 	components: {CrossVue, CrossComponent},
@@ -4220,7 +4259,8 @@ export default {
 			isGameTimeout: false,
 			gameForTwoResult: 0,
 			allGamesInfo: [],
-			crossPromoObj: undefined
+			crossPromoObj: undefined,
+			fixedWord: ''
 		}
 	},
 	computed:{
@@ -5441,9 +5481,11 @@ export default {
 
 			this.lvl = lvl;
 			this.word = allWords[lvl];
+			console.log('doneWord', this.word, allDoneWords[this.word]);
 			this.doneWords = allDoneWords[this.word];
+			this.fixedWord = fixWordToNormal(this.word);
 			if(allDoneWords[this.word] === 1){
-				this.doneWords = wordsFromWords[this.word];
+				this.doneWords = chooseRightWordFromWords(this.word);
 			}else if(allDoneWords[this.word] === undefined){
 
 				allDoneWords[this.word] = [];
@@ -5465,8 +5507,8 @@ export default {
 
 
 
-			this.letters = this.word.split('');
-			this.nowWords = wordsFromWords[this.word].slice().sort().sort((a, b)=>{
+			this.letters = this.fixedWord.split('');
+			this.nowWords = chooseRightWordFromWords(this.word).slice().sort().sort((a, b)=>{
 				if(a.length > b.length) return 1;
 				if(a.length < b.length) return -1;
 				return 0;
@@ -6021,7 +6063,7 @@ export default {
 			} else if(this.locationGame){
 				arr = locationWords.wordsFromWords[this.word].slice();
 			}else{
-				arr = wordsFromWords[this.word].slice();
+				arr = chooseRightWordFromWords(this.word).slice();
 			}
 
 			for(let i = 0; i < this.doneWords.length; i++){
@@ -6253,7 +6295,8 @@ export default {
 				}
 
 
-				if(this.wordFromLetter === this.word){
+
+				if(this.wordFromLetter === this.fixedWord || this.wordFromLetter === this.word){
 					this.showBigWordWas = true;
 				}
 
