@@ -35,9 +35,6 @@
 							<svg class="svgIcon" width="27" height="18" viewBox="0 0 27 18" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.0051 0.976039C4.77498 1.07044 4.27056 1.36699 4.09383 1.79801C4.05718 1.88739 3.95745 2.15148 3.81734 2.53971C3.88292 2.50457 3.94214 2.4768 3.9907 2.45689C4.75968 2.11454 6.5378 1.42983 7.4985 1.42983C8.50045 1.42983 9.16141 2.34832 9.65116 3.02889C9.74839 3.164 9.83887 3.28974 9.92393 3.39705C10.3348 3.91532 10.98 4.08175 11.2512 4.10018C12.4916 4.10808 15.0845 4.08912 15.5332 3.95007C15.7842 3.87233 16.1489 3.44206 16.5631 2.95344C17.0749 2.34971 17.6622 1.65689 18.2036 1.42983C19.1143 1.04792 21.2131 1.9906 22.0752 2.37904C21.9832 2.14717 21.9024 1.95187 21.8361 1.79801C21.7509 1.61612 21.4564 1.19707 20.9593 0.976039C20.9178 0.957577 20.8699 0.93597 20.8163 0.911827C20.0684 0.574651 18.2235 -0.257093 17.4247 0.0780877C16.9515 0.276602 16.4383 0.882331 15.9911 1.41017C15.6292 1.83737 15.3105 2.21355 15.0912 2.28152C14.6991 2.40309 12.4334 2.41967 11.3495 2.41276C11.1125 2.39664 10.5487 2.25113 10.1897 1.79801C10.1154 1.70419 10.0363 1.59426 9.95134 1.47613C9.52339 0.881111 8.94583 0.0780877 8.0703 0.0780877C7.23082 0.0780877 5.67705 0.676722 5.0051 0.976039Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M3.9908 2.4567C3.72745 2.56468 3.15019 2.90387 2.94794 3.39686C2.69512 4.01309 -0.180638 11.8898 0.00897234 14.3627C0.198583 16.8355 2.2843 18.1628 3.13755 17.7204C3.9908 17.2779 4.79664 16.6538 7.27738 13.7701C7.82251 13.5252 8.31234 13.4304 8.87327 13.4304H17.5717C17.9456 13.4225 18.8263 13.5489 19.3572 14.1178C19.4691 14.2377 19.6321 14.429 19.8311 14.6624C20.8118 15.813 22.6671 17.9896 23.5997 17.7204C23.6435 17.7077 23.689 17.695 23.7357 17.6819C24.8853 17.3597 26.8401 16.8118 25.8987 11.5659C24.9949 7.84323 23.7577 4.56876 23.2521 3.39686C23.1546 3.18881 22.8176 2.70952 22.2487 2.4567C22.2012 2.43559 22.1464 2.41087 22.0851 2.38326C21.2292 1.9976 19.1179 1.04628 18.2037 1.42965C17.6623 1.6567 17.075 2.34952 16.5632 2.95325C16.149 3.44187 15.7843 3.87214 15.5333 3.94989C15.0846 4.08893 12.4917 4.10789 11.2513 4.09999C10.9801 4.08156 10.3349 3.91513 9.92403 3.39686C9.83897 3.28955 9.74849 3.16381 9.65126 3.0287C9.1615 2.34813 8.50055 1.42965 7.49859 1.42965C6.5379 1.42965 4.75977 2.11435 3.9908 2.4567ZM21.0305 3.86888C21.0305 4.25239 20.7196 4.56329 20.3361 4.56329C19.9526 4.56329 19.6417 4.25239 19.6417 3.86888C19.6417 3.48538 19.9526 3.17448 20.3361 3.17448C20.7196 3.17448 21.0305 3.48538 21.0305 3.86888ZM6.00001 8.00016C7.10458 8.00016 8.00001 7.10473 8.00001 6.00016C8.00001 4.89559 7.10458 4.00016 6.00001 4.00016C4.89544 4.00016 4.00001 4.89559 4.00001 6.00016C4.00001 7.10473 4.89544 8.00016 6.00001 8.00016ZM16.8211 12.2143C18.2043 12.2143 19.3256 11.093 19.3256 9.70983C19.3256 8.32667 18.2043 7.20539 16.8211 7.20539C15.4379 7.20539 14.3167 8.32667 14.3167 9.70983C14.3167 11.093 15.4379 12.2143 16.8211 12.2143ZM20.3361 7.19207C20.7196 7.19207 21.0305 6.88117 21.0305 6.49767C21.0305 6.11416 20.7196 5.80326 20.3361 5.80326C19.9526 5.80326 19.6417 6.11416 19.6417 6.49767C19.6417 6.88117 19.9526 7.19207 20.3361 7.19207ZM22.4689 5.13345C22.4689 5.50326 22.1691 5.80305 21.7993 5.80305C21.4295 5.80305 21.1297 5.50326 21.1297 5.13345C21.1297 4.76364 21.4295 4.46384 21.7993 4.46384C22.1691 4.46384 22.4689 4.76364 22.4689 5.13345ZM18.9721 5.80305C19.3419 5.80305 19.6417 5.50326 19.6417 5.13345C19.6417 4.76364 19.3419 4.46384 18.9721 4.46384C18.6023 4.46384 18.3025 4.76364 18.3025 5.13345C18.3025 5.50326 18.6023 5.80305 18.9721 5.80305ZM11.5673 9.73327C11.5673 10.9288 10.5982 11.898 9.40261 11.898C8.20707 11.898 7.23789 10.9288 7.23789 9.73327C7.23789 8.53772 8.20707 7.56855 9.40261 7.56855C10.5982 7.56855 11.5673 8.53772 11.5673 9.73327Z"/></svg>
 						</div>
 					</div>
-					<div>
-						ежднев
-					</div>
 					<!--@click="goToGetLocations"-->
 					<div class="openBgChanger" @click="toggleBgChanger"></div>
 					<div
@@ -1650,6 +1647,10 @@ import {locationWords} from "./locationWords";
 import {whyBadWord} from './whyBadWord';
 import CrossComponent from './cross';
 import CrossVue from "@/cross";
+const indexMapWordList = {};
+wordsList.forEach((value, i) => {
+	indexMapWordList[value] = i;
+});
 
 
 function decodeDelta(deltas) {
@@ -1740,8 +1741,6 @@ allWords.forEach((word, index) => {
 		repeatedWords[allWords.indexOf(fixedWord)] = index;
 	}
 })
-console.log('repeatedWords');
-console.log(repeatedWords);
 let advTime = false;
 let startAdvTime = false;
 setTimeout(()=>{
@@ -2015,6 +2014,61 @@ function decompressDoneLevels(levels){
 	})
 	return newLevels
 }
+function isNumeric(value) {
+	value = String(value);
+	return !isNaN(value) && value.trim() !== "";
+}
+function decompressLocationData(locationData){
+	let newLocationDoneWords = {};
+	Object.keys(locationData).forEach((key) => {
+		let newKey = key;
+		if(isNumeric(key)){
+			newKey = wordsList[Number(key)];
+		}
+		let arr = locationData[key];
+		let newArr = [];
+		if(arr === 1){
+			newArr = 1;
+		}else{
+			arr.forEach(el => {
+				if(isNumeric(el)){
+					newArr.push(wordsList[Number(el)]);
+				}else{
+					newArr.push(el);
+				}
+			})
+		}
+		newLocationDoneWords[newKey] = newArr;
+	})
+	return newLocationDoneWords;
+}
+
+function compressLocationData(locationData){
+	let newLocationDoneWords = {};
+	Object.keys(locationData).forEach((key) => {
+		let wIndex = indexMapWordList[key];
+		let arr = locationData[key];
+		let newArr = [];
+		if(arr === 1){
+			newArr = 1;
+		}else{
+			arr.forEach(el => {
+				let wIndexArr = indexMapWordList[el];
+				if(wIndexArr !== undefined){
+					newArr.push(wIndexArr);
+				}else{
+					newArr.push(el);
+				}
+			})
+		}
+		if(wIndex !== undefined){
+			newLocationDoneWords[wIndex] = newArr;
+		}else{
+			newLocationDoneWords[key] = newArr;
+		}
+	})
+	return newLocationDoneWords;
+}
 
 function compressData(data, isLocationData){
 	//Если заполнены все слова, уровень - 1
@@ -2024,6 +2078,8 @@ function compressData(data, isLocationData){
 	if(!isLocationData){
 		newData = compressDataObj(newData);
 		newData = newCompress(newData);
+	}else{
+		newData = compressLocationData(data);
 	}
 	return newData;
 	// console.log(newData);
@@ -2053,6 +2109,22 @@ function decompressData(data, isEnglishVersion){
 			}
 			newData = decompressDataObj(newData);
 		}else{
+			console.log('start parse');
+			if(newData.deltaCompress){
+				let compressedLevels = newData.compressedLevels;
+				let keys = decodeDelta(compressedLevels.keys);
+				keys.forEach((key, index) => {
+					let wordKey = wordsList[key];
+					newData[wordKey] = compressedLevels.values[index];
+				})
+				delete newData.compressedLevels;
+				delete newData.deltaCompress;
+				newData.newCompress = true;
+				newData.notStringed = true;
+			}
+			console.log('parse');
+			console.log(newData);
+
 			if(newData.newCompress){
 				newData = newDecompress(newData, maxLevel);
 			}else{
@@ -2073,16 +2145,42 @@ function findMaxInArr(arr){
 	return max;
 }
 //Сохраняем только последний уровень, на котором есть данное слово
+
+function encodeDelta(arr) {
+	if (arr.length === 0) return [];
+	const deltas = [Number(arr[0])];
+	for (let i = 1; i < arr.length; i++) {
+		let n1 = Number(arr[i]);
+		let n2 = Number(arr[i-1]);
+		deltas.push(n1-n2);
+	}
+	return deltas;
+}
 function newCompress(compressedWords){
 	let data = {};
+	let middleObject = {};
 	Object.keys(compressedWords).forEach(el => {
 		if(el === 'doneLevels') return;
-		data[el] = findMaxInArr(compressedWords[el]);
+		let maxInArr = findMaxInArr(compressedWords[el]);
+		let wIndex = indexMapWordList[el];
+		if(wIndex !== undefined){
+			middleObject[wIndex] = maxInArr;
+		}
+		// data[el] = maxInArr;
+
 	});
+	let keys = encodeDelta(Object.keys(middleObject));
+	let values = Object.values(middleObject);
 	compressedWords.doneLevels.sort((a,b)=> a-b);
 	data.doneLevels = compressDoneLevels(compressedWords.doneLevels);
-	data.newCompress = true;
-	data.notStringed = true;
+	let compressedLevels = {
+		keys: keys,
+		values: values
+	};
+	data.compressedLevels = compressedLevels;
+	data.deltaCompress = true;
+	// data.newCompress = true;
+	// data.notStringed = true;
 	return data;
 }
 function newDecompress(compressedWords, maxLevel){
@@ -2231,7 +2329,10 @@ function setToStorage(name, val) {
 			if(notRussianGame){
 				localStorage.setItem('allDoneWordsEN', JSON.stringify(val));
 			}else{
+				let test1 = new Date();
 				localStorage.setItem(name, JSON.stringify(compressData(val)));
+				let test2 = new Date();
+				// console.log('test end', test2-test1);
 			}
 			return;
 		}else if(name === 'tips' && notRussianGame){
@@ -2492,7 +2593,7 @@ function getEventScore(newYearProgress){
 let thatTips = 15;
 if(allDoneWords){
 	allDoneWords = JSON.parse(allDoneWords);
-	if(allDoneWords.newCompress) allDoneWords = decompressData(allDoneWords);
+	if(allDoneWords.newCompress || allDoneWords.deltaCompress) allDoneWords = decompressData(allDoneWords);
 	console.log('true', allDoneWords['милость1']);
 	allDoneWords = fixDoneWords(allDoneWords);
 	console.log('true2', allDoneWords['милость1']);
@@ -2529,7 +2630,7 @@ if(allDoneWords){
 
 }
 if(locationDoneWords){
-	locationDoneWords = fixDoneWords(JSON.parse(locationDoneWords), true);
+	locationDoneWords = fixDoneWords(decompressLocationData(JSON.parse(locationDoneWords)), true);
 }else{
 	locationDoneWords = {};
 }
@@ -2999,13 +3100,13 @@ function delParams(par){
 	window.history.pushState({}, '', url.toString());
 }
 
-function decompressLocationWords(locationDoneWords){
-	let keys = Object.keys(locationDoneWords);
-	keys.forEach((key)=>{
-		if(locationDoneWords[key] === 1) locationDoneWords[key] = locationWords.wordsFromWords[key];
-	});
-	return locationDoneWords;
-}
+// function decompressLocationWords(locationDoneWords){
+// 	let keys = Object.keys(locationDoneWords);
+// 	keys.forEach((key)=>{
+// 		if(locationDoneWords[key] === 1) locationDoneWords[key] = locationWords.wordsFromWords[key];
+// 	});
+// 	return locationDoneWords;
+// }
 
 let isPlayerAuth = false;
 
@@ -3100,11 +3201,7 @@ function initPlayer(ysdk) {
 				// }
 				console.log('new data');
 				console.log(newData);
-				if(typeof newData === "string"  || (typeof newData === "object" && newData.notStringed)){
-					newData = decompressData(newData);
-				}else if(newData.doneLevels !== undefined){
-					newData = decompressDataObj(newData);
-				}
+				newData = decompressData(newData);
 				newData = fixDoneWords(newData);
 				console.log(newData);
 
@@ -3163,7 +3260,7 @@ function initPlayer(ysdk) {
 			}
 
 			if(dataObject.locationDoneWords){
-				let serverWords = fixDoneWords(decompressLocationWords(dataObject.locationDoneWords), true);
+				let serverWords = fixDoneWords(decompressLocationData(dataObject.locationDoneWords), true);
 				let serverWordsAmount = getAmountLocationWords(serverWords);
 				let localWordsAmount = getAmountLocationWords(locationDoneWords);
 
@@ -3173,14 +3270,17 @@ function initPlayer(ysdk) {
 				}else{
 					PLAYESTATE.locationDoneWords = 	locationDoneWords;
 				}
+			}else{
+				PLAYESTATE.locationDoneWords = 	locationDoneWords;
 			}
 			//Вовзврат прогресса
 			try{
 				let pay = ysdk.environment.payload;
 				if(pay){
 
-					let lvl2 = pay.match(/zlms\d+/);
+						let lvl2 = pay.match(/zlms\d+/);
 					if(lvl2) {
+						console.log('change progress')
 						lvl2 = Number(lvl2[0].replace('zlms', ''));
 						if(lvl2){
 							let newObj = {};
@@ -6273,7 +6373,7 @@ export default {
 							eventScore += wordFromLetter.length;
 
 						}else{
-							setToStorage('locationDoneWords', JSON.stringify(replaceLevelsToOne(locationDoneWords, true)));
+							setToStorage('locationDoneWords', JSON.stringify(compressData(locationDoneWords, true)));
 							PLAYESTATE.locationDoneWords = locationDoneWords;
 						}
 
