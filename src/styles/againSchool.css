@@ -1,0 +1,73 @@
+@charset "UTF-8";
+/*День валентина*/
+.gameLocationWrapper-games::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #D15784;
+}
+
+.gameLocationWrapper-games::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.gamesLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/games/games.png);
+}
+
+.gamesLocation .popUp__locationName {
+  color: #D15784;
+}
+
+.gameLocation-games {
+  background: url(../assets/locations/games/map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-games .svgIcon {
+  fill: #D15784;
+}
+.gameLocation-games .levelsTop__allStars {
+  color: #D15784;
+}
+.gameLocation-games .menu-star, .gameLocation-games .newElement {
+  background-color: #c74573;
+}
+.gameLocation-games .gamesProperty {
+  background: url(../assets/locations/games/map.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-games {
+  background: url(../assets/locations/games/map.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+
+.location.gameLocation-games {
+  background: none;
+}
+
+.gameLocationWrapper-games .rules__menu {
+  background-color: #D15784;
+}
+.gameLocationWrapper-games .rules .settings__text {
+  color: #D15784;
+}
+.gameLocationWrapper-games .rules .svgIcon {
+  fill: #D15784;
+}
+
+.gameLocation-games::-webkit-scrollbar-thumb {
+  background-color: #D15784;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-games .location__lastLevel {
+    box-shadow: 0 0 25px 10px #D15784;
+  }
+}
+@media (orientation: portrait) {
+  .gameLocation-games, .gameLocation-games .gamesProperty {
+    background: url(../assets/locations/games/map_port.png) center center no-repeat;
+    background-size: cover;
+  }
+}
+
+/*# sourceMappingURL=games.css.map */

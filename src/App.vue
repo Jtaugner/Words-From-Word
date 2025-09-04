@@ -153,6 +153,7 @@
 					:class="[loc + 'Location',
 					         blockedLocations.includes(loc) ? 'popUp__location_blocked' : '']"
 					@click="openGameLocation(loc)"
+					v-if="!(blockedLocations.includes(loc) && platformBuild === 'gp')"
 				>
 					<div class="popUp__locationPicture">
 						<div class="popUp__locationStars">
@@ -370,30 +371,30 @@
 						class="leaderBoardInfo__player"
 						v-for="player in leaderBoard"
 						:class="[
-							player.rank < 21 ? 'leaderBoardInfo_' + player.rank : '',
-							 playerRait && playerRait.rank === player.rank ? 'leaderBoardInfo_mine' : '',
-							 player.rank === 20 ? 'lastRang' : ''
+							getPlayerRank(player) < 21 ? 'leaderBoardInfo_' + getPlayerRank(player) : '',
+							 playerRait && getPlayerRank(playerRait) === getPlayerRank(player) ? 'leaderBoardInfo_mine' : '',
+							 getPlayerRank(player) === 20 ? 'lastRang' : ''
 							 ]"
 					>
 							<div class="leaderBoardInfo__playerInfo">
 								<div class="leaderBoardInfo__firstBlock">
 									<div class="leaderBoardInfo__image"
-										 :style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat'}"
-										 :class="[player.player.getAvatarSrc('medium') ? '' : 'leaderBoardInfo__image_no']">
+										 :style="{background: 'url(' + getPlayerAvatar(player) + ') center center no-repeat'}"
+										 :class="[getPlayerAvatar(player) ? '' : 'leaderBoardInfo__image_no']">
 									</div>
 									<div class="leaderBoardInfo__nameAndScore">
-										<div class="leaderBoardInfo__name">{{ player.player.publicName ? player.player.publicName : 'Нет имени' }}</div>
+										<div class="leaderBoardInfo__name">{{getPlayerName(player)}}</div>
 										<div class="leaderBoardInfo__score">Звёзд: {{ player.score }}</div>
 									</div>
 								</div>
 								<div
 									class="leaderBoardInfo__rank"
-									:class="player.rank > 20 ? 'leaderBoardInfo_big' : ''"
+									:class="getPlayerRank(player) > 20 ? 'leaderBoardInfo_big' : ''"
 								>
 									<div class="leaderBoardInfo__rankInner"
-										 :class="player.rank > 99999 ? 'leaderBoardInfo__rankInner_bigRank' : ''"
+										 :class="getPlayerRank(player) > 99999 ? 'leaderBoardInfo__rankInner_bigRank' : ''"
 									>
-										{{player.rank}}
+										{{getPlayerRank(player)}}
 									</div>
 								</div>
 							</div>
@@ -862,9 +863,9 @@
 								class="lbInGame__player"
 								v-for="player in lbInGame"
 								:class="[
-									playerRait && playerRait.player.uniqueID === player.player.uniqueID ? 'leaderBoardInfo_mine' : ''
+									playerRait && getPlayerRank(playerRait) === getPlayerRank(player) ? 'leaderBoardInfo_mine' : ''
 								 ]"
-								:style="{background: 'url(' + player.player.getAvatarSrc('medium') + ') center center no-repeat, whitesmoke'}"
+								:style="{background: 'url(' + getPlayerAvatar(player) + ') center center no-repeat, whitesmoke'}"
 							>
 								<div class="lbInGame__score">
 									{{ player.score }}
@@ -1167,7 +1168,7 @@
 							{{getItemPrice(3)}}
 					</div>
 				</div>
-				<div class="shop__cart__item shop__cart__last" @click="buyTip('cart_item6')" v-show="!notShowAds">
+				<div v-if="platformBuild === 'yandex'" class="shop__cart__item shop__cart__last" @click="buyTip('cart_item6')" v-show="!notShowAds">
 					<div class="shop__cart__card">
 						<div class="shop__cart__item_5">
 							<div class="noAdvert">
@@ -1285,7 +1286,7 @@
 
 				<template v-if="!notRussian">
 					<li>
-						<a href="https://vk.com/jaugr"
+						<a :href="linkToGroup"
 						   target="_blank"
 						   rel="noopener noreferrer"
 						   class="settings__text"
@@ -1324,7 +1325,7 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Новая локация' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Снова в школу!' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
@@ -1337,7 +1338,7 @@
 					</template>
 
 					<template v-else>
-						Уважаемые игроки! Теперь в игре появятся платные тематические локации с символической стоимостью :) Первая из них - "Египет". Спасибо, что играете в нашу игру!
+						Уважаемые игроки! Представляем вам тематическую локацию "Снова в школу"! Откройте для себя новое цветовое оформление, заработайте дополнительные подсказки и погрузитесь в атмосферу школьных будней :)
 					</template>
 				</div>
 
@@ -1365,7 +1366,7 @@
 				<template v-else>
 					Поздравляем! Вы прошли все уровни игры! Но не отчаивайтесь, скоро обязательно появятся новые. Мы добавляем новые уровни каждый месяц.
 					Вы можете пройти все старые уровни на 3 звезды (если ещё не прошли) или же подождать, когда выйдут новые уровни. Про обновления вы можете узнать в
-					<a href="https://vk.com/jaugr"
+					<a :href="linkToGroup"
 					   target="_blank"
 					   rel="noopener noreferrer"
 					   class="settings__text"
@@ -1447,7 +1448,7 @@
 					'Click on a word to get its definition.' :
 					'Нажатие на слово позволит вам узнать его значение. Словарь игры постоянно пополняется. Если вы обнаружили лишнее или недостающее слово, пожалуйста, сообщите нам в'
 					}}
-					<a href="https://vk.com/jaugr"  v-if="!notRussian" target="_blank" rel="noopener noreferrer" class="settings__text" @click="()=>{sendParams({'vk-fromRules': 1})}"
+					<a :href="linkToGroup"  v-if="!notRussian" target="_blank" rel="noopener noreferrer" class="settings__text" @click="()=>{sendParams({'vk-fromRules': 1})}"
 					>
 						группу ВКонтакте.
 					</a>
@@ -1652,7 +1653,7 @@ wordsList.forEach((value, i) => {
 	indexMapWordList[value] = i;
 });
 
-
+console.log("PLATFORM: ", process.env.PLATFORM);
 function decodeDelta(deltas) {
 	const arr = [deltas[0]];
 	for (let i = 1; i < deltas.length; i++) {
@@ -2262,7 +2263,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-47";
+const lastVersion = "ver-48";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2681,100 +2682,138 @@ function getSec(){
 	return date.getTime()
 }
 let recentEventState = JSON.stringify(newYearProgress);
-// let saveTime = 0;
+let recentLocationState = JSON.stringify(locationDoneWords);
+let saveTime = -1;
 function setState(isNow) {
-	const newData = JSON.stringify(PLAYESTATE);
-	const newData2 = JSON.stringify(newYearProgress);
-	if(recentState === newData && recentEventState === newData2 && !isNow) return;
-	// saveTime++;
-	// if(saveTime === 5) saveTime = 0;
-	// if(saveTime !== 0 && !isNow) return;
-	recentState = newData;
+	if(process.env.PLATFORM === 'yandex'){
+		const newData = JSON.stringify(PLAYESTATE);
+		const newData2 = JSON.stringify(newYearProgress);
+		if(recentState === newData && recentEventState === newData2 && !isNow) return;
+		recentState = newData;
 
-	if (playerGame) {
+		if (playerGame) {
 
-		if(notRussianGame){
-			console.log(PLAYESTATE);
-			const newState = {
-				allDoneWords: russianProgressSave,
-				allDoneWordsEN: compressData(PLAYESTATE.allDoneWords)
-			};
-			newState.gotEventBfGift = gotEventBfGift;
-			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
-			if(newYearProgress) newState.newYearProgress = compressData(newYearProgress, true);
-			playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
+			if(notRussianGame){
+				console.log(PLAYESTATE);
+				const newState = {
+					allDoneWords: russianProgressSave,
+					allDoneWordsEN: compressData(PLAYESTATE.allDoneWords)
+				};
+				newState.gotEventBfGift = gotEventBfGift;
+				if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
+				if(newYearProgress) newState.newYearProgress = compressData(newYearProgress, true);
+				playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 
 
-		}else{
-			// console.log(PLAYESTATE);
-			// console.log(fixDoneWords(JSON.parse(getFromStorage('allDoneWords'))));
-			const newState = {
-				allDoneWords: compressData(PLAYESTATE.allDoneWords)
-			};
-			newState.gotEventBfGift = gotEventBfGift;
-			if(englishProgress) newState.allDoneWordsEN = englishProgress;
-			if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
-			if(newYearProgress) newState.newYearProgress = compressData(newYearProgress, true);
-			// console.log('SendState');
-			// console.log(newState);createGameLevel
-			if(newState.allDoneWords === undefined && lastLevel > 0){
-				params({'allWords-NO': 1});
-				if(PLAYESTATE.allDoneWords === undefined){
-					params({'PLAYERSTATE-NO': 1});
-					params({'browserLag': navigatorBrowser});
-					if(allDoneWords === undefined){
-						params({'allDoneWords-NO': 1});
-					}else{
-						PLAYESTATE.allDoneWords = allDoneWords;
-						newState.allDoneWords = compressData(allDoneWords)
+			}else{
+				// console.log(PLAYESTATE);
+				// console.log(fixDoneWords(JSON.parse(getFromStorage('allDoneWords'))));
+				const newState = {
+					allDoneWords: compressData(PLAYESTATE.allDoneWords)
+				};
+				newState.gotEventBfGift = gotEventBfGift;
+				if(englishProgress) newState.allDoneWordsEN = englishProgress;
+				if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
+				if(newYearProgress) newState.newYearProgress = compressData(newYearProgress, true);
+				// console.log('SendState');
+				// console.log(newState);createGameLevel
+				if(newState.allDoneWords === undefined && lastLevel > 0){
+					params({'allWords-NO': 1});
+					if(PLAYESTATE.allDoneWords === undefined){
+						params({'PLAYERSTATE-NO': 1});
+						params({'browserLag': navigatorBrowser});
+						if(allDoneWords === undefined){
+							params({'allDoneWords-NO': 1});
+						}else{
+							PLAYESTATE.allDoneWords = allDoneWords;
+							newState.allDoneWords = compressData(allDoneWords)
+						}
 					}
 				}
+				playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
+					try{
+						params({'cantSave-first': error});
+						params({'cantSave-err': error.toString().slice(0,150)});
+						console.log(error)
+						if(error.toString().includes('large')){
+							params({'cantSave-bigData-first': lastLevel});
+						}
+					}catch(ignored){}
+					playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
+				});
 			}
-			playerGame.setData(newState, false).then(() => {console.log('data saved')}).catch((error) => {
-				try{
-					params({'cantSave-first': error});
-					params({'cantSave-err': error.toString().slice(0,150)});
-					console.log(error)
-					if(error.toString().includes('large')){
-						params({'cantSave-bigData-first': lastLevel});
-					}
-				}catch(ignored){}
-				playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
-			});
+
+
+		}
+	}else if(process.env.PLATFORM === 'gp'){
+		saveTime++;
+		if(saveTime === 10) saveTime = 0;
+		if(saveTime !== 0 && !isNow){
+			return;
+		}else{
+			saveTime = 0;
 		}
 
+		const newData = JSON.stringify(allDoneWords);
+		const newLocationData = JSON.stringify(locationDoneWords);
+		let isChange = false;
+		if(recentState !== newData){
+			recentState = newData;
+			const newState = compressData(allDoneWords);
+			if(GP) GP.player.set('allDoneWords', JSON.stringify(newState));
+			isChange = true;
+		}
+		if(recentLocationState !== newLocationData){
+			recentLocationState = newLocationData
+			const newState = compressData(locationDoneWords, true);
+			isChange = true;
+			if(GP) GP.player.set('locationDoneWords', JSON.stringify(newState));
+		}
+		if(isChange) {
+			try{
+				GP.player.sync();
+				console.log('sync');
+				setToStorage('platformType', platformType);
+			}catch(e){}
 
+		}
 	}
 }
 function setStats() {
 	// console.log('setStats');
-	const newData = JSON.stringify(PLAYERSTATS);
-	if(recentStats === newData) return;
-	recentStats = newData;
-	if(playerGame){
-		if(notRussianGame){
-			const progress = {tipsEN: PLAYERSTATS.tips};
-			if(russianTips) progress.tips = russianTips;
-			playerGame.setStats(progress, false).then((ignored) => {}).catch((ignored)=>{});
-		}else{
-			const progress = {tips: PLAYERSTATS.tips};
-			if(englishTips) progress.tipsEN = englishTips;
+	if(process.env.PLATFORM === 'yandex'){
+		const newData = JSON.stringify(PLAYERSTATS);
+		if(recentStats === newData) return;
+		recentStats = newData;
+		if(playerGame){
+			if(notRussianGame){
+				const progress = {tipsEN: PLAYERSTATS.tips};
+				if(russianTips) progress.tips = russianTips;
+				playerGame.setStats(progress, false).then((ignored) => {}).catch((ignored)=>{});
+			}else{
+				const progress = {tips: PLAYERSTATS.tips};
+				if(englishTips) progress.tipsEN = englishTips;
 
-			if(progress === undefined || progress.tips === undefined){
-				params({'tipsUndefined': 1});
+				if(progress === undefined || progress.tips === undefined){
+					params({'tipsUndefined': 1});
+				}
+
+				playerGame.setStats(progress, false).then((ignored) => {}).catch(()=>{
+					playerGame.setStats(progress, true).then((ignored) => {})
+				});
 			}
 
-			playerGame.setStats(progress, false).then((ignored) => {}).catch(()=>{
-				playerGame.setStats(progress, true).then((ignored) => {})
-			});
 		}
-
+	}else if(process.env.PLATFORM === 'gp'){
+		const newData = JSON.stringify(PLAYERSTATS);
+		if(recentStats === newData) return;
+		if(GP){
+			try{
+				GP.player.set('tips', PLAYERSTATS.tips);
+				GP.player.sync();
+			}catch(e){}
+		}
 	}
-
-
-
-
-
 }
 
 function saveAllData(isNow){
@@ -2914,131 +2953,308 @@ function getGameObj(id){
 	}
 
 }
-if(window.YaGames){
-	window.YaGames.init({
-		adv: {
-			onAdvClose: wasShown => {
-				// if(!wasShown) {
-				// 	advTime = true;
-				// }
+let isGameOpen = false;
+let platformType = 'VK';
+let lastPlatformType = getFromStorage('platformType');
+if(process.env.PLATFORM === 'yandex'){
+	if(window.YaGames){
+		window.YaGames.init({
+			adv: {
+				onAdvClose: wasShown => {
+					// if(!wasShown) {
+					// 	advTime = true;
+					// }
 
-				canShowAdv();
-			}
-		}
-	}).then(ysdk => {
-		YSDK = ysdk;
-		getAllGames();
-		console.log('time: ', new Date() - openTime);
-		ysdk.getFlags().then(flags => {
-			console.log('Флаги')
-			console.log(flags);
-			ysdkFlags = flags;
-		});
-		try{
-			console.log("LANG: ", ysdk.environment.i18n.lang);
-			notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
-			switchOnLoading(notRussianGame);
-			if(notRussianGame){
-				console.log('EN');
-				lastLevel = 0;
-				params({'eng': 1});
-				switchToEnglishVersion();
-			}else{
-				console.log('RU')
-			}
-
-			//Payload
-			let lvl = ysdk.environment.payload;
-			console.log('PAYLOAD');
-			console.log(lvl);
-			if(lvl && Number(lvl)){
-				let str = String(lvl);
-				if(str.indexOf('ver') === 0){
-					lvl = str.slice(3);
-					payloadVertical = true;
-					params({'payloadVertical': 1});
-				}
-				payloadLevel = Number(lvl) - 1;
-				if(!Number.isInteger(payloadLevel)) payloadLevel = 0;
-				if(payloadLevel < 0) payloadLevel = 0;
-				else if(payloadLevel > 2500) payloadLevel = 2500;
-				if(lastLevel !== 0){
-					playerPlayedAlready = true;
+					canShowAdv();
 				}
 			}
-		}catch(ignored){}
+		}).then(ysdk => {
+			YSDK = ysdk;
+			getAllGames();
+			console.log('time: ', new Date() - openTime);
+			ysdk.getFlags().then(flags => {
+				console.log('Флаги')
+				console.log(flags);
+				ysdkFlags = flags;
+			});
+			try{
+				console.log("LANG: ", ysdk.environment.i18n.lang);
+				notRussianGame = !ruLangs.includes(ysdk.environment.i18n.lang);
+				switchOnLoading(notRussianGame);
+				if(notRussianGame){
+					console.log('EN');
+					lastLevel = 0;
+					params({'eng': 1});
+					switchToEnglishVersion();
+				}else{
+					console.log('RU')
+				}
 
-
-		initPlayer(ysdk);
-		var isNativeCache = ysdk.yandexApp && ysdk.yandexApp.enabled;
-		if ('serviceWorker' in navigator && !isNativeCache) {
-			window.onload = function(){
-				navigator.serviceWorker
-					.register('sw.js')
-					.then(function(reg) {
-						console.log('Registration succeeded. Scope is ' + reg.scope);
-					})
-					.catch(function(error) {
-						console.error('Trouble with sw: ', error);
-					});
-			};
-		}
-		showAdv = (onCloseFunc) => {
-			console.log('showAdv');
-			ysdk.adv.showFullscreenAdv({
-				callbacks: {
-					onOpen: function(){
-						switchOffMainMusic();
-						musicStoppedByAdv = true;
-					},
-					onClose: function(wasShow) {
-						console.log('close adv');
-						switchOnMainMusic();
-						musicStoppedByAdv = false;
-						if(!wasShow){
-							advTime = advErrorsTimes <= 3;
-						}else{
-							// if(isPhone){
-							// 	params({'showMobileAdv': 1});
-							// }else{
-							// 	params({'showDesktopAdv': 1});
-							// }
-							clearTimeout(advTimeout);
-							clearInterval(advInterval);
-
-							startAdvInterval();
-
-							advTimeout = setTimeout(()=>{
-								advTime = true;
-								clearInterval(advInterval);
-								canShowAdv();
-							}, 90000);
-
-
-							onCloseFunc();
-						}
-
-						canShowAdv();
-					},
-					onError: function (e){
-						advErrorsTimes++
-
-						advTime = advErrorsTimes <= 3;
-						canShowAdv();
-						console.log('error adv')
-						console.log(e);
+				//Payload
+				let lvl = ysdk.environment.payload;
+				console.log('PAYLOAD');
+				console.log(lvl);
+				if(lvl && Number(lvl)){
+					let str = String(lvl);
+					if(str.indexOf('ver') === 0){
+						lvl = str.slice(3);
+						payloadVertical = true;
+						params({'payloadVertical': 1});
+					}
+					payloadLevel = Number(lvl) - 1;
+					if(!Number.isInteger(payloadLevel)) payloadLevel = 0;
+					if(payloadLevel < 0) payloadLevel = 0;
+					else if(payloadLevel > 2500) payloadLevel = 2500;
+					if(lastLevel !== 0){
+						playerPlayedAlready = true;
 					}
 				}
-			});
-		};
-	}).catch(e=>{
-		console.log(e);
+			}catch(ignored){}
+
+
+			initPlayer(ysdk);
+			var isNativeCache = ysdk.yandexApp && ysdk.yandexApp.enabled;
+			if ('serviceWorker' in navigator && !isNativeCache) {
+				window.onload = function(){
+					navigator.serviceWorker
+						.register('sw.js')
+						.then(function(reg) {
+							console.log('Registration succeeded. Scope is ' + reg.scope);
+						})
+						.catch(function(error) {
+							console.error('Trouble with sw: ', error);
+						});
+				};
+			}
+			showAdv = (onCloseFunc) => {
+				console.log('showAdv');
+				ysdk.adv.showFullscreenAdv({
+					callbacks: {
+						onOpen: function(){
+							switchOffMainMusic();
+							musicStoppedByAdv = true;
+						},
+						onClose: function(wasShow) {
+							console.log('close adv');
+							switchOnMainMusic();
+							musicStoppedByAdv = false;
+							if(!wasShow){
+								advTime = advErrorsTimes <= 3;
+							}else{
+								// if(isPhone){
+								// 	params({'showMobileAdv': 1});
+								// }else{
+								// 	params({'showDesktopAdv': 1});
+								// }
+								clearTimeout(advTimeout);
+								clearInterval(advInterval);
+
+								startAdvInterval();
+
+								advTimeout = setTimeout(()=>{
+									advTime = true;
+									clearInterval(advInterval);
+									canShowAdv();
+								}, 90000);
+
+
+								onCloseFunc();
+							}
+
+							canShowAdv();
+						},
+						onError: function (e){
+							advErrorsTimes++
+
+							advTime = advErrorsTimes <= 3;
+							canShowAdv();
+							console.log('error adv')
+							console.log(e);
+						}
+					}
+				});
+			};
+		}).catch(e=>{
+			console.log(e);
+			doDeleteBlock = true;
+			update();
+		});
+	}else{
 		doDeleteBlock = true;
-		update();
-	});
-}else{
-	doDeleteBlock = true;
+	}
+}else if(process.env.PLATFORM === 'gp'){
+	setTimeout(()=>{
+		if(!isGameOpen){
+			isGameOpen = true;
+			update();
+			params({'openGameWithoutGP': 1});
+		}
+	}, 12000);
+	window.onGPInit = async function (gp) {
+		console.log('GP init');
+		GP = gp;
+		platformType = gp.platform.type;
+		paymentCatalog = gp.payments.products;
+		console.log('Platform: ', platformType);
+		params({'platform': platformType});
+		gp.player.on('ready', () => {
+			params({'playerLoggedIn': gp.player.isLoggedIn});
+			initPlayer(gp);
+		});
+
+
+		try{
+			let bannerDone = false;
+			let sdk = gp.platform.getSDK();
+
+			function showBanner(){
+				console.log('show Banner');
+				if(!bannerDone){
+					if(platformType === 'VK') {
+						sdk.bridge.send('VKWebAppShowBannerAd', {
+							banner_location: 'bottom',
+							layout_type: 'resize'
+						})
+							.then((data) => {
+								console.log('show banner: ', data.result)
+								bannerDone = data.result;
+							})
+							.catch((error) => {
+								// Ошибка
+								console.log(error);
+							});
+					}
+					// else{
+					// 	gp.ads.showSticky();
+					// }
+				}
+
+
+			}
+			function bannerShowTrue() {
+				if (document.querySelector('.levels')) {
+					document.querySelector('.levels').dispatchEvent(new CustomEvent("bannerShowTrue"));
+				}
+			}
+			function bannerShowFalse() {
+				if (document.querySelector('.levels')) {
+					document.querySelector('.levels').dispatchEvent(new CustomEvent("bannerShowFalse"));
+				}
+
+			}
+			// gp.ads.on('sticky:start', () => {
+			// 	bannerDone = true;
+			// 	bannerShowTrue();
+			// });
+			// gp.ads.on('sticky:close', () => {
+			// 	bannerDone = false;
+			// 	bannerShowFalse();
+			// });
+
+
+			window.addEventListener("resize", function() {
+				if(window.innerHeight < 600){
+					if(platformType === 'VK') {
+						sdk.bridge.send('VKWebAppHideBannerAd')
+							.then((data) => {
+								bannerDone = !data.result;
+							})
+							.catch((error) => {
+								console.log(error);
+							});
+					}
+					// else{
+					// 	gp.ads.closeSticky();
+					// }
+				}else{
+					showBanner();
+				}
+
+			}, false);
+
+
+			if(window.innerHeight >= 600){
+				showBanner();
+			}
+
+
+
+
+		}catch(e){
+			console.log(e);
+		}
+
+		// Открыли баннер
+	// 	gp.ads.on('sticky:start', () => {console.log('start')});
+	// // Баннер показался на экране
+	// 	gp.ads.on('sticky:render', () => {console.log('refresh')});
+	// // Баннер обновился
+	// 	gp.ads.on('sticky:refresh', () => {console.log('refresh')});
+	// // Закрыли баннер
+	// 	gp.ads.on('sticky:close', () => {console.log('close')});
+
+		// await gp.player.ready;
+		// GP.player.on('login', (success) => {
+		// 	if(success){
+		// 		initPlayer(GP);
+		// 	}
+		// });
+
+
+
+		// await gp.ads.showPreloader();
+
+		// gp.ads.showSticky();
+
+
+
+		let onCloseFunc = () => {console.log('func')};
+		showAdv = (func) => {
+			onCloseFunc = func;
+			console.log('showAdv');
+			gp.ads.showFullscreen();
+		};
+		gp.ads.on('fullscreen:close', (wasShow) => {
+			console.log('close adv');
+			if(!wasShow){
+				advTime = true;
+			}else{
+				clearTimeout(advTimeout);
+				clearInterval(advInterval);
+
+				timeToShowAdv = 130;
+				startAdvInterval();
+
+				advTimeout = setTimeout(()=>{
+					advTime = true;
+					clearInterval(advInterval);
+					canShowAdv();
+				}, 120000);
+
+
+				onCloseFunc();
+			}
+
+			canShowAdv();
+		});
+
+		GP.payments.on('purchase', ({ product, purchase }) => {
+			console.log(product);
+			console.log(purchase);
+			if(buyItem === 'cart_item2') TIPS = allTips[0];
+			if(buyItem === 'cart_item3') TIPS = allTips[1];
+			if(buyItem === 'cart_item4') TIPS = allTips[2];
+			if(buyItem === 'cart_item5') TIPS = allTips[3];
+			let it = buyItem;
+			params({[it]: 1});
+			document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
+			GP.payments.consume({ tag: purchaseItemGP });
+		});
+		GP.payments.on('error:purchase', (error) => {console.log(error)});
+	}
 }
+
+
 
 function globalTryShowAdv(onCloseFunc){
 	if(showAdv && advTime){
@@ -3053,10 +3269,12 @@ function globalTryShowAdv(onCloseFunc){
 	return false;
 }
 function update() {
+	isGameOpen = true;
 	if (document.querySelector('.levels')) {
 		document.querySelector('.levels').dispatchEvent(new CustomEvent("updateAll"));
 	}
-	try{
+	if(process.env.PLATFORM === 'yandex'){
+		try{
 		YSDK.getPayments({ signed: false }).then(_payments => {
 			_payments.getCatalog().then(catalog => paymentCatalog = catalog );
 			// Покупки доступны.
@@ -3071,6 +3289,10 @@ function update() {
 			}catch(ignored){}
 		});
 	}catch(e){}
+	}else if(process.env.PLATFORM === 'gp'){
+		
+	}
+
 
 
 }
@@ -3123,281 +3345,390 @@ function getAmountLocationWords(locationWords){
 }
 let musicStoppedByAdv = false;
 function initPlayer(ysdk) {
-	console.log(ysdk);
-	ysdk.getPlayer().then(_player => {
-		console.log('get player');
+	if(process.env.PLATFORM === 'yandex'){
+		ysdk.getPlayer().then(_player => {
+			console.log('get player');
 
 
 
-		// Игрок авторизован.
-		playerGame = _player;
-		try{
-			if(_player._personalInfo.mode === "lite" || _player.mode === "lite"){
-				// params({'authLite': 1});
-				console.log('Lite auth');
-			}else{
-				isPlayerAuth = true;
-			}
-		}catch(e){
-			console.log(e);
-		}
-		console.log('PLAYER');
-		console.log(playerGame);
-
-		let someTrue = false;
-
-		playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords', 'newYearProgress', 'gotEventBfGift'], false).then((dataObject) => {
-			console.log(dataObject);
-			if(dataObject.gotEventBfGift){
-				gotEventBfGift = dataObject.gotEventBfGift;
-			}
-			// if(dataObject.newYearProgress){
-			// 	dataObject.newYearProgress = fixDoneWords(decompressLocationWords(dataObject.newYearProgress), true);
-			// 	let playerScore = getEventScore(dataObject.newYearProgress);
-			// 	let lastScore = getEventScore(newYearProgress);
-			// 	if(playerScore > lastScore) newYearProgress = dataObject.newYearProgress;
-			// }
-			if(allDoneWords && dataObject.allDoneWords){
-				params({'doneWordsAll': 1});
-			}else if(allDoneWords && !dataObject.allDoneWords && lastLevel > 0){
-				params({'doneWordsLocal': 1});
-			}
-			if(notRussianGame){
-				allDoneWords = {};
-				PLAYESTATE = {allDoneWords: {}};
-				console.log("DATA EN");
-				console.log(dataObject.allDoneWordsEN);
-				if(dataObject.allDoneWordsEN){
-					let newData = dataObject.allDoneWordsEN;
-
-					if(typeof newData === "string" || (typeof newData === "object" && newData.notStringed)){
-						newData = decompressData(newData, true);
-					}
-
-					newData = fixDoneWords(newData);
-					console.log("IS DAT");
-					console.log(newData);
-
-					PLAYESTATE = {allDoneWords: newData};
-					recentState = JSON.stringify(PLAYESTATE);
-					allDoneWords = newData;
-
+			// Игрок авторизован.
+			playerGame = _player;
+			try{
+				if(_player._personalInfo.mode === "lite" || _player.mode === "lite"){
+					// params({'authLite': 1});
+					console.log('Lite auth');
 				}else{
-					lastLevel = 0;
+					isPlayerAuth = true;
 				}
+			}catch(e){
+				console.log(e);
+			}
+			console.log('PLAYER');
+			console.log(playerGame);
 
-				if(dataObject.allDoneWords){
-					russianProgressSave = dataObject.allDoneWords;
-				}
-			}else if (dataObject.allDoneWords) {
-				isRules = false;
+			let someTrue = false;
 
-				if(dataObject.allDoneWordsEN) englishProgress = dataObject.allDoneWordsEN;
+			playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords', 'newYearProgress', 'gotEventBfGift'], false).then((dataObject) => {
 				console.log(dataObject);
-				let newData = dataObject.allDoneWords;
-
-				// if(dataObject.cantSaveData){
-				//   cantSaveData = true;
-				// }
-				console.log('new data');
-				console.log(newData);
-				newData = decompressData(newData);
-				newData = fixDoneWords(newData);
-				console.log(newData);
-
-
-
-				let fixedDoneWords = fixDoneWords(allDoneWords);
-				let localStars = getAllStars(fixedDoneWords);
-				let serverStars = getAllStars(newData);
-				let localLevel = 0;
-				let serverLevel = 0;
-				try{
-					localLevel = setLastLevel(true, fixedDoneWords);
-					serverLevel = setLastLevel(true, newData);
-				}catch(e){
-					console.log(e);
+				if(dataObject.gotEventBfGift){
+					gotEventBfGift = dataObject.gotEventBfGift;
 				}
-				console.log(localStars, serverStars, localLevel, serverLevel);
-				let dataNotChanged = true;
-				if(localLevel >= serverLevel && localStars >= serverStars){
-					let isChange = localStars > serverStars;
-					try{
-						if(!isChange){
-							if(localLevel === serverLevel){
-								let w = allWordsRU[localLevel];
-								let localWords = fixedDoneWords[w].length;
-								let serverWords = newData[w].length;
-								if(localWords > serverWords){
-									isChange = true;
-									params({'changeDataLocalEqual': 1});
-									console.log('LocalWords > ServerWords');
-								}
-							}else if(localLevel > serverLevel){
-								isChange = true;
-								params({'changeDataLocalMore': 1});
-							}
+				// if(dataObject.newYearProgress){
+				// 	dataObject.newYearProgress = fixDoneWords(decompressLocationWords(dataObject.newYearProgress), true);
+				// 	let playerScore = getEventScore(dataObject.newYearProgress);
+				// 	let lastScore = getEventScore(newYearProgress);
+				// 	if(playerScore > lastScore) newYearProgress = dataObject.newYearProgress;
+				// }
+				if(allDoneWords && dataObject.allDoneWords){
+					params({'doneWordsAll': 1});
+				}else if(allDoneWords && !dataObject.allDoneWords && lastLevel > 0){
+					params({'doneWordsLocal': 1});
+				}
+				if(notRussianGame){
+					allDoneWords = {};
+					PLAYESTATE = {allDoneWords: {}};
+					console.log("DATA EN");
+					console.log(dataObject.allDoneWordsEN);
+					if(dataObject.allDoneWordsEN){
+						let newData = dataObject.allDoneWordsEN;
+
+						if(typeof newData === "string" || (typeof newData === "object" && newData.notStringed)){
+							newData = decompressData(newData, true);
 						}
 
-					}catch(er){}
+						newData = fixDoneWords(newData);
+						console.log("IS DAT");
+						console.log(newData);
 
-					if(isChange){
-						console.log('CHANGE DATA TO LOCAL');
-						dataNotChanged = false;
-						params({'changeDataToLocal': 1});
-						PLAYESTATE.allDoneWords = allDoneWords;
+						PLAYESTATE = {allDoneWords: newData};
+						recentState = JSON.stringify(PLAYESTATE);
+						allDoneWords = newData;
+
+					}else{
+						lastLevel = 0;
+					}
+
+					if(dataObject.allDoneWords){
+						russianProgressSave = dataObject.allDoneWords;
+					}
+				}else if (dataObject.allDoneWords) {
+					isRules = false;
+
+					if(dataObject.allDoneWordsEN) englishProgress = dataObject.allDoneWordsEN;
+					console.log(dataObject);
+					let newData = dataObject.allDoneWords;
+
+					// if(dataObject.cantSaveData){
+					//   cantSaveData = true;
+					// }
+					console.log('new data');
+					console.log(newData);
+					newData = decompressData(newData);
+					newData = fixDoneWords(newData);
+					console.log(newData);
+
+
+
+					let fixedDoneWords = fixDoneWords(allDoneWords);
+					let localStars = getAllStars(fixedDoneWords);
+					let serverStars = getAllStars(newData);
+					let localLevel = 0;
+					let serverLevel = 0;
+					try{
+						localLevel = setLastLevel(true, fixedDoneWords);
+						serverLevel = setLastLevel(true, newData);
+					}catch(e){
+						console.log(e);
+					}
+					console.log(localStars, serverStars, localLevel, serverLevel);
+					let dataNotChanged = true;
+					if(localLevel >= serverLevel && localStars >= serverStars){
+						let isChange = localStars > serverStars;
+						try{
+							if(!isChange){
+								if(localLevel === serverLevel){
+									let w = allWordsRU[localLevel];
+									let localWords = fixedDoneWords[w].length;
+									let serverWords = newData[w].length;
+									if(localWords > serverWords){
+										isChange = true;
+										params({'changeDataLocalEqual': 1});
+										console.log('LocalWords > ServerWords');
+									}
+								}else if(localLevel > serverLevel){
+									isChange = true;
+									params({'changeDataLocalMore': 1});
+								}
+							}
+
+						}catch(er){}
+
+						if(isChange){
+							console.log('CHANGE DATA TO LOCAL');
+							dataNotChanged = false;
+							params({'changeDataToLocal': 1});
+							PLAYESTATE.allDoneWords = allDoneWords;
+						}
+					}
+
+					if(dataNotChanged){
+						console.log("GET SERVER DATA");
+						allDoneWords = newData;
+						PLAYESTATE.allDoneWords = newData;
+
+						recentState = JSON.stringify(PLAYESTATE);
+						setToStorage('allDoneWords', allDoneWords);
 					}
 				}
 
-				if(dataNotChanged){
-					console.log("GET SERVER DATA");
-					allDoneWords = newData;
-					PLAYESTATE.allDoneWords = newData;
+				if(dataObject.locationDoneWords){
+					let serverWords = fixDoneWords(decompressLocationData(dataObject.locationDoneWords), true);
+					let serverWordsAmount = getAmountLocationWords(serverWords);
+					let localWordsAmount = getAmountLocationWords(locationDoneWords);
 
-					recentState = JSON.stringify(PLAYESTATE);
-					setToStorage('allDoneWords', allDoneWords);
-				}
-			}
-
-			if(dataObject.locationDoneWords){
-				let serverWords = fixDoneWords(decompressLocationData(dataObject.locationDoneWords), true);
-				let serverWordsAmount = getAmountLocationWords(serverWords);
-				let localWordsAmount = getAmountLocationWords(locationDoneWords);
-
-				if(serverWordsAmount > localWordsAmount){
-					PLAYESTATE.locationDoneWords = 	serverWords;
-					locationDoneWords = PLAYESTATE.locationDoneWords;
+					if(serverWordsAmount > localWordsAmount){
+						PLAYESTATE.locationDoneWords = 	serverWords;
+						locationDoneWords = PLAYESTATE.locationDoneWords;
+					}else{
+						PLAYESTATE.locationDoneWords = 	locationDoneWords;
+					}
 				}else{
 					PLAYESTATE.locationDoneWords = 	locationDoneWords;
 				}
-			}else{
-				PLAYESTATE.locationDoneWords = 	locationDoneWords;
-			}
-			//Вовзврат прогресса
-			try{
-				let pay = ysdk.environment.payload;
-				if(pay){
+				//Вовзврат прогресса
+				try{
+					let pay = ysdk.environment.payload;
+					if(pay){
 
-						let lvl2 = pay.match(/zlms\d+/);
-					if(lvl2) {
-						console.log('change progress')
-						lvl2 = Number(lvl2[0].replace('zlms', ''));
-						if(lvl2){
-							let newObj = {};
-							for (let i = 0; i < lvl2; i++) {
-								newObj[allWords[i]] = chooseRightWordFromWords(allWords[i]);
+							let lvl2 = pay.match(/zlms\d+/);
+						if(lvl2) {
+							console.log('change progress')
+							lvl2 = Number(lvl2[0].replace('zlms', ''));
+							if(lvl2){
+								let newObj = {};
+								for (let i = 0; i < lvl2; i++) {
+									newObj[allWords[i]] = chooseRightWordFromWords(allWords[i]);
+								}
+								PLAYESTATE.allDoneWords = newObj;
+								allDoneWords = newObj;
+								setState();
+								params({'zlms': lvl2});
 							}
-							PLAYESTATE.allDoneWords = newObj;
-							allDoneWords = newObj;
-							setState();
-							params({'zlms': lvl2});
-						}
 
-					}
-					let lvl3 = pay.match(/zl\d+a\d+/);
-					if(lvl3) {
-						lvl3 = lvl3[0].replace('zl', '');
-						if(lvl3){
-							let level1 = Number(lvl3.slice(0, lvl3.indexOf('a')));
-							let level2 = Number(lvl3.slice(lvl3.indexOf('a')+1));
-							for (let i = level1; i < level2; i++) {
-								PLAYESTATE.allDoneWords[allWords[i]] = chooseRightWordFromWords(allWords[i]);
+						}
+						let lvl3 = pay.match(/zl\d+a\d+/);
+						if(lvl3) {
+							lvl3 = lvl3[0].replace('zl', '');
+							if(lvl3){
+								let level1 = Number(lvl3.slice(0, lvl3.indexOf('a')));
+								let level2 = Number(lvl3.slice(lvl3.indexOf('a')+1));
+								for (let i = level1; i < level2; i++) {
+									PLAYESTATE.allDoneWords[allWords[i]] = chooseRightWordFromWords(allWords[i]);
+								}
+								allDoneWords = PLAYESTATE.allDoneWords;
+								setState();
+								// params({'zlms': lvl2});
 							}
-							allDoneWords = PLAYESTATE.allDoneWords;
-							setState();
-							// params({'zlms': lvl2});
-						}
 
+						}
 					}
+				}catch(e){
+					console.log(e);
 				}
-			}catch(e){
+
+				if(someTrue){
+					update();
+				}
+				someTrue = true;
+
+
+			}).catch((e) => {
 				console.log(e);
-			}
+				if(someTrue){
+					update();
+				}
+				try{
+					params({'getPlayer-error': e.toString().slice(0,150)});
+				}catch(ignored){}
+				someTrue = true;
+			});
 
-			if(someTrue){
-				update();
-			}
-			someTrue = true;
+			playerGame.getStats(['tips', 'tipsEN'], false).then((dataObject) => {
+				// console.log('StATS');
+				// console.log(dataObject);
+				if(notRussianGame){
+					if(Number.isInteger(dataObject.tipsEN)){
+						tips = dataObject.tipsEN;
+					}else{
+						tips = 15	;
+					}
+					if(dataObject.tips) russianTips = dataObject.tips;
 
+				}else if (Number.isInteger(dataObject.tips)) {
+					if(dataObject.tips > tips){
+						tips = dataObject.tips;
+					}
+					if (dataObject.tipsEN) englishTips = dataObject.tipsEN;
+				}else{
+					if(!Number.isInteger(tips) || 15 > tips){
+						tips = 15;
+					}
+					if(dataObject.tipsEN) englishTips = dataObject.tipsEN;
+				}
 
+				PLAYERSTATS = {'tips': dataObject.tipsEN};
+				recentStats = JSON.stringify(PLAYERSTATS);
+				setToStorage('tips', tips);
+
+				if(someTrue){
+					update();
+				}
+				someTrue = true;
+				//Вовзврат прогресса
+				try{
+					let pay = ysdk.environment.payload;
+					if(pay){
+						let tps = pay.match(/tps\d+/);
+						if(tps) {
+							tps = Number(tps[0].replace('tps', ''));
+							if(tps){
+								tips = tps;
+								PLAYERSTATS.tips = tips;
+								setStats();
+							}
+						}
+					}
+				}catch(e){
+					console.log(e);
+				}
+			}).catch((e) => {
+				console.log(e);
+				if(someTrue){
+					update();
+				}
+				try{
+					params({'getStats-error': e.toString().slice(0,150)});
+				}catch(ignored){}
+				someTrue = true;
+			});
 		}).catch((e) => {
 			console.log(e);
-			if(someTrue){
-				update();
-			}
+			doDeleteBlock = true;
 			try{
-				params({'getPlayer-error': e.toString().slice(0,150)});
+				params({'player-error': e.toString().slice(0,250)});
 			}catch(ignored){}
-			someTrue = true;
+			update();
 		});
+	}else if(process.env.PLATFORM === 'gp'){
+		ysdk.player.on('fetchFields', (success) => {
+			console.log('get player');
+			if(success){
+				console.log('get player success');
+				playerGame = ysdk.player;
+				if(ysdk.player.has('allDoneWords')){
+					console.log('GP have allDoneWords')
+					isRules = false;
+					let newData = JSON.parse(ysdk.player.get('allDoneWords'));
+					newData = decompressData(newData);
+					newData = fixDoneWords(newData);
 
-		playerGame.getStats(['tips', 'tipsEN'], false).then((dataObject) => {
-			// console.log('StATS');
-			// console.log(dataObject);
-			if(notRussianGame){
-				if(Number.isInteger(dataObject.tipsEN)){
-					tips = dataObject.tipsEN;
+
+
+
+					let fixedDoneWords = fixDoneWords(allDoneWords);
+					let localStars = getAllStars(fixedDoneWords);
+					let serverStars = getAllStars(newData);
+					let localLevel = 0;
+					let serverLevel = 0;
+					try{
+						localLevel = setLastLevel(true, fixedDoneWords);
+						serverLevel = setLastLevel(true, newData);
+					}catch(e){
+						console.log(e);
+					}
+					console.log(localStars, serverStars, localLevel, serverLevel);
+					let dataNotChanged = true;
+					if(localLevel >= serverLevel && localStars >= serverStars){
+						let isChange = localStars > serverStars;
+						try{
+							if(!isChange){
+								if(localLevel === serverLevel){
+									let w = allWordsRU[localLevel];
+									let localWords = fixedDoneWords[w].length;
+									let serverWords = newData[w].length;
+									if(localWords > serverWords){
+										isChange = true;
+										params({'changeDataLocalEqual': 1});
+										console.log('LocalWords > ServerWords');
+									}
+								}else if(localLevel > serverLevel){
+									isChange = true;
+									params({'changeDataLocalMore': 1});
+								}
+							}
+
+						}catch(er){}
+
+						if(isChange){
+							console.log('CHANGE DATA TO LOCAL');
+							dataNotChanged = false;
+							params({'changeDataToLocal': 1});
+							PLAYESTATE.allDoneWords = allDoneWords;
+						}
+					}
+
+					if(lastPlatformType !== platformType) dataNotChanged = true;
+					console.log(lastPlatformType, platformType);
+
+					if(dataNotChanged){
+						console.log("GET SERVER DATA");
+						allDoneWords = newData;
+						PLAYESTATE.allDoneWords = newData;
+
+						recentState = JSON.stringify(PLAYESTATE);
+						setToStorage('allDoneWords', allDoneWords);
+					}
+				}
+				if(ysdk.player.has('locationDoneWords')){
+					let locationData = JSON.parse(ysdk.player.get('locationDoneWords'));
+					let serverWords = fixDoneWords(decompressLocationData(locationData), true);
+					let serverWordsAmount = getAmountLocationWords(serverWords);
+					let localWordsAmount = getAmountLocationWords(locationDoneWords);
+
+					if(serverWordsAmount > localWordsAmount){
+						PLAYESTATE.locationDoneWords = 	serverWords;
+						locationDoneWords = PLAYESTATE.locationDoneWords;
+					}else{
+						PLAYESTATE.locationDoneWords = 	locationDoneWords;
+					}
+
+					PLAYESTATE.locationDoneWords = serverWords;
+					locationDoneWords = PLAYESTATE.locationDoneWords;
 				}else{
-					tips = 10;
+					PLAYESTATE.locationDoneWords = locationDoneWords;
 				}
-				if(dataObject.tips) russianTips = dataObject.tips;
 
-			}else if (Number.isInteger(dataObject.tips)) {
-				if(dataObject.tips > tips){
-					tips = dataObject.tips;
-				}
-				if (dataObject.tipsEN) englishTips = dataObject.tipsEN;
-			}else{
-				if(!Number.isInteger(tips) || 15 > tips){
+				let dataTips = ysdk.player.get('tips');
+				console.log('dataTips: ', dataTips);
+				if (Number.isInteger(dataTips)) {
+					tips = dataTips;
+					// if(dataTips > tips){
+					// 	tips = dataTips;
+					// }
+				}else{
 					tips = 15;
 				}
-				if(dataObject.tipsEN) englishTips = dataObject.tipsEN;
-			}
-
-			PLAYERSTATS = {'tips': dataObject.tipsEN};
-			recentStats = JSON.stringify(PLAYERSTATS);
-			setToStorage('tips', tips);
-
-			if(someTrue){
+				update();
+			}else{
 				update();
 			}
-			someTrue = true;
-			//Вовзврат прогресса
-			try{
-				let pay = ysdk.environment.payload;
-				if(pay){
-					let tps = pay.match(/tps\d+/);
-					if(tps) {
-						tps = Number(tps[0].replace('tps', ''));
-						if(tps){
-							tips = tps;
-							PLAYERSTATS.tips = tips;
-							setStats();
-						}
-					}
-				}
-			}catch(e){
-				console.log(e);
-			}
-		}).catch((e) => {
-			console.log(e);
-			if(someTrue){
-				update();
-			}
-			try{
-				params({'getStats-error': e.toString().slice(0,150)});
-			}catch(ignored){}
-			someTrue = true;
 		});
-	}).catch((e) => {
-		console.log(e);
-		doDeleteBlock = true;
-		try{
-			params({'player-error': e.toString().slice(0,250)});
-		}catch(ignored){}
-		update();
-	});
+
+		ysdk.player.fetchFields();
+	}
+	
 }
+let GP;
 let TIPS = 0;
 let allTips = [10,50,100,250,500];
 let allOpenedLocations = [];
@@ -3429,39 +3760,55 @@ function consumePurchase(purchase) {
 //const itemsPrices = [20, 89, 149, 299, 499];
 //const itemsPrices = [14, 59, 109, 209, 249]];
 const itemsPrices = [20, 89, 149, 299, 349, 19];
+let itemsPricesVK = [3, 13, 21, 42, 499];
+let itemsPricesOK = [20, 89, 149, 299, 499];
+let purchaseItemGP;
+let buyItem;
 function buyTips(purchaseItem) {
-	if(payments && playerGame){
-		payments.purchase(purchaseItem).then(purchase => {
-			if(purchase.productID === purchaseItem){
-				if(purchase.productID === 'cart_item2') TIPS = allTips[0];
-				if(purchase.productID === 'cart_item3') TIPS = allTips[1];
-				if(purchase.productID === 'cart_item4') TIPS = allTips[2];
-				if(purchase.productID === 'cart_item5') TIPS = allTips[3];
-				params({'buyItem': purchaseItem});
-				if(purchase.productID === 'cart_item6'){
-					document.querySelector('.levels').dispatchEvent(new CustomEvent("disableAds"));
-				}else if(purchase.productID.indexOf('location_') !== -1){
-					testPurchaseForLocation(purchase.productID);
-				}else{
-					payments.consumePurchase(purchase.purchaseToken);
-					document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
+	if(process.env.PLATFORM === 'yandex'){
+		if(payments && playerGame){
+			payments.purchase(purchaseItem).then(purchase => {
+				if(purchase.productID === purchaseItem){
+					if(purchase.productID === 'cart_item2') TIPS = allTips[0];
+					if(purchase.productID === 'cart_item3') TIPS = allTips[1];
+					if(purchase.productID === 'cart_item4') TIPS = allTips[2];
+					if(purchase.productID === 'cart_item5') TIPS = allTips[3];
+					params({'buyItem': purchaseItem});
+					if(purchase.productID === 'cart_item6'){
+						document.querySelector('.levels').dispatchEvent(new CustomEvent("disableAds"));
+					}else if(purchase.productID.indexOf('location_') !== -1){
+						testPurchaseForLocation(purchase.productID);
+					}else{
+						payments.consumePurchase(purchase.purchaseToken);
+						document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
+					}
+
+
+					// getBusinessEvent(itemsPrices[item-2], 'tip' + item);
 				}
-
-
-				// getBusinessEvent(itemsPrices[item-2], 'tip' + item);
-			}
-		}).catch((e)=>{
-			console.log("PAYMENTS ERROR: " + e);
-		});
-	}else{
-		console.log('open auth');
-		YSDK.auth.openAuthDialog().then(() => {
-			// Игрок успешно авторизован, теперь объект Player будет инициализирован.
-			console.log('успешно авторизован');
-			initPlayer(YSDK);
-		}).catch((ignored) => {// Игрок не авторизован.
-		});
+			}).catch((e)=>{
+				console.log("PAYMENTS ERROR: " + e);
+			});
+		}else{
+			console.log('open auth');
+			YSDK.auth.openAuthDialog().then(() => {
+				// Игрок успешно авторизован, теперь объект Player будет инициализирован.
+				console.log('успешно авторизован');
+				initPlayer(YSDK);
+			}).catch((ignored) => {// Игрок не авторизован.
+			});
+		}
+	}else if(process.env.PLATFORM === 'gp'){
+		buyItem = purchaseItem;
+		if(GP.payments.isAvailable){
+			purchaseItemGP = purchaseItem;
+			GP.payments.purchase({ tag: purchaseItem })
+		}else{
+			GP.player.login();
+		}
+	
 	}
+	
 }
 
 
@@ -3857,6 +4204,7 @@ function deletePreDownload(){
 	if (document.querySelector(".pre-download")) {
 		document.querySelector(".pre-download").remove()
 	}
+	if(GP) GP.gameStart();
 	params({'gameOpened': 1});
 	try{
 		let secondTimeOpen = new Date();
@@ -3956,7 +4304,8 @@ let translatedLocationsNames = {
 	games: 'День Видеоигр',
 	writers: 'Знаменитые писатели',
 	medicine: 'Медицина',
-	egypt: 'Египет'
+	egypt: 'Египет',
+	againSchool: 'Снова в школу'
 }
 
 let defaultLocations = ['house', 'writers', 'medicine'];
@@ -3976,51 +4325,6 @@ let defaultLocations = ['house', 'writers', 'medicine'];
 // 		console.log(e);
 // 	}
 // }
-let isShowBanner = true;
-let bannerTimeout;
-function getVerticalBanner(){
-	console.log('tryGetVerticalBanner');
-	try{
-		isShowBanner = false;
-		if(window.innerHeight >= 450){
-			console.log('getVerticalBanner');
-
-
-			setTimeout(()=>{
-
-				if(window.innerWidth > window.innerHeight && window.innerHeight >= 750){
-					//Десктоп
-					window.yaContextCb.push(()=>{
-						Ya.Context.AdvManager.render({
-							renderTo: 'yandex_rtb_R-A-518275-40',
-							blockId: 'R-A-518275-40'
-						})
-					})
-				}else if(window.innerHeight < 700){
-					window.yaContextCb.push(()=>{
-						Ya.Context.AdvManager.render({
-							renderTo: 'yandex_rtb_R-A-518275-41',
-							blockId: 'R-A-518275-41'
-						})
-					})
-				} else{
-					window.yaContextCb.push(()=>{
-						Ya.Context.AdvManager.render({
-							renderTo: 'yandex_rtb_R-A-518275-38',
-							blockId: 'R-A-518275-38'
-						})
-					})
-				}
-				// params({'getVerticalBanner': 1});
-				bannerTimeout = setTimeout(()=>{
-					isShowBanner = true;
-				}, 60000);
-			}, 200);
-		}
-	}catch(e){
-		console.log(e);
-	}
-}
 // let lastColor = 0;
 // let randColors = ['#4598F9', '#F8C617', '#ED4A4A', '#3ee7f1', '#BE6EFD', '#ff6720', '#ff61ec', '#94eb08', '#3fb32a', '#C21332'];
 // let arr_ru = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ь', 'ы', 'ъ', 'э', 'ю', 'я'];
@@ -4219,6 +4523,34 @@ function getOneRandStart(){
 	return Math.floor(Math.random()*25)+1;
 }
 
+function scrollIntoViewX(container, element, options = {}) {
+	try{
+		const { behavior = 'auto', align = 'start' } = options;
+
+		// координата target внутри контейнера
+		const elLeft = element.offsetLeft - container.offsetLeft;
+
+		let left;
+		switch (align) {
+		case 'center':
+		left = elLeft - (container.clientWidth / 2 - element.clientWidth / 2);
+		break;
+		case 'end':
+		left = elLeft - (container.clientWidth - element.clientWidth);
+		break;
+		case 'start':
+		default:
+		left = elLeft;
+		}
+
+		container.scrollTo({
+		left,
+		behavior
+		});
+	}catch(e){}
+}
+
+
 let gameTimers = [10, 15, 30, 45, 60, 90, 120, 180]
 const scamPlayers = ["CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=", "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=", "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU=", "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4=", "7LQfUSbZYLQ0fqg1s8hIKAA7hMnwEv7I2RGiPqtrUh8=", "oSuq1pgZxAgmIAqESjPn7XuUltVk1o4b7yUxxkGf+2E=", "x0+igey20wXshdwdDQCwW4DveAVwGvmzB9r0+GfPIZk=", "XUDWsVlVCCS6YrlA+EmbbPebuw7IXp1WlLsuZ+EXpaY=",
 	"lRMomuvFGZ6I11rL92MOTrYRDSFFxL9ic0WVNRonUN8="]
@@ -4227,7 +4559,7 @@ function fixWordToNormal(word){
 	return word.replace(repeatedWordSign, '');
 }
 let goodWords = ['Восхитительно!','Превосходно!','Отлично!','Замечательно!','Великолепно!','Потрясающе!','Идеально!','Чудесно!'];
-
+let onRewardedAlreadyDone = false;
 export default {
 	name: 'App',
 	components: {CrossVue, CrossComponent},
@@ -4298,7 +4630,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['egypt', 'medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['againSchool', 'egypt', 'medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			blockedLocations: ['egypt'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
@@ -4387,7 +4719,8 @@ export default {
 			crossPromoObj: undefined,
 			fixedWord: '',
 			showCompliment: false,
-			complimentWord: 'Восхитительно!'
+			complimentWord: 'Восхитительно!',
+			platformBuild: process.env.PLATFORM
 		}
 	},
 	computed:{
@@ -4448,9 +4781,40 @@ export default {
 			let seconds = this.gameTimer - mins * 60;
 			if(seconds < 10) seconds = '0' + seconds;
 			return '0' + mins + ':' + seconds;
+		},
+		linkToGroup(){
+
+			if(process.env.PLATFORM === 'yandex'){
+				return 'https://vk.com/jaugr';
+			}else if(process.env.PLATFORM === 'gp'){
+				if(platformType === 'OK') return 'https://ok.ru/group/70000002237520';
+				return 'https://vk.com/witgames';
+			}
+
 		}
 	},
 	methods:{
+		getPlayerAvatar(player){
+			if(process.env.PLATFORM === 'yandex'){
+				return player.player.getAvatarSrc('medium');
+			}else if(process.env.PLATFORM === 'gp'){
+				return player.avatar;
+			}
+		},
+		getPlayerName(player){
+			if(process.env.PLATFORM === 'yandex'){
+				return player.player.publicName ? player.player.publicName : 'Нет имени';
+			}else if(process.env.PLATFORM === 'gp'){
+				return player.name ? player.name : 'Игрок #' + player.id
+			}
+		},
+		getPlayerRank(player){
+			if(process.env.PLATFORM === 'yandex'){
+				return player.rank;
+			}else if(process.env.PLATFORM === 'gp'){
+				return player.position;
+			}
+		},
 		canShowLevel(level){
 			return !!allWords[level];
 
@@ -4804,7 +5168,6 @@ export default {
 				});
 				this.levelStars = testStar(this.doneWords.length, this.nowWords.length);
 				this.findNotShowLetters();
-				// this.getVerticalBanner();
 				//Включаем игру на двоих
 				if(this.gameWindowForTwo){
 					this.createGameForTwo(isContinue);
@@ -5055,7 +5418,7 @@ export default {
 					}
 
 					let scrollEl = document.querySelectorAll('.location__level')[lastLevel];
-					scrollEl.scrollIntoView({behavior: 'smooth', block: "center", inline: "center"});
+					scrollIntoViewX(document.querySelector('#app'), scrollEl, {behavior: 'smooth', align: 'center'});
 				}catch(e){}
 			}, 300)
 		},
@@ -5306,53 +5669,56 @@ export default {
 			this.purchaseCompleted = false;
 		},
 		getAuth(){
-			try{
-				YSDK.auth.openAuthDialog().then(() => {
-					initPlayer(YSDK);
-					this.isPlayerAuth = true;
-				}).catch((e) => {
-					console.log(e);
-				});
-			}catch(ignored){}
+			if(process.env.PLATFORM === 'yandex'){
+				try{
+					YSDK.auth.openAuthDialog().then(() => {
+						initPlayer(YSDK);
+						this.isPlayerAuth = true;
+					}).catch((e) => {
+						console.log(e);
+					});
+				}catch(ignored){}
+			}
+
 
 		},
 		getPlayerLB(getGameLb, getEventLb){
-
-			// this.playerRait = {
-			// 	rank: 14, score: 19, player: {uniqueID: 123}
-			// };
-			// this.lbInGame = [
-			// 	{rank: 1, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 2, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 3, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 4, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 5, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 6, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 7, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 8, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 9, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 10, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 11, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 12, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 13, score: 21, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 14, score: 19, player: {uniqueID: 123, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 15, score: 18, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 16, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 17, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 18, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 19, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// 	{rank: 20, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
-			// ].reverse();
-			// goToUserInLb();
-			// return;
+			/*
+			this.playerRait = {
+				rank: 14, score: 19, player: {uniqueID: 123}
+			};
+			this.lbInGame = [
+				{rank: 1, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 2, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 3, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 4, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 5, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 6, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 7, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 8, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 9, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 10, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 11, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 12, score: 23, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 13, score: 21, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 14, score: 19, player: {uniqueID: 123, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 15, score: 18, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 16, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 17, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 18, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 19, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+				{rank: 20, score: 17, player: {uniqueID: 1, getAvatarSrc: () => "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium"}},
+			].reverse();
+			goToUserInLb();
+			return;*/
 
 
 
 			try{
 				let that = this;
-				isShowBanner = false;
-				clearTimeout(bannerTimeout);
-				YSDK.getLeaderboards()
+
+				if(process.env.PLATFORM === 'yandex'){
+					YSDK.getLeaderboards()
 					.then(lb => {
 						function getMyLbByName(name){
 							//Получаем игрока
@@ -5365,9 +5731,6 @@ export default {
 											that.lbInGame = res.entries.reverse();
 											goToUserInLb();
 										})
-										bannerTimeout = setTimeout(()=>{
-											isShowBanner = true;
-										}, 40000);
 									}
 
 									if(getEventLb){
@@ -5387,25 +5750,29 @@ export default {
 								})
 								.catch(e => {
 									console.log(e);
-									isShowBanner = true;
 								})
 						}
 						if(getEventLb) getMyLbByName('event');
 						else getMyLbByName('lvl');
 
 
-					})
-				;
+					});
+				}else if(process.env.PLATFORM === 'gp'){
+					if(GP){
+						this.lbInGame = false;
+					}
+				}
+				
 			}catch(e){
 				this.playerRait = false;
-				isShowBanner = true;
 				console.log(e);
 			}
 		},
 		addPlayerToLB(fromTestStars){
 			let that = this;
 			try{
-				YSDK.getLeaderboards()
+				if(process.env.PLATFORM === 'yandex'){
+					YSDK.getLeaderboards()
 					.then(lb => {
 						if(this.eventLocation) {
 							if(!testSendResult()){
@@ -5424,46 +5791,85 @@ export default {
 						}
 
 					});
+				}else if(process.env.PLATFORM === 'gp'){
+					if(GP){
+						console.log('setSCore');
+						GP.player.set('score', this.allStars);
+						setState(true);
+						if(fromTestStars){
+							this.getLeaderBoardInGame();
+						}
+					}
+				}
+
 			}catch(e){
 				console.log(e);
 			}
 		},
 		getLeaderBoard(getEventLb){
-			let that = this;
-			this.getPlayerLB(false, getEventLb);
-			YSDK.getLeaderboards()
-				.then(lb => {
-					console.log(lb);
-					function getLbByName(name){
-						// Получение 10 топов
-						lb.getLeaderboardEntries(name, { quantityTop: 20, includeUser: true, quantityAround: 10}).then(res => {
-							goToUserInLb();
-							// if(name === 'event'){
-							// 	Object.keys(res.entries).forEach((a)=>{
-							// 		res.entries[a].rank = res.entries[a].rank;
-							// 	})
-							// }
-							that.leaderBoard = res.entries;
-							console.log(that.leaderBoard);
-						}).catch((error)=>{
-							console.log('er', error);
-							//Пробуем без юзера
-							lb.getLeaderboardEntries(name, { quantityTop: 20}).then(res => {
+			if(process.env.PLATFORM === 'yandex'){
+				let that = this;
+				this.getPlayerLB(false, getEventLb);
+				YSDK.getLeaderboards()
+					.then(lb => {
+						console.log(lb);
+						function getLbByName(name){
+							// Получение 10 топов
+							lb.getLeaderboardEntries(name, { quantityTop: 20, includeUser: true, quantityAround: 10}).then(res => {
+								goToUserInLb();
+								// if(name === 'event'){
+								// 	Object.keys(res.entries).forEach((a)=>{
+								// 		res.entries[a].rank = res.entries[a].rank;
+								// 	})
+								// }
 								that.leaderBoard = res.entries;
 								console.log(that.leaderBoard);
+							}).catch((error)=>{
+								console.log('er', error);
+								//Пробуем без юзера
+								lb.getLeaderboardEntries(name, { quantityTop: 20}).then(res => {
+									that.leaderBoard = res.entries;
+									console.log(that.leaderBoard);
+								});
 							});
-						});
-					}
-					if(getEventLb){
-						getLbByName('event');
-					}else{
-						getLbByName('lvl');
-					}
-				})
-				.catch(e => {
-					that.leaderBoard = false;
-					console.log(e);
-				});
+						}
+						if(getEventLb){
+							getLbByName('event');
+						}else{
+							getLbByName('lvl');
+						}
+					})
+					.catch(e => {
+						that.leaderBoard = false;
+						console.log(e);
+					});
+			}else if(process.env.PLATFORM === 'gp'){
+				let that = this;
+				GP.leaderboard.fetch({
+					// Сортировка по полям слева направо
+					orderBy: ['score'],
+					// Сортировка DESC — сначала большие значение, ASC — сначала маленькие
+					order: 'DESC',
+					// Количество игроков в списке
+					limit: 20,
+					// Включить список полей для отображения в таблице, помимо orderBy
+					includeFields: ['score'],
+					/**
+					 * Показывать ли текущего игрока в списке, если он не попал в топ
+					 * none — не показывать
+					 * first — показать первым
+					 * last — показать последним
+					 */
+					withMe: 'last',
+					showNearest: 3
+				}).then((res)=>{
+					console.log(res);
+					console.log('PLAYER POSIION:', res.player.position)
+					console.log(res.players);
+					that.playerRait = res.player;
+					that.leaderBoard = res.players;
+				}).catch((e)=>{console.log(e)});	
+			}
 		},
 		getLeaderBoardInGame(){
 			if(window.innerHeight >= 450){
@@ -5492,9 +5898,17 @@ export default {
 		getItemPrice(item){
 			try{
 				if(paymentCatalog){
-					return paymentCatalog[item].price;
+					if(process.env.PLATFORM === 'yandex'){
+						return paymentCatalog[item].price;
+					}else if(process.env.PLATFORM === 'gp'){
+						return paymentCatalog[item].price + ' ' + paymentCatalog[item].currencySymbol;
+					}
 				}
 			}catch(e){}
+			if(process.env.PLATFORM === 'gp'){
+				if(this.platformType === 'OK') return itemsPricesOK[item] + ' ОК';
+				return itemsPricesVK[item] + ' Голосов';
+			}
 			return itemsPrices[item] + ' Ян';
 		},
 		toggleShowLastLevelInfo(){
@@ -5683,13 +6097,6 @@ export default {
 		getLBorBanner(){
 			if(this.verticalPayload) return;
 			this.getLeaderBoardInGame();
-			//
-			// if(lbWasShowed){
-			// 	this.getVerticalBanner();
-			// }else{
-			// 	lbWasShowed = true;
-			// 	this.getLeaderBoardInGame();
-			// }
 		},
 		closeAllBeforeStartLevel(notSound){
 			this.advShowNow = false;
@@ -5754,8 +6161,6 @@ export default {
 					locationDoneWords[this.word] = [];
 					this.doneWords = locationDoneWords[this.word];
 				}
-				isShowBanner = true;
-				this.getVerticalBanner();
 			}
 			// if(this.doneWords.length === 0){
 			// 	if(this.lvl === 0 || this.lvl === 4 || this.lvl === 9 || this.lvl === 19) {
@@ -5790,7 +6195,7 @@ export default {
 			this.chosenBg = this.chosenBgRight;
 		},
 		addBuyTips(){
-			console.log('addBuyTips');
+			console.log('addBuyTips', TIPS);
 			this.tipCount += TIPS;
 			setToStorage('tips', this.tipCount);
 			PLAYERSTATS.tips = this.tipCount;
@@ -6084,93 +6489,65 @@ export default {
 			if(this.animWordStart !== '' || (this.tipCount < 1 && this.advTimer > 0) || this.isGameForTwo) return;
 			if(this.tipCount < 1){
 				try{
-					let that = this;
+					if(process.env.PLATFORM === 'yandex'){
+						let that = this;
+						function getRewardedVideo(){
+							YSDK.adv.showRewardedVideo({
+								callbacks: {
+									onOpen: function(){
+										switchOffMainMusic();
+										musicStoppedByAdv = true;
+									},
+									onClose: function(){
+										console.log('sss');
+										switchOnMainMusic();
+										musicStoppedByAdv = false;
+									},
+									onRewarded: () => {
+										params({'rewardedVideo': 1});
+										console.log('close adv reward');
+										startAdvTime = true;
 
-					// let advNotShow = true;
-					//
-					// setTimeout(()=>{
-					// 	advNotShow = false;
-					// }, 2500);
-
-					function getRewardedVideo(){
-						YSDK.adv.showRewardedVideo({
-							callbacks: {
-								onOpen: function(){
-									switchOffMainMusic();
-									musicStoppedByAdv = true;
-								},
-								onClose: function(){
-									console.log('sss');
-									switchOnMainMusic();
-									musicStoppedByAdv = false;
-								},
-								onRewarded: () => {
-									params({'rewardedVideo': 1});
-									console.log('close adv reward');
-									startAdvTime = true;
-
-									clearTimeout(advTimeout);
-									clearInterval(advInterval);
-									timeToShowAdv = 20;
-									startAdvInterval();
-									that.startRewardedTimer();
-									that.addTip(true);
-								},
-								onError: () => {
-									that.toggleShowAdvError();
+										clearTimeout(advTimeout);
+										clearInterval(advInterval);
+										timeToShowAdv = 20;
+										startAdvInterval();
+										that.startRewardedTimer();
+										that.addTip(true);
+									},
+									onError: () => {
+										that.toggleShowAdvError();
+									}
 								}
-							}
-						})
+							})
+						}
+						getRewardedVideo();
+					} else if(process.env.PLATFORM === 'gp'){
+						let that = this;
+						if(!onRewardedAlreadyDone){
+							GP.ads.on('rewarded:reward', () => {
+								console.log('get reward');
+								params({'rewardedAdv': 1});
+								that.addTip(true);
+							});
+							GP.ads.on('rewarded:close', (success) => {
+								console.log('close adv reward');
+								advTime = false;
+								startAdvTime = true;
+
+								clearTimeout(advTimeout);
+								clearInterval(advInterval);
+
+								timeToShowAdv = 119;
+								startAdvInterval();
+								advTimeout = setTimeout(()=>{
+									advTime = true;
+								}, 119000);
+							});
+							onRewardedAlreadyDone = true;
+						}
+						GP.ads.showRewardedVideo()
 					}
-					getRewardedVideo();
-
-					// YSDK.adv.showFullscreenAdv({
-					// 	callbacks: {
-					// 		onClose: function(wasShow) {
-					// 			console.log('close adv reward');
-					// 			advTime = false;
-					// 			startAdvTime = true;
-					//
-					// 			clearTimeout(advTimeout);
-					// 			clearInterval(advInterval);
-					// 			if(wasShow){
-					// 				timeToShowAdv = 65;
-					// 				startAdvInterval();
-					// 				advTimeout = setTimeout(()=>{
-					// 					advTime = true;
-					// 				}, 65000);
-					// 			}else{
-					// 				getRewardedVideo();
-					// 				return;
-					// 			}
-					// 			if(advNotShow){
-					// 				that.showAdvTip = true;
-					// 				if(!isAdvShowed){
-					// 					that.isAdvShowed = true;
-					// 					setToStorage('isAdvShowed', 'true');
-					// 					isAdvShowed = true;
-					// 				}else{
-					// 					that.startRewardedTimer();
-					// 					// params({'rewardedAdvDontWork': 1});
-					// 					return;
-					// 				}
-					//
-					// 			}
-					// 			// params({'rewardedAdv': 1});
-					// 			that.addTip();
-					// 		},
-					// 		onError: function (e){
-					// 			getRewardedVideo();
-					// 			console.log('error adv')
-					// 			console.log(e);
-					// 		}
-					// 	}
-					// });
-
-
-
-
-
 				}catch(e){
 					console.log(e);
 				}
@@ -6252,13 +6629,6 @@ export default {
 
 			}
 		},
-		getVerticalBanner(){
-			// if(this.verticalPayload) return;
-			// if(isShowBanner && (this.locationGame || this.lvl > 3 || this.isMyGame)){
-			// 	this.lbInGame = false;
-			// 	getVerticalBanner();
-			// }
-		},
 		doShowCompliment(){
 			setTimeout(()=>{
 				this.complimentWord = goodWords[Math.floor(Math.random() * goodWords.length)];
@@ -6271,7 +6641,6 @@ export default {
 		sendWord(fromTip){
 			if(this.wordFromLetter.length === 0 || this.isBadWord || this.sendWordForbidden) return;
 
-			this.getVerticalBanner();
 
 			if(this.nowWords.includes(this.wordFromLetter) && !this.doneWords.includes(this.wordFromLetter)){
 				this.animWordStart = this.wordFromLetter;
@@ -6299,7 +6668,7 @@ export default {
 								setTimeout(()=>{
 									try{
 										let scrollEl = document.querySelector('.tutorialSelected');
-										scrollEl.scrollIntoView({behavior: 'smooth', block: "center", inline: "center"});
+										scrollIntoViewX(document.querySelector('.words'), scrollEl, {behavior: 'smooth', align: 'center'});
 									}catch(ignored){}
 
 								}, 200);
@@ -6320,7 +6689,9 @@ export default {
 				setTimeout(()=>{
 					try{
 						let scrollEl = document.querySelector('.animWordStart');
-						scrollEl.scrollIntoView({behavior: 'auto', block: "center", inline: "center"});
+						let container = document.querySelector('.words');
+						scrollIntoViewX(container, scrollEl, {behavior: 'auto', align: 'center'});
+
 					}catch(e){
 						console.log('Ошибка показа');
 					}
@@ -6410,7 +6781,8 @@ export default {
 					setTimeout(()=>{
 						try{
 							let scrollEl = document.querySelector('.wordWas');
-							scrollEl.scrollIntoView({behavior: 'auto', block: "center", inline: "center"});
+							let container = document.querySelector('.words');
+							scrollIntoViewX(container, scrollEl, {behavior: 'auto', align: 'center'});
 						}catch(e){
 							console.log('Ошибка показа');
 						}

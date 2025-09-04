@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build && node make-sw-and-manifest.js",
+    "serve": "PLATFORM=yandex NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
+    "build:yandex": "PLATFORM=yandex export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build && node make-sw-and-manifest.js",
+    "build:gp": "PLATFORM=gp export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build && node make-sw-and-manifest.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

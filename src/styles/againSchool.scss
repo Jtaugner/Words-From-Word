@@ -1,0 +1,130 @@
+/*День валентина*/
+.gameLocationWrapper-againSchool::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+.gameLocationWrapper-againSchool::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+.againSchoolLocation .popUp__locationPicture{
+  background-image: url(../assets/locations/againSchool/againSchool.png);
+}
+.againSchoolLocation .popUp__locationName{
+  color: #9B2308;
+}
+.gameLocation-againSchool{
+  .svgIcon{
+    fill: #B4361A;
+  }
+  background: url(../assets/locations/againSchool/map.png) center center no-repeat;
+  background-size: cover;
+  .levelsTop__allStars{
+    color: #9B2308;
+  }
+  .menu-star, .newElement{
+    background-color: #B4361A;
+  }
+  .againSchoolProperty{
+    background: url(../assets/locations/againSchool/map.png) center center no-repeat;
+    background-size: cover;
+  }
+}
+.gameLocationWrapper-againSchool{
+  background: url(../assets/locations/againSchool/map.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+.location.gameLocation-againSchool{
+  background: none;
+}
+.gameLocationWrapper-againSchool{
+  .rules__menu{
+    background-color: #9B2308;
+  }
+  .rules .settings__text{
+    color: #9B2308;
+  }
+  .rules .svgIcon{
+    fill: #B4361A;
+  }
+}
+.gameLocation-againSchool::-webkit-scrollbar-thumb {
+  //border-radius: 0;
+  background-color: #B4361A;
+}
+@media (min-width: 1000px) {
+  .gameLocation-againSchool .location__lastLevel{
+    box-shadow: 0 0 25px 10px #FF5A36;
+  }
+}
+
+
+.game_locationDesign_againSchool{
+  background-image: url(../assets/locations/againSchool/map.png) !important;
+  .svgIcon{
+    fill: #5d1b05 !important;
+  }
+  .levelsTop__allStars{
+    color: #4E2406;
+  }
+  .menu__tip_count, .rules__goBg{
+    background-color: #5d1b05;
+  }
+  .menu__hint {
+    background-color: rgba(192, 81, 0, 0.9);
+  }
+  .words__letters-block_done .words__letter, .action-block__letters .action-block__letter_selected{
+    background-color: #b2401e;
+  }
+  .rules__menu{
+    background-color: #6E3208;
+  }
+  .shop, .rules, .leaderBoardInfo_my .leaderBoardInfo__image{
+    border-color: #6E3208;
+  }
+  .shop .rules__menu, .settings__text{
+    color: #6d3208;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #b2401e;
+  }
+  .newWord .words__letter{
+    background-color: #df1b3e;
+  }
+  .animWord .words__letter{
+    animation: 1s showNewWordSchool forwards;
+  }
+  @keyframes  showNewWordSchool{
+    0%{background-color: rgba(255, 255, 255, 0.85);}
+    100%{background-color: #df1b3e;
+    }
+  }
+  .endGame__header{
+    background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+  }
+  .endGame__firstPrize{
+    fill: #FF8762;
+  }
+  .endGame__secondPrize{
+    fill: #FF2001;
+  }
+  .endGame__menu{
+    border-color: rgba(255, 31, 0, 1);
+  }
+  .endGame__firstStop{
+    stop-color: rgba(255, 136, 98, 1);
+  }
+  .endGame__secondStop{
+    stop-color: rgba(255, 31, 0, 1);
+  }
+  .endGame__nextLevel{
+    background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+  }
+
+}
+
+@media (orientation: portrait) {
+  .gameLocationWrapper-againSchool, .game_locationDesign_againSchool{
+    background: url(../assets/locations/againSchool/map_port.png) center center no-repeat !important;
+    background-size: cover !important;
+  }
+}
