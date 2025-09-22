@@ -1095,6 +1095,142 @@
   background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
 }
 
+/*День валентина*/
+.gameLocationWrapper-againSchool::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+.gameLocationWrapper-againSchool::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.againSchoolLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/againSchool/againSchool.png);
+}
+
+.againSchoolLocation .popUp__locationName {
+  color: #9B2308;
+}
+
+.gameLocation-againSchool {
+  background: url(../assets/locations/againSchool/map.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-againSchool .svgIcon {
+  fill: #B4361A;
+}
+.gameLocation-againSchool .levelsTop__allStars {
+  color: #9B2308;
+}
+.gameLocation-againSchool .menu-star, .gameLocation-againSchool .newElement {
+  background-color: #B4361A;
+}
+.gameLocation-againSchool .againSchoolProperty {
+  background: url(../assets/locations/againSchool/map.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-againSchool {
+  background: url(../assets/locations/againSchool/map.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+
+.location.gameLocation-againSchool {
+  background: none;
+}
+
+.gameLocationWrapper-againSchool .rules__menu {
+  background-color: #9B2308;
+}
+.gameLocationWrapper-againSchool .rules .settings__text {
+  color: #9B2308;
+}
+.gameLocationWrapper-againSchool .rules .svgIcon {
+  fill: #B4361A;
+}
+
+.gameLocation-againSchool::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-againSchool .location__lastLevel {
+    box-shadow: 0 0 25px 10px #FF5A36;
+  }
+}
+.game_locationDesign_againSchool {
+  background-image: url(../assets/locations/againSchool/map.png) !important;
+}
+.game_locationDesign_againSchool .svgIcon {
+  fill: #5d1b05 !important;
+}
+.game_locationDesign_againSchool .levelsTop__allStars {
+  color: #4E2406;
+}
+.game_locationDesign_againSchool .menu__tip_count, .game_locationDesign_againSchool .rules__goBg {
+  background-color: #5d1b05;
+}
+.game_locationDesign_againSchool .menu__hint {
+  background-color: rgba(192, 81, 0, 0.9);
+}
+.game_locationDesign_againSchool .words__letters-block_done .words__letter, .game_locationDesign_againSchool .action-block__letters .action-block__letter_selected {
+  background-color: #b2401e;
+}
+.game_locationDesign_againSchool .rules__menu {
+  background-color: #6E3208;
+}
+.game_locationDesign_againSchool .shop, .game_locationDesign_againSchool .rules, .game_locationDesign_againSchool .leaderBoardInfo_my .leaderBoardInfo__image {
+  border-color: #6E3208;
+}
+.game_locationDesign_againSchool .shop .rules__menu, .game_locationDesign_againSchool .settings__text {
+  color: #6d3208;
+}
+.game_locationDesign_againSchool ::-webkit-scrollbar-thumb {
+  background-color: #b2401e;
+}
+.game_locationDesign_againSchool .newWord .words__letter {
+  background-color: #df1b3e;
+}
+.game_locationDesign_againSchool .animWord .words__letter {
+  animation: 1s showNewWordSchool forwards;
+}
+@keyframes showNewWordSchool {
+  0% {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background-color: #df1b3e;
+  }
+}
+.game_locationDesign_againSchool .endGame__header {
+  background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+}
+.game_locationDesign_againSchool .endGame__firstPrize {
+  fill: #FF8762;
+}
+.game_locationDesign_againSchool .endGame__secondPrize {
+  fill: #FF2001;
+}
+.game_locationDesign_againSchool .endGame__menu {
+  border-color: #ff1f00;
+}
+.game_locationDesign_againSchool .endGame__firstStop {
+  stop-color: #ff8862;
+}
+.game_locationDesign_againSchool .endGame__secondStop {
+  stop-color: #ff1f00;
+}
+.game_locationDesign_againSchool .endGame__nextLevel {
+  background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+}
+
+@media (orientation: portrait) {
+  .gameLocationWrapper-againSchool, .game_locationDesign_againSchool {
+    background: url(../assets/locations/againSchool/map_port.png) center center no-repeat !important;
+    background-size: cover !important;
+  }
+}
 .locationOpened {
   overflow: auto !important;
 }
