@@ -1432,7 +1432,7 @@
 						}}
 
 					</p>
-					<img v-bind:src="!notRussian ? 'rules1.png' : 'rules1EN.png'" alt="Пример слова">
+					<img draggable="false" v-bind:src="!notRussian ? 'rules1.png' : 'rules1EN.png'" alt="Пример слова">
 					<p>
 						{{notRussian ?
 						'Use hints to add words that you can\'t find. Hints can be obtained by earning stars. Level progress is 33% - 1 star, 66% - 2 stars, 100% -3 stars. Get at least 1 star and click on the arrow in the upper right corner to go to the next level.' :
@@ -1440,7 +1440,7 @@
 						}}
 
 					</p>
-					<img v-bind:src="!notRussian ? 'rules2.png' : 'rules2EN.png'" alt="Подсказка">
+					<img draggable="false" v-bind:src="!notRussian ? 'rules2.png' : 'rules2EN.png'" alt="Подсказка">
 					<p v-if="!notRussian">
 						Примечание: буква "е" и "ё" взаимозаменяемы по техническим причинам.
 					</p>
