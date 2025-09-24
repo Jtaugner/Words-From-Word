@@ -4265,3 +4265,7 @@ select::-ms-expand {
     opacity: 0;
   }
 }
+
+img, a {
+  -webkit-user-drag: none;
+}
