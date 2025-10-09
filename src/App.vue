@@ -3229,7 +3229,7 @@ if(process.env.PLATFORM === 'yandex'){
 					advTime = true;
 					clearInterval(advInterval);
 					canShowAdv();
-				}, 120000);
+				}, 140000);
 
 
 				onCloseFunc();
@@ -4524,30 +4524,35 @@ function getOneRandStart(){
 }
 
 function scrollIntoViewX(container, element, options = {}) {
-	try{
-		const { behavior = 'auto', align = 'start' } = options;
+	try {
 
-		// координата target внутри контейнера
-		const elLeft = element.offsetLeft - container.offsetLeft;
+		if (!container || !element) return;
+		const {behavior = 'auto', align = 'start'} = options;
+		// --- MEASURE (только чтения) ---
+		const cRect = container.getBoundingClientRect();
+		const eRect = element.getBoundingClientRect();
+		const cur = container.scrollLeft; // чтение
+		const delta = eRect.left - cRect.left; // элемент относительно контейнера в вьюпорте
 
-		let left;
-		switch (align) {
-		case 'center':
-		left = elLeft - (container.clientWidth / 2 - element.clientWidth / 2);
-		break;
-		case 'end':
-		left = elLeft - (container.clientWidth - element.clientWidth);
-		break;
-		case 'start':
-		default:
-		left = elLeft;
-		}
+		// Базовая цель: текущий scrollLeft + сдвиг элемента относительно контейнера
+		let target = cur + delta;
 
-		container.scrollTo({
-		left,
-		behavior
-		});
-	}catch(e){}
+		// Выравнивание
+		const gap = container.clientWidth - element.clientWidth; // чтения
+		if (align === 'center') {
+			target -= gap / 2;
+		} else if (align === 'end') {
+			target -= gap;
+		} // 'start' — без доп. сдвига
+
+		// Кламп
+		const max = Math.max(0, container.scrollWidth - container.clientWidth); // чтения
+		target = Math.max(0, Math.min(target, max));
+
+		// --- WRITE (только запись) ---
+		container.scrollTo({left: Math.round(target), behavior});
+
+	} catch(e){}
 }
 
 
