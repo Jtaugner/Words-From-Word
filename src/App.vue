@@ -3083,6 +3083,7 @@ if(process.env.PLATFORM === 'yandex'){
 		doDeleteBlock = true;
 	}
 }else if(process.env.PLATFORM === 'gp'){
+	console.log('platform GP - trying init');
 	setTimeout(()=>{
 		if(!isGameOpen){
 			isGameOpen = true;
