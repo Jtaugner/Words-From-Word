@@ -12,6 +12,7 @@
 			 @canShowAdv="setCanShowAdv()"
 			 @buyTips="addBuyTips()"
 			 @disableAds="disableAds()"
+			 @unableAds="unableAds()"
 			 @switchOpenLocations="switchOpenLocations()"
 			 @changeOrientation="changeOrientation()"
 			 @switchOnMusic="switchOnMusic()"
@@ -1168,7 +1169,10 @@
 							{{getItemPrice(3)}}
 					</div>
 				</div>
-				<div v-if="platformBuild === 'yandex'" class="shop__cart__item shop__cart__last" @click="buyTip('cart_item6')" v-show="!notShowAds">
+				<div class="shop__cart__item shop__cart__last"
+					 @click="buyTip('cart_item6')"
+					 v-show="(!notShowAds && platformBuild === 'yandex') || platformBuild === 'gp'"
+				>
 					<div class="shop__cart__card">
 						<div class="shop__cart__item_5">
 							<div class="noAdvert">
@@ -1179,14 +1183,29 @@
 
 						</div>
 						<div class="shop__cart__name shop__name_advert">
-							<p class="shop__tipsCount shop__tipsCount_advert">{{notRussian ? 'No adverts' : 'Отключение рекламы'}}</p>
+							<p
+								class="shop__tipsCount shop__tipsCount_advert"
+							   v-if="platformBuild === 'gp'"
+							>
+								Подписка: отключение рекламы
+							</p>
+							<p class="shop__tipsCount shop__tipsCount_advert" v-else>
+								{{notRussian ? 'No adverts' : 'Отключение рекламы'}}
+							</p>
 <!--							+ отключение рекламы-->
 
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
 <!--						<div class="shop__lastPrice">499</div>-->
-						{{getItemPrice(4)}}
+						<template v-if="platformBuild === 'gp'">
+							{{platformBuild === 'gp' && notShowAds ? 'Отменить' : getItemPrice(4)}}
+						</template>
+						<template v-else>
+							{{getItemPrice(4)}}
+						</template>
+
+
 					</div>
 				</div>
 
@@ -1207,6 +1226,17 @@
 				{{notRussian ? 'Successful purchase' : 'Покупка совершена'}}
 			</h2>
 			{{notRussian ? 'Thank you for your purchase! Have a good game!' : 'Вы успешно совершили оплату, покупка уже зачислена на ваш аккаунт! Большое спасибо и удачной Вам игры!'}}
+		</div>
+
+		<div class="rules-blackout main-blackout" v-if="subscribeCompleted" @click="toggleSubscribeCompleted()"></div>
+
+		<div class="rules rules__notification" v-if="subscribeCompleted">
+			<cross-vue @click.native="toggleSubscribeCompleted()"></cross-vue>
+			<h2 class="rules__menu">
+				{{notRussian ? 'Subscription completed!' : 'Подписка оформлена!'}}
+			</h2>
+			{{notRussian ? 'You have successfully subscribed! Advertising is disabled in the game. Thanks!'
+			: 'Вы успешно оформили подписку! Реклама в игре отключена. Спасибо и удачной игры!'}}
 		</div>
 
 
@@ -1325,7 +1355,7 @@
 		<div class="rules rules__notification" v-if="showLastLevelInfo">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
 			<h2 class="rules__menu">
-				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Снова в школу!' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Обновление' : 'Дорогой игрок!'}}
 			</h2>
 			<template v-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
@@ -1333,17 +1363,24 @@
 			</template>
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
-					<template v-if="notRussian">
-						Dear players! We have done a big update: we've redesigned the dictionary and levels in the game. Therefore the progress of all players will be changed. Thanks for understanding. Good luck!
+					<template v-if="platformBuild === 'gp'">
+						Уважаемые игроки! Теперь вы можете отключить рекламные объявления в разделе покупок. Спасибо за то, что играете в нашу игру!
+					</template>
+					<template v-else>
+						<template v-if="notRussian">
+							Dear players! We wish you a pleasant game :)
+						</template>
+
+						<template v-else>
+							Дорогие игроки! Желаем вам приятной игры :)
+						</template>
 					</template>
 
-					<template v-else>
-						Уважаемые игроки! Представляем вам тематическую локацию "Снова в школу"! Откройте для себя новое цветовое оформление, заработайте дополнительные подсказки и погрузитесь в атмосферу школьных будней :)
-					</template>
 				</div>
 
 
-				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>
+				<div class="rules__goBg" v-if="platformBuild === 'gp'" @click="goToShop()">Перейти</div>
+<!--				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>-->
 
 <!--				<div class="questionInput">-->
 <!--					<input type="radio" id="one" value="Знаю и меняю" v-model="selectedOption" />-->
@@ -2263,7 +2300,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-48";
+const lastVersion = "ver-49";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2955,6 +2992,7 @@ function getGameObj(id){
 }
 let isGameOpen = false;
 let platformType = 'VK';
+let toggleSubscribeCompleted = false;
 let lastPlatformType = getFromStorage('platformType');
 if(process.env.PLATFORM === 'yandex'){
 	if(window.YaGames){
@@ -3099,7 +3137,7 @@ if(process.env.PLATFORM === 'yandex'){
 		console.log('Platform: ', platformType);
 		params({'platform': platformType});
 		gp.player.on('ready', () => {
-			params({'playerLoggedIn': gp.player.isLoggedIn});
+			// params({'playerLoggedIn': gp.player.isLoggedIn});
 			initPlayer(gp);
 		});
 
@@ -3223,14 +3261,14 @@ if(process.env.PLATFORM === 'yandex'){
 				clearTimeout(advTimeout);
 				clearInterval(advInterval);
 
-				timeToShowAdv = 130;
+				timeToShowAdv = 150;
 				startAdvInterval();
 
 				advTimeout = setTimeout(()=>{
 					advTime = true;
 					clearInterval(advInterval);
 					canShowAdv();
-				}, 140000);
+				}, 150000);
 
 
 				onCloseFunc();
@@ -3238,6 +3276,9 @@ if(process.env.PLATFORM === 'yandex'){
 
 			canShowAdv();
 		});
+
+		//Проверека покупок
+
 
 		GP.payments.on('purchase', ({ product, purchase }) => {
 			console.log(product);
@@ -3250,6 +3291,23 @@ if(process.env.PLATFORM === 'yandex'){
 			params({[it]: 1});
 			document.querySelector('.levels').dispatchEvent(new CustomEvent("buyTips"));
 			GP.payments.consume({ tag: purchaseItemGP });
+		});
+		GP.payments.on('subscribe', ({ product, purchase }) => {
+			console.log('subscribe', purchase);
+			if (purchase.tag === 'cart_item6') {
+				console.log('Отключена реклама');
+				params({'disabledAdsSub': 1});
+				toggleSubscribeCompleted = true;
+				document.querySelector('.levels').dispatchEvent(new CustomEvent("disableAds"));
+
+			}
+		});
+		GP.payments.on('unsubscribe', ({ product, purchase }) => {
+			console.log('unsubscribe');
+			document.querySelector('.levels').dispatchEvent(new CustomEvent("unableAds"));
+		});
+		GP.payments.on('error:unsubscribe', (error) => {
+			console.log(error);
 		});
 		GP.payments.on('error:purchase', (error) => {console.log(error)});
 	}
@@ -3270,6 +3328,7 @@ function globalTryShowAdv(onCloseFunc){
 	return false;
 }
 function update() {
+	console.log('update');
 	isGameOpen = true;
 	if (document.querySelector('.levels')) {
 		document.querySelector('.levels').dispatchEvent(new CustomEvent("updateAll"));
@@ -3291,7 +3350,11 @@ function update() {
 		});
 	}catch(e){}
 	}else if(process.env.PLATFORM === 'gp'){
-		
+		const noAdv = GP.payments.getPurchase('cart_item6');
+		if(noAdv && noAdv.subscribed){
+			console.log('откл рекламу при загрузке')
+			document.querySelector('.levels').dispatchEvent(new CustomEvent("disableAds"));
+		}
 	}
 
 
@@ -3761,8 +3824,8 @@ function consumePurchase(purchase) {
 //const itemsPrices = [20, 89, 149, 299, 499];
 //const itemsPrices = [14, 59, 109, 209, 249]];
 const itemsPrices = [20, 89, 149, 299, 349, 19];
-let itemsPricesVK = [3, 13, 21, 42, 499];
-let itemsPricesOK = [20, 89, 149, 299, 499];
+let itemsPricesVK = [3, 13, 21, 42, 19];
+let itemsPricesOK = [20, 89, 149, 299, 149];
 let purchaseItemGP;
 let buyItem;
 function buyTips(purchaseItem) {
@@ -3802,8 +3865,14 @@ function buyTips(purchaseItem) {
 	}else if(process.env.PLATFORM === 'gp'){
 		buyItem = purchaseItem;
 		if(GP.payments.isAvailable){
+			if(purchaseItem === 'cart_item6'){
+				GP.payments.subscribe({ tag: 'cart_item6' });
+			}else{
+				GP.payments.purchase({ tag: purchaseItem })
+			}
 			purchaseItemGP = purchaseItem;
-			GP.payments.purchase({ tag: purchaseItem })
+
+
 		}else{
 			GP.player.login();
 		}
@@ -4609,6 +4678,7 @@ export default {
 			isLeaderBoard: false,
 			leaderBoard: false,
 			playerRait: false,
+			subscribeCompleted: false,
 			purchaseCompleted: false,
 			notRussian: notRussianGame,
 			gameLastLevel: lastLevel,
@@ -5671,6 +5741,9 @@ export default {
 			}
 			tutorialStep++;
 		},
+		toggleSubscribeCompleted(){
+			this.subscribeCompleted = false;
+		},
 		togglePurchaseCompleted(){
 			this.purchaseCompleted = false;
 		},
@@ -6217,17 +6290,33 @@ export default {
 				}
 			})
 		},
+		unableAds(){
+			console.log('unableAds');
+			this.notShowAds = false;
+			this.shop = false;
+		},
 		disableAds(){
 			try{
+				console.log('disableAds');
 				this.notShowAds = true;
-				YSDK.adv.hideBannerAdv();
+				if(this.platformBuild === 'yandex'){
+					YSDK.adv.hideBannerAdv();
+				}
+				this.shop = false
+				if(toggleSubscribeCompleted){
+					this.subscribeCompleted = true;
+				}
 			}catch(e){
 				console.log(e);
 			}
 
 		},
 		buyTip(item){
-			buyTips(item);
+			if(item === 'cart_item6' && this.platformBuild === 'gp' && this.notShowAds){
+				GP.payments.unsubscribe({ tag: 'cart_item6' });
+			}else{
+				buyTips(item);
+			}
 		},
 		sendParams(par){
 			try{
@@ -6899,12 +6988,6 @@ export default {
 									params({'doneLevelSkip': 1});
 								}
 							}
-						}else if(this.lvl > 6246){
-							if(this.lvl === 6250 || this.lvl === 6280 || this.lvl === 6320 || this.lvl === 6350
-							|| this.lvl === 6400 || this.lvl === 6450){
-								params({'doneNewLvl': this.lvl});
-							}
-
 						}
 
 
@@ -6912,14 +6995,6 @@ export default {
 						if(thisLvl === 2 || thisLvl === 10 || thisLvl === 5 ||
 							thisLvl === 20 || thisLvl === 50 || thisLvl === 100){
 							reachGoal('level' + thisLvl);
-						}
-					}else if(stars === 3){
-						if(this.lvl > 6246){
-							if(this.lvl === 6250 || this.lvl === 6280 || this.lvl === 6320 || this.lvl === 6350
-								|| this.lvl === 6400 || this.lvl === 6450){
-								params({'doneNewLvl3': this.lvl});
-							}
-
 						}
 					}
 					this.gameLastLevel = lastLevel;

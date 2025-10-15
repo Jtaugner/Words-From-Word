@@ -19,6 +19,7 @@ module.exports = {
     // прокидываем PLATFORM в HTML-шаблон (EJS) как переменную PLATFORM
     config.plugin('html').tap((args) => {
       const opts = args[0];
+      args[0].inject = false;
       const original = opts.templateParameters;
 
       opts.templateParameters = (...tmplArgs) => {

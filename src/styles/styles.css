@@ -3205,6 +3205,11 @@ b {
   line-height: 1.2rem;
 }
 
+.shop__tipsCount_advert_small {
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
 .shop__name_advert {
   margin: 10px 0 0 0;
 }
@@ -3238,6 +3243,11 @@ b {
   .shop__tipsCount_advert {
     font-size: 1rem;
     line-height: 1rem;
+  }
+
+  .shop__tipsCount_advert_small {
+    font-size: 0.85rem;
+    line-height: 0.85rem;
   }
 
   .shop__name_advert {
@@ -3279,6 +3289,11 @@ b {
   .shop__tipsCount_advert {
     font-size: 1.3rem;
     line-height: 1.3rem;
+  }
+
+  .shop__tipsCount_advert_small {
+    font-size: 1.1rem;
+    line-height: 1.1rem;
   }
 
   .shop__cart__item_1, .shop__cart__item_2, .shop__cart__item_3, .shop__cart__item_4, .shop__cart__item_5,
@@ -3348,6 +3363,11 @@ b {
   .shop__tipsCount_advert {
     font-size: 1.9rem;
     line-height: 1.9rem;
+  }
+
+  .shop__tipsCount_advert_small {
+    font-size: 1.7rem;
+    line-height: 1.7rem;
   }
 
   .shop__name_advert {
