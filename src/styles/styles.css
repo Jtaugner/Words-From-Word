@@ -2037,6 +2037,10 @@ b {
   background-image: url(../assets/settings/bg6.png);
 }
 
+.chosenBg7 {
+  background-image: url(../assets/settings/bg7.png);
+}
+
 .changeLeft, .changeRight {
   width: 20px;
   height: 39px;
@@ -2062,6 +2066,7 @@ b {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   border-radius: 10px;
 }
 

@@ -121,7 +121,7 @@
 
 				<div class="switchShowLocation menuItem" @click="toggleShowLocations" v-if="!notRussian">
 					<svg class="svgIcon" width="28" height="22" viewBox="0 0 28 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M1.73723 16.9893V3.60855H0.715328C0.143066 3.60855 0 4.1575 0 4.43198V21.0036C0 22.074 1.0219 22.0672 1.53285 21.9299C3.9854 20.9418 9.50365 21.381 11.9562 21.7241C9.50365 19.3567 5.51825 19.3567 3.88321 19.1509C2.57518 18.9862 1.90754 17.6412 1.73723 16.9893Z"/><path d="M3.37226 0.932388C3.45401 0.108954 4.29197 -0.0282848 4.70073 0.00602489C10.1781 -0.158664 12.8418 3.0939 13.4891 4.74077L13.3869 20.9007C9.81022 17.2981 4.70073 17.504 4.18978 17.504C3.78102 17.504 3.47445 16.8864 3.37226 16.5776V0.932388Z"/><path d="M26.2628 16.9954V3.61458H27.2847C27.8569 3.61458 28 4.16353 28 4.43801V21.0096C28 22.0801 26.9781 22.0732 26.4672 21.936C24.0146 20.9479 18.4963 21.387 16.0438 21.7301C18.4963 19.3627 22.4818 19.3627 24.1168 19.1569C25.4248 18.9922 26.0925 17.6473 26.2628 16.9954Z"/><path d="M24.6277 0.938419C24.546 0.114985 23.708 -0.0222538 23.2993 0.0120559C17.8219 -0.152633 15.1582 3.09993 14.5109 4.7468L14.6131 20.9067C18.1898 17.3042 23.2993 17.51 23.8102 17.51C24.219 17.51 24.5255 16.8925 24.6277 16.5837V0.938419Z"/></svg>
-					<div class="newElement">!</div>
+<!--					<div class="newElement">!</div>-->
 				</div>
 
 				<div class="createLevel menuItem" @click="toggleIsCreateGameWindow()" v-if="!notRussian">
@@ -218,7 +218,13 @@
 						:
 						'Фон откроется на ' + (bgLvlsOpen[chosenBg-1]+1) +' уровне'
 						}}
-
+					</div>
+					<div class="closedBg" v-if="!canUseBg(chosenBg)">
+						{{notRussian?
+						'The background can only be opened for participation in promotions'
+						:
+						'Фон можно открыть только за участие в промоакциях'
+						}}
 					</div>
 				</div>
 
@@ -1256,7 +1262,20 @@
 						<div class="changeLeft" @click="changeBgLeft"></div>
 
 						<div class="chosenBg" :class="'chosenBg' + chosenBg">
-							<div class="closedBg" v-if="cantShowBg">Фон откроется на {{bgLvlsOpen[chosenBg-1]+1}} уровне</div>
+							<div class="closedBg" v-if="cantShowBg">
+								{{notRussian?
+								'The background will open at level ' + (bgLvlsOpen[chosenBg-1]+1)
+								:
+								'Фон откроется на ' + (bgLvlsOpen[chosenBg-1]+1) +' уровне'
+								}}
+							</div>
+							<div class="closedBg" v-if="!canUseBg(chosenBg)">
+								{{notRussian?
+								'The background can only be opened for participation in promotions'
+								:
+								'Фон можно открыть только за участие в промоакциях'
+								}}
+							</div>
 						</div>
 
 						<div class="changeRight" @click="changeBgRight"></div>
@@ -1351,13 +1370,20 @@
 			</ul>
 		</div>
 
-		<div class="rules-blackout main-blackout" v-if="showLastLevelInfo" @click="toggleShowLastLevelInfo()"></div>
-		<div class="rules rules__notification" v-if="showLastLevelInfo">
+		<div class="rules-blackout main-blackout" v-if="showLastLevelInfo || showGiftReceived" @click="toggleShowLastLevelInfo()"></div>
+		<div class="rules rules__notification" v-if="showLastLevelInfo  || showGiftReceived">
 			<cross-vue @click.native="toggleShowLastLevelInfo()"></cross-vue>
-			<h2 class="rules__menu">
+			<h2 class="rules__menu" v-if="showGiftReceived">
+				Приз от ВКонтакте
+			</h2>
+			<h2 class="rules__menu" v-else>
 				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Обновление' : 'Дорогой игрок!'}}
 			</h2>
-			<template v-if="locationGame">
+
+			<template v-if="showGiftReceived">
+				Поздравляем! За участие в промоакции "Приз от ВКонтакте" вы получаете 30 подсказок и уникальное цветоворе оформление! Вы можете изменить его в настройках.
+			</template>
+			<template v-else-if="locationGame">
 				Поздравляем! Вы заработали {{howManyTips*2}} звёзд в локации "{{getLocationName(gameLocation)}}"!
 				За это мы дарим вам дополнительные {{howManyTips}} подсказок. Удачной игры!
 			</template>
@@ -1377,7 +1403,6 @@
 					</template>
 
 				</div>
-
 
 				<div class="rules__goBg" v-if="platformBuild === 'gp'" @click="goToShop()">Перейти</div>
 <!--				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>-->
@@ -1413,7 +1438,7 @@
 					</a>.
 				</template>
 			</template>
-
+			<div class="rules__goBg" v-if="showGiftReceived" @click="goToChangeBg(true)">В настройки</div>
 		</div>
 
 
@@ -1670,6 +1695,7 @@ import './styles/stylesCave.scss';
 import './styles/stylesValentines.scss';
 import './styles/stylesGreen.scss';
 import './styles/stylesNewYear2024.scss';
+import './styles/stylesAutumn.scss';
 import './styles/endGame.scss';
 
 import './styles/stylesLocations.scss';
@@ -2991,7 +3017,29 @@ function getGameObj(id){
 
 }
 let isGameOpen = false;
-let platformType = 'VK';
+let platformType = 'NONE';
+let platformSDK = null;
+let userCanGetGift = false;
+let userGotGift = false;
+let makePrizeReceived = () => {
+	console.log('makePrizeReceived');
+};
+async function savePrizeToGP(){
+	try{
+		console.log(savePrizeToGP);
+		if(GP){
+			GP.player.set('giftReceived47', true);
+			await GP.player.sync();
+			console.log('makePrizeReceived');
+			makePrizeReceived();
+		}
+	}catch(e){
+
+	}
+}
+const receivedGifts = {
+	gift47: false
+};
 let toggleSubscribeCompleted = false;
 let lastPlatformType = getFromStorage('platformType');
 if(process.env.PLATFORM === 'yandex'){
@@ -3132,7 +3180,7 @@ if(process.env.PLATFORM === 'yandex'){
 	window.onGPInit = async function (gp) {
 		console.log('GP init');
 		GP = gp;
-		platformType = gp.platform.type;
+		platformType = gp.platform.type.trim();
 		paymentCatalog = gp.payments.products;
 		console.log('Platform: ', platformType);
 		params({'platform': platformType});
@@ -3145,6 +3193,56 @@ if(process.env.PLATFORM === 'yandex'){
 		try{
 			let bannerDone = false;
 			let sdk = gp.platform.getSDK();
+			platformSDK = sdk;
+			console.log('gotSDK', platformSDK);
+			if(platformType === 'VK'){
+				console.log('platformType: ', platformType)
+				let promo_id = '47';
+				const { access_token } = await sdk.bridge.send('VKWebAppGetAuthToken', {
+					app_id: 7869885,
+					scope: '' // обычно для apps.* хватает пустого или 'apps'
+				});
+				console.log('promo', access_token);
+				const res = await sdk.bridge.send('VKWebAppCallAPIMethod', {
+					method: 'apps.promoHasActiveGift',
+					params: {
+						promo_id: promo_id,        // ваш ID промо
+						v: '5.199',
+						access_token: access_token
+					}
+				});
+				console.log('promo2', res);
+				if(res.response === 1){
+					userCanGetGift = true;
+					const callPrizeAgain = () => {
+						setTimeout(()=>{
+							makePrizeReceived();
+						}, 30000)
+					}
+					makePrizeReceived = () => {
+						try{
+							const resp = sdk.bridge.send('VKWebAppCallAPIMethod', {
+								method: 'apps.promoUseGift',
+								params: {
+									promo_id: promo_id,        // ваш ID промо
+									v: '5.199',
+									access_token: access_token
+									// user_id можно передать, если вы хотите указать явно
+								}
+							});
+							if (resp.error || resp.response !== 1) {
+								console.log('Ошибка при использовании подарка:', resp);
+								callPrizeAgain();
+							}
+						}catch(e){
+
+						}
+
+					}
+				}
+			}
+
+
 
 			function showBanner(){
 				console.log('show Banner');
@@ -3770,6 +3868,13 @@ function initPlayer(ysdk) {
 					locationDoneWords = PLAYESTATE.locationDoneWords;
 				}else{
 					PLAYESTATE.locationDoneWords = locationDoneWords;
+				}
+				if(ysdk.player.has('giftReceived47')){
+					let giftReceived47 = ysdk.player.get('giftReceived47');
+					console.log('giftReceived47: ', giftReceived47);
+					if(giftReceived47){
+						receivedGifts.gift47 = true;
+					}
 				}
 
 				let dataTips = ysdk.player.get('tips');
@@ -4674,6 +4779,7 @@ export default {
 			showWordDesc: false,
 			gameUpdate: isGameUpdate,
 			showLastLevelInfo: showUpdate,
+			showGiftReceived: false,
 			wasUpdate: showUpdate,
 			isLeaderBoard: false,
 			leaderBoard: false,
@@ -4796,7 +4902,8 @@ export default {
 			fixedWord: '',
 			showCompliment: false,
 			complimentWord: 'Восхитительно!',
-			platformBuild: process.env.PLATFORM
+			platformBuild: process.env.PLATFORM,
+			receivedGifts: receivedGifts
 		}
 	},
 	computed:{
@@ -5518,21 +5625,34 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 7) this.chosenBg = -4;
+			if(this.chosenBg === 8) this.chosenBg = -4;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -5) this.chosenBg = 6;
+			if(this.chosenBg === -5) this.chosenBg = 7;
 			this.testBg();
 		},
+		canUseBg(choseBg){
+			if(this.chosenBg === 7){
+				return this.receivedGifts.gift47;
+			}
+			return true;
+		},
 		testBg(){
-			if(this.chosenBg > 0 && !this.isCloseLevelShow(bgLvlsOpen[this.chosenBg-1]+1)){
+			//Проверка открытых подарками бг
+			if( this.chosenBg > 0 &&
+				!this.isCloseLevelShow(bgLvlsOpen[this.chosenBg-1]+1) &&
+				this.canUseBg(this.chosenBg)
+			){
 				this.chosenBgRight = this.chosenBg;
 				// importBg(this.chosenBgRight);
 			}else if(this.chosenBg <= 0){
 				this.chosenBgRight = this.chosenBg;
 			}
+
+
+
 			// params({'choseBg': this.chosenBgRight});
 			setToStorage('chosenBackground', this.chosenBgRight);
 		},
@@ -5550,8 +5670,13 @@ export default {
 		},
 		goToChangeBg(fromUpdate){
 			this.backMenu();
-			this.toggleSettings();
+			this.toggleBgChanger();
 			this.openNewBg = false;
+
+			if(fromUpdate){
+				this.chosenBg = 7;
+				this.testBg();
+			}
 			// let bg = 1;
 			// if(this.lvl === 14){
 			// 	bg = 2;
@@ -5565,6 +5690,7 @@ export default {
 			// this.chosenBgRight = bg;
 			// setToStorage('chosenBackground', this.chosenBgRight);
 			this.showLastLevelInfo = false;
+			this.showGiftReceived = false;
 		},
 		findNotShowLetters(){
 			try{
@@ -5993,6 +6119,7 @@ export default {
 		toggleShowLastLevelInfo(){
 			this.showLastLevelInfo = false;
 			this.wasUpdate = false;
+			this.showGiftReceived = false;
 		},
 		toggleGameUpdate(){
 			this.gameUpdate = false;
@@ -6041,6 +6168,9 @@ export default {
 			this.tryOpenPayloadLevel();
 
 			this.gameLastLevel = lastLevel;
+
+			//Проверка подарков
+			this.receivedGifts = receivedGifts;
 		},
 		tryOpenPayloadLevel(){
 			if(payloadLevel){
@@ -6161,6 +6291,24 @@ export default {
 			if(!firstGetBanner){
 				firstGetBanner = true;
 				this.getLBorBanner();
+			}
+
+			//Получение подарка
+			// if(userGotGift){
+			if(userGotGift && userCanGetGift && this.platformBuild === 'gp'){
+				userCanGetGift = false;
+				userGotGift = false;
+				//Добавляем подсказки
+				this.tipCount += 30;
+				setToStorage('tips', this.tipCount);
+				PLAYERSTATS.tips = this.tipCount;
+				setStats();
+				receivedGifts.gift47 = true;
+				this.receivedGifts = receivedGifts;
+				this.showGiftReceived = true;
+				savePrizeToGP();
+
+
 			}
 		},
 		getLvl5Hint(){
@@ -6947,6 +7095,8 @@ export default {
 		testStars(){
 			let stars = testStar(this.doneWords.length, this.nowWords.length);
 			if(stars > this.levelStars){
+				userGotGift = true;
+
 
 				this.bgShowen = false;
 				this.getStar = stars;
