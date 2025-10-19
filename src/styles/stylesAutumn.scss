@@ -61,9 +61,9 @@
   background-color: #ff4800;
 }
 .chosenAppBg7 .animWord .words__letter {
-  animation: 1s showNewWord9 forwards;
+  animation: 1s showNewWordBg7 forwards;
 }
-@keyframes showNewWord9 {
+@keyframes showNewWordBg7 {
   0% {
     background-color: rgba(255, 255, 255, 0.85);
   }
