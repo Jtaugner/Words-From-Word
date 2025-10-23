@@ -988,10 +988,10 @@
 			<div class="rules showBigWordWas" v-show="showBigWordWas">
 				<cross-vue @click.native="toggleShowBigWordWas()" ></cross-vue>
 				<h2 class="rules__menu">
-					{{notRussian ? 'Nice try!' : 'Хорошая попытка!'}}
+					{{notRussian ? 'Whoa!' : 'Опачки!'}}
 				</h2>
-				<p v-if="notRussian">The original word cannot be entered :) Let's try again!</p>
-				<p v-else>Исходное слово вводить нельзя :) Давайте попробуем ещё!</p>
+				<p v-if="notRussian">The original word is already on the level. You can view its meanings by tapping on it.</p>
+				<p v-else>Исходное слово уже находится на уровне. Вы можете узнать его значения, нажав на него.</p>
 			</div>
 
 
