@@ -4618,7 +4618,8 @@ function goToUserInLb(){
 		try{
 			addScrollingToDesktop(true);
 			let scrollEl = document.querySelector('.leaderBoardInfo_mine');
-			scrollEl.scrollIntoView({behavior: 'auto', block: "center", inline: "center"});
+			let container = document.querySelector('.container-lbInGame');
+			scrollIntoViewX(container, scrollEl, {behavior: 'auto', align: 'center'});
 		}catch(ignored){}
 	}, 200);
 }
@@ -4700,6 +4701,7 @@ function getOneRandStart(){
 
 function scrollIntoViewX(container, element, options = {}) {
 	try {
+		console.log('scroll');
 
 		if (!container || !element) return;
 		const {behavior = 'auto', align = 'start'} = options;
