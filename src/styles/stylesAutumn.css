@@ -4,84 +4,65 @@
   background-image: url(../assets/bgAutumn/bgAutumn.png);
 }
 
-.chosenAppBg7 .svgIcon {
+.chosenAppBg7 .svgIcon, .game_locationDesign_byeAutumn .svgIcon {
   fill: #4c0d0d;
 }
-
-.chosenAppBg7 .shop__cart__card .svgIcon {
+.chosenAppBg7 .shop__cart__card .svgIcon, .game_locationDesign_byeAutumn .shop__cart__card .svgIcon {
   fill: #ef4a32;
 }
-
-.chosenAppBg7 .shop__cart__card .shop__cart__name {
+.chosenAppBg7 .shop__cart__card .shop__cart__name, .game_locationDesign_byeAutumn .shop__cart__card .shop__cart__name {
   color: #ef4a32;
 }
-
-.chosenAppBg7 .shop__cart__buy-button {
+.chosenAppBg7 .shop__cart__buy-button, .game_locationDesign_byeAutumn .shop__cart__buy-button {
   background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
   box-shadow: 0 3px 0 #C1381C;
 }
-
-.chosenAppBg7 .levelsTop__allStars {
+.chosenAppBg7 .levelsTop__allStars, .game_locationDesign_byeAutumn .levelsTop__allStars {
   color: #4c0d0d;
 }
-
-.chosenAppBg7 .newElement {
+.chosenAppBg7 .newElement, .game_locationDesign_byeAutumn .newElement {
   background-color: #FF1F00;
 }
-
-.chosenAppBg7 .levels .menu-star {
+.chosenAppBg7 .levels .menu-star, .game_locationDesign_byeAutumn .levels .menu-star {
   background-color: #E5C726;
 }
-
-.chosenAppBg7 .words__letters-block_done .words__letter, .chosenAppBg7 .action-block__letters .action-block__letter_selected {
+.chosenAppBg7 .words__letters-block_done .words__letter, .chosenAppBg7 .action-block__letters .action-block__letter_selected, .game_locationDesign_byeAutumn .words__letters-block_done .words__letter, .game_locationDesign_byeAutumn .action-block__letters .action-block__letter_selected {
   background-color: #ED782A;
   color: white;
 }
-
-.chosenAppBg7 .menu__tip_count, .chosenAppBg7 .rules__goBg {
+.chosenAppBg7 .menu__tip_count, .chosenAppBg7 .rules__goBg, .game_locationDesign_byeAutumn .menu__tip_count, .game_locationDesign_byeAutumn .rules__goBg {
   background-color: #4c0d0d;
 }
-
-.chosenAppBg7 .rules__menu, .chosenAppBg7 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg7 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg7 .startCreateGame {
+.chosenAppBg7 .rules__menu, .chosenAppBg7 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg7 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg7 .startCreateGame, .game_locationDesign_byeAutumn .rules__menu, .game_locationDesign_byeAutumn .leaderBoardInfo_my .leaderBoardInfo__rank, .game_locationDesign_byeAutumn .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .game_locationDesign_byeAutumn .startCreateGame {
   background-color: #6E3208;
 }
-
-.chosenAppBg7 .shop, .chosenAppBg7 .rules, .chosenAppBg7 .leaderBoardInfo_my .leaderBoardInfo__image {
+.chosenAppBg7 .shop, .chosenAppBg7 .rules, .chosenAppBg7 .leaderBoardInfo_my .leaderBoardInfo__image, .game_locationDesign_byeAutumn .shop, .game_locationDesign_byeAutumn .rules, .game_locationDesign_byeAutumn .leaderBoardInfo_my .leaderBoardInfo__image {
   border-color: #6E3208;
 }
-
-.chosenAppBg7 .shop .rules__menu, .chosenAppBg7 .settings__text {
+.chosenAppBg7 .shop .rules__menu, .chosenAppBg7 .settings__text, .game_locationDesign_byeAutumn .shop .rules__menu, .game_locationDesign_byeAutumn .settings__text {
   color: #6E3208;
 }
-
-.chosenAppBg7 ::-webkit-scrollbar-thumb {
+.chosenAppBg7 ::-webkit-scrollbar-thumb, .game_locationDesign_byeAutumn ::-webkit-scrollbar-thumb {
   background-color: #4c0d0d;
 }
-
-.chosenAppBg7 ::-webkit-scrollbar-track {
+.chosenAppBg7 ::-webkit-scrollbar-track, .game_locationDesign_byeAutumn ::-webkit-scrollbar-track {
   background-color: #5E2120;
 }
-
-.chosenAppBg7 .settings {
+.chosenAppBg7 .settings, .game_locationDesign_byeAutumn .settings {
   border-color: #6E3208;
 }
-
-.chosenAppBg7 .checkbox:checked + label:after {
+.chosenAppBg7 .checkbox:checked + label:after, .game_locationDesign_byeAutumn .checkbox:checked + label:after {
   background: #6E3208;
 }
-
-.chosenAppBg7 .checkbox:checked + label:before {
+.chosenAppBg7 .checkbox:checked + label:before, .game_locationDesign_byeAutumn .checkbox:checked + label:before {
   background-color: #e78e74;
 }
-
-.chosenAppBg7 .newWord .words__letter {
+.chosenAppBg7 .newWord .words__letter, .game_locationDesign_byeAutumn .newWord .words__letter {
   background-color: #ff4800;
 }
-
-.chosenAppBg7 .animWord .words__letter {
+.chosenAppBg7 .animWord .words__letter, .game_locationDesign_byeAutumn .animWord .words__letter {
   animation: 1s showNewWordBg7 forwards;
 }
-
 @keyframes showNewWordBg7 {
   0% {
     background-color: rgba(255, 255, 255, 0.85);
@@ -90,72 +71,59 @@
     background-color: #ff4800;
   }
 }
-.chosenAppBg7 .shop__cart__item {
+.chosenAppBg7 .shop__cart__item, .game_locationDesign_byeAutumn .shop__cart__item {
   border-color: #6E3208;
 }
-
-.chosenAppBg7 .wordWas .words__letter {
+.chosenAppBg7 .wordWas .words__letter, .game_locationDesign_byeAutumn .wordWas .words__letter {
   background-color: #e7260d;
 }
-
-.chosenAppBg7 .menu__hint {
+.chosenAppBg7 .menu__hint, .game_locationDesign_byeAutumn .menu__hint {
   background-color: rgba(109, 50, 8, 0.9);
 }
-
-.chosenAppBg7 .skipTutorial {
+.chosenAppBg7 .skipTutorial, .game_locationDesign_byeAutumn .skipTutorial {
   background-color: #e7610d;
 }
-
-.chosenAppBg7 .cloudHint {
+.chosenAppBg7 .cloudHint, .game_locationDesign_byeAutumn .cloudHint {
   color: #6E3208;
 }
-
-.chosenAppBg7 .cloudHint__mainText {
+.chosenAppBg7 .cloudHint__mainText, .game_locationDesign_byeAutumn .cloudHint__mainText {
   color: #6E3208;
 }
-
-.chosenAppBg7 .leaderBoardInfo__player, .chosenAppBg7 .lbInGame__player, .chosenAppBg7 .lbInGame__score {
+.chosenAppBg7 .leaderBoardInfo__player, .chosenAppBg7 .lbInGame__player, .chosenAppBg7 .lbInGame__score, .game_locationDesign_byeAutumn .leaderBoardInfo__player, .game_locationDesign_byeAutumn .lbInGame__player, .game_locationDesign_byeAutumn .lbInGame__score {
   border-color: #6E3208;
 }
-
-.chosenAppBg7 .endGame__header, .chosenAppBg7 .endGame__nextLevel {
+.chosenAppBg7 .endGame__header, .chosenAppBg7 .endGame__nextLevel, .game_locationDesign_byeAutumn .endGame__header, .game_locationDesign_byeAutumn .endGame__nextLevel {
   background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
 }
-
-.chosenAppBg7 .endGame__firstPrize {
+.chosenAppBg7 .endGame__firstPrize, .game_locationDesign_byeAutumn .endGame__firstPrize {
   fill: #FF8762;
 }
-
-.chosenAppBg7 .endGame__secondPrize {
+.chosenAppBg7 .endGame__secondPrize, .game_locationDesign_byeAutumn .endGame__secondPrize {
   fill: #FF2001;
 }
-
-.chosenAppBg7 .endGame__menu {
+.chosenAppBg7 .endGame__menu, .game_locationDesign_byeAutumn .endGame__menu {
   border-color: #ff1f00;
 }
-
-.chosenAppBg7 .endGame__firstStop {
+.chosenAppBg7 .endGame__firstStop, .game_locationDesign_byeAutumn .endGame__firstStop {
   stop-color: #ff8862;
 }
-
-.chosenAppBg7 .endGame__secondStop {
+.chosenAppBg7 .endGame__secondStop, .game_locationDesign_byeAutumn .endGame__secondStop {
   stop-color: #ff1f00;
 }
-
 @media (orientation: portrait) {
-  .chosenAppBg7 .shop__cart__buy-button {
+  .chosenAppBg7 .shop__cart__buy-button, .game_locationDesign_byeAutumn .shop__cart__buy-button {
     background-color: #6E3208;
   }
 }
-.chosenAppBg7 .action-block__letter {
+.chosenAppBg7 .action-block__letter, .game_locationDesign_byeAutumn .action-block__letter {
   color: #251102;
 }
-
 @media (max-width: 1400px) {
-  .chosenAppBg7 .blur {
+  .chosenAppBg7 .blur, .game_locationDesign_byeAutumn .blur {
     background-color: rgba(0, 0, 0, 0.01);
   }
 }
+
 @media (orientation: portrait) {
   #app.chosenAppBg7, .chosenAppBg7 .game, .chosenAppBg7 .levels {
     background-image: url(../assets/bgAutumn/bgVertical.png);

@@ -1231,6 +1231,80 @@
     background-size: cover !important;
   }
 }
+/*День валентина*/
+.gameLocationWrapper-byeAutumn::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+.gameLocationWrapper-byeAutumn::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.byeAutumnLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/byeAutumn/byeAutumn.png);
+}
+
+.byeAutumnLocation .popUp__locationName {
+  color: #4c0d0d;
+}
+
+.gameLocation-byeAutumn {
+  background: url(../assets/bgAutumn/bgAutumn.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-byeAutumn .svgIcon {
+  fill: #4c0d0d;
+}
+.gameLocation-byeAutumn .levelsTop__allStars {
+  color: #4c0d0d;
+}
+.gameLocation-byeAutumn .menu-star, .gameLocation-byeAutumn .newElement {
+  background-color: #FF1F00;
+}
+.gameLocation-byeAutumn .byeAutumnProperty {
+  background: url(../assets/bgAutumn/bgAutumn.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-byeAutumn {
+  background: url(../assets/bgAutumn/bgAutumn.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+
+.location.gameLocation-byeAutumn {
+  background: none;
+}
+
+.gameLocationWrapper-byeAutumn .rules__menu {
+  background-color: #9B2308;
+}
+.gameLocationWrapper-byeAutumn .rules .settings__text {
+  color: #9B2308;
+}
+.gameLocationWrapper-byeAutumn .rules .svgIcon {
+  fill: #B4361A;
+}
+
+.gameLocation-byeAutumn::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-byeAutumn .location__lastLevel {
+    box-shadow: 0 0 25px 10px #FF5A36;
+  }
+}
+.game_locationDesign_byeAutumn {
+  background-image: url(../assets/bgAutumn/bgAutumn.png) !important;
+}
+
+@media (orientation: portrait) {
+  .gameLocationWrapper-byeAutumn, .game_locationDesign_byeAutumn {
+    background: url(../assets/bgAutumn/bgVertical.png) center center no-repeat !important;
+    background-size: cover !important;
+  }
+}
 .locationOpened {
   overflow: auto !important;
 }

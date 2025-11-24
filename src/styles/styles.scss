@@ -4290,3 +4290,14 @@ select::-ms-expand {
 img, a {
   -webkit-user-drag: none;
 }
+
+#game{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  touch-action: none;       /* запрещает браузеру распознавать жесты */
+  -webkit-user-select: none;
+  user-select: none;
+}

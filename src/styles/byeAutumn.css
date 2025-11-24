@@ -1,0 +1,139 @@
+@charset "UTF-8";
+/*День валентина*/
+.gameLocationWrapper-byeAutumn::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+.gameLocationWrapper-byeAutumn::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.byeAutumnLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/byeAutumn/byeAutumn.png);
+}
+
+.byeAutumnLocation .popUp__locationName {
+  color: #9B2308;
+}
+
+.gameLocation-byeAutumn {
+  background: url(../assets/bgAutumn/bgAutumn.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-byeAutumn .svgIcon {
+  fill: #B4361A;
+}
+.gameLocation-byeAutumn .levelsTop__allStars {
+  color: #9B2308;
+}
+.gameLocation-byeAutumn .menu-star, .gameLocation-byeAutumn .newElement {
+  background-color: #B4361A;
+}
+.gameLocation-byeAutumn .byeAutumnProperty {
+  background: url(../assets/bgAutumn/bgAutumn.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-byeAutumn {
+  background: url(../assets/bgAutumn/bgAutumn.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+
+.location.gameLocation-byeAutumn {
+  background: none;
+}
+
+.gameLocationWrapper-byeAutumn .rules__menu {
+  background-color: #9B2308;
+}
+.gameLocationWrapper-byeAutumn .rules .settings__text {
+  color: #9B2308;
+}
+.gameLocationWrapper-byeAutumn .rules .svgIcon {
+  fill: #B4361A;
+}
+
+.gameLocation-byeAutumn::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-byeAutumn .location__lastLevel {
+    box-shadow: 0 0 25px 10px #FF5A36;
+  }
+}
+.game_locationDesign_byeAutumn {
+  background-image: url(../assets/bgAutumn/bgAutumn.png) !important;
+}
+.game_locationDesign_byeAutumn .svgIcon {
+  fill: #5d1b05 !important;
+}
+.game_locationDesign_byeAutumn .levelsTop__allStars {
+  color: #4E2406;
+}
+.game_locationDesign_byeAutumn .menu__tip_count, .game_locationDesign_byeAutumn .rules__goBg {
+  background-color: #5d1b05;
+}
+.game_locationDesign_byeAutumn .menu__hint {
+  background-color: rgba(192, 81, 0, 0.9);
+}
+.game_locationDesign_byeAutumn .words__letters-block_done .words__letter, .game_locationDesign_byeAutumn .action-block__letters .action-block__letter_selected {
+  background-color: #b2401e;
+}
+.game_locationDesign_byeAutumn .rules__menu {
+  background-color: #6E3208;
+}
+.game_locationDesign_byeAutumn .shop, .game_locationDesign_byeAutumn .rules, .game_locationDesign_byeAutumn .leaderBoardInfo_my .leaderBoardInfo__image {
+  border-color: #6E3208;
+}
+.game_locationDesign_byeAutumn .shop .rules__menu, .game_locationDesign_byeAutumn .settings__text {
+  color: #6d3208;
+}
+.game_locationDesign_byeAutumn ::-webkit-scrollbar-thumb {
+  background-color: #b2401e;
+}
+.game_locationDesign_byeAutumn .newWord .words__letter {
+  background-color: #df1b3e;
+}
+.game_locationDesign_byeAutumn .animWord .words__letter {
+  animation: 1s showNewWordSchool forwards;
+}
+@keyframes showNewWordSchool {
+  0% {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background-color: #df1b3e;
+  }
+}
+.game_locationDesign_byeAutumn .endGame__header {
+  background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+}
+.game_locationDesign_byeAutumn .endGame__firstPrize {
+  fill: #FF8762;
+}
+.game_locationDesign_byeAutumn .endGame__secondPrize {
+  fill: #FF2001;
+}
+.game_locationDesign_byeAutumn .endGame__menu {
+  border-color: #ff1f00;
+}
+.game_locationDesign_byeAutumn .endGame__firstStop {
+  stop-color: #ff8862;
+}
+.game_locationDesign_byeAutumn .endGame__secondStop {
+  stop-color: #ff1f00;
+}
+.game_locationDesign_byeAutumn .endGame__nextLevel {
+  background: linear-gradient(265.01deg, #FF8862 6.23%, #FF1F00 97.6%);
+}
+
+@media (orientation: portrait) {
+  .gameLocationWrapper-byeAutumn, .game_locationDesign_byeAutumn {
+    background: url(../assets/bgAutumn/bgVertical.png) center center no-repeat !important;
+    background-size: cover !important;
+  }
+}
+
+/*# sourceMappingURL=byeAutumn.css.map */

@@ -121,7 +121,7 @@
 
 				<div class="switchShowLocation menuItem" @click="toggleShowLocations" v-if="!notRussian">
 					<svg class="svgIcon" width="28" height="22" viewBox="0 0 28 22" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M1.73723 16.9893V3.60855H0.715328C0.143066 3.60855 0 4.1575 0 4.43198V21.0036C0 22.074 1.0219 22.0672 1.53285 21.9299C3.9854 20.9418 9.50365 21.381 11.9562 21.7241C9.50365 19.3567 5.51825 19.3567 3.88321 19.1509C2.57518 18.9862 1.90754 17.6412 1.73723 16.9893Z"/><path d="M3.37226 0.932388C3.45401 0.108954 4.29197 -0.0282848 4.70073 0.00602489C10.1781 -0.158664 12.8418 3.0939 13.4891 4.74077L13.3869 20.9007C9.81022 17.2981 4.70073 17.504 4.18978 17.504C3.78102 17.504 3.47445 16.8864 3.37226 16.5776V0.932388Z"/><path d="M26.2628 16.9954V3.61458H27.2847C27.8569 3.61458 28 4.16353 28 4.43801V21.0096C28 22.0801 26.9781 22.0732 26.4672 21.936C24.0146 20.9479 18.4963 21.387 16.0438 21.7301C18.4963 19.3627 22.4818 19.3627 24.1168 19.1569C25.4248 18.9922 26.0925 17.6473 26.2628 16.9954Z"/><path d="M24.6277 0.938419C24.546 0.114985 23.708 -0.0222538 23.2993 0.0120559C17.8219 -0.152633 15.1582 3.09993 14.5109 4.7468L14.6131 20.9067C18.1898 17.3042 23.2993 17.51 23.8102 17.51C24.219 17.51 24.5255 16.8925 24.6277 16.5837V0.938419Z"/></svg>
-<!--					<div class="newElement">!</div>-->
+					<div class="newElement">!</div>
 				</div>
 
 				<div class="createLevel menuItem" @click="toggleIsCreateGameWindow()" v-if="!notRussian">
@@ -1119,7 +1119,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button" >
-<!--							<div class="shop__lastPrice">20</div>-->
+							<div class="shop__lastPrice" v-if="isAction">{{ getItemPriceBefore(0)}}</div>
 							{{getItemPrice(0)}}
 						</div>
 					</div>
@@ -1137,7 +1137,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-<!--							<div class="shop__lastPrice">89</div>-->
+							<div class="shop__lastPrice"  v-if="isAction">{{ getItemPriceBefore(1)}}</div>
 							{{getItemPrice(1)}}
 						</div>
 					</div>
@@ -1155,7 +1155,7 @@
 							</div>
 						</div>
 						<div class="shop__cart__buy-button">
-<!--							<div class="shop__lastPrice">149</div>-->
+							<div class="shop__lastPrice"  v-if="isAction">{{ getItemPriceBefore(2)}}</div>
 							{{getItemPrice(2)}}
 						</div>
 					</div>
@@ -1171,7 +1171,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-<!--							<div class="shop__lastPrice">299</div>-->
+						<div class="shop__lastPrice"  v-if="isAction">{{ getItemPriceBefore(3)}}</div>
 							{{getItemPrice(3)}}
 					</div>
 				</div>
@@ -1203,7 +1203,7 @@
 						</div>
 					</div>
 					<div class="shop__cart__buy-button" >
-<!--						<div class="shop__lastPrice">499</div>-->
+						<div class="shop__lastPrice" v-if="isAction">{{ getItemPriceBefore(4)}}</div>
 						<template v-if="platformBuild === 'gp'">
 							{{platformBuild === 'gp' && notShowAds ? 'Отменить' : getItemPrice(4)}}
 						</template>
@@ -1377,7 +1377,7 @@
 				Приз от ВКонтакте
 			</h2>
 			<h2 class="rules__menu" v-else>
-				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Обновление' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Чёрная пятница!' : 'Дорогой игрок!'}}
 			</h2>
 
 			<template v-if="showGiftReceived">
@@ -1390,7 +1390,7 @@
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
 					<template v-if="platformBuild === 'gp'">
-						Уважаемые игроки! Теперь вы можете отключить рекламные объявления в разделе покупок. Спасибо за то, что играете в нашу игру!
+						В игре неделя Чёрной пятницы! Встречайте скидки в магазине, а также новую локацию "Пока, Осень!"
 					</template>
 					<template v-else>
 						<template v-if="notRussian">
@@ -1398,13 +1398,14 @@
 						</template>
 
 						<template v-else>
-							Дорогие игроки! Желаем вам приятной игры :)
+							В игре неделя Чёрной пятницы! Встречайте скидки в магазине, а также новую локацию "Пока, Осень!"
 						</template>
 					</template>
 
 				</div>
 
-				<div class="rules__goBg" v-if="platformBuild === 'gp'" @click="goToShop()">Перейти</div>
+<!--				<div class="rules__goBg" v-if="platformBuild === 'gp'" @click="goToShop()">Перейти</div>-->
+				<div class="rules__goBg" @click="goToShop()">Перейти</div>
 <!--				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>-->
 
 <!--				<div class="questionInput">-->
@@ -2326,7 +2327,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-49";
+const lastVersion = "ver-50";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -3895,7 +3896,7 @@ function initPlayer(ysdk) {
 
 		ysdk.player.fetchFields();
 	}
-	
+
 }
 let GP;
 let TIPS = 0;
@@ -3928,9 +3929,12 @@ function consumePurchase(purchase) {
 }
 //const itemsPrices = [20, 89, 149, 299, 499];
 //const itemsPrices = [14, 59, 109, 209, 249]];
-const itemsPrices = [20, 89, 149, 299, 349, 19];
-let itemsPricesVK = [3, 13, 21, 42, 19];
-let itemsPricesOK = [20, 89, 149, 299, 149];
+const itemsPrices = [14, 59, 99, 209, 239, 14];
+let itemsPricesVK = [2, 9, 14, 29, 12];
+let itemsPricesOK = [14, 59, 99, 209, 239, 99];
+const beforeItemsPrices = [20, 89, 149, 299, 349, 19];
+let beforeItemsPricesVK = [3, 13, 21, 42, 19];
+let beforeItemsPricesOK = [20, 89, 149, 299, 149];
 let purchaseItemGP;
 let buyItem;
 function buyTips(purchaseItem) {
@@ -3981,9 +3985,9 @@ function buyTips(purchaseItem) {
 		}else{
 			GP.player.login();
 		}
-	
+
 	}
-	
+
 }
 
 
@@ -4480,7 +4484,8 @@ let translatedLocationsNames = {
 	writers: 'Знаменитые писатели',
 	medicine: 'Медицина',
 	egypt: 'Египет',
-	againSchool: 'Снова в школу'
+	againSchool: 'Снова в школу',
+	byeAutumn: 'Пока, Осень!'
 }
 
 let defaultLocations = ['house', 'writers', 'medicine'];
@@ -4814,7 +4819,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['againSchool', 'egypt', 'medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['byeAutumn','againSchool', 'egypt', 'medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			blockedLocations: ['egypt'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
@@ -4905,7 +4910,8 @@ export default {
 			showCompliment: false,
 			complimentWord: 'Восхитительно!',
 			platformBuild: process.env.PLATFORM,
-			receivedGifts: receivedGifts
+			receivedGifts: receivedGifts,
+			isAction: true
 		}
 	},
 	computed:{
@@ -5969,7 +5975,7 @@ export default {
 						this.lbInGame = false;
 					}
 				}
-				
+
 			}catch(e){
 				this.playerRait = false;
 				console.log(e);
@@ -6075,7 +6081,7 @@ export default {
 					console.log(res.players);
 					that.playerRait = res.player;
 					that.leaderBoard = res.players;
-				}).catch((e)=>{console.log(e)});	
+				}).catch((e)=>{console.log(e)});
 			}
 		},
 		getLeaderBoardInGame(){
@@ -6102,19 +6108,32 @@ export default {
 				this.selectTip = true;
 			}
 		},
+		getItemPriceBefore(item){
+			try{
+				if(process.env.PLATFORM === 'yandex'){
+					return beforeItemsPrices[item];
+				}
+			}catch(e){}
+			if(process.env.PLATFORM === 'gp'){
+				if(platformType === 'OK') return beforeItemsPricesOK[item];
+				return beforeItemsPricesVK[item];
+			}
+			return beforeItemsPrices[item];
+		},
 		getItemPrice(item){
 			try{
 				if(paymentCatalog){
 					if(process.env.PLATFORM === 'yandex'){
 						return paymentCatalog[item].price;
 					}else if(process.env.PLATFORM === 'gp'){
+						if(platformType === 'VK') return paymentCatalog[item].price + ' VK';
 						return paymentCatalog[item].price + ' ' + paymentCatalog[item].currencySymbol;
 					}
 				}
 			}catch(e){}
 			if(process.env.PLATFORM === 'gp'){
-				if(this.platformType === 'OK') return itemsPricesOK[item] + ' ОК';
-				return itemsPricesVK[item] + ' Голосов';
+				if(platformType === 'OK') return itemsPricesOK[item] + ' ОК';
+				return itemsPricesVK[item] + ' VK';
 			}
 			return itemsPrices[item] + ' Ян';
 		},
