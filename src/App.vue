@@ -1377,7 +1377,7 @@
 				Приз от ВКонтакте
 			</h2>
 			<h2 class="rules__menu" v-else>
-				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Чёрная пятница!' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Обновление' : 'Дорогой игрок!'}}
 			</h2>
 
 			<template v-if="showGiftReceived">
@@ -1390,7 +1390,7 @@
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
 					<template v-if="platformBuild === 'gp'">
-						В игре неделя Чёрной пятницы! Встречайте скидки в магазине, а также новую локацию "Пока, Осень!"
+						Уважаемые игроки! Желаем вам хорошей игры :)
 					</template>
 					<template v-else>
 						<template v-if="notRussian">
@@ -1398,7 +1398,7 @@
 						</template>
 
 						<template v-else>
-							В игре неделя Чёрной пятницы! Встречайте скидки в магазине, а также новую локацию "Пока, Осень!"
+							Уважаемые игроки! Желаем вам хорошей игры :)
 						</template>
 					</template>
 
@@ -3929,9 +3929,12 @@ function consumePurchase(purchase) {
 }
 //const itemsPrices = [20, 89, 149, 299, 499];
 //const itemsPrices = [14, 59, 109, 209, 249]];
-const itemsPrices = [14, 59, 99, 209, 239, 14];
-let itemsPricesVK = [2, 9, 14, 29, 12];
-let itemsPricesOK = [14, 59, 99, 209, 239, 99];
+const itemsPrices = [20, 89, 149, 299, 349, 19];
+let itemsPricesVK = [3, 13, 21, 42, 19];
+let itemsPricesOK = [20, 89, 149, 299, 149];
+// const itemsPrices = [14, 59, 99, 209, 239, 14];
+// let itemsPricesVK = [2, 9, 14, 29, 12];
+// let itemsPricesOK = [14, 59, 99, 209, 239, 99];
 const beforeItemsPrices = [20, 89, 149, 299, 349, 19];
 let beforeItemsPricesVK = [3, 13, 21, 42, 19];
 let beforeItemsPricesOK = [20, 89, 149, 299, 149];
@@ -4911,7 +4914,7 @@ export default {
 			complimentWord: 'Восхитительно!',
 			platformBuild: process.env.PLATFORM,
 			receivedGifts: receivedGifts,
-			isAction: true
+			isAction: false
 		}
 	},
 	computed:{
