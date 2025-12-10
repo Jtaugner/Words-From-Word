@@ -6655,6 +6655,7 @@ export default {
 			this.tryShowAdv();
 		},
 		crossPromoShow(){
+			return;
 			if(crossPromoShows < 3){
 				if(crossPromoObj) this.crossPromoObj = crossPromoObj;
 				if(this.lvl >= 10 && this.crossPromoObj){
