@@ -84,8 +84,10 @@ html,body
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  touch-action: manipulation;
+  touch-action: none;
   user-select: none;
+  overscroll-behavior-y: none; /* отключает pull-to-refresh */
+  overflow: hidden;
 }
 .words, .action-block, .rules{
   font-family: Ubuntu-Light, sans-serif;
@@ -4300,4 +4302,6 @@ img, a {
   touch-action: none;       /* запрещает браузеру распознавать жесты */
   -webkit-user-select: none;
   user-select: none;
+  overscroll-behavior-y: none; /* отключает pull-to-refresh */
+  overflow: hidden;
 }
