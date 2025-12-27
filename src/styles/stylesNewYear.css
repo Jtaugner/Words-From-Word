@@ -9,50 +9,50 @@
     background-image: url(../assets/bgNewYear/bgNewYear-big.png);
   }
 }
-.chosenAppBg-2 .svgIcon {
+.chosenAppBg-2 .svgIcon, .game.game_locationDesign_winter .svgIcon {
   fill: #C21332;
 }
-.chosenAppBg-2 .shop__cart__card .svgIcon {
+.chosenAppBg-2 .shop__cart__card .svgIcon, .game.game_locationDesign_winter .shop__cart__card .svgIcon {
   fill: #E40000;
 }
-.chosenAppBg-2 .shop__cart__card .shop__cart__name {
+.chosenAppBg-2 .shop__cart__card .shop__cart__name, .game.game_locationDesign_winter .shop__cart__card .shop__cart__name {
   color: #E40000;
 }
-.chosenAppBg-2 .shop__cart__buy-button {
+.chosenAppBg-2 .shop__cart__buy-button, .game.game_locationDesign_winter .shop__cart__buy-button {
   background: linear-gradient(264.82deg, #F74A00 2.88%, #E40000 96.18%);
   box-shadow: 0px 3px 0px #9a0000;
 }
-.chosenAppBg-2 .levelsTop__allStars, .chosenAppBg-2 .shop .rules__menu, .chosenAppBg-2 .settings__text {
+.chosenAppBg-2 .levelsTop__allStars, .chosenAppBg-2 .shop .rules__menu, .chosenAppBg-2 .settings__text, .game.game_locationDesign_winter .levelsTop__allStars, .game.game_locationDesign_winter .shop .rules__menu, .game.game_locationDesign_winter .settings__text {
   color: #C21332;
 }
-.chosenAppBg-2 .newElement, .chosenAppBg-2 .menu__tip_count, .chosenAppBg-2 .rules__goBg {
+.chosenAppBg-2 .newElement, .chosenAppBg-2 .menu__tip_count, .chosenAppBg-2 .rules__goBg, .game.game_locationDesign_winter .newElement, .game.game_locationDesign_winter .menu__tip_count, .game.game_locationDesign_winter .rules__goBg {
   background-color: #C21332;
 }
-.chosenAppBg-2 .words__letters-block_done .words__letter, .chosenAppBg-2 .action-block__letters .action-block__letter_selected {
+.chosenAppBg-2 .words__letters-block_done .words__letter, .chosenAppBg-2 .action-block__letters .action-block__letter_selected, .game.game_locationDesign_winter .words__letters-block_done .words__letter, .game.game_locationDesign_winter .action-block__letters .action-block__letter_selected {
   background-color: #E75858;
 }
-.chosenAppBg-2 .rules__menu, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg-2 .startCreateGame {
+.chosenAppBg-2 .rules__menu, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__rank, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .chosenAppBg-2 .startCreateGame, .game.game_locationDesign_winter .rules__menu, .game.game_locationDesign_winter .leaderBoardInfo_my .leaderBoardInfo__rank, .game.game_locationDesign_winter .leaderBoardInfo_my .leaderBoardInfo__playerInfo, .game.game_locationDesign_winter .startCreateGame {
   background-color: #C21332;
 }
-.chosenAppBg-2 .shop, .chosenAppBg-2 .rules, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__image {
+.chosenAppBg-2 .shop, .chosenAppBg-2 .rules, .chosenAppBg-2 .leaderBoardInfo_my .leaderBoardInfo__image, .game.game_locationDesign_winter .shop, .game.game_locationDesign_winter .rules, .game.game_locationDesign_winter .leaderBoardInfo_my .leaderBoardInfo__image {
   border-color: #C21332;
 }
-.chosenAppBg-2 ::-webkit-scrollbar-thumb {
+.chosenAppBg-2 ::-webkit-scrollbar-thumb, .game.game_locationDesign_winter ::-webkit-scrollbar-thumb {
   background-color: #E75858;
 }
-.chosenAppBg-2 .settings {
+.chosenAppBg-2 .settings, .game.game_locationDesign_winter .settings {
   border-color: #CE1E1E;
 }
-.chosenAppBg-2 .checkbox:checked + label:after {
+.chosenAppBg-2 .checkbox:checked + label:after, .game.game_locationDesign_winter .checkbox:checked + label:after {
   background-color: #D64646;
 }
-.chosenAppBg-2 .checkbox:checked + label:before {
+.chosenAppBg-2 .checkbox:checked + label:before, .game.game_locationDesign_winter .checkbox:checked + label:before {
   background: #F4B5B5;
 }
-.chosenAppBg-2 .newWord .words__letter {
+.chosenAppBg-2 .newWord .words__letter, .game.game_locationDesign_winter .newWord .words__letter {
   background-color: #C21332;
 }
-.chosenAppBg-2 .animWord .words__letter {
+.chosenAppBg-2 .animWord .words__letter, .game.game_locationDesign_winter .animWord .words__letter {
   animation: 1s showNewWord5 forwards;
 }
 @keyframes showNewWord5 {
@@ -63,30 +63,30 @@
     background-color: #C21332;
   }
 }
-.chosenAppBg-2 .level .level_star {
+.chosenAppBg-2 .level .level_star, .game.game_locationDesign_winter .level .level_star {
   background-color: rgba(184, 177, 177, 0.83);
 }
-.chosenAppBg-2 .shop__cart__name {
+.chosenAppBg-2 .shop__cart__name, .game.game_locationDesign_winter .shop__cart__name {
   color: #CE1E1E;
   border-color: #CE1E1E;
 }
-.chosenAppBg-2 .shop__cart__item {
+.chosenAppBg-2 .shop__cart__item, .game.game_locationDesign_winter .shop__cart__item {
   border-color: #CE1E1E;
 }
-.chosenAppBg-2 .wordWas .words__letter {
+.chosenAppBg-2 .wordWas .words__letter, .game.game_locationDesign_winter .wordWas .words__letter {
   background-color: #701414;
 }
-.chosenAppBg-2 .menu__hint {
+.chosenAppBg-2 .menu__hint, .game.game_locationDesign_winter .menu__hint {
   background-color: rgba(194, 19, 50, 0.9);
 }
-.chosenAppBg-2 .levels .menu-star {
+.chosenAppBg-2 .levels .menu-star, .game.game_locationDesign_winter .levels .menu-star {
   background-color: #C21332;
 }
-.chosenAppBg-2 .menu__level .level_full-star {
+.chosenAppBg-2 .menu__level .level_full-star, .game.game_locationDesign_winter .menu__level .level_full-star {
   background: url(../assets/bgNewYear/star.svg) center center no-repeat;
   background-size: 100%;
 }
-.chosenAppBg-2 .menu__level .level_full-star.getStar {
+.chosenAppBg-2 .menu__level .level_full-star.getStar, .game.game_locationDesign_winter .menu__level .level_full-star.getStar {
   animation: showFullStar2 1s forwards;
 }
 @keyframes showFullStar2 {
@@ -102,7 +102,7 @@
     background-size: 100%;
   }
 }
-.chosenAppBg-2 .snowAnimation {
+.chosenAppBg-2 .snowAnimation, .game.game_locationDesign_winter .snowAnimation {
   display: block;
   position: absolute;
   top: 0;
@@ -118,42 +118,42 @@
     background-position: 500px 1000px, 400px 400px, 300px 300px;
   }
 }
-.chosenAppBg-2 .skipTutorial {
+.chosenAppBg-2 .skipTutorial, .game.game_locationDesign_winter .skipTutorial {
   background-color: #76101f;
 }
-.chosenAppBg-2 .cloudHint {
+.chosenAppBg-2 .cloudHint, .game.game_locationDesign_winter .cloudHint {
   color: #E75858;
 }
-.chosenAppBg-2 .cloudHint__mainText {
+.chosenAppBg-2 .cloudHint__mainText, .game.game_locationDesign_winter .cloudHint__mainText {
   color: #e03f3f;
 }
-.chosenAppBg-2 .leaderBoardInfo__player, .chosenAppBg-2 .lbInGame__player, .chosenAppBg-2 .lbInGame__score {
+.chosenAppBg-2 .leaderBoardInfo__player, .chosenAppBg-2 .lbInGame__player, .chosenAppBg-2 .lbInGame__score, .game.game_locationDesign_winter .leaderBoardInfo__player, .game.game_locationDesign_winter .lbInGame__player, .game.game_locationDesign_winter .lbInGame__score {
   border-color: #E75858;
 }
-.chosenAppBg-2 .done-word {
+.chosenAppBg-2 .done-word, .game.game_locationDesign_winter .done-word {
   color: black;
   text-shadow: 0 0 8px white;
 }
-.chosenAppBg-2 .endGame__header, .chosenAppBg-2 .endGame__nextLevel {
+.chosenAppBg-2 .endGame__header, .chosenAppBg-2 .endGame__nextLevel, .game.game_locationDesign_winter .endGame__header, .game.game_locationDesign_winter .endGame__nextLevel {
   background: linear-gradient(265.81deg, #F74A00 3.02%, #E40000 100.69%);
 }
-.chosenAppBg-2 .endGame__firstPrize {
+.chosenAppBg-2 .endGame__firstPrize, .game.game_locationDesign_winter .endGame__firstPrize {
   fill: #ff4d00;
 }
-.chosenAppBg-2 .endGame__secondPrize {
+.chosenAppBg-2 .endGame__secondPrize, .game.game_locationDesign_winter .endGame__secondPrize {
   fill: red;
 }
-.chosenAppBg-2 .endGame__menu {
+.chosenAppBg-2 .endGame__menu, .game.game_locationDesign_winter .endGame__menu {
   border-color: #e40000;
 }
-.chosenAppBg-2 .endGame__firstStop {
+.chosenAppBg-2 .endGame__firstStop, .game.game_locationDesign_winter .endGame__firstStop {
   stop-color: #f64a00;
 }
-.chosenAppBg-2 .endGame__secondStop {
+.chosenAppBg-2 .endGame__secondStop, .game.game_locationDesign_winter .endGame__secondStop {
   stop-color: #e40000;
 }
 @media (orientation: portrait) {
-  .chosenAppBg-2 .shop__cart__buy-button {
+  .chosenAppBg-2 .shop__cart__buy-button, .game.game_locationDesign_winter .shop__cart__buy-button {
     background-color: #C21332;
   }
 }

@@ -1305,6 +1305,79 @@
     background-size: cover !important;
   }
 }
+/*День валентина*/
+.gameLocationWrapper-winter::-webkit-scrollbar-thumb, .levels-wrapper::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+.gameLocationWrapper-winter::-webkit-scrollbar-track {
+  background-color: #e4ecf8;
+  border-radius: 0;
+}
+
+.winterLocation .popUp__locationPicture {
+  background-image: url(../assets/locations/winter/winter.png);
+}
+
+.winterLocation .popUp__locationName {
+  color: #004ace;
+}
+
+.gameLocation-winter {
+  background: url(../assets/bgNewYear/bgNewYear.png) center center no-repeat;
+  background-size: cover;
+}
+.gameLocation-winter .svgIcon {
+  fill: #bb3725;
+}
+.gameLocation-winter .levelsTop__allStars {
+  color: #bb3725;
+}
+.gameLocation-winter .menu-star, .gameLocation-winter .newElement {
+  background-color: #bb3725;
+}
+.gameLocation-winter .winterProperty {
+  background: url(../assets/bgNewYear/bgNewYear.png) center center no-repeat;
+  background-size: cover;
+}
+
+.gameLocationWrapper-winter {
+  background: url(../assets/bgNewYear/bgNewYear.png) center center no-repeat !important;
+  background-size: cover !important;
+}
+
+.location.gameLocation-winter {
+  background: none;
+}
+
+.gameLocationWrapper-winter .rules__menu {
+  background-color: #9B2308;
+}
+.gameLocationWrapper-winter .rules .settings__text {
+  color: #9B2308;
+}
+.gameLocationWrapper-winter .rules .svgIcon {
+  fill: #B4361A;
+}
+
+.gameLocation-winter::-webkit-scrollbar-thumb {
+  background-color: #B4361A;
+}
+
+@media (min-width: 1000px) {
+  .gameLocation-winter .location__lastLevel {
+    box-shadow: 0 0 25px 10px #FF5A36;
+  }
+}
+.game_locationDesign_winter {
+  background-image: url(../assets/bgNewYear/bgNewYear.png) !important;
+}
+
+@media (orientation: portrait) {
+  .gameLocationWrapper-winter, .game_locationDesign_winter {
+    background-size: cover !important;
+  }
+}
 .locationOpened {
   overflow: auto !important;
 }

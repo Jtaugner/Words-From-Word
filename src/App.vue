@@ -1377,7 +1377,7 @@
 				Приз от ВКонтакте
 			</h2>
 			<h2 class="rules__menu" v-else>
-				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Обновление' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Зима' : 'Дорогой игрок!'}}
 			</h2>
 
 			<template v-if="showGiftReceived">
@@ -1390,7 +1390,7 @@
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
 					<template v-if="platformBuild === 'gp'">
-						Уважаемые игроки! Желаем вам хорошей игры :)
+						Уважаемые игроки! Представляем вам локацию "Зима"!
 					</template>
 					<template v-else>
 						<template v-if="notRussian">
@@ -1398,15 +1398,15 @@
 						</template>
 
 						<template v-else>
-							Уважаемые игроки! Желаем вам хорошей игры :)
+							Уважаемые игроки! Представляем вам локацию "Зима"!
 						</template>
 					</template>
 
 				</div>
 
 <!--				<div class="rules__goBg" v-if="platformBuild === 'gp'" @click="goToShop()">Перейти</div>-->
-				<div class="rules__goBg" @click="goToShop()">Перейти</div>
-<!--				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>-->
+<!--				<div class="rules__goBg" @click="goToShop()">Перейти</div>-->
+				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>
 
 <!--				<div class="questionInput">-->
 <!--					<input type="radio" id="one" value="Знаю и меняю" v-model="selectedOption" />-->
@@ -2327,7 +2327,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-50";
+const lastVersion = "ver-51";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -2586,10 +2586,22 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 		let words = allDoneWords[keys[i]] || allDoneWords[k];
 
 
+		//На случай багованных слов
+		let buggedWords = [
+			['трином', 1078],
+			['морфинист', 1078],
+			['нирвана', 14916],
+			['рязанка', 15018],
+			['канцлер', 15069]
+		]
 
-		if((k === 'трином' || k === 'морфинист') && allDoneWords[allWords[1078]] && (allDoneWords[allWords[1078]] === 1 || allDoneWords[allWords[1078]].length > 0) ){
-			words = 1;
-		}
+		buggedWords.forEach(arr => {
+			if(k === arr[0]
+				&& allDoneWords[allWords[arr[1]]] &&
+				(allDoneWords[allWords[arr[1]]] === 1 || allDoneWords[allWords[arr[1]]].length > 0) ){
+				words = 1;
+			}
+		})
 
 
 		if(words === undefined){
@@ -3723,8 +3735,8 @@ function initPlayer(ysdk) {
 			});
 
 			playerGame.getStats(['tips', 'tipsEN'], false).then((dataObject) => {
-				// console.log('StATS');
-				// console.log(dataObject);
+				console.log('StATS');
+				console.log(dataObject);
 				if(notRussianGame){
 					if(Number.isInteger(dataObject.tipsEN)){
 						tips = dataObject.tipsEN;
@@ -4494,7 +4506,8 @@ let translatedLocationsNames = {
 	medicine: 'Медицина',
 	egypt: 'Египет',
 	againSchool: 'Снова в школу',
-	byeAutumn: 'Пока, Осень!'
+	byeAutumn: 'Пока, Осень!',
+	winter: "Зима"
 }
 
 let defaultLocations = ['house', 'writers', 'medicine'];
@@ -4828,7 +4841,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['byeAutumn','againSchool', 'egypt', 'medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['winter', 'byeAutumn','againSchool', 'egypt', 'medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			blockedLocations: ['egypt'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
