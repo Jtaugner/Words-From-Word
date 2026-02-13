@@ -4,8 +4,11 @@
 #app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels{
   background-image: url(../assets/valentines.png);
 }
+.game_locationDesign_weekOfLove.game{
+  background-image: url(../assets/valentines.png) !important;
+}
 
-.chosenAppBg4{
+.chosenAppBg4, .game_locationDesign_weekOfLove.game{
   .svgIcon{
     fill: #D15784;
   }
@@ -113,5 +116,8 @@
 @media (orientation: portrait) {
   #app.chosenAppBg4, .chosenAppBg4 .game, .chosenAppBg4 .levels{
     background-image: url(../assets/locations/valentines/map_port.png);
+  }
+  .game_locationDesign_weekOfLove{
+    background-image: url(../assets/locations/valentines/map_port.png) !important;
   }
 }

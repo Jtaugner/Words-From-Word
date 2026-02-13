@@ -820,33 +820,33 @@
   border-radius: 0;
 }
 
-.valentinesLocation .popUp__locationPicture {
+.valentinesLocation .popUp__locationPicture, .weekOfLoveLocation .popUp__locationPicture {
   background-image: url(../assets/locations/valentines/valentines.png);
 }
 
-.valentinesLocation .popUp__locationName {
+.valentinesLocation .popUp__locationName, .weekOfLoveLocation .popUp__locationName {
   color: #D15784;
 }
 
-.gameLocation-valentines {
+.gameLocation-valentines, .gameLocation-weekOfLove {
   background: url(../assets/valentines.png) center center no-repeat;
   background-size: cover;
 }
-.gameLocation-valentines .svgIcon {
+.gameLocation-valentines .svgIcon, .gameLocation-weekOfLove .svgIcon {
   fill: #D15784;
 }
-.gameLocation-valentines .levelsTop__allStars {
+.gameLocation-valentines .levelsTop__allStars, .gameLocation-weekOfLove .levelsTop__allStars {
   color: #D15784;
 }
-.gameLocation-valentines .menu-star, .gameLocation-valentines .newElement {
+.gameLocation-valentines .menu-star, .gameLocation-valentines .newElement, .gameLocation-weekOfLove .menu-star, .gameLocation-weekOfLove .newElement {
   background-color: #c74573;
 }
-.gameLocation-valentines .valentinesProperty {
+.gameLocation-valentines .valentinesProperty, .gameLocation-weekOfLove .valentinesProperty {
   background: url(../assets/valentines.png) center center no-repeat;
   background-size: cover;
 }
 
-.gameLocationWrapper-valentines {
+.gameLocationWrapper-valentines, .gameLocationWrapper-weekOfLove {
   background: url(../assets/valentines.png) center center no-repeat !important;
   background-size: cover !important;
 }
@@ -855,27 +855,27 @@
   background: none;
 }
 
-.gameLocationWrapper-valentines .rules__menu {
+.gameLocationWrapper-valentines .rules__menu, .gameLocationWrapper-weekOfLove .rules__menu {
   background-color: #D15784;
 }
-.gameLocationWrapper-valentines .rules .settings__text {
+.gameLocationWrapper-valentines .rules .settings__text, .gameLocationWrapper-weekOfLove .rules .settings__text {
   color: #D15784;
 }
-.gameLocationWrapper-valentines .rules .svgIcon {
+.gameLocationWrapper-valentines .rules .svgIcon, .gameLocationWrapper-weekOfLove .rules .svgIcon {
   fill: #D15784;
 }
 
-.gameLocation-valentines::-webkit-scrollbar-thumb {
+.gameLocation-valentines::-webkit-scrollbar-thumb, .gameLocation-weekOfLove::-webkit-scrollbar-thumb {
   background-color: #D15784;
 }
 
 @media (min-width: 1000px) {
-  .gameLocation-valentines .location__lastLevel {
+  .gameLocation-valentines .location__lastLevel, .gameLocation-weekOfLove .location__lastLevel {
     box-shadow: 0 0 25px 10px #D15784;
   }
 }
 @media (orientation: portrait) {
-  .gameLocationWrapper-valentines {
+  .gameLocationWrapper-valentines, .gameLocationWrapper-weekOfLove {
     background: url(../assets/locations/valentines/map_port.png) center center no-repeat !important;
     background-size: cover !important;
   }

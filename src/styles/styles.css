@@ -3504,7 +3504,7 @@ b {
     justify-content: center;
     height: auto;
     margin-top: 20px;
-    max-width: 420px;
+    max-width: 410px;
   }
 
   .level {
@@ -4302,6 +4302,15 @@ img, a {
   overscroll-behavior-y: none;
   /* отключает pull-to-refresh */
   overflow: hidden;
+}
+
+html, body, #app, .levels-wrapper, .words {
+  overscroll-behavior-y: none;
+  /* отключает pull-to-refresh */
+}
+
+html, body {
+  position: fixed;
 }
 
 /*# sourceMappingURL=styles.css.map */

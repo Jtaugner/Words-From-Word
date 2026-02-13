@@ -1377,7 +1377,7 @@
 				Приз от ВКонтакте
 			</h2>
 			<h2 class="rules__menu" v-else>
-				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Зима' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Неделя любви' : 'Дорогой игрок!'}}
 			</h2>
 
 			<template v-if="showGiftReceived">
@@ -1390,7 +1390,7 @@
 			<template v-else-if="wasUpdate">
 				<div class="updateText">
 					<template v-if="platformBuild === 'gp'">
-						Уважаемые игроки! Представляем вам локацию "Зима"!
+						Уважаемые игроки! Поиграйте в новую локацию "Неделя любви"! И будьте счастливы :)
 					</template>
 					<template v-else>
 						<template v-if="notRussian">
@@ -1398,7 +1398,7 @@
 						</template>
 
 						<template v-else>
-							Уважаемые игроки! Представляем вам локацию "Зима"!
+							Уважаемые игроки! Поиграйте в новую локацию "Неделя любви"! И будьте счастливы :)
 						</template>
 					</template>
 
@@ -2327,7 +2327,7 @@ function englishNewDecompress(compressedWords){
 
 
 
-const lastVersion = "ver-51";
+const lastVersion = "ver-52";
 // Поиск слова
 // let length = 0;
 // for(let i = 0; i < allWords.length; i++){
@@ -4507,7 +4507,8 @@ let translatedLocationsNames = {
 	egypt: 'Египет',
 	againSchool: 'Снова в школу',
 	byeAutumn: 'Пока, Осень!',
-	winter: "Зима"
+	winter: "Зима",
+	weekOfLove: "Неделя любви"
 }
 
 let defaultLocations = ['house', 'writers', 'medicine'];
@@ -4841,7 +4842,7 @@ export default {
 			locationGame: false,
 			locationStars: [],
 			wordSwing: '',
-			allLocationsNames: ['winter', 'byeAutumn','againSchool', 'egypt', 'medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
+			allLocationsNames: ['weekOfLove', 'winter', 'byeAutumn','againSchool', 'egypt', 'medicine', 'games','valentines','halloween', 'writers', 'farm', 'cinema', 'birds', 'house', 'fbv', 'eightMarch', 'animals', 'magicTales',  'newYear'],
 			blockedLocations: ['egypt'],
 			showInfoAboutPageNumber: false,
 			showAdvError: false,
