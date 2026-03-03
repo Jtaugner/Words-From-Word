@@ -2144,7 +2144,7 @@ function compressData(data, isLocationData){
 		newData = compressDataObj(newData);
 		newData = newCompress(newData);
 	}else{
-		newData = compressLocationData(data);
+		newData = compressLocationData(newData);
 	}
 	return newData;
 	// console.log(newData);
@@ -2829,7 +2829,7 @@ function setState(isNow) {
 		}
 	}else if(process.env.PLATFORM === 'gp'){
 		saveTime++;
-		if(saveTime === 10) saveTime = 0;
+		if(saveTime === 15) saveTime = 0;
 		if(saveTime !== 0 && !isNow){
 			return;
 		}else{
@@ -3448,6 +3448,7 @@ function update() {
 	console.log('update');
 	isGameOpen = true;
 	if (document.querySelector('.levels')) {
+		console.log('.levels');
 		document.querySelector('.levels').dispatchEvent(new CustomEvent("updateAll"));
 	}
 	if(process.env.PLATFORM === 'yandex'){
@@ -3465,7 +3466,7 @@ function update() {
 				params({'getPayments-error': err.toString().slice(0,150)});
 			}catch(ignored){}
 		});
-	}catch(e){}
+		}catch(e){}
 	}else if(process.env.PLATFORM === 'gp'){
 		const noAdv = GP.payments.getPurchase('cart_item6');
 		if(noAdv && noAdv.subscribed){
@@ -4760,6 +4761,38 @@ function scrollIntoViewX(container, element, options = {}) {
 	} catch(e){}
 }
 
+function scrollIntoViewY(container, element, options = {}) {
+	try {
+		if (!container || !element) return;
+		const { behavior = 'auto', align = 'start' } = options;
+
+		// --- MEASURE (только чтения) ---
+		const cRect = container.getBoundingClientRect();
+		const eRect = element.getBoundingClientRect();
+		const cur = container.scrollTop; // чтение
+		const delta = eRect.top - cRect.top; // элемент относительно контейнера в вьюпорте
+
+		// Базовая цель
+		let target = cur + delta;
+
+		// Выравнивание
+		const gap = container.clientHeight - element.clientHeight; // чтения
+		if (align === 'center') {
+			target -= gap / 2;
+		} else if (align === 'end') {
+			target -= gap;
+		} // 'start' — без доп. сдвига
+
+		// Кламп
+		const max = Math.max(0, container.scrollHeight - container.clientHeight); // чтения
+		target = Math.max(0, Math.min(target, max));
+
+		// --- WRITE (только запись) ---
+		container.scrollTo({ top: Math.round(target), behavior });
+
+	} catch (e) {}
+}
+
 
 let gameTimers = [10, 15, 30, 45, 60, 90, 120, 180]
 const scamPlayers = ["CrDmsI8H1lUNdtNrTP5OTCyon5xqDXQyXgnbNu+I0Yg=", "wcBS53P0OgG+YzAXlszk1FtoBxTggB6FAKGKBT8TmZA=", "J1PDGz5DLu6shLCCBYpxZmNJWVPWEKx5ufZAI4X74zU=", "rrK3fAIMjW3tIGO2RWSS8dGyMSIwSGhWqA8FcIOsAb4=", "7LQfUSbZYLQ0fqg1s8hIKAA7hMnwEv7I2RGiPqtrUh8=", "oSuq1pgZxAgmIAqESjPn7XuUltVk1o4b7yUxxkGf+2E=", "x0+igey20wXshdwdDQCwW4DveAVwGvmzB9r0+GfPIZk=", "XUDWsVlVCCS6YrlA+EmbbPebuw7IXp1WlLsuZ+EXpaY=",
@@ -5526,7 +5559,7 @@ export default {
 			return getLocationStars(loc).reduce((acc, el)=> acc+ el, 0);
 		},
 		getLocationStyles(level){
-			if(window.innerHeight > window.innerWidth){
+			if(window.innerHeight >= window.innerWidth){
 				return {bottom: this.getLevelLocationBottom(level)};
 			}else{
 				return {left: this.getLevelLocationLeft(level)};
@@ -5632,7 +5665,12 @@ export default {
 					}
 
 					let scrollEl = document.querySelectorAll('.location__level')[lastLevel];
-					scrollIntoViewX(document.querySelector('#app'), scrollEl, {behavior: 'smooth', align: 'center'});
+					if(window.innerHeight >= window.innerWidth){
+						scrollIntoViewY(document.querySelector('#app'), scrollEl, {behavior: 'smooth', align: 'center'});
+					}else{
+						scrollIntoViewX(document.querySelector('#app'), scrollEl, {behavior: 'smooth', align: 'center'});
+					}
+
 				}catch(e){}
 			}, 300)
 		},
@@ -6179,7 +6217,7 @@ export default {
 		},
 		updateAll() {
 			// if(!deleteBlockBg) return;
-			console.log('update');
+			console.log('updateAll');
 			allStars = [];
 			loc = 0;
 			console.log(allDoneWords);
@@ -7271,6 +7309,10 @@ export default {
 			// getBanner();
 			addSwipeTo(this.nextLocation, this.prevLocation, true);
 			addSwipeTo(this.eraseWord, this.eraseWord, false);
+			if(process.env.PLATFORM === 'mobile'){
+				console.log('mobile update');
+				update();
+			}
 		})
 	}
 }

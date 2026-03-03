@@ -6,6 +6,7 @@
     "serve": "PLATFORM=yandex NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
     "build:yandex": "PLATFORM=yandex export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build && node make-sw-and-manifest.js",
     "build:gp": "PLATFORM=gp export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build && node make-sw-and-manifest.js",
+    "build:mobile": "PLATFORM=mobile export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build && node make-sw-and-manifest.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
