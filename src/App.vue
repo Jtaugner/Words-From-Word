@@ -1377,7 +1377,7 @@
 				Приз от ВКонтакте
 			</h2>
 			<h2 class="rules__menu" v-else>
-				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Неделя любви' : 'Дорогой игрок!'}}
+				{{notRussian ? 'Update' : locationGame ? 'Ура!' : wasUpdate ? 'Обновление' : 'Дорогой игрок!'}}
 			</h2>
 
 			<template v-if="showGiftReceived">
@@ -1398,7 +1398,8 @@
 						</template>
 
 						<template v-else>
-							Уважаемые игроки! Поиграйте в новую локацию "Неделя любви"! И будьте счастливы :)
+<!--							Уважаемые игроки! Поиграйте в новую локацию "Неделя любви"! И будьте счастливы :)-->
+							Уважаемые игроки! Желаем вам хорошей игры :)
 						</template>
 					</template>
 
@@ -1406,7 +1407,7 @@
 
 <!--				<div class="rules__goBg" v-if="platformBuild === 'gp'" @click="goToShop()">Перейти</div>-->
 <!--				<div class="rules__goBg" @click="goToShop()">Перейти</div>-->
-				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>
+<!--				<div class="rules__goBg" @click="goToGetLocations()">Перейти</div>-->
 
 <!--				<div class="questionInput">-->
 <!--					<input type="radio" id="one" value="Знаю и меняю" v-model="selectedOption" />-->
@@ -1712,6 +1713,7 @@ import {locationWords} from "./locationWords";
 import {whyBadWord} from './whyBadWord';
 import CrossComponent from './cross';
 import CrossVue from "@/cross";
+import {nextTick} from 'vue';
 const indexMapWordList = {};
 wordsList.forEach((value, i) => {
 	indexMapWordList[value] = i;
@@ -2407,6 +2409,56 @@ function setToStorage(name, val) {
 		localStorage.setItem(name, val);
 	} catch (e) {}
 }
+
+function isIOS() {
+	return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+		(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS 13+
+}
+
+function prohibitSwipeToRefresh(id) {
+	if (!isIOS()) return;
+
+	const scroller = document.querySelector(id);
+	if (!scroller) return;
+
+	let startY = 0;
+	let startX = 0;
+
+	scroller.addEventListener(
+		'touchstart',
+		e => {
+			startY = e.touches[0].clientY;
+			startX = e.touches[0].clientX;
+		},
+		{ passive: true }
+	);
+
+	scroller.addEventListener(
+		'touchmove',
+		e => {
+			const touch = e.touches[0];
+
+			const dy = touch.clientY - startY;
+			const dx = touch.clientX - startX;
+
+			// если жест горизонтальный — ничего не блокируем
+			if (Math.abs(dx) > Math.abs(dy)) return;
+
+			const atTop = scroller.scrollTop <= 0;
+			const atBottom =
+				scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+
+			const pullingDown = dy > 0;
+			const pullingUp = dy < 0;
+
+			if ((pullingDown && atTop) || (pullingUp && atBottom)) {
+				e.preventDefault();
+			}
+		},
+		{ passive: false }
+	);
+}
+
 
 let notRussianGame = false;
 
@@ -6389,8 +6441,6 @@ export default {
 				this.receivedGifts = receivedGifts;
 				this.showGiftReceived = true;
 				savePrizeToGP();
-
-
 			}
 		},
 		getLvl5Hint(){
@@ -7290,6 +7340,16 @@ export default {
 			this.selectedLetters = [];
 		}
 	},
+	watch: {
+		async showLocations(newVal, oldVal) {
+			await this.$nextTick();
+			if(newVal) prohibitSwipeToRefresh('.popUp__elements')
+		}
+		// async showLocations(newVal, oldVal) {
+		// 	await this.$nextTick();
+		// 	if(newVal) prohibitSwipeToRefresh('.popUp__elements')
+		// }
+	},
 	mounted: function() {
 		this.$nextTick(function() {
 			if (doDeleteBlock) {
@@ -7313,6 +7373,7 @@ export default {
 				console.log('mobile update');
 				update();
 			}
+			prohibitSwipeToRefresh('.words');
 		})
 	}
 }

@@ -4306,8 +4306,17 @@ img, a {
   overflow: hidden;
 }
 
-html, body, #app, .levels-wrapper, .words{
+html, body, #app, .levels-wrapper, .words, .location, .popUp__elements, .leaderBoardInfo{
   overscroll-behavior-y: none; /* отключает pull-to-refresh */
+}
+html, body, #app {
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  user-select: none;
+  overscroll-behavior-y: none;
+  overflow: hidden;
 }
 html, body{
   position: fixed;
