@@ -2669,10 +2669,10 @@ function fixDoneWords(allDoneWords, isLocationWords) {
 
 			}else{
 				allDoneWords[k] = chooseRightWordFromWords(k);
-			}
 
-		 	if(wordsForReplace[keys[i]]){
-				delete allDoneWords[keys[i]];
+				if(wordsForReplace[keys[i]]){
+					delete allDoneWords[keys[i]];
+				}
 			}
 		}else{
 			if(keys[i].indexOf('ё')  !== -1){
