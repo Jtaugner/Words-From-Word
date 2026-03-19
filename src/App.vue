@@ -525,7 +525,7 @@
 					<svg class="svgIcon" width="16" height="27" viewBox="0 0 16 27" fill="#66196C" xmlns="http://www.w3.org/2000/svg"><path d="M5.375 18.8885V18.6591C5.3911 17.1619 5.54001 15.9706 5.82173 15.0852C6.11151 14.1998 6.52202 13.4834 7.05327 12.9361C7.58452 12.3887 8.22443 11.8897 8.97301 11.4389C9.45597 11.133 9.89063 10.791 10.277 10.4126C10.6634 10.0343 10.9692 9.59967 11.1946 9.10866C11.42 8.61766 11.5327 8.07434 11.5327 7.47869C11.5327 6.76231 11.3636 6.14252 11.0256 5.61932C10.6875 5.09612 10.2367 4.69365 9.6733 4.41193C9.1179 4.12216 8.49811 3.97727 7.81392 3.97727C7.19413 3.97727 6.60251 4.10606 6.03906 4.36364C5.47562 4.62121 5.00876 5.02367 4.63849 5.57102C4.26823 6.11032 4.05492 6.80658 3.99858 7.6598H0.328125C0.38447 6.21094 0.75071 4.98745 1.42685 3.98935C2.10298 2.98319 2.99645 2.22254 4.10724 1.70738C5.22609 1.19223 6.46165 0.934658 7.81392 0.934658C9.29498 0.934658 10.5909 1.21236 11.7017 1.76776C12.8125 2.3151 13.6738 3.08381 14.2855 4.07386C14.9053 5.05587 15.2152 6.20289 15.2152 7.51491C15.2152 8.41643 15.0743 9.2294 14.7926 9.95383C14.5109 10.6702 14.1084 11.3101 13.5852 11.8736C13.0701 12.437 12.4503 12.9361 11.7259 13.3707C11.0417 13.7973 10.4863 14.2401 10.0597 14.6989C9.6411 15.1577 9.33523 15.701 9.14205 16.3288C8.94886 16.9567 8.84422 17.7334 8.82812 18.6591V18.8885H5.375ZM7.19815 26.2294C6.53812 26.2294 5.97064 25.996 5.49574 25.5291C5.02083 25.0542 4.78338 24.4827 4.78338 23.8146C4.78338 23.1546 5.02083 22.5911 5.49574 22.1243C5.97064 21.6494 6.53812 21.4119 7.19815 21.4119C7.85014 21.4119 8.41359 21.6494 8.88849 22.1243C9.37145 22.5911 9.61293 23.1546 9.61293 23.8146C9.61293 24.2573 9.50024 24.6638 9.27486 25.0341C9.05753 25.3963 8.76776 25.6861 8.40554 25.9034C8.04332 26.1207 7.64086 26.2294 7.19815 26.2294Z"/></svg>
 				</div>
 				<div v-if="eventLocation" class="menuItem" @click="toggleIsEventResult()">
-					<<svg class="svgIcon" width="24" height="29" viewBox="0 0 24 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.9375 16.7257C12.9375 16.2738 13.3153 15.9074 13.7812 15.9074H21.75C22.216 15.9074 22.5937 16.2738 22.5937 16.7257V28.1817C22.5937 28.6336 22.216 29 21.75 29H13.7812C13.3153 29 12.9375 28.6336 12.9375 28.1817V16.7257Z" /><path d="M12.9375 10.764C12.9375 10.3121 13.3153 9.94572 13.7812 9.94572H23.1562C23.6222 9.94572 24 10.3121 24 10.764V14.219C24 14.6709 23.6222 15.0373 23.1562 15.0373H13.7812C13.3153 15.0373 12.9375 14.6709 12.9375 14.219V10.764Z" /><path d="M14.4375 1.99016C13.6875 2.863 12.5 6.08159 12 7.58178V9.4002C21.1875 9.4002 22.5 6.08159 22.5469 4.94509C22.5937 3.80858 20.625 0.990037 18.6562 0.217211C16.6875 -0.555614 15.375 0.899116 14.4375 1.99016Z" /><path d="M11.0625 16.7257C11.0625 16.2738 10.6847 15.9074 10.2187 15.9074H2.25C1.78401 15.9074 1.40625 16.2738 1.40625 16.7257V28.1817C1.40625 28.6336 1.78401 29 2.25 29H10.2187C10.6847 29 11.0625 28.6336 11.0625 28.1817V16.7257Z" /><path d="M11.0625 10.764C11.0625 10.3121 10.6847 9.94572 10.2187 9.94572H0.84375C0.37776 9.94572 0 10.3121 0 10.764V14.219C0 14.6709 0.37776 15.0373 0.84375 15.0373H10.2187C10.6847 15.0373 11.0625 14.6709 11.0625 14.219V10.764Z" /><path d="M9.5625 1.99016C10.3125 2.863 11.5 6.08159 12 7.58178V9.4002C2.8125 9.4002 1.5 6.08159 1.45312 4.94509C1.40625 3.80858 3.375 0.990037 5.34375 0.217211C7.3125 -0.555614 8.625 0.899116 9.5625 1.99016Z" /></svg>
+					<svg class="svgIcon" width="24" height="29" viewBox="0 0 24 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.9375 16.7257C12.9375 16.2738 13.3153 15.9074 13.7812 15.9074H21.75C22.216 15.9074 22.5937 16.2738 22.5937 16.7257V28.1817C22.5937 28.6336 22.216 29 21.75 29H13.7812C13.3153 29 12.9375 28.6336 12.9375 28.1817V16.7257Z" /><path d="M12.9375 10.764C12.9375 10.3121 13.3153 9.94572 13.7812 9.94572H23.1562C23.6222 9.94572 24 10.3121 24 10.764V14.219C24 14.6709 23.6222 15.0373 23.1562 15.0373H13.7812C13.3153 15.0373 12.9375 14.6709 12.9375 14.219V10.764Z" /><path d="M14.4375 1.99016C13.6875 2.863 12.5 6.08159 12 7.58178V9.4002C21.1875 9.4002 22.5 6.08159 22.5469 4.94509C22.5937 3.80858 20.625 0.990037 18.6562 0.217211C16.6875 -0.555614 15.375 0.899116 14.4375 1.99016Z" /><path d="M11.0625 16.7257C11.0625 16.2738 10.6847 15.9074 10.2187 15.9074H2.25C1.78401 15.9074 1.40625 16.2738 1.40625 16.7257V28.1817C1.40625 28.6336 1.78401 29 2.25 29H10.2187C10.6847 29 11.0625 28.6336 11.0625 28.1817V16.7257Z" /><path d="M11.0625 10.764C11.0625 10.3121 10.6847 9.94572 10.2187 9.94572H0.84375C0.37776 9.94572 0 10.3121 0 10.764V14.219C0 14.6709 0.37776 15.0373 0.84375 15.0373H10.2187C10.6847 15.0373 11.0625 14.6709 11.0625 14.219V10.764Z" /><path d="M9.5625 1.99016C10.3125 2.863 11.5 6.08159 12 7.58178V9.4002C2.8125 9.4002 1.5 6.08159 1.45312 4.94509C1.40625 3.80858 3.375 0.990037 5.34375 0.217211C7.3125 -0.555614 8.625 0.899116 9.5625 1.99016Z" /></svg>
 
 				</div>
 			</div>
@@ -1698,6 +1698,7 @@ import './styles/stylesValentines.scss';
 import './styles/stylesGreen.scss';
 import './styles/stylesNewYear2024.scss';
 import './styles/stylesAutumn.scss';
+import './styles/stylesSpace.scss';
 import './styles/endGame.scss';
 
 import './styles/stylesLocations.scss';
@@ -2822,8 +2823,11 @@ function setState(isNow) {
 	if(process.env.PLATFORM === 'yandex'){
 		const newData = JSON.stringify(PLAYESTATE);
 		const newData2 = JSON.stringify(newYearProgress);
-		if(recentState === newData && recentEventState === newData2 && !isNow) return;
+		const newDataTips = JSON.stringify(PLAYERSTATS);
+		if(recentState === newData && recentEventState === newData2 &&
+		recentStats === newDataTips && !isNow) return;
 		recentState = newData;
+		recentStats = newDataTips;
 
 		if (playerGame) {
 
@@ -2836,6 +2840,9 @@ function setState(isNow) {
 				newState.gotEventBfGift = gotEventBfGift;
 				if(PLAYESTATE.locationDoneWords) newState.locationDoneWords = compressData(PLAYESTATE.locationDoneWords, true);
 				if(newYearProgress) newState.newYearProgress = compressData(newYearProgress, true);
+
+				newState.tipsEN = PLAYERSTATS.tips;
+				if(russianTips) newState.tips = russianTips;
 				playerGame.setData(newState, true).then(() => {}).catch((ignored) => {})
 
 
@@ -2851,6 +2858,9 @@ function setState(isNow) {
 				if(newYearProgress) newState.newYearProgress = compressData(newYearProgress, true);
 				// console.log('SendState');
 				// console.log(newState);createGameLevel
+				newState.tips = PLAYERSTATS.tips;
+				if(englishTips) newState.tipsEN = englishTips;
+
 				if(newState.allDoneWords === undefined && lastLevel > 0){
 					params({'allWords-NO': 1});
 					if(PLAYESTATE.allDoneWords === undefined){
@@ -2903,6 +2913,16 @@ function setState(isNow) {
 			isChange = true;
 			if(GP) GP.player.set('locationDoneWords', JSON.stringify(newState));
 		}
+		const newDataTips = JSON.stringify(PLAYERSTATS);
+		if(recentStats !== newDataTips){
+			recentStats = newDataTips;
+			if(GP){
+				GP.player.set('tips', PLAYERSTATS.tips);
+			}
+			isChange = true;
+		}
+
+
 		if(isChange) {
 			try{
 				GP.player.sync();
@@ -2915,39 +2935,7 @@ function setState(isNow) {
 }
 function setStats() {
 	// console.log('setStats');
-	if(process.env.PLATFORM === 'yandex'){
-		const newData = JSON.stringify(PLAYERSTATS);
-		if(recentStats === newData) return;
-		recentStats = newData;
-		if(playerGame){
-			if(notRussianGame){
-				const progress = {tipsEN: PLAYERSTATS.tips};
-				if(russianTips) progress.tips = russianTips;
-				playerGame.setStats(progress, false).then((ignored) => {}).catch((ignored)=>{});
-			}else{
-				const progress = {tips: PLAYERSTATS.tips};
-				if(englishTips) progress.tipsEN = englishTips;
-
-				if(progress === undefined || progress.tips === undefined){
-					params({'tipsUndefined': 1});
-				}
-
-				playerGame.setStats(progress, false).then((ignored) => {}).catch(()=>{
-					playerGame.setStats(progress, true).then((ignored) => {})
-				});
-			}
-
-		}
-	}else if(process.env.PLATFORM === 'gp'){
-		const newData = JSON.stringify(PLAYERSTATS);
-		if(recentStats === newData) return;
-		if(GP){
-			try{
-				GP.player.set('tips', PLAYERSTATS.tips);
-				GP.player.sync();
-			}catch(e){}
-		}
-	}
+	setState(true);
 }
 
 function saveAllData(isNow){
@@ -3099,7 +3087,8 @@ async function savePrizeToGP(){
 	try{
 		console.log(savePrizeToGP);
 		if(GP){
-			GP.player.set('giftReceived47', true);
+			// GP.player.set('giftReceived47', true);
+			GP.player.set('giftReceived51', true);
 			await GP.player.sync();
 			console.log('makePrizeReceived');
 			makePrizeReceived();
@@ -3109,7 +3098,8 @@ async function savePrizeToGP(){
 	}
 }
 const receivedGifts = {
-	gift47: false
+	gift47: false,
+	gift51: false
 };
 let toggleSubscribeCompleted = false;
 let lastPlatformType = getFromStorage('platformType');
@@ -3268,7 +3258,7 @@ if(process.env.PLATFORM === 'yandex'){
 			console.log('gotSDK', platformSDK);
 			if(platformType === 'VK'){
 				console.log('platformType: ', platformType)
-				let promo_id = '47';
+				let promo_id = '51';
 				const { access_token } = await sdk.bridge.send('VKWebAppGetAuthToken', {
 					app_id: 7869885,
 					scope: '' // обычно для apps.* хватает пустого или 'apps'
@@ -3600,10 +3590,10 @@ function initPlayer(ysdk) {
 			console.log('PLAYER');
 			console.log(playerGame);
 
-			let someTrue = false;
 
-			playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords', 'newYearProgress', 'gotEventBfGift'], false).then((dataObject) => {
-				console.log(dataObject);
+			playerGame.getData(['allDoneWords', 'time', 'allDoneWordsEN', 'locationDoneWords',
+			 'newYearProgress', 'gotEventBfGift', 'tips', 'tipsEN'], false).then((dataObject) => {
+				console.log('dataObject', dataObject);
 				if(dataObject.gotEventBfGift){
 					gotEventBfGift = dataObject.gotEventBfGift;
 				}
@@ -3770,81 +3760,73 @@ function initPlayer(ysdk) {
 					console.log(e);
 				}
 
-				if(someTrue){
+
+				//Работа с подсказками
+				if(dataObject.tips !== undefined || dataObject.tipsEN !== undefined){
+					console.log('getData dataObject tips', dataObject);
+					fixTips(dataObject)
+				}else{
+					playerGame.getStats(['tips', 'tipsEN'], false).then((dataObject) => {
+						console.log('getStats dataObject tips', dataObject);
+						fixTips(dataObject);
+					}).catch((e) => {
+						console.log(e);
+					});
+				}
+				function fixTips(dataObject){
+					if(notRussianGame){
+						if(Number.isInteger(dataObject.tipsEN)){
+							tips = dataObject.tipsEN;
+						}else{
+							tips = 15	;
+						}
+						if(dataObject.tips) russianTips = dataObject.tips;
+
+					}else if (Number.isInteger(dataObject.tips)) {
+						if(dataObject.tips > tips){
+							tips = dataObject.tips;
+						}
+						if (dataObject.tipsEN) englishTips = dataObject.tipsEN;
+					}else{
+						if(!Number.isInteger(tips) || 15 > tips){
+							tips = 15;
+						}
+						if(dataObject.tipsEN) englishTips = dataObject.tipsEN;
+					}
+
+					PLAYERSTATS = {'tips': dataObject.tipsEN};
+					recentStats = JSON.stringify(PLAYERSTATS);
+					setToStorage('tips', tips);
+
+					//Вовзврат прогресса
+					try{
+						let pay = ysdk.environment.payload;
+						if(pay){
+							let tps = pay.match(/tps\d+/);
+							if(tps) {
+								tps = Number(tps[0].replace('tps', ''));
+								if(tps){
+									tips = tps;
+									PLAYERSTATS.tips = tips;
+									setStats();
+								}
+							}
+						}
+					}catch(e){
+						console.log(e);
+					}
 					update();
 				}
-				someTrue = true;
 
 
 			}).catch((e) => {
 				console.log(e);
-				if(someTrue){
-					update();
-				}
 				try{
 					params({'getPlayer-error': e.toString().slice(0,150)});
 				}catch(ignored){}
-				someTrue = true;
+				update();
 			});
 
-			playerGame.getStats(['tips', 'tipsEN'], false).then((dataObject) => {
-				console.log('StATS');
-				console.log(dataObject);
-				if(notRussianGame){
-					if(Number.isInteger(dataObject.tipsEN)){
-						tips = dataObject.tipsEN;
-					}else{
-						tips = 15	;
-					}
-					if(dataObject.tips) russianTips = dataObject.tips;
-
-				}else if (Number.isInteger(dataObject.tips)) {
-					if(dataObject.tips > tips){
-						tips = dataObject.tips;
-					}
-					if (dataObject.tipsEN) englishTips = dataObject.tipsEN;
-				}else{
-					if(!Number.isInteger(tips) || 15 > tips){
-						tips = 15;
-					}
-					if(dataObject.tipsEN) englishTips = dataObject.tipsEN;
-				}
-
-				PLAYERSTATS = {'tips': dataObject.tipsEN};
-				recentStats = JSON.stringify(PLAYERSTATS);
-				setToStorage('tips', tips);
-
-				if(someTrue){
-					update();
-				}
-				someTrue = true;
-				//Вовзврат прогресса
-				try{
-					let pay = ysdk.environment.payload;
-					if(pay){
-						let tps = pay.match(/tps\d+/);
-						if(tps) {
-							tps = Number(tps[0].replace('tps', ''));
-							if(tps){
-								tips = tps;
-								PLAYERSTATS.tips = tips;
-								setStats();
-							}
-						}
-					}
-				}catch(e){
-					console.log(e);
-				}
-			}).catch((e) => {
-				console.log(e);
-				if(someTrue){
-					update();
-				}
-				try{
-					params({'getStats-error': e.toString().slice(0,150)});
-				}catch(ignored){}
-				someTrue = true;
-			});
 		}).catch((e) => {
 			console.log(e);
 			doDeleteBlock = true;
@@ -3946,6 +3928,13 @@ function initPlayer(ysdk) {
 					console.log('giftReceived47: ', giftReceived47);
 					if(giftReceived47){
 						receivedGifts.gift47 = true;
+					}
+				}
+				if(ysdk.player.has('giftReceived51')){
+					let giftReceived51 = ysdk.player.get('giftReceived51');
+					console.log('giftReceived51: ', giftReceived51);
+					if(giftReceived51){
+						receivedGifts.gift51 = true;
 					}
 				}
 
@@ -5746,17 +5735,19 @@ export default {
 		},
 		changeBgRight(){
 			this.chosenBg++;
-			if(this.chosenBg === 8) this.chosenBg = -4;
+			if(this.chosenBg === 9) this.chosenBg = -4;
 			this.testBg();
 		},
 		changeBgLeft(){
 			this.chosenBg--;
-			if(this.chosenBg === -5) this.chosenBg = 7;
+			if(this.chosenBg === -5) this.chosenBg = 8;
 			this.testBg();
 		},
 		canUseBg(choseBg){
 			if(this.chosenBg === 7){
 				return this.receivedGifts.gift47;
+			}else if(this.chosenBg === 8){
+				return this.receivedGifts.gift51;
 			}
 			return true;
 		},
@@ -5795,7 +5786,7 @@ export default {
 			this.openNewBg = false;
 
 			if(fromUpdate){
-				this.chosenBg = 7;
+				this.chosenBg = 8;
 				this.testBg();
 			}
 			// let bg = 1;
@@ -6437,10 +6428,12 @@ export default {
 				setToStorage('tips', this.tipCount);
 				PLAYERSTATS.tips = this.tipCount;
 				setStats();
-				receivedGifts.gift47 = true;
+				// receivedGifts.gift47 = true;
+				receivedGifts.gift51 = true;
 				this.receivedGifts = receivedGifts;
 				this.showGiftReceived = true;
 				savePrizeToGP();
+				params({'gift51': 1 })
 			}
 		},
 		getLvl5Hint(){

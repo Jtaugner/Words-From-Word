@@ -2043,6 +2043,9 @@ b {
 .chosenBg7 {
   background-image: url(../assets/settings/bg7.png);
 }
+.chosenBg8 {
+  background-image: url(../assets/settings/bg8.png);
+}
 
 .changeLeft, .changeRight {
   width: 20px;
